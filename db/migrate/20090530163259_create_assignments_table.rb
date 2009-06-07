@@ -1,0 +1,13 @@
+class CreateAssignmentsTable < ActiveRecord::Migration
+  def self.up
+    create_table :assignments do |t|
+      t.references :project
+      t.references :person
+      t.timestamps
+    end
+  end
+
+  def self.down
+    drop_table :assignments
+  end
+end

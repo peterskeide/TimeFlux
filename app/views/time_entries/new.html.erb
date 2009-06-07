@@ -1,0 +1,25 @@
+<h1>Time Entry</h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+<p>
+	<h2>Week: <%= @week_number %></h2>
+</p>
+<p>
+	<%= link_to "Previous week", :action => "previous_week", :date => @week[:monday] %>
+	<%= link_to "Next week", :action => "next_week", :date => @week[:monday] %>
+</p>
+<p>
+	<%= collection_select(:activity, :id, @activities, :id, :name, {:prompt => "Please select activity"}) %>
+</p>
+<p> 		
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @monday, :date => @monday.date} %>
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @tuesday, :date => @tuesday.date} %>
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @wednesday, :date => @wednesday.date} %>
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @thursday, :date => @thursday.date} %>
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @friday, :date => @friday.date} %>
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @saturday, :date => @saturday.date} %>
+	<%= render :partial => "time_entry_form", :locals => {:weekday => @sunday, :date => @sunday.date} %>		  	
+</p>
+<input type="submit" value="Save all" onclick="saveAll()">
+<% javascript_tag do %>
+<% end %> 

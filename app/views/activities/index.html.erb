@@ -1,0 +1,13 @@
+<h1>Activities</h1>
+<hr/>
+<% @activities.each do |a| -%>
+	<div>
+		<b>Name:</b> <%= a.name %><br/>
+		<b>Category:</b> <%= a.category.name %><br/>
+		<b>Description:</b> <%= a.description %><br/>
+		<b>Created:</b> <%= a.created_at.to_date %><br/>
+	</div>
+	<hr/>
+<% end -%>
+<%= link_to "Create New", :action => "new" %>
+<%= link_to "Manage Categories", categories_url %>

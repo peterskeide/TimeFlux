@@ -1,0 +1,14 @@
+norgesgruppen:
+    name: UKID
+    description: Utvikle en integrasjonskomponent for Basis Butikkregister 2
+    category: external_project
+
+nsb:
+    name: FooBar
+    description: Implementere en tjenesteorientert arkitektur basert på Jboss ESB
+    category: external_project
+
+CSI:
+    name: Conduct Services Institute
+    description: Kartlegging av nødvendig kompetanse for å bemanne et prosjekt
+    category: internal_project

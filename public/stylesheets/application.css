@@ -1,0 +1,102 @@
+body {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 14px;
+	text-align: center;
+	margin: 0;
+}
+
+a.menu_link {
+	text-decoration:none;
+	color: #ffffff;
+}
+
+a:hover.menu_link {
+	text-decoration:none;
+	color: #c80000;
+}
+
+.menu_item {
+	float: left;
+	width: 100px;
+	padding: 10px;
+	border-right: 1px solid #ffffff;
+	text-align: center;
+}
+
+.error {
+	color: #c80000;
+}
+
+.notice {
+	color: green;
+}
+
+.content {
+	padding: 1em;
+}
+
+.time_entry {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.week_entries {
+	text-align: left;
+}
+
+.week_entries_hours {
+	width: 60px;
+	text-align: center;
+}
+
+td.week_entries_hours {
+	border: 1px solid;
+}
+
+.week_entries_activity {
+	text-align: left;
+}
+
+#container {
+	margin-left: auto;
+	margin-right: auto;
+	width: 900px;
+	text-align: left;
+}
+
+#logo {
+	width: 100%;
+	background-color: #dfe5d7;
+	border-bottom: 1px solid;
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+#menu {
+	float: left;
+	width: 100%;
+	background-color: #003a8d;
+	border-bottom: 1px solid;
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+#main {
+	float: left;
+	width: 100%;
+	border-left: 1px dotted;
+	border-right: 1px dotted;
+	border-bottom: 1px dotted;
+}
+
+#footer {
+	float: left;
+	clear: left;
+	width: 100%;
+	text-align: center;
+}
+
+#conduct_logo {
+	border: 0;
+	vertical-align: middle;	
+}

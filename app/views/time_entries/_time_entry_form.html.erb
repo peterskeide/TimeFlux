@@ -1,0 +1,11 @@
+<% form_for :time_entry, weekday, :url => {:action => "create"} do |f| -%>	
+	<%= hidden_field date.to_symbol, :date %> 
+	<div class="time_entry">
+		<b><%= "#{date.day_to_s} - #{date}" %></b>
+	</div>
+	<div class="time_entry">
+		Hours: <%= f.text_field :hours, :size => "5" %>&nbsp;&nbsp;
+		Notes: <%= f.text_field :notes, :size => "90" %>&nbsp;&nbsp;
+		<%= f.submit "Save" %>
+	</div>
+<% end -%>

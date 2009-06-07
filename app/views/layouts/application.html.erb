@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>TimeFlux - the open and easy way of time management and billing</title>
+		<%= stylesheet_link_tag "application" %>
+	</head>
+	<body>
+		<div id="container">
+			<div id="logo">
+				<%= image_tag "timeflux_logo.jpg", :alt => "TimeFlux logo", :id => "timeflux_logo" %>
+			</div>
+			<div id="menu">
+				<span class="menu_item"><%= link_to "Time Entry", root_url, :class => "menu_link" %></span>
+				<span class="menu_item"><%= link_to "Review Month", nil, :class => "menu_link" %></span>
+				<span class="menu_item"><%= link_to "Reports", nil, :class => "menu_link" %></span>
+				<span class="menu_item"><%= link_to "Activities", activities_url, :class => "menu_link" %></span>
+				<span class="menu_item"><%= link_to "People", nil, :class => "menu_link" %></span>
+				<span class="menu_item"><%= link_to "Logout", nil, :class => "menu_link" %></span>
+			</div>
+			<div id="main">
+				<div class="content">
+					<%= yield %>
+				</div>
+			</div>
+			<div id="footer">
+				<div class="content">
+					<p>100% Free Open Source developed by<br/>
+						<a href="http://www.conduct.no">
+							<%= image_tag "Conductlogo.jpg", :alt => "Conduct logo", :id => "conduct_logo" %>
+						</a>
+					</p>
+				<div>
+			</div>
+		</div>
+	</body>
+</html>
