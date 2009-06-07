@@ -1,7 +1,7 @@
 class WeekEntry < ActiveRecord::Base
   
   belongs_to :activity  
-  belongs_to :person
+  belongs_to :user
   has_many :time_entries
   
   accepts_nested_attributes_for :time_entries

@@ -4,7 +4,7 @@ class CreateWeekEntriesTable < ActiveRecord::Migration
       t.boolean :locked
       t.integer :year
       t.integer :week_number
-      t.references :person
+      t.references :user
       t.references :activity
       t.timestamps
     end
