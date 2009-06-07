@@ -34,17 +34,6 @@ ActiveRecord::Schema.define(:version => 20090606151753) do
     t.datetime "updated_at"
   end
 
-  create_table "persons", :force => true do |t|
-    t.string   "firstname"
-    t.string   "lastname"
-    t.string   "username"
-    t.string   "password"
-    t.string   "email"
-    t.string   "operative_status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "time_entries", :force => true do |t|
     t.float    "hours"
     t.boolean  "billed"
@@ -57,11 +46,22 @@ ActiveRecord::Schema.define(:version => 20090606151753) do
     t.datetime "updated_at"
   end
 
+  create_table "users", :force => true do |t|
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "username"
+    t.string   "password"
+    t.string   "email"
+    t.string   "operative_status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "week_entries", :force => true do |t|
     t.boolean  "locked"
     t.integer  "year"
     t.integer  "week_number"
-    t.integer  "person_id"
+    t.integer  "user_id"
     t.integer  "activity_id"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -23975,3 +23975,216 @@ Completed in 27ms (View: 17, DB: 4) | 200 OK [http://localhost/week_entries/new/
   [4;35;1mSQL (5.1ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090530163259')[0m
   [4;36;1mSQL (5.0ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090603162343')[0m
   [4;35;1mSQL (5.7ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090603162502')[0m
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-07 21:39:12) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.5ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (1.0ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 7) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 944944205) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 10) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 11) [0m
+Completed in 71ms (View: 48, DB: 4) | 200 OK [http://localhost/]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-07 21:39:15) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mActivity Load (1.1ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;36;1mCategory Load (0.2ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;35;1mCategory Load (0.3ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 101ms (View: 93, DB: 2) | 200 OK [http://localhost/Activities]
+
+
+Processing CategoriesController#index (for 127.0.0.1 at 2009-06-07 21:39:25) [GET]
+  Parameters: {"action"=>"index", "controller"=>"categories"}
+  [4;35;1mCategory Load (0.6ms)[0m   [0mSELECT * FROM "categories" [0m
+Rendering template within layouts/application
+Rendering categories/index
+Completed in 12ms (View: 8, DB: 1) | 200 OK [http://localhost/Categories]
+
+
+Processing CategoriesController#create (for 127.0.0.1 at 2009-06-07 21:39:30) [POST]
+  Parameters: {"category"=>{"name"=>"FooBar"}, "commit"=>"Create", "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"categories"}
+  [4;36;1mCategory Exists (0.2ms)[0m   [0;1mSELECT "categories".id FROM "categories" WHERE (LOWER("categories"."name") = 'foobar') LIMIT 1[0m
+  [4;35;1mCategory Create (0.4ms)[0m   [0mINSERT INTO "categories" ("name", "updated_at", "notes", "created_at") VALUES('FooBar', '2009-06-07 19:39:30', NULL, '2009-06-07 19:39:30')[0m
+Redirected to http://localhost:3000/Categories
+Completed in 102ms (DB: 1) | 302 Found [http://localhost/categories/create]
+
+
+Processing CategoriesController#index (for 127.0.0.1 at 2009-06-07 21:39:30) [GET]
+  Parameters: {"action"=>"index", "controller"=>"categories"}
+  [4;36;1mCategory Load (0.7ms)[0m   [0;1mSELECT * FROM "categories" [0m
+Rendering template within layouts/application
+Rendering categories/index
+Completed in 58ms (View: 4, DB: 1) | 200 OK [http://localhost/Categories]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-07 21:39:32) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mActivity Load (0.7ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;36;1mCategory Load (0.2ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;35;1mCategory Load (0.2ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 13ms (View: 8, DB: 1) | 200 OK [http://localhost/Activities]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-07 21:39:34) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.4ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;35;1mTimeEntry Load (1.0ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 7) [0m
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 944944205) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 10) [0m
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 11) [0m
+Completed in 26ms (View: 17, DB: 4) | 200 OK [http://localhost/]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-07 21:39:36) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.4ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 22 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (1.0ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 12) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 13) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 944944205) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 15) [0m
+Completed in 27ms (View: 17, DB: 4) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-01]
+
+
+Processing WeekEntriesController#destroy (for 127.0.0.1 at 2009-06-07 21:39:39) [DELETE]
+  Parameters: {"action"=>"destroy", "_method"=>"delete", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "id"=>"15", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."id" = 15) [0m
+  [4;36;1mTimeEntry Load (1.0ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 15) [0m
+  [4;35;1mWeekEntry Destroy (0.3ms)[0m   [0mDELETE FROM "week_entries" WHERE "id" = 15[0m
+  [4;36;1mWeekEntry Load (0.7ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 22 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (1.2ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 12) [0m
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (1.0ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 13) [0m
+Completed in 37ms (View: 15, DB: 5) | 200 OK [http://localhost/week_entries/15]
+
+
+Processing WeekEntriesController#new (for 127.0.0.1 at 2009-06-07 21:39:41) [POST]
+  Parameters: {"date"=>"2009-05-25", "action"=>"new", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"week_entries"}
+  [4;35;1mActivity Load (0.7ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering week_entries/new
+Completed in 26ms (View: 11, DB: 1) | 200 OK [http://localhost/week_entries/new?date=2009-05-25]
+
+
+Processing WeekEntriesController#create (for 127.0.0.1 at 2009-06-07 21:39:51) [POST]
+  Parameters: {"week_entry"=>{"time_entries_attributes"=>{"6"=>{"date"=>"2009-05-31", "notes"=>"", "hours"=>"4"}, "0"=>{"date"=>"2009-05-25", "notes"=>"", "hours"=>"4"}, "1"=>{"date"=>"2009-05-26", "notes"=>"", "hours"=>"4"}, "2"=>{"date"=>"2009-05-27", "notes"=>"", "hours"=>"4"}, "3"=>{"date"=>"2009-05-28", "notes"=>"", "hours"=>"4"}, "4"=>{"date"=>"2009-05-29", "notes"=>"", "hours"=>"4"}, "5"=>{"date"=>"2009-05-30", "notes"=>"", "hours"=>"4"}}, "year"=>"2009", "week_number"=>"22"}, "commit"=>"Submit", "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "activity"=>{"id"=>"944944205"}, "controller"=>"week_entries"}
+  [4;36;1mActivity Load (0.3ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = '944944205') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 22 AND "week_entries"."activity_id" = 944944205 AND "week_entries"."year" = 2009) LIMIT 1[0m
+  [4;36;1mWeekEntry Create (0.3ms)[0m   [0;1mINSERT INTO "week_entries" ("updated_at", "activity_id", "year", "week_number", "person_id", "locked", "created_at") VALUES('2009-06-07 19:39:51', 944944205, 2009, 22, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-25', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-26', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-27', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-28', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-29', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-30', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-07 19:39:51', '2009-05-31', '', NULL, 4.0, 17, NULL, NULL, '2009-06-07 19:39:51')[0m
+  [4;36;1mWeekEntry Load (0.8ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 22 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.4ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (1.6ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 12) [0m
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (1.4ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 13) [0m
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 944944205) [0m
+  [4;36;1mTimeEntry Load (1.2ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 17) [0m
+Completed in 59ms (View: 13, DB: 7) | 200 OK [http://localhost/week_entries]
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateWeekEntriesTable (20090606151753)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "week_entries"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090606151753'[0m
+Migrating to CreateCategoriesTable (20090603162502)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "categories"[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090603162502'[0m
+Migrating to CreateActivitiesTable (20090603162343)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "activities"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090603162343'[0m
+Migrating to CreateAssignmentsTable (20090530163259)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "assignments"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090530163259'[0m
+Migrating to CreateTimeEntriesTable (20090529214752)
+  [4;35;1mSQL (0.7ms)[0m   [0mDROP TABLE "time_entries"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090529214752'[0m
+Migrating to CreateUsersTable (20090529213746)
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: users: DROP TABLE "users"[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (3.8ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (3.8ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateUsersTable (20090529213746)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "firstname" varchar(255), "lastname" varchar(255), "username" varchar(255), "password" varchar(255), "email" varchar(255), "operative_status" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090529213746')[0m
+Migrating to CreateTimeEntriesTable (20090529214752)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "time_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "hours" float, "billed" boolean, "locked" boolean, "counterpost" boolean, "notes" varchar(255), "date" date, "week_entry_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090529214752')[0m
+Migrating to CreateAssignmentsTable (20090530163259)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "assignments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "person_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090530163259')[0m
+Migrating to CreateActivitiesTable (20090603162343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "activities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "description" varchar(255), "active" boolean, "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090603162343')[0m
+Migrating to CreateCategoriesTable (20090603162502)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "notes" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090603162502')[0m
+Migrating to CreateWeekEntriesTable (20090606151753)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "week_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "locked" boolean, "year" integer, "week_number" integer, "user_id" integer, "activity_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20090606151753')[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("activities")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("assignments")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("categories")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("time_entries")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("users")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("week_entries")[0m
