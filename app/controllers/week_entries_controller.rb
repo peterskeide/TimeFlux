@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../classes/date_extensions"
+require 'date_extensions'
 
 class WeekEntriesController < ApplicationController
   
