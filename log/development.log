@@ -24188,3 +24188,1974 @@ Migrating to CreateWeekEntriesTable (20090606151753)
   [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("time_entries")[0m
   [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("users")[0m
   [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("week_entries")[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateWeekEntriesTable (20090606151753)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "week_entries"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090606151753'[0m
+Migrating to CreateCategoriesTable (20090603162502)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "categories"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090603162502'[0m
+Migrating to CreateActivitiesTable (20090603162343)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "activities"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090603162343'[0m
+Migrating to CreateAssignmentsTable (20090530163259)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "assignments"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090530163259'[0m
+Migrating to CreateTimeEntriesTable (20090529214752)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "time_entries"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090529214752'[0m
+Migrating to CreateUsersTable (20090529213746)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "users"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090529213746'[0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateUsersTable (20090529213746)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "firstname" varchar(255) NOT NULL, "lastname" varchar(255) NOT NULL, "login" varchar(255) NOT NULL, "email" varchar(255) NOT NULL, "crypted_password" varchar(255) NOT NULL, "password_salt" varchar(255) NOT NULL, "persistence_token" varchar(255) NOT NULL, "operative_status" varchar(255) NOT NULL, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090529213746')[0m
+Migrating to CreateTimeEntriesTable (20090529214752)
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "time_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "hours" float, "billed" boolean, "locked" boolean, "counterpost" boolean, "notes" varchar(255), "date" date, "week_entry_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090529214752')[0m
+Migrating to CreateAssignmentsTable (20090530163259)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "assignments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "person_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090530163259')[0m
+Migrating to CreateActivitiesTable (20090603162343)
+  [4;35;1mSQL (0.4ms)[0m   [0mCREATE TABLE "activities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "description" varchar(255), "active" boolean, "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090603162343')[0m
+Migrating to CreateCategoriesTable (20090603162502)
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "notes" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090603162502')[0m
+Migrating to CreateWeekEntriesTable (20090606151753)
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "week_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "locked" boolean, "year" integer, "week_number" integer, "user_id" integer, "activity_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090606151753')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("activities")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("assignments")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("categories")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("time_entries")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("users")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("week_entries")[0m
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 16:12:29) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (14.6ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 185ms (View: 96, DB: 15) | 200 OK [http://localhost/]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-08 16:12:32) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mActivity Load (0.7ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+Completed in 46ms (View: 19, DB: 1) | 200 OK [http://localhost/Activities]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 16:12:34) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-08 16:12:35) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mActivity Load (0.4ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+Completed in 5ms (View: 1, DB: 0) | 200 OK [http://localhost/Activities]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-08 16:12:54) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;36;1mActivity Load (0.7ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;35;1mCategory Load (0.2ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;36;1mCategory Load (0.4ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 133ms (View: 128, DB: 1) | 200 OK [http://localhost/Activities]
+
+
+Processing CategoriesController#index (for 127.0.0.1 at 2009-06-08 16:13:28) [GET]
+  Parameters: {"action"=>"index", "controller"=>"categories"}
+  [4;36;1mCategory Load (1.2ms)[0m   [0;1mSELECT * FROM "categories" [0m
+Rendering template within layouts/application
+Rendering categories/index
+Completed in 36ms (View: 29, DB: 1) | 200 OK [http://localhost/Categories]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 16:15:03) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing WeekEntriesController#new (for 127.0.0.1 at 2009-06-08 16:15:19) [POST]
+  Parameters: {"date"=>"2009-06-08", "action"=>"new", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"week_entries"}
+  [4;36;1mActivity Load (0.7ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering week_entries/new
+Completed in 61ms (View: 29, DB: 1) | 200 OK [http://localhost/week_entries/new?date=2009-06-08]
+
+
+Processing WeekEntriesController#create (for 127.0.0.1 at 2009-06-08 16:15:38) [POST]
+  Parameters: {"week_entry"=>{"time_entries_attributes"=>{"6"=>{"date"=>"2009-06-14", "notes"=>"", "hours"=>"4"}, "0"=>{"date"=>"2009-06-08", "notes"=>"4", "hours"=>"4"}, "1"=>{"date"=>"2009-06-09", "notes"=>"", "hours"=>"4"}, "2"=>{"date"=>"2009-06-10", "notes"=>"", "hours"=>"4"}, "3"=>{"date"=>"2009-06-11", "notes"=>"", "hours"=>"4"}, "4"=>{"date"=>"2009-06-12", "notes"=>"", "hours"=>"4"}, "5"=>{"date"=>"2009-06-13", "notes"=>"", "hours"=>"4"}}, "year"=>"2009", "week_number"=>"24"}, "commit"=>"Submit", "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "activity"=>{"id"=>"576433300"}, "controller"=>"week_entries"}
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = '576433300') LIMIT 1[0m
+  [4;36;1mWeekEntry Load (0.2ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009 AND "week_entries"."activity_id" = 576433300) LIMIT 1[0m
+  [4;35;1mWeekEntry Create (0.4ms)[0m   [0mINSERT INTO "week_entries" ("updated_at", "activity_id", "year", "user_id", "week_number", "locked", "created_at") VALUES('2009-06-08 14:15:38', 576433300, 2009, NULL, 24, NULL, '2009-06-08 14:15:38')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-08', '4', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-09', '', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-10', '', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-11', '', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-12', '', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-13', '', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:15:38', '2009-06-14', '', NULL, 4.0, 1, NULL, NULL, '2009-06-08 14:15:38')[0m
+  [4;35;1mWeekEntry Load (0.5ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.4ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (1.4ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+Completed in 64ms (View: 7, DB: 4) | 200 OK [http://localhost/week_entries]
+
+
+Processing WeekEntriesController#new (for 127.0.0.1 at 2009-06-08 16:15:45) [POST]
+  Parameters: {"date"=>"2009-06-08", "action"=>"new", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"week_entries"}
+  [4;36;1mActivity Load (0.7ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering week_entries/new
+Completed in 23ms (View: 8, DB: 1) | 200 OK [http://localhost/week_entries/new?date=2009-06-08]
+
+
+Processing WeekEntriesController#create (for 127.0.0.1 at 2009-06-08 16:15:48) [POST]
+  Parameters: {"week_entry"=>{"time_entries_attributes"=>{"6"=>{"date"=>"2009-06-14", "notes"=>"", "hours"=>""}, "0"=>{"date"=>"2009-06-08", "notes"=>"", "hours"=>""}, "1"=>{"date"=>"2009-06-09", "notes"=>"", "hours"=>""}, "2"=>{"date"=>"2009-06-10", "notes"=>"", "hours"=>""}, "3"=>{"date"=>"2009-06-11", "notes"=>"", "hours"=>""}, "4"=>{"date"=>"2009-06-12", "notes"=>"", "hours"=>""}, "5"=>{"date"=>"2009-06-13", "notes"=>"", "hours"=>""}}, "year"=>"2009", "week_number"=>"24"}, "commit"=>"Submit", "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "activity"=>{"id"=>"576433300"}, "controller"=>"week_entries"}
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = '576433300') LIMIT 1[0m
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009 AND "week_entries"."activity_id" = 576433300) LIMIT 1[0m
+  [4;35;1mActivity Load (0.4ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering week_entries/new
+Completed in 86ms (View: 7, DB: 1) | 200 OK [http://localhost/week_entries]
+
+
+Processing WeekEntriesController#create (for 127.0.0.1 at 2009-06-08 16:16:31) [POST]
+  Parameters: {"week_entry"=>{"time_entries_attributes"=>{"6"=>{"date"=>"2009-06-14", "notes"=>"", "hours"=>"3"}, "0"=>{"date"=>"2009-06-08", "notes"=>"", "hours"=>"4"}, "1"=>{"date"=>"2009-06-09", "notes"=>"", "hours"=>"5"}, "2"=>{"date"=>"2009-06-10", "notes"=>"", "hours"=>"6"}, "3"=>{"date"=>"2009-06-11", "notes"=>"", "hours"=>"7"}, "4"=>{"date"=>"2009-06-12", "notes"=>"", "hours"=>"3"}, "5"=>{"date"=>"2009-06-13", "notes"=>"", "hours"=>"3"}}, "year"=>"2009", "week_number"=>"24"}, "commit"=>"Submit", "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "activity"=>{"id"=>"863489634"}, "controller"=>"week_entries"}
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = '863489634') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009 AND "week_entries"."activity_id" = 863489634) LIMIT 1[0m
+  [4;36;1mWeekEntry Create (0.5ms)[0m   [0;1mINSERT INTO "week_entries" ("updated_at", "activity_id", "year", "user_id", "week_number", "locked", "created_at") VALUES('2009-06-08 14:16:31', 863489634, 2009, NULL, 24, NULL, '2009-06-08 14:16:31')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-08', '', NULL, 4.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-09', '', NULL, 5.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-10', '', NULL, 6.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-11', '', NULL, 7.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-12', '', NULL, 3.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-13', '', NULL, 3.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:31', '2009-06-14', '', NULL, 3.0, 2, NULL, NULL, '2009-06-08 14:16:31')[0m
+  [4;36;1mWeekEntry Load (0.6ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.4ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (1.6ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (1.3ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 52ms (View: 10, DB: 6) | 200 OK [http://localhost/week_entries]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:16:35) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:16:36) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (0.8ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 23ms (View: 14, DB: 2) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:16:38) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:16:42) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (53.0ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;35;1mActivity Load (0.3ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 76ms (View: 15, DB: 55) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:16:43) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#new (for 127.0.0.1 at 2009-06-08 16:16:43) [POST]
+  Parameters: {"date"=>"2009-06-01", "action"=>"new", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"week_entries"}
+  [4;36;1mActivity Load (0.7ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering week_entries/new
+Completed in 23ms (View: 8, DB: 1) | 200 OK [http://localhost/week_entries/new?date=2009-06-01]
+
+
+Processing WeekEntriesController#create (for 127.0.0.1 at 2009-06-08 16:16:49) [POST]
+  Parameters: {"week_entry"=>{"time_entries_attributes"=>{"6"=>{"date"=>"2009-06-07", "notes"=>"", "hours"=>"4"}, "0"=>{"date"=>"2009-06-01", "notes"=>"", "hours"=>"4"}, "1"=>{"date"=>"2009-06-02", "notes"=>"", "hours"=>"4"}, "2"=>{"date"=>"2009-06-03", "notes"=>"", "hours"=>"4"}, "3"=>{"date"=>"2009-06-04", "notes"=>"", "hours"=>"4"}, "4"=>{"date"=>"2009-06-05", "notes"=>"", "hours"=>"4"}, "5"=>{"date"=>"2009-06-06", "notes"=>"", "hours"=>"4"}}, "year"=>"2009", "week_number"=>"23"}, "commit"=>"Submit", "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "activity"=>{"id"=>"576433300"}, "controller"=>"week_entries"}
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = '576433300') LIMIT 1[0m
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009 AND "week_entries"."activity_id" = 576433300) LIMIT 1[0m
+  [4;35;1mWeekEntry Create (0.3ms)[0m   [0mINSERT INTO "week_entries" ("updated_at", "activity_id", "year", "user_id", "week_number", "locked", "created_at") VALUES('2009-06-08 14:16:49', 576433300, 2009, NULL, 23, NULL, '2009-06-08 14:16:49')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-01', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-02', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-03', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-04', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-05', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;35;1mTimeEntry Create (0.1ms)[0m   [0mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-06', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;36;1mTimeEntry Create (0.1ms)[0m   [0;1mINSERT INTO "time_entries" ("updated_at", "date", "notes", "billed", "hours", "week_entry_id", "locked", "counterpost", "created_at") VALUES('2009-06-08 14:16:49', '2009-06-07', '', NULL, 4.0, 3, NULL, NULL, '2009-06-08 14:16:49')[0m
+  [4;35;1mWeekEntry Load (0.4ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.4ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (1.5ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 47ms (View: 7, DB: 4) | 200 OK [http://localhost/week_entries]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:16:54) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.8ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (0.8ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 23ms (View: 14, DB: 2) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:16:54) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 20ms (View: 12, DB: 1) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:16:57) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (1.1ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 24ms (View: 15, DB: 3) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing WeekEntriesController#edit (for 127.0.0.1 at 2009-06-08 16:17:20) [GET]
+  Parameters: {"action"=>"edit", "id"=>"1", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering week_entries/edit
+  [4;36;1mTimeEntry Load (1.2ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+Completed in 32ms (View: 24, DB: 1) | 200 OK [http://localhost/week_entries/1/edit]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:27) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 25 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-08]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:27) [GET]
+  Parameters: {"date"=>"2009-06-15", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 26 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-15]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:27) [GET]
+  Parameters: {"date"=>"2009-06-22", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 27 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-22]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:28) [GET]
+  Parameters: {"date"=>"2009-06-29", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 28 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-29]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:28) [GET]
+  Parameters: {"date"=>"2009-07-06", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 29 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 10ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-07-06]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:28) [GET]
+  Parameters: {"date"=>"2009-07-13", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 30 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-07-13]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:28) [GET]
+  Parameters: {"date"=>"2009-07-20", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 31 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-07-20]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:28) [GET]
+  Parameters: {"date"=>"2009-07-27", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 32 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-07-27]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-08-03", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 33 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-08-03]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-08-10", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 34 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-08-10]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-08-17", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 35 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 12ms (View: 3, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-08-17]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-08-24", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 36 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 10ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-08-24]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-08-31", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 37 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-08-31]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-09-07", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 38 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-09-07]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-09-14", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 39 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-09-14]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-09-21", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 40 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-09-21]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:29) [GET]
+  Parameters: {"date"=>"2009-09-28", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 41 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-09-28]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:30) [GET]
+  Parameters: {"date"=>"2009-10-05", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 42 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-05]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:30) [GET]
+  Parameters: {"date"=>"2009-10-05", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 42 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-05]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:30) [GET]
+  Parameters: {"date"=>"2009-10-12", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 43 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-12]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:30) [GET]
+  Parameters: {"date"=>"2009-10-19", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 44 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-19]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:30) [GET]
+  Parameters: {"date"=>"2009-10-26", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 45 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-26]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:31) [GET]
+  Parameters: {"date"=>"2009-11-02", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 46 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-02]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:31) [GET]
+  Parameters: {"date"=>"2009-11-09", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 47 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 60ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-09]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:31) [GET]
+  Parameters: {"date"=>"2009-11-16", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 48 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 3, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-16]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:31) [GET]
+  Parameters: {"date"=>"2009-11-23", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 49 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-23]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:31) [GET]
+  Parameters: {"date"=>"2009-11-30", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 50 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-30]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:31) [GET]
+  Parameters: {"date"=>"2009-12-07", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 51 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-07]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:32) [GET]
+  Parameters: {"date"=>"2009-12-14", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 52 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-14]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:32) [GET]
+  Parameters: {"date"=>"2009-12-21", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 53 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-21]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:26:33) [GET]
+  Parameters: {"date"=>"2009-12-28", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 1 AND "week_entries"."year" = 2010) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-28]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:36) [GET]
+  Parameters: {"date"=>"2010-01-04", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 53 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2010-01-04]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:37) [GET]
+  Parameters: {"date"=>"2009-12-28", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 52 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 61ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-28]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:38) [GET]
+  Parameters: {"date"=>"2009-12-21", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 51 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-21]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:38) [GET]
+  Parameters: {"date"=>"2009-12-14", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 50 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-14]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:38) [GET]
+  Parameters: {"date"=>"2009-12-07", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 49 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-07]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:39) [GET]
+  Parameters: {"date"=>"2009-11-30", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 48 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-30]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:39) [GET]
+  Parameters: {"date"=>"2009-11-23", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 47 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-23]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:40) [GET]
+  Parameters: {"date"=>"2009-11-16", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 46 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-16]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:40) [GET]
+  Parameters: {"date"=>"2009-11-09", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 45 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-09]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:41) [GET]
+  Parameters: {"date"=>"2009-11-02", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 44 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-02]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:41) [GET]
+  Parameters: {"date"=>"2009-10-26", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 43 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 58ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-26]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:42) [GET]
+  Parameters: {"date"=>"2009-10-19", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 42 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-19]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:42) [GET]
+  Parameters: {"date"=>"2009-10-12", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 41 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-12]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:26:42) [GET]
+  Parameters: {"date"=>"2009-10-05", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 40 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-05]
+
+
+Processing WeekEntriesController#new (for 127.0.0.1 at 2009-06-08 16:26:59) [POST]
+  Parameters: {"date"=>"2009-09-28", "action"=>"new", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"week_entries"}
+  [4;36;1mActivity Load (0.7ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering week_entries/new
+Completed in 23ms (View: 8, DB: 1) | 200 OK [http://localhost/week_entries/new?date=2009-09-28]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:20) [GET]
+  Parameters: {"date"=>"2009-09-28", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 41 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-09-28]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:22) [GET]
+  Parameters: {"date"=>"2009-10-05", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 42 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-05]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:22) [GET]
+  Parameters: {"date"=>"2009-10-12", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 43 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-12]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:22) [GET]
+  Parameters: {"date"=>"2009-10-19", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 44 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 10ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-19]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:23) [GET]
+  Parameters: {"date"=>"2009-10-26", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 45 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 15ms (View: 4, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-26]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:23) [GET]
+  Parameters: {"date"=>"2009-10-26", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 45 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-10-26]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:23) [GET]
+  Parameters: {"date"=>"2009-11-02", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 46 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-02]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:23) [GET]
+  Parameters: {"date"=>"2009-11-09", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 47 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-09]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:23) [GET]
+  Parameters: {"date"=>"2009-11-16", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 48 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-16]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:24) [GET]
+  Parameters: {"date"=>"2009-11-23", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 49 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-23]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:24) [GET]
+  Parameters: {"date"=>"2009-11-30", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 50 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-11-30]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:24) [GET]
+  Parameters: {"date"=>"2009-12-07", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 51 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-07]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:24) [GET]
+  Parameters: {"date"=>"2009-12-14", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 52 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-14]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:24) [GET]
+  Parameters: {"date"=>"2009-12-21", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 53 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-21]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:25) [GET]
+  Parameters: {"date"=>"2009-12-28", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 1 AND "week_entries"."year" = 2010) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-12-28]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:26) [GET]
+  Parameters: {"date"=>"2010-01-04", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 53 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2010-01-04]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:27) [GET]
+  Parameters: {"date"=>"2009-12-28", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 52 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-28]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:27) [GET]
+  Parameters: {"date"=>"2009-12-21", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 51 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-21]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:27) [GET]
+  Parameters: {"date"=>"2009-12-14", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 50 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 11ms (View: 3, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-14]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:27) [GET]
+  Parameters: {"date"=>"2009-12-07", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 49 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-12-07]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:27) [GET]
+  Parameters: {"date"=>"2009-11-30", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 48 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-30]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:27) [GET]
+  Parameters: {"date"=>"2009-11-23", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 47 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-23]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-11-16", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 46 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-16]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-11-09", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 45 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-09]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-11-02", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 44 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-11-02]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-10-26", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 43 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-26]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-10-19", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 42 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-19]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-10-12", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 41 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-12]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:28) [GET]
+  Parameters: {"date"=>"2009-10-05", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 40 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-10-05]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:29) [GET]
+  Parameters: {"date"=>"2009-09-28", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 39 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-09-28]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:29) [GET]
+  Parameters: {"date"=>"2009-09-21", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 38 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-09-21]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:29) [GET]
+  Parameters: {"date"=>"2009-09-14", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 37 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 59ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-09-14]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:29) [GET]
+  Parameters: {"date"=>"2009-09-07", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 36 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-09-07]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:29) [GET]
+  Parameters: {"date"=>"2009-08-31", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 35 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-08-31]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:29) [GET]
+  Parameters: {"date"=>"2009-08-24", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 34 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-08-24]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:30) [GET]
+  Parameters: {"date"=>"2009-08-17", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 33 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-08-17]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:30) [GET]
+  Parameters: {"date"=>"2009-08-10", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 32 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-08-10]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:30) [GET]
+  Parameters: {"date"=>"2009-08-03", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 31 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-08-03]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:30) [GET]
+  Parameters: {"date"=>"2009-07-27", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 30 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-07-27]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:30) [GET]
+  Parameters: {"date"=>"2009-07-20", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 29 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-07-20]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:30) [GET]
+  Parameters: {"date"=>"2009-07-13", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 28 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 58ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-07-13]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:31) [GET]
+  Parameters: {"date"=>"2009-07-06", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 27 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-07-06]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:31) [GET]
+  Parameters: {"date"=>"2009-06-29", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 26 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-29]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:31) [GET]
+  Parameters: {"date"=>"2009-06-22", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 25 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 9ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-22]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:31) [GET]
+  Parameters: {"date"=>"2009-06-15", "action"=>"previous", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.3ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;35;1mTimeEntry Load (0.8ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 24ms (View: 15, DB: 2) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-15]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:31) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.2ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 19ms (View: 12, DB: 1) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:44:33) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.4ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;35;1mTimeEntry Load (0.8ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 23ms (View: 14, DB: 3) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:44:54) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.2ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 73ms (View: 13, DB: 1) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#edit (for 127.0.0.1 at 2009-06-08 16:45:03) [GET]
+  Parameters: {"action"=>"edit", "id"=>"3", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."id" = 3) [0m
+Rendering template within layouts/application
+Rendering week_entries/edit
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 19ms (View: 13, DB: 1) | 200 OK [http://localhost/week_entries/3/edit]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:45:18) [GET]
+  Parameters: {"action"=>"previous", "controller"=>"week_entries"}
+
+TypeError (can't dup NilClass):
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/date/format.rb:959:in `dup'
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/date/format.rb:959:in `_parse'
+  /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/date.rb:974:in `parse'
+  app/controllers/week_entries_controller.rb:17:in `previous'
+
+Rendered rescues/_trace (25.8ms)
+Rendered rescues/_request_and_response (1.2ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-08 16:45:22) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.3ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;35;1mTimeEntry Load (0.8ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 23ms (View: 14, DB: 2) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-08 16:45:23) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 75ms (View: 13, DB: 1) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#edit (for 127.0.0.1 at 2009-06-08 16:45:26) [GET]
+  Parameters: {"action"=>"edit", "id"=>"3", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.3ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."id" = 3) [0m
+Rendering template within layouts/application
+Rendering week_entries/edit
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 22ms (View: 13, DB: 1) | 200 OK [http://localhost/week_entries/3/edit]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 16:45:27) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.3ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;35;1mTimeEntry Load (0.9ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;36;1mActivity Load (0.2ms)[0m   [0;1mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;35;1mTimeEntry Load (0.8ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 23ms (View: 14, DB: 2) | 200 OK [http://localhost/]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 16:45:28) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.3ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 576433300) [0m
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 1) [0m
+  [4;35;1mActivity Load (0.2ms)[0m   [0mSELECT * FROM "activities" WHERE ("activities"."id" = 863489634) [0m
+  [4;36;1mTimeEntry Load (0.8ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 22ms (View: 14, DB: 2) | 200 OK [http://localhost/]
+
+
+Processing WeekEntriesController#edit (for 127.0.0.1 at 2009-06-08 16:45:31) [GET]
+  Parameters: {"action"=>"edit", "id"=>"2", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.2ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."id" = 2) [0m
+Rendering template within layouts/application
+Rendering week_entries/edit
+  [4;36;1mTimeEntry Load (0.9ms)[0m   [0;1mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 2) [0m
+Completed in 19ms (View: 13, DB: 1) | 200 OK [http://localhost/week_entries/2/edit]
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (4.3ms)[0m   [0;1mCREATE TABLE "activities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "description" varchar(255), "active" boolean, "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (3.6ms)[0m   [0;1mCREATE TABLE "assignments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "person_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (4.0ms)[0m   [0;1mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "notes" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (4.4ms)[0m   [0;1mCREATE TABLE "time_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "hours" float, "billed" boolean, "locked" boolean, "counterpost" boolean, "notes" varchar(255), "date" date, "week_entry_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (5.5ms)[0m   [0;1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "firstname" varchar(255) NOT NULL, "lastname" varchar(255) NOT NULL, "login" varchar(255) NOT NULL, "email" varchar(255) NOT NULL, "crypted_password" varchar(255) NOT NULL, "password_salt" varchar(255) NOT NULL, "persistence_token" varchar(255) NOT NULL, "operative_status" varchar(255) NOT NULL, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (5.8ms)[0m   [0;1mCREATE TABLE "week_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "locked" boolean, "year" integer, "week_number" integer, "user_id" integer, "activity_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.9ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (9.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (5.1ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (1.1ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (4.3ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090606151753')[0m
+  [4;35;1mSQL (5.7ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090529213746')[0m
+  [4;36;1mSQL (6.2ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090529214752')[0m
+  [4;35;1mSQL (5.7ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090530163259')[0m
+  [4;36;1mSQL (5.7ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090603162343')[0m
+  [4;35;1mSQL (5.9ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090603162502')[0m
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:16:25) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+  [4;35;1mSQL (7.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+
+NoMethodError (undefined method `accept_nested_attributes_for' for #<Class:0x255cdbc>):
+  app/models/user.rb:7
+  authlogic (2.0.13) lib/authlogic/session/klass.rb:33:in `klass'
+  authlogic (2.0.13) lib/authlogic/session/password.rb:79:in `login_field'
+  authlogic (2.0.13) lib/authlogic/session/password.rb:182:in `login_field'
+  authlogic (2.0.13) lib/authlogic/session/password.rb:106:in `initialize'
+  authlogic (2.0.13) lib/authlogic/session/activation.rb:48:in `initialize'
+  authlogic (2.0.13) lib/authlogic/session/klass.rb:61:in `initialize'
+  authlogic (2.0.13) lib/authlogic/session/scopes.rb:79:in `initialize'
+  app/controllers/user_sessions_controller.rb:4:in `new'
+  app/controllers/user_sessions_controller.rb:4:in `new'
+
+Rendered rescues/_trace (41.1ms)
+Rendered rescues/_request_and_response (0.2ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing WeekEntriesController#edit (for 127.0.0.1 at 2009-06-08 21:16:31) [GET]
+  Parameters: {"action"=>"edit", "id"=>"3", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (4.2ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."id" = 3) [0m
+Rendering template within layouts/application
+Rendering week_entries/edit
+  [4;35;1mTimeEntry Load (1.0ms)[0m   [0mSELECT * FROM "time_entries" WHERE ("time_entries".week_entry_id = 3) [0m
+Completed in 39ms (View: 16, DB: 5) | 200 OK [http://localhost/week_entries/3/edit]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-08 21:16:33) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;36;1mActivity Load (0.7ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;35;1mCategory Load (0.3ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;36;1mCategory Load (0.2ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 29ms (View: 19, DB: 1) | 200 OK [http://localhost/Activities]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:16:34) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+
+NoMethodError (undefined method `accept_nested_attributes_for' for #<Class:0x2357e68>):
+  app/models/user.rb:7
+  authlogic (2.0.13) lib/authlogic/session/klass.rb:33:in `klass'
+  authlogic (2.0.13) lib/authlogic/session/password.rb:79:in `login_field'
+  authlogic (2.0.13) lib/authlogic/session/password.rb:182:in `login_field'
+  authlogic (2.0.13) lib/authlogic/session/password.rb:106:in `initialize'
+  authlogic (2.0.13) lib/authlogic/session/activation.rb:48:in `initialize'
+  authlogic (2.0.13) lib/authlogic/session/klass.rb:61:in `initialize'
+  authlogic (2.0.13) lib/authlogic/session/scopes.rb:79:in `initialize'
+  app/controllers/user_sessions_controller.rb:4:in `new'
+  app/controllers/user_sessions_controller.rb:4:in `new'
+
+Rendered rescues/_trace (33.3ms)
+Rendered rescues/_request_and_response (0.2ms)
+Rendering rescues/layout (internal_server_error)
+  [4;36;1mSQL (1.1ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (8.1ms)[0m   [0;1mCREATE TABLE "activities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "description" varchar(255), "active" boolean, "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (3.5ms)[0m   [0;1mCREATE TABLE "assignments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "person_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (3.9ms)[0m   [0;1mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "notes" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (4.2ms)[0m   [0;1mCREATE TABLE "time_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "hours" float, "billed" boolean, "locked" boolean, "counterpost" boolean, "notes" varchar(255), "date" date, "week_entry_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (5.8ms)[0m   [0;1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "firstname" varchar(255) NOT NULL, "lastname" varchar(255) NOT NULL, "login" varchar(255) NOT NULL, "email" varchar(255) NOT NULL, "crypted_password" varchar(255) NOT NULL, "password_salt" varchar(255) NOT NULL, "persistence_token" varchar(255) NOT NULL, "operative_status" varchar(255) NOT NULL, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (4.5ms)[0m   [0;1mCREATE TABLE "week_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "locked" boolean, "year" integer, "week_number" integer, "user_id" integer, "activity_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (5.4ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (5.3ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (1.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (5.5ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090606151753')[0m
+  [4;35;1mSQL (6.0ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090529213746')[0m
+  [4;36;1mSQL (5.6ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090529214752')[0m
+  [4;35;1mSQL (4.9ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090530163259')[0m
+  [4;36;1mSQL (5.3ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('20090603162343')[0m
+  [4;35;1mSQL (5.6ms)[0m   [0mINSERT INTO "schema_migrations" (version) VALUES ('20090603162502')[0m
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:17:25) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+
+ActionView::TemplateError (undefined method `user_sessions_path' for #<ActionView::Base:0x2492f30>) on line #1 of app/views/user_sessions/new.html.erb:
+1: <% form_for @user_session do |f| %>
+2:     <%= f.error_messages %>
+3:     <%= f.label :login %><br />
+4:     <%= f.text_field :login %><br />
+
+    app/views/user_sessions/new.html.erb:1
+
+Rendered rescues/_trace (91.7ms)
+Rendered rescues/_request_and_response (0.2ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:17:55) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 71ms (View: 9, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing UserSessionsController#create (for 127.0.0.1 at 2009-06-08 21:18:04) [POST]
+  Parameters: {"commit"=>"Login", "user_session"=>{"password"=>"[FILTERED]", "login"=>"peters"}, "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"user_sessions"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE (LOWER("users".login) = 'peters') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 16ms (View: 3, DB: 0) | 200 OK [http://localhost/user_sessions]
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateWeekEntriesTable (20090606151753)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mDROP TABLE "week_entries"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090606151753'[0m
+Migrating to CreateCategoriesTable (20090603162502)
+  [4;35;1mSQL (0.9ms)[0m   [0mDROP TABLE "categories"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090603162502'[0m
+Migrating to CreateActivitiesTable (20090603162343)
+  [4;35;1mSQL (0.7ms)[0m   [0mDROP TABLE "activities"[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090603162343'[0m
+Migrating to CreateAssignmentsTable (20090530163259)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "assignments"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090530163259'[0m
+Migrating to CreateTimeEntriesTable (20090529214752)
+  [4;35;1mSQL (0.7ms)[0m   [0mDROP TABLE "time_entries"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090529214752'[0m
+Migrating to CreateUsersTable (20090529213746)
+  [4;35;1mSQL (0.5ms)[0m   [0mDROP TABLE "users"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090529213746'[0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateUsersTable (20090529213746)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "firstname" varchar(255) NOT NULL, "lastname" varchar(255) NOT NULL, "login" varchar(255) NOT NULL, "email" varchar(255) NOT NULL, "crypted_password" varchar(255) NOT NULL, "password_salt" varchar(255) NOT NULL, "persistence_token" varchar(255) NOT NULL, "operative_status" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090529213746')[0m
+Migrating to CreateTimeEntriesTable (20090529214752)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "time_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "hours" float, "billed" boolean, "locked" boolean, "counterpost" boolean, "notes" varchar(255), "date" date, "week_entry_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090529214752')[0m
+Migrating to CreateAssignmentsTable (20090530163259)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "assignments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer, "person_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090530163259')[0m
+Migrating to CreateActivitiesTable (20090603162343)
+  [4;35;1mSQL (0.7ms)[0m   [0mCREATE TABLE "activities" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "description" varchar(255), "active" boolean, "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090603162343')[0m
+Migrating to CreateCategoriesTable (20090603162502)
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "notes" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090603162502')[0m
+Migrating to CreateWeekEntriesTable (20090606151753)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "week_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "locked" boolean, "year" integer, "week_number" integer, "user_id" integer, "activity_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090606151753')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("activities")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("assignments")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("categories")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("time_entries")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("users")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("week_entries")[0m
+
+
+Processing UserSessionsController#create (for 127.0.0.1 at 2009-06-08 21:29:27) [POST]
+  Parameters: {"commit"=>"Login", "user_session"=>{"password"=>"[FILTERED]", "login"=>"peters"}, "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"user_sessions"}
+  [4;35;1mUser Load (0.3ms)[0m   [0mSELECT * FROM "users" WHERE (LOWER("users".login) = 'peters') LIMIT 1[0m
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 18ms (View: 3, DB: 0) | 200 OK [http://localhost/user_sessions]
+
+
+Processing UserSessionsController#create (for 127.0.0.1 at 2009-06-08 21:29:48) [POST]
+  Parameters: {"commit"=>"Login", "user_session"=>{"password"=>"[FILTERED]", "login"=>"peters"}, "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"user_sessions"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE (LOWER("users".login) = 'peters') LIMIT 1[0m
+
+NameError (undefined local variable or method `week_entries' for #<UserSessionsController:0x2471e5c>):
+  app/controllers/user_sessions_controller.rb:10:in `create'
+
+Rendered rescues/_trace (74.4ms)
+Rendered rescues/_request_and_response (1.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing UserSessionsController#create (for 127.0.0.1 at 2009-06-08 21:30:12) [POST]
+  Parameters: {"commit"=>"Login", "user_session"=>{"password"=>"[FILTERED]", "login"=>"peters"}, "action"=>"create", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "controller"=>"user_sessions"}
+  [4;35;1mUser Load (0.3ms)[0m   [0mSELECT * FROM "users" WHERE (LOWER("users".login) = 'peters') LIMIT 1[0m
+Redirected to http://localhost:3000/week_entries
+Completed in 18ms (DB: 0) | 302 Found [http://localhost/user_sessions]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:30:13) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.2ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 42ms (View: 19, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:30:18) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:31:28) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+
+ActionView::TemplateError (undefined local variable or method `delete_user_session_path' for #<ActionView::Base:0x240665c>) on line #17 of app/views/layouts/application.html.erb:
+14: 				<span class="menu_item"><%= link_to "Reports", nil, :class => "menu_link" %></span>
+15: 				<span class="menu_item"><%= link_to "Activities", activities_url, :class => "menu_link" %></span>
+16: 				<span class="menu_item"><%= link_to "People", nil, :class => "menu_link" %></span>
+17: 				<span class="menu_item"><%= link_to "Logout", delete_user_session_path, :class => "menu_link" %></span>
+18: 			</div>
+19: 			<div id="main">
+20: 				<div class="content">
+
+    app/views/layouts/application.html.erb:17
+
+Rendered rescues/_trace (29.8ms)
+Rendered rescues/_request_and_response (0.2ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:31:35) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+
+ActionView::TemplateError (undefined local variable or method `delete_user_session_url' for #<ActionView::Base:0x247e724>) on line #17 of app/views/layouts/application.html.erb:
+14: 				<span class="menu_item"><%= link_to "Reports", nil, :class => "menu_link" %></span>
+15: 				<span class="menu_item"><%= link_to "Activities", activities_url, :class => "menu_link" %></span>
+16: 				<span class="menu_item"><%= link_to "People", nil, :class => "menu_link" %></span>
+17: 				<span class="menu_item"><%= link_to "Logout", delete_user_session_url, :class => "menu_link" %></span>
+18: 			</div>
+19: 			<div id="main">
+20: 				<div class="content">
+
+    app/views/layouts/application.html.erb:17
+
+Rendered rescues/_trace (73.5ms)
+Rendered rescues/_request_and_response (0.2ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:33:11) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 11ms (View: 5, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-08 21:33:16) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mActivity Load (0.7ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;36;1mCategory Load (0.3ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;35;1mCategory Load (0.3ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 146ms (View: 140, DB: 1) | 200 OK [http://localhost/Activities]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:33:19) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:33:24) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 65ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:33:38) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 16ms (View: 6, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:33:40) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:33:41) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 10ms (View: 3, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing UserSessionsController#index (for 127.0.0.1 at 2009-06-08 21:33:52) [GET]
+  Parameters: {"class"=>"menu_link", "action"=>"index", "method"=>"delete", "controller"=>"user_sessions"}
+
+ActionController::UnknownAction (No action responded to index. Actions: create, destroy, and new):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing UserSessionsController#index (for 127.0.0.1 at 2009-06-08 21:34:30) [GET]
+  Parameters: {"class"=>"menu_link", "action"=>"index", "method"=>"delete", "controller"=>"user_sessions"}
+
+ActionController::UnknownAction (No action responded to index. Actions: create, destroy, and new):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing UserSessionsController#index (for 127.0.0.1 at 2009-06-08 21:34:33) [GET]
+  Parameters: {"class"=>"menu_link", "action"=>"index", "method"=>"delete", "controller"=>"user_sessions"}
+
+ActionController::UnknownAction (No action responded to index. Actions: create, destroy, and new):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing UserSessionsController#index (for 127.0.0.1 at 2009-06-08 21:34:59) [GET]
+  Parameters: {"class"=>"menu_link", "action"=>"index", "method"=>"delete", "controller"=>"user_sessions"}
+
+ActionController::UnknownAction (No action responded to index. Actions: create, destroy, and new):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:37:07) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 12ms (View: 6, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-06-08 21:37:08) [DELETE]
+  Parameters: {"_method"=>"delete", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I="}
+
+ActionController::RoutingError (No route matches "/time_entries/destroy" with {:method=>:delete}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-06-08 21:37:25) [DELETE]
+  Parameters: {"_method"=>"delete", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I="}
+
+ActionController::RoutingError (No route matches "/time_entries/destroy" with {:method=>:delete}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:37:29) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 11ms (View: 5, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing UserSessionsController#destroy (for 127.0.0.1 at 2009-06-08 21:37:31) [DELETE]
+  Parameters: {"action"=>"destroy", "_method"=>"delete", "authenticity_token"=>"yHTIAS3DEgpiUX4ImCDAzkoyUx1mPkZtAbcOptSzD1I=", "id"=>"destroy", "controller"=>"user_sessions"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+Redirected to http://localhost:3000/user_sessions/new
+Completed in 14ms (DB: 0) | 302 Found [http://localhost/user_sessions/destroy]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:37:31) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-08 21:37:33) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-08 21:37:34) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mActivity Load (0.8ms)[0m   [0mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;36;1mCategory Load (0.2ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;35;1mCategory Load (0.2ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 14ms (View: 8, DB: 1) | 200 OK [http://localhost/Activities]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-08 21:37:36) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:09:53) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 118ms (View: 22, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:12:41) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-09 07:12:43) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+Redirected to http://localhost:3000/user_sessions/new
+Filter chain halted as [:check_authentication] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/Activities]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:12:43) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 11ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-09 07:12:47) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+Redirected to http://localhost:3000/user_sessions/new
+Filter chain halted as [:check_authentication] rendered_or_redirected.
+Completed in 11ms (DB: 0) | 302 Found [http://localhost/week_entries]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:12:47) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 3, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-09 07:12:48) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+Redirected to http://localhost:3000/user_sessions/new
+Filter chain halted as [:check_authentication] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/Activities]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:12:48) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing UserSessionsController#create (for 127.0.0.1 at 2009-06-09 07:13:13) [POST]
+  Parameters: {"commit"=>"Login", "user_session"=>{"password"=>"[FILTERED]", "login"=>"peters"}, "action"=>"create", "authenticity_token"=>"PrcER7MP/bwj8vcN4QRQvq6ETtz6cZPWWCkYlW5gw+A=", "controller"=>"user_sessions"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE (LOWER("users".login) = 'peters') LIMIT 1[0m
+Redirected to http://localhost:3000/week_entries
+Completed in 41ms (DB: 0) | 302 Found [http://localhost/user_sessions]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-09 07:13:14) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mUser Load (0.3ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;36;1mWeekEntry Load (0.2ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 98ms (View: 12, DB: 1) | 200 OK [http://localhost/week_entries]
+
+
+Processing UserSessionsController#destroy (for 127.0.0.1 at 2009-06-09 07:14:29) [DELETE]
+  Parameters: {"action"=>"destroy", "_method"=>"delete", "authenticity_token"=>"PrcER7MP/bwj8vcN4QRQvq6ETtz6cZPWWCkYlW5gw+A=", "id"=>"destroy", "controller"=>"user_sessions"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+Redirected to http://localhost:3000/user_sessions/new
+Completed in 14ms (DB: 0) | 302 Found [http://localhost/user_sessions/destroy]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:14:29) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 61ms (View: 51, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-09 07:14:31) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+Redirected to http://localhost:3000/user_sessions/new
+Filter chain halted as [:check_authentication] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/Activities]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:14:31) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-09 07:14:33) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+Redirected to http://localhost:3000/user_sessions/new
+Filter chain halted as [:check_authentication] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/week_entries]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:14:33) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 11ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:16:55) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 15ms (View: 5, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:16:57) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 11ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:16:58) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 11ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing UserSessionsController#create (for 127.0.0.1 at 2009-06-09 07:17:06) [POST]
+  Parameters: {"commit"=>"Login", "user_session"=>{"password"=>"[FILTERED]", "login"=>"peters"}, "action"=>"create", "authenticity_token"=>"PrcER7MP/bwj8vcN4QRQvq6ETtz6cZPWWCkYlW5gw+A=", "controller"=>"user_sessions"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE (LOWER("users".login) = 'peters') LIMIT 1[0m
+Redirected to http://localhost:3000/week_entries
+Completed in 13ms (DB: 0) | 302 Found [http://localhost/user_sessions]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-09 07:17:06) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;36;1mWeekEntry Load (0.1ms)[0m   [0;1mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 19ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing ActivitiesController#index (for 127.0.0.1 at 2009-06-09 07:17:09) [GET]
+  Parameters: {"action"=>"index", "controller"=>"activities"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;36;1mActivity Load (0.6ms)[0m   [0;1mSELECT * FROM "activities" [0m
+Rendering template within layouts/application
+Rendering activities/index
+  [4;35;1mCategory Load (0.3ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 179023375) [0m
+  [4;36;1mCategory Load (0.4ms)[0m   [0;1mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "categories" WHERE ("categories"."id" = 57701262) [0m
+Completed in 225ms (View: 187, DB: 2) | 200 OK [http://localhost/Activities]
+
+
+Processing CategoriesController#index (for 127.0.0.1 at 2009-06-09 07:17:11) [GET]
+  Parameters: {"action"=>"index", "controller"=>"categories"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mCategory Load (0.3ms)[0m   [0mSELECT * FROM "categories" [0m
+Rendering template within layouts/application
+Rendering categories/index
+Completed in 74ms (View: 10, DB: 1) | 200 OK [http://localhost/Categories]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-09 07:17:14) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 26ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-09 07:17:16) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 25 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 19ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-08]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-09 07:17:17) [GET]
+  Parameters: {"date"=>"2009-06-15", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 19ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-15]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-09 07:17:17) [GET]
+  Parameters: {"date"=>"2009-06-08", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 19ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-08]
+
+
+Processing WeekEntriesController#previous (for 127.0.0.1 at 2009-06-09 07:17:18) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"previous", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 22 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 70ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/previous?date=2009-06-01]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-09 07:17:19) [GET]
+  Parameters: {"date"=>"2009-05-25", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 23 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 19ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-05-25]
+
+
+Processing WeekEntriesController#next (for 127.0.0.1 at 2009-06-09 07:17:19) [GET]
+  Parameters: {"date"=>"2009-06-01", "action"=>"next", "controller"=>"week_entries"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+  [4;35;1mWeekEntry Load (0.1ms)[0m   [0mSELECT * FROM "week_entries" WHERE ("week_entries"."week_number" = 24 AND "week_entries"."year" = 2009) [0m
+Rendering template within layouts/application
+Rendering week_entries/index
+Completed in 19ms (View: 2, DB: 0) | 200 OK [http://localhost/week_entries/new/next?date=2009-06-01]
+
+
+Processing UserSessionsController#destroy (for 127.0.0.1 at 2009-06-09 07:17:21) [DELETE]
+  Parameters: {"action"=>"destroy", "_method"=>"delete", "authenticity_token"=>"PrcER7MP/bwj8vcN4QRQvq6ETtz6cZPWWCkYlW5gw+A=", "id"=>"destroy", "controller"=>"user_sessions"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = '830538776') LIMIT 1[0m
+Redirected to http://localhost:3000/user_sessions/new
+Completed in 14ms (DB: 0) | 302 Found [http://localhost/user_sessions/destroy]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:17:21) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 11ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]
+
+
+Processing WeekEntriesController#index (for 127.0.0.1 at 2009-06-09 07:17:28) [GET]
+  Parameters: {"action"=>"index", "controller"=>"week_entries"}
+Redirected to http://localhost:3000/user_sessions/new
+Filter chain halted as [:check_authentication] rendered_or_redirected.
+Completed in 9ms (DB: 0) | 302 Found [http://localhost/week_entries]
+
+
+Processing UserSessionsController#new (for 127.0.0.1 at 2009-06-09 07:17:28) [GET]
+  Parameters: {"action"=>"new", "controller"=>"user_sessions"}
+Rendering template within layouts/application
+Rendering user_sessions/new
+Completed in 64ms (View: 2, DB: 0) | 200 OK [http://localhost/user_sessions/new]

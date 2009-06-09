@@ -1,5 +1,7 @@
 class CategoriesController < ApplicationController
   
+  before_filter :check_authentication
+  
   def index
     @categories = Category.find(:all)  
   end

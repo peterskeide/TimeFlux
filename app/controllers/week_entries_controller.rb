@@ -1,7 +1,9 @@
 require File.dirname(__FILE__) + "/../classes/date_extensions"
 
-class WeekEntriesController < ApplicationController 
+class WeekEntriesController < ApplicationController
   
+  before_filter :check_authentication 
+     
   def index 
     @date = Date.today
     prepare_view(@date)

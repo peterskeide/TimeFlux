@@ -31,10 +31,11 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "week_entries"
+  map.root :controller => "user_sessions", :action => "new"
   map.activities "Activities", :controller => "activities"
   map.categories "Categories", :controller => "categories"
   map.resources :week_entries, :new => { :previous => :get, :next => :get }
+  map.resources :user_sessions
 
   # See how all your routes lay out with "rake routes"
 

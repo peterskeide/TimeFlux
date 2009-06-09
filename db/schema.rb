@@ -47,11 +47,13 @@ ActiveRecord::Schema.define(:version => 20090606151753) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "firstname"
-    t.string   "lastname"
-    t.string   "username"
-    t.string   "password"
-    t.string   "email"
+    t.string   "firstname",         :null => false
+    t.string   "lastname",          :null => false
+    t.string   "login",             :null => false
+    t.string   "email",             :null => false
+    t.string   "crypted_password",  :null => false
+    t.string   "password_salt",     :null => false
+    t.string   "persistence_token", :null => false
     t.string   "operative_status"
     t.datetime "created_at"
     t.datetime "updated_at"

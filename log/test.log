@@ -578,3 +578,36 @@ Processing CategoriesController#index (for 0.0.0.0 at 2009-06-04 22:48:47) [GET]
 Rendering template within layouts/application
 Rendering categories/index
 Completed in 0ms (View: 0, DB: 0) | 200 OK [http://test.host/Categories]
+
+
+Processing CategoriesController#destroy (for 0.0.0.0 at 2009-06-08 21:17:12) [GET]
+  Parameters: {"action"=>"destroy", "id"=>#<Category id: nil, name: nil, notes: nil, created_at: nil, updated_at: nil>, "controller"=>"categories"}
+Redirected to http://test.host/Categories
+Completed in 3ms (DB: 0) | 302 Found [http://test.host/categories/destroy]
+
+
+Processing CategoriesController#destroy (for 0.0.0.0 at 2009-06-08 21:17:12) [GET]
+  Parameters: {"action"=>"destroy", "id"=>#<Category id: nil, name: nil, notes: nil, created_at: nil, updated_at: nil>, "controller"=>"categories"}
+Redirected to http://test.host/Categories
+Completed in 0ms (DB: 0) | 302 Found [http://test.host/categories/destroy]
+
+
+Processing CategoriesController#destroy (for 0.0.0.0 at 2009-06-08 21:17:12) [GET]
+  Parameters: {"action"=>"destroy", "id"=>#<Category id: nil, name: nil, notes: nil, created_at: nil, updated_at: nil>, "controller"=>"categories"}
+Redirected to http://test.host/Categories
+Completed in 0ms (DB: 0) | 302 Found [http://test.host/categories/destroy]
+
+
+Processing CategoriesController#index (for 0.0.0.0 at 2009-06-08 21:17:12) [GET]
+  Parameters: {"action"=>"index", "controller"=>"categories"}
+  [4;36;1mCategory Load (0.2ms)[0m   [0;1mSELECT * FROM "categories" [0m
+Rendering template within layouts/application
+Rendering categories/index
+Completed in 1ms (View: 0, DB: 0) | 200 OK [http://test.host/Categories]
+
+
+Processing CategoriesController#index (for 0.0.0.0 at 2009-06-08 21:17:12) [GET]
+  Parameters: {"action"=>"index", "controller"=>"categories"}
+Rendering template within layouts/application
+Rendering categories/index
+Completed in 0ms (View: 0, DB: 0) | 200 OK [http://test.host/Categories]
