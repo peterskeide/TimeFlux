@@ -1,8 +1,8 @@
-peter:
-    email: peters@conduct.no
-    login: peters
+bob:
+    email: bob@foobar.com
+    login: bob
     password_salt: <%= salt = Authlogic::Random.hex_token %>
-    crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("peterskeide" + salt) %>
+    crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("foobar" + salt) %>
     persistence_token: <%= Authlogic::Random.hex_token %>
-    firstname: Peter
-    lastname: Skeide
+    firstname: Bob
+    lastname: Foobar
