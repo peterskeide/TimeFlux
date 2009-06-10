@@ -1,13 +1,22 @@
 <h1>Activities</h1>
 <hr/>
 <% @activities.each do |a| -%>
-	<div>
-		<b>Name:</b> <%= a.name %><br/>
-		<b>Category:</b> <%= a.category.name %><br/>
-		<b>Description:</b> <%= a.description %><br/>
-		<b>Created:</b> <%= a.created_at.to_date %><br/>
-	</div>
-	<hr/>
+  <% is_active = if a.active then 'active' else 'passive' end %>
+  <div class="<%= is_active %>">
+    <b>Name:</b> <%= a.name %><br/>
+    <b>Category:</b> <%= a.category.name %><br/>
+    <b>Description:</b> <%= a.description %><br/>
+    <b>Created:</b> <%= a.created_at.to_date %><br/>
+  </div>
+
+  <%= link_to 'Destroy', activity_path(a), :method => :delete %>
+
+  <% form_for( a, :id => @activities.object_id) do |f| %>
+    <%= f.hidden_field(:active, :value => a.active) %>
+    <%= f.submit is_active %>
+  <% end %>
+
+  <hr/>
 <% end -%>
 <%= link_to "Create New", :action => "new" %>
 <%= link_to "Manage Categories", categories_url %>

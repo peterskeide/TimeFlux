@@ -1,0 +1,38 @@
+<h1>Editing <%= @user.fullname %><br /></h1>
+
+<% form_for( @user, :url => {:controller => 'users', :action => :update} ) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :firstame %><br />
+    <%= f.text_field :firstname %>
+  </p>
+  <p>
+    <%= f.label :lastname %><br />
+    <%= f.text_field :lastname %>
+  </p>
+  <p>
+    <%= f.label :username %><br />
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :operative_status %><br />
+    <%= f.text_field :operative_status %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', user_path(@user) %> |
+<%= link_to 'Back', users_path %>
+
