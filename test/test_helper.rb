@@ -38,4 +38,10 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def mock_login
+    user_session = mock
+    user = mock
+    UserSession.stubs(:find).returns(user_session)
+    user_session.stubs(:user).returns(user)
+  end
 end
