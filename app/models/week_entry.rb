@@ -6,13 +6,13 @@ class WeekEntry < ActiveRecord::Base
   
   accepts_nested_attributes_for :time_entries
   
-  validates_presence_of :year, :week_number, :activity
+  validates_presence_of :year, :week_number, :activity, :user
   validates_numericality_of :year, :week_number
   
   private
   
   def validate_on_create
-    if WeekEntry.find_by_year_and_week_number_and_activity_id(year, week_number, activity_id)
+    if WeekEntry.find_by_year_and_week_number_and_activity_id_and_user_id(year, week_number, activity_id, user_id)
       errors.add_to_base("There is already a week entry for this activity")
     end
   end
