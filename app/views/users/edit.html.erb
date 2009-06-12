@@ -12,12 +12,16 @@
     <%= f.text_field :lastname %>
   </p>
   <p>
-    <%= f.label :username %><br />
-    <%= f.text_field :username %>
+    <%= f.label :login %><br />
+    <%= f.text_field :login %>
   </p>
   <p>
     <%= f.label :password %><br />
     <%= f.password_field :password %>
+  </p>
+    <p>
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
   </p>
   <p>
     <%= f.label :email %><br />
@@ -25,7 +29,7 @@
   </p>
   <p>
     <%= f.label :operative_status %><br />
-    <%= f.text_field :operative_status %>
+    <%= f.select :operative_status, User.status_values %>
   </p>
 
   <p>

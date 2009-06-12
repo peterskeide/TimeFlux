@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  before_filter :check_authentication
+
   def index
     @users = User.find(:all)
   end
@@ -30,8 +32,20 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    attributes = params[@user.class.name.underscore]
-    if @user.update_attributes(attributes)
+    #attributes = params[@user.class.name.underscore]
+    #if @user.update_attributes(attributes)
+
+    if params[:user][:password] then
+      # @user.password = params[:user][:password]
+      # @user.password_confirmation = params[:user][: password_confirmation]
+    end
+    @user.firstname = params[:user][:firstname]
+    @user.lastname = params[:user][:lastname]
+    @user.login = params[:user][:login]
+    @user.email = params[:user][:email]
+
+
+    if @user.save
       flash[:notice] = 'User was successfully updated.'
       redirect_to(:controller => 'users', :action => 'show', :id => @user.id)
     else
