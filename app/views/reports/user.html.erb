@@ -1,0 +1,14 @@
+
+<h3>Users</h3>
+
+
+<% if @table.empty? then %>
+  <p>sorry, no users</p>
+
+<% else %>
+
+ <%= link_to "pdf", :action => "user", :format => "pdf"%>
+ <%= link_to "csv", :action => "user", :format => "csv"%>
+ <%= @table.to_html() -%>
+<%  end %>
+  

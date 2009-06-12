@@ -1,0 +1,7 @@
+<h3>Available reports</h3>
+
+<ul>
+<% for report in @reports %>
+  <li><%= link_to "#{report.capitalize} report", :action => report %></li>
+<% end %>
+</ul>

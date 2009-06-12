@@ -34,8 +34,8 @@ class WeekEntriesController < ApplicationController
   def create
     @week_entry = WeekEntry.new(params[:week_entry])
     activity = Activity.find_by_id(params[:activity][:id])
-    @week_entry.activity = activity
-    @week_entry.user = @current_user    
+    @week_entry.activity = activity 
+    @week_entry.user_id = current_user_session.user.object_id
     if @week_entry.save
       flash[:notice] = "Time entries successfully saved for activity"
       render_week_for_date @week_entry.time_entries.sort[0].date

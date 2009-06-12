@@ -9,6 +9,12 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+ 
+# Ruby reporting
+require "ruport"
+require "ruport/acts_as_reportable"
+#Mime::Type.register 'application/pdf', :pdf
+#Mime::Type.register 'text/plain', :csv
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.

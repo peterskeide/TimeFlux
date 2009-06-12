@@ -4,6 +4,7 @@ require 'test_help'
  
 require 'shoulda'
 require 'mocha'
+require "authlogic/test_case"
 
 class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
@@ -37,11 +38,14 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
-  def mock_login
-    user_session = mock
-    user = mock
-    UserSession.stubs(:find).returns(user_session)
-    user_session.stubs(:user).returns(user)
+  def get_bob
+    users(:bob)
   end
+
+  def login_as(user)
+    :activate_authlogic
+    Authlogic::Session::Base.controller = Authlogic::ControllerAdapters::RailsAdapter.new(self)
+    UserSession.create(users(user)) # logs a user in
+  end
+
 end

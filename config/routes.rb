@@ -36,6 +36,11 @@ ActionController::Routing::Routes.draw do |map|
   map.categories "Categories", :controller => "categories"
   map.resources :week_entries, :new => { :previous => :get, :next => :get }
   map.resources :user_sessions
+  
+  map.reports "Reports", :controller => "reports"
+  map.users "Users", :controller => "users"
+  map.resources :users, :activities
+
 
   # See how all your routes lay out with "rake routes"
 
