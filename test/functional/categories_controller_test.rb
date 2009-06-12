@@ -4,7 +4,7 @@ class CategoriesControllerTest < ActionController::TestCase
   
   context "User logged in: " do
     
-    setup { mock_login }
+    setup { login_as(:bob) }
     
     context "GET to :index" do
       
@@ -15,36 +15,29 @@ class CategoriesControllerTest < ActionController::TestCase
       should "find all categories" do
         get :index
         assigned_categories = assigns(:categories)
-        assert_not_nil assigned_categories
         assert_equal 3, assigned_categories.size
       end
       
     end
     
     context "GET to :destroy" do
-      
-      setup do
-        @category = mock
-        @category.stubs(:name).returns("Foo")
-        @category.stubs(:activities).returns([])
-        @to_destroy = Category.new       
-      end 
 
-      should "fail if category has activities" do        
-        get :destroy, :id => categories(:internal_projects)
+      should "fail if category has activities" do
+        assert_no_difference('Category.count') do        
+          get :destroy, :id => categories(:internal_project)
+        end
         assert_redirected_to(:action => "index")
+        assert_not_nil flash[:error]
       end
 
       should "destroy the selected category" do
-        Category.stubs(:find).returns(@category)
-        @category.expects(:destroy)
-        get :destroy, :id => @to_destroy
+        assert_difference('Category.count', -1) do
+          get :destroy, :id => categories(:meetings)
+        end
       end
 
       should "redirect to index" do
-        Category.stubs(:find).returns(@category)
-        @category.expects(:destroy)
-        get :destroy, :id => @to_destroy
+        get :destroy, :id => categories(:meetings)
         assert_redirected_to(:action => "index")
       end
             
@@ -52,26 +45,21 @@ class CategoriesControllerTest < ActionController::TestCase
     
     context "POST to :create" do
       
-      setup do
-        @category = mock
-        Category.stubs(:new).returns(@category)
-      end
-      
       should "save a new category" do
-        @category.expects(:save).returns(true)
-        post :create, :category => {:name => "Foo"}
+        assert_difference('Category.count') do
+          post :create, :category => {:name => "Foo"}
+        end
       end
       
       should "redirect to :index if successful" do
-        @category.stubs(:save).returns(true)
         post :create, :category => {:name => "Foo"}
         assert_redirected_to(:action => "index")
       end
       
       should "redirect to :index if save fails" do
-        @category.stubs(:save).returns(false)
-        post :create, :category => {:name => "Foo"}
+        post :create, :category => {:name => ""}
         assert_redirected_to(:action => "index")
+        assert_not_nil flash[:error]
       end
       
     end

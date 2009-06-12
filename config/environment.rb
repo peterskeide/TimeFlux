@@ -10,12 +10,6 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
  
-# Ruby reporting
-require "ruport"
-require "ruport/acts_as_reportable"
-#Mime::Type.register 'application/pdf', :pdf
-#Mime::Type.register 'text/plain', :csv
-
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -34,6 +28,8 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "authlogic"
+  config.gem "ruport"
+  config.gem "acts_as_reportable"
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
