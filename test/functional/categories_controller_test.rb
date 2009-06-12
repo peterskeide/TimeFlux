@@ -4,27 +4,24 @@ class CategoriesControllerTest < ActionController::TestCase
   
   context "User logged in: " do
     
-    setup do
-      mock_login
-    end
+    setup { mock_login }
     
-    context "on GET to :index" do
+    context "GET to :index" do
       
-      setup do
-        get :index
-      end
-      
+      setup { get :index }
+              
       should_respond_with :success
       
       should "find all categories" do
-        @category = Category.new
-        Category.expects(:find).with(any_parameters).returns([@category])
         get :index
+        assigned_categories = assigns(:categories)
+        assert_not_nil assigned_categories
+        assert_equal 3, assigned_categories.size
       end
       
     end
     
-    context "on GET to :destroy" do
+    context "GET to :destroy" do
       
       setup do
         @category = mock
@@ -32,18 +29,9 @@ class CategoriesControllerTest < ActionController::TestCase
         @category.stubs(:activities).returns([])
         @to_destroy = Category.new       
       end 
-      
-      should "find the selected category" do
-        @category.stubs(:destroy)
-        Category.expects(:find).with(@to_destroy).returns(@category)         
-        get :destroy, :id => @to_destroy             
-      end
 
-      should "fail if category has activities" do
-        @category.expects(:destroy).never
-        @category.stubs(:activities).returns([Activity.new])        
-        Category.stubs(:find).with(@to_destroy).returns(@category)        
-        get :destroy, :id => @to_destroy
+      should "fail if category has activities" do        
+        get :destroy, :id => categories(:internal_projects)
         assert_redirected_to(:action => "index")
       end
 
@@ -62,9 +50,28 @@ class CategoriesControllerTest < ActionController::TestCase
             
     end
     
-    context "on POST to :create" do
+    context "POST to :create" do
       
       setup do
+        @category = mock
+        Category.stubs(:new).returns(@category)
+      end
+      
+      should "save a new category" do
+        @category.expects(:save).returns(true)
+        post :create, :category => {:name => "Foo"}
+      end
+      
+      should "redirect to :index if successful" do
+        @category.stubs(:save).returns(true)
+        post :create, :category => {:name => "Foo"}
+        assert_redirected_to(:action => "index")
+      end
+      
+      should "redirect to :index if save fails" do
+        @category.stubs(:save).returns(false)
+        post :create, :category => {:name => "Foo"}
+        assert_redirected_to(:action => "index")
       end
       
     end

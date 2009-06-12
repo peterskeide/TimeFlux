@@ -3,3 +3,5 @@ internal_project:
 
 external_project:
     name: External Project
+meetings:
+    name: Meetings
