@@ -1,11 +1,11 @@
-#Mime::Type.register 'application/pdf', :pdf
-#Mime::Type.register 'text/plain', :csv
+Mime::Type.register 'application/pdf', :pdf
+Mime::Type.register 'text/plain', :csv
 
 require 'report_renderer'
 
 require 'ruport'
 require "ruport/util"
-require "ruport/extensions"
+#require "ruport/extensions"
 
 class ReportsController < ApplicationController
 
@@ -48,10 +48,11 @@ class ReportsController < ApplicationController
     render :action => "show_table"
   end
 
+  #TODO finnish
   def test_rendering
     table = Ruport::Data::Table.new :data => [[1,2,3], [3,4,5]],
       :column_names => %w[a b c]
-    send data ReportRenderer.render_pdf()
+    #send data ReportRenderer.render_pdf()
     #render :action => "show_table"
   end
 end

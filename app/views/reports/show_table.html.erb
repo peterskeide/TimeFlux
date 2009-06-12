@@ -1,9 +1,7 @@
 
 <h3>Table</h3>
 
-<p><%= @debug %></p>
-
-<%= if @debug then @debug.class end %>
+<p><%= @debug %>  (<%= if @debug then @debug.class end %>)</p>
 
 <%= @table.to_html() -%>
  
