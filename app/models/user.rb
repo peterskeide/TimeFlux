@@ -1,9 +1,8 @@
 class User < ActiveRecord::Base
   
   has_many :week_entries
-  has_many :assignments
-  has_many :activities, :through => :assignments
   has_many :time_entries, :through => :week_entries
+  has_and_belongs_to_many :activities
     
   acts_as_authentic
   acts_as_reportable 

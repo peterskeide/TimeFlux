@@ -14,7 +14,7 @@
 					<span class="menu_item"><%= link_to "Review Month", nil, :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Reports", reports_url, :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Activities", activities_url, :class => "menu_link" %></span>
-					<span class="menu_item"><%= link_to "People", users_url, :class => "menu_link" %></span>
+					<span class="menu_item"><%= link_to "Users", users_url, :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Logout", {:controller => "user_sessions", :action => "destroy"}, :method => :delete, :class => "menu_link" %></span>
 			    <% else -%>
 					<span class="menu_item"><%= link_to "Login", new_user_session_url, :class => "menu_link" %></span>
@@ -27,7 +27,7 @@
 			</div>
 			<div id="footer">
 				<div class="content">
-					<p>100% Free Open Source developed by<br/>
+					<p>100% Free Open Source sponsored by<br/>
 						<a href="http://www.conduct.no">
 							<%= image_tag "Conductlogo.jpg", :alt => "Conduct logo", :id => "conduct_logo" %>
 						</a>

@@ -9,20 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090606151753) do
+ActiveRecord::Schema.define(:version => 20090613220405) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
     t.string   "description"
     t.boolean  "active"
+    t.boolean  "default_activity"
     t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "assignments", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "person_id"
+  create_table "activities_users", :force => true do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -35,10 +36,10 @@ ActiveRecord::Schema.define(:version => 20090606151753) do
   end
 
   create_table "time_entries", :force => true do |t|
-    t.float    "hours"
-    t.boolean  "billed"
-    t.boolean  "locked"
-    t.boolean  "counterpost"
+    t.float    "hours",         :default => 0.0
+    t.boolean  "billed",        :default => false
+    t.boolean  "locked",        :default => false
+    t.boolean  "counterpost",   :default => false
     t.string   "notes"
     t.date     "date"
     t.integer  "week_entry_id"

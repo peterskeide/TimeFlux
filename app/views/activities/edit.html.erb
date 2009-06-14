@@ -1,6 +1,6 @@
-<h1>Create New Activity</h1>
+<h1>Edit Activity</h1>
 
-<% form_for(@activity, :url => {:action => :create} ) do |f| %>
+<% form_for @activity do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :name %><br />
@@ -8,7 +8,7 @@
   </p>
   <p>
     <%= f.label :description %><br />
-    <%= f.text_field :description %>
+    <%= f.text_area :description %>
   </p>
   <p>
     <%= f.label :category %>
@@ -22,6 +22,6 @@
 	<%= f.check_box :default_activity %> 
 	<%= f.label :default_activity %>
   </p>
-  	<%= f.submit "Create" %>
+  	<%= f.submit "Update" %>
   </p>
 <% end %>

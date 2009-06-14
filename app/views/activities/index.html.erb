@@ -1,21 +1,16 @@
 <h1>Activities</h1>
+<p class="notice"><%= flash[:notice] %></p>
 <hr/>
 <% @activities.each do |a| -%>
-  <% is_active = if a.active then 'active' else 'passive' end %>
-  <div class="<%= is_active %>">
-    <b>Name:</b> <%= a.name %><br/>
+  <div>
+    <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
     <b>Category:</b> <%= a.category.name %><br/>
     <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date %><br/>
+	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>
+	<b>Default:</b> <%= if a.default_activity then 'Yes' else 'No' end %><br/>
+	<%= link_to 'Remove', activity_path(a), :method => :delete %>
   </div>
-
-  <%= link_to 'Destroy', activity_path(a), :method => :delete %>
-
-  <% form_for( a, :id => @activities.object_id) do |f| %>
-    <%= f.hidden_field(:active, :value => a.active) %>
-    <%= f.submit is_active %>
-  <% end %>
-
   <hr/>
 <% end -%>
 <%= link_to "Create New", :action => "new" %>

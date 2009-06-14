@@ -12,3 +12,4 @@ CSI:
     name: Conduct Services Institute
     description: Kartlegging av nødvendig kompetanse for å bemanne et prosjekt
     category: internal_project
+    default_activity: true

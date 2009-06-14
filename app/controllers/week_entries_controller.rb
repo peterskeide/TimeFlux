@@ -22,7 +22,7 @@ class WeekEntriesController < ApplicationController
   end
   
   def new
-    @activities = Activity.find(:all)
+    find_activities
     @week_entry = WeekEntry.new
     date = Date.parse(params[:date])
     @week = Date.week_of_date(date)
@@ -33,14 +33,13 @@ class WeekEntriesController < ApplicationController
   
   def create
     @week_entry = WeekEntry.new(params[:week_entry])
-    activity = Activity.find_by_id(params[:activity][:id])
-    @week_entry.activity = activity 
-    @week_entry.user_id = current_user_session.user.object_id
+    @week_entry.activity= Activity.find_by_id(params[:activity][:id]) 
+    @week_entry.user= current_user_session.user
     if @week_entry.save
       flash[:notice] = "Time entries successfully saved for activity"
       render_week_for_date @week_entry.time_entries.sort[0].date
     else
-      @activities = Activity.find(:all)
+      find_activities
       @week = Date.week_of_date(@week_entry.time_entries[0].date)
       render :new
     end
@@ -71,7 +70,7 @@ class WeekEntriesController < ApplicationController
   private
   
   def find_activities
-    @activities = Activity.find_by_user_id_and_default(@current_user.id, true)
+    @activities = @current_user.activities + Activity.find_all_by_default_activity(true)
   end
   
   def prepare_view(date)

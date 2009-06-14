@@ -7,11 +7,12 @@ class ActivitiesController < ApplicationController
   end
   
   def new
-    @activity = Activity.new
+    @activity = Activity.new(:default_activity => false, :active=> true)
     @categories = Category.find(:all)
   end
 
   def edit
+    @categories = Category.find(:all) 
     @activity = Activity.find(params[:id])
   end
 
@@ -30,7 +31,7 @@ class ActivitiesController < ApplicationController
     @activity = Activity.find(params[:id])
     @activity.active = !@activity.active
     if @activity.save
-      #flash[:notice] = 'Activity was successfully updated.'
+      flash[:notice] = 'Activity was successfully updated.'
       redirect_to(:action => 'index', :id => @activity.object_id)
     else
       render :action => "edit"
