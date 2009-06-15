@@ -1,15 +1,15 @@
-norgesgruppen:
-    name: UKID
-    description: Utvikle en integrasjonskomponent for Basis Butikkregister 2
-    category: external_project
+timeflux:
+    name: TimeFlux
+    description: devlop Open Source time management and billing application
+    category: internal_project
 
-nsb:
+foobar:
     name: FooBar
-    description: Implementere en tjenesteorientert arkitektur basert på Jboss ESB
+    description: Implement the FooBar for customer
     category: external_project
 
-CSI:
-    name: Conduct Services Institute
-    description: Kartlegging av nødvendig kompetanse for å bemanne et prosjekt
+status:
+    name: Weekly Status Meeting
+    description: Ye olde weekly status. Argh.
     category: internal_project
     default_activity: true

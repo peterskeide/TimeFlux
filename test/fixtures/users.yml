@@ -2,7 +2,7 @@ bob:
     email: bob@foobar.com
     login: bob
     password_salt: <%= salt = Authlogic::Random.hex_token %>
-    crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("foobar" + salt) %>
+    crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("foo" + salt) %>
     persistence_token: <%= Authlogic::Random.hex_token %>
     firstname: Bob
     lastname: Foobar
@@ -11,7 +11,7 @@ bill:
     email: bill@foobar.com
     login: bill
     password_salt: <%= salt = Authlogic::Random.hex_token %>
-    crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("foobar" + salt) %>
+    crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("foo" + salt) %>
     persistence_token: <%= Authlogic::Random.hex_token %>
     firstname: Bill
     lastname: Foobar 

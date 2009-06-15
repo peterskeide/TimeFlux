@@ -32,12 +32,12 @@ class CategoriesControllerTest < ActionController::TestCase
 
       should "destroy the selected category" do
         assert_difference('Category.count', -1) do
-          get :destroy, :id => categories(:meetings)
+          get :destroy, :id => categories(:meeting)
         end
       end
 
       should "redirect to index" do
-        get :destroy, :id => categories(:meetings)
+        get :destroy, :id => categories(:meeting)
         assert_redirected_to(:action => "index")
       end
             
@@ -64,6 +64,25 @@ class CategoriesControllerTest < ActionController::TestCase
       
     end
         
+  end
+  
+  context "Logged out user" do
+    
+    should "be redirected to login page on GET to :index" do
+      get :index
+      assert_redirected_to new_user_session_url
+    end
+    
+    should "be redirected to login page on GET to :destroy" do
+      get :destroy, :id => categories(:meeting)
+      assert_redirected_to new_user_session_url
+    end
+    
+    should "be redirected to login page on POST to :create" do
+      post :create, :category => {:name => "Foo"}
+      assert_redirected_to new_user_session_url
+    end
+    
   end
       
 end
