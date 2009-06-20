@@ -8,6 +8,7 @@ project = "timeflux_#{week_number}"
     hours: 7.5
     billed: false
     locked: false
+    month: 6
     counterpost: false
     date: <%= date.+(i+1) %>
     week_entry: <%= project %>
@@ -19,6 +20,7 @@ project = "timeflux_#{week_number}"
     hours: 7.5
     billed: false
     locked: false
+    month: 6
     counterpost: false
     date: <%= date.+(i+1) %>
     week_entry: <%= project %>

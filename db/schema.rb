@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20090613220405) do
     t.boolean  "billed",        :default => false
     t.boolean  "locked",        :default => false
     t.boolean  "counterpost",   :default => false
+    t.integer  "month"
     t.string   "notes"
     t.date     "date"
     t.integer  "week_entry_id"

@@ -45,6 +45,10 @@ class WeekEntriesControllerTest < ActionController::TestCase
           assert_equal(24, week_entries[0].week_number)
       end
       
+    end
+    
+    context "Next Week link" do
+      
       should "assign next weeks date and week number when clicked" do
           get :next, :date => @today.to_s
           assert_equal(@today.+(7), assigns(:date))
