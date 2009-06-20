@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(:version => 20090613220405) do
     t.boolean  "counterpost",   :default => false
     t.integer  "month"
     t.string   "notes"
-    t.date     "date"
+    t.date     "date",                             :null => false
     t.integer  "week_entry_id"
     t.datetime "created_at"
     t.datetime "updated_at"

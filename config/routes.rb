@@ -36,6 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   map.categories "Categories", :controller => "categories"
   map.resources :week_entries, :new => { :previous => :get, :next => :get }
   map.resources :user_sessions
+  map.resources :time_entries, :new => { :previous => :get, :next => :get }
   
   map.reports "Reports", :controller => "reports"
   map.users "Users", :controller => "users"
