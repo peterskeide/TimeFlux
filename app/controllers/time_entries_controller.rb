@@ -10,9 +10,13 @@ class TimeEntriesController < ApplicationController
   end
   
   def new
-    @user = User.new
+    @user = @current_user
     @date = Date.today.beginning_of_week
-    7.times { |i| @user.time_entries.build(:date => @date.+(i)) }
+    @time_entries = []
+    7.times { |i|
+      date = @date.+(i) 
+      @time_entries << @user.time_entries.build(:date => date) 
+    }
   end
   
   def create

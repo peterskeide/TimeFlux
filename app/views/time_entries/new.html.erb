@@ -6,7 +6,8 @@
 <p> 
 	<% form_for @user do |user_form| -%>
 		<table>
-			<% user_form.fields_for :time_entries do |time_entry_form| -%>
+			<% @time_entries.each do |time_entry|  -%>
+			<% user_form.fields_for(:time_entries, time_entry) do |time_entry_form| -%>
 				<%= time_entry_form.hidden_field :date %>
 				<tr>
 				<td>
@@ -21,6 +22,7 @@
 					<%= time_entry_form.text_field :notes, :size => 70 %>
 				</td>
 				</tr>
+			<% end -%>
 			<% end -%>
 		</table>
 		<p>
