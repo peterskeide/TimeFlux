@@ -6,9 +6,8 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :time_entries
     
   acts_as_authentic
-  acts_as_reportable 
    
-  validates_presence_of :firstname, :lastname, :login, :password
+  validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
 
   def fullname

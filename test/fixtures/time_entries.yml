@@ -1,27 +1,11 @@
-<% date = Date.today %>
-bob_one:
+<% date = Date.today.beginning_of_week %>
+<% 7.times do |i| %>
+bob_<%= i %>:
     hours: 7.5
     billed: false
     locked: false
     counterpost: false
-    date: <%= date %>
+    date: <%= date.+(i) %>
     user: bob
     activity: timeflux
-    
-bob_two:
-    hours: 7.5
-    billed: false
-    locked: false
-    counterpost: false
-    date: <%= date %>
-    user: bob
-    activity: timeflux 
-    
-bob_three:
-    hours: 7.5
-    billed: false
-    locked: false
-    counterpost: false
-    date: <%= date %>
-    user: bob
-    activity: timeflux 
+<% end %>

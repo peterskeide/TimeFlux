@@ -4,7 +4,8 @@
 	<h2>Week: <%= @date.cweek %></h2>
 </p>
 <p> 
-	<% form_for @user do |user_form| -%>
+	<% form_for @user, :url => { :controller => "time_entries", :action => "update" } do |user_form| -%>
+		<%= user_form.hidden_field :id %>
 		<table>
 			<% @time_entries.each do |time_entry|  -%>
 			<% user_form.fields_for(:time_entries, time_entry) do |time_entry_form| -%>
