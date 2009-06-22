@@ -28,7 +28,10 @@ class WeekEntriesController < ApplicationController
     @week = Date.week_of_date(date)
     @week_entry.week_number= @week[:thursday].cweek
     @week_entry.year= @week[:thursday].year
-    7.times { |i| @week_entry.time_entries.build(:date => @week.values.sort[i]) }
+    7.times { |i| 
+      date = @week.values.sort[i]
+      @week_entry.time_entries.build(:date => date, :month => date.month) 
+    }
   end
   
   def create

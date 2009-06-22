@@ -6,7 +6,7 @@ class TimeEntry < ActiveRecord::Base
 
   acts_as_reportable
   
-  named_scope :in_month, lambda { |month|
+  named_scope :for_month, lambda { |month|
     { :conditions => { :month => month } } 
   }
   
