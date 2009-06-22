@@ -4,53 +4,28 @@
 	<h2>Week: <%= @date.cweek %></h2>
 </p>
 <p> 
-	<table>
-		<% form_tag("/time_entries/create") do -%>
-			<tr> 
-				<%= hidden_field_tag "monday_date", @date %>
-				<td><%= label_tag "#{@date.beginning_of_week.cwday_to_s} (#{@date})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "monday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "monday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr> 
-				<%= hidden_field_tag "tuesday_date", @date.+(1) %>
-				<td><%= label_tag "#{@date.+(1).beginning_of_week.cwday_to_s} (#{@date.+(1)})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "tuesday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "tuesday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr>
-				<%= hidden_field_tag "wednesday_date", @date.+(2) %> 
-				<td><%= label_tag "#{@date.+(2).beginning_of_week.cwday_to_s} (#{@date.+(2)})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "wednesday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "wednesday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr> 
-				<%= hidden_field_tag "thursday_date", @date.+(3) %>
-				<td><%= label_tag "#{@date.+(3).beginning_of_week.cwday_to_s} (#{@date.+(3)})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "thursday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "thursday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr>
-				<%= hidden_field_tag "friday_date", @date.+(4) %> 
-				<td><%= label_tag "#{@date.+(4).beginning_of_week.cwday_to_s} (#{@date.+(4)})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "friday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "friday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr> 
-				<%= hidden_field_tag "saturday_date", @date.+(5) %>
-				<td><%= label_tag "#{@date.+(5).beginning_of_week.cwday_to_s} (#{@date.+(5)})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "saturday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "saturday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr>
-				<%= hidden_field_tag "sunday_date", @date.+(6) %> 
-				<td><%= label_tag "#{@date.+(6).beginning_of_week.cwday_to_s} (#{@date.+(6)})" %></td>
-				<td><%= label_tag "Hours" %><%= text_field_tag "sunday_hours", 0.0, :size => 5 %></td>
-				<td><%= label_tag "Notes" %><%= text_field_tag "sunday_notes", nil, :size => 70 %></td>
-			</tr>
-			<tr>
-				<td><%= submit_tag "Save" %></td>
-			</tr>
-		<% end -%>
-	</table>
+	<% form_for @user do |user_form| -%>
+		<table>
+			<% user_form.fields_for :time_entries do |time_entry_form| -%>
+				<%= time_entry_form.hidden_field :date %>
+				<tr>
+				<td>
+					<%= date_label_for time_entry_form.object %>
+				</td>
+				<td>
+					<%= time_entry_form.label :hours, "Hours" %>
+					<%= time_entry_form.text_field :hours, :size => 5 %>
+				</td>
+				<td>
+					<%= time_entry_form.label :notes, "Notes" %>
+					<%= time_entry_form.text_field :notes, :size => 70 %>
+				</td>
+				</tr>
+			<% end -%>
+		</table>
+		<p>
+			<%= user_form.submit "Submit" %>
+			<%= user_form.error_messages %>
+		</p>
+	<% end -%>
 </p>

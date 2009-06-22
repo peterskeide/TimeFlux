@@ -5,10 +5,10 @@ class CreateTimeEntriesTable < ActiveRecord::Migration
       t.boolean :billed, :default => false
       t.boolean :locked, :default => false
       t.boolean :counterpost, :default => false
-      t.integer :month
       t.string :notes
       t.date :date, :null => false
-      t.references :week_entry
+      t.references :activity
+      t.references :user
       t.timestamps
     end
   end

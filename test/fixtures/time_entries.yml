@@ -1,29 +1,27 @@
-<% weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-dates = [Date.new(2009, 06, 14), Date.new(2009, 06, 07), Date.new(2009, 06, 21)]
-dates.each do |date|
-week_number = date.+(1).cweek
-project = "timeflux_#{week_number}"
-7.times do |i| %>
-<%= "#{project}_#{weekdays[i]}" %>:
+<% date = Date.today %>
+bob_one:
     hours: 7.5
     billed: false
     locked: false
-    month: 6
     counterpost: false
-    date: <%= date.+(i+1) %>
-    week_entry: <%= project %>
-<% end %>
-
-<% project = "foobar_#{week_number}"
-7.times do |i| %>
-<%= "#{project}_#{weekdays[i]}" %>:
+    date: <%= date %>
+    user: bob
+    activity: timeflux
+    
+bob_two:
     hours: 7.5
     billed: false
     locked: false
-    month: 6
     counterpost: false
-    date: <%= date.+(i+1) %>
-    week_entry: <%= project %>
-<% end %>
-
-<% end %>
+    date: <%= date %>
+    user: bob
+    activity: timeflux 
+    
+bob_three:
+    hours: 7.5
+    billed: false
+    locked: false
+    counterpost: false
+    date: <%= date %>
+    user: bob
+    activity: timeflux 
