@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :activities
     
   acts_as_authentic
-  acts_as_reportable 
    
   validates_presence_of :firstname, :lastname, :login, :password
   validates_uniqueness_of :login
@@ -22,6 +21,10 @@ class User < ActiveRecord::Base
     total = "hours:"
     self.time_entries.each { |i| puts i.hours }
     return total
+  end
+  
+  def to_s
+    "#{self.fullname} (id=#{self.object_id})"
   end
 
 end

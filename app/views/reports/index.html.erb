@@ -1,7 +1,5 @@
-<h3>Available reports</h3>
+<h2>Available reports</h2>
 
-<ul>
 <% for report in @reports %>
-  <li><%= link_to "#{report.capitalize} report", :action => report %></li>
+    <h4><%= link_to "#{report.capitalize} report", :action => report, :format => "html"%></h4>
 <% end %>
-</ul>

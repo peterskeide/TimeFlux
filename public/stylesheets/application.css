@@ -5,6 +5,35 @@ body {
 	margin: 0;
 }
 
+table {
+        text-align: left;
+}
+
+ul.reports{
+		list-style: none;
+		font-size: 18px;
+}
+
+ul.reports li{
+		padding-bottom: 4px;
+}
+
+td.report a, h4 a{
+        text-decoration: none;
+}
+
+td.report a:hover{
+        text-decoration: underline;
+}
+
+table tbody tr td, table tbody tr th  {
+        padding-right: 20px;
+}
+
+table tbody tr th  {
+        background:#EEEEEE none repeat scroll 0 0;
+}
+
 a.menu_link {
 	text-decoration:none;
 	color: #ffffff;
@@ -14,6 +43,11 @@ a:hover.menu_link {
 	text-decoration:none;
 	color: #c80000;
 }
+
+a img {
+        border: none;
+}
+
 
 .menu_item {
 	float: left;

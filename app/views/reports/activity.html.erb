@@ -5,19 +5,17 @@
   <p><%= @debug %>,  (<%= @debug.class %>)</p>
 <% end %>
 
-<% form_tag :action => 'user', :method => 'get' do %>
+<% form_tag :action => 'activity', :method => 'get' do %>
 
-  <label for="status">Status</label>
-  <%= select_tag "status", options_for_select(User.status_values, params[:status].to_i), {:include_blank => 'None'} %>
+  <label for="active">Active</label>
+  <%= select_tag "active", options_for_select(['true','false'], params[:active]), {:include_blank => 'None'} %>
 
   <%= submit_tag 'Generate' %>
 <% end %>
-
-  <hr/>
-
 
 <%= @table.to_html() -%>
 
 <%= render :partial => 'download', :locals => { :params => params } -%>
 
 
+ 
