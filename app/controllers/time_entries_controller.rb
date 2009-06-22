@@ -51,11 +51,19 @@ class TimeEntriesController < ApplicationController
   end
   
   def destroy
+    @user = User.find_by_id(params[:id])
+    @date = Date.parse(params[:date])
+    activity_id = params[:activity_id].to_i
+    @time_entries = @user.time_entries.for_activity(activity_id).between(@date, @date.+(6))
+    @time_entries.each { |te| te.destroy }
+    prepare_view(@date)
+    render :index
   end
   
   private 
   
   def prepare_view(date)
+    @user = @current_user
     find_activities
     monday = date.beginning_of_week
     time_entries = @user.time_entries.between(monday, monday.+(6))
@@ -68,7 +76,6 @@ class TimeEntriesController < ApplicationController
   end
   
   def find_activities
-    @user = @current_user
     activities = @user.activities + Activity.find_all_by_default_activity(true) 
     @activity_options = activities.collect { |a| [ a.name, a.id ] }
   end

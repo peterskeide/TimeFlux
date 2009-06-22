@@ -21,7 +21,9 @@
 <tbody>
 <% @activities.each do |activity_name, time_entries| -%>
 	<tr> 
-		<td class="week_entries_activity"><%= link_to activity_name, { :controller => "time_entries", :action => "edit", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date } %></td>
+		<td class="week_entries_activity">
+		<%= link_to activity_name, { :controller => "time_entries", :action => "edit", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date } %>
+		</td>
 		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[2].hours %></td>
@@ -29,7 +31,9 @@
 		<td class="week_entries_hours"><%= time_entries[4].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[5].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[6].hours %></td>
-		<td><%# link_to "Remove", time_entries, :confirm => "Sure?", :method => :delete %></td>
+		<td>
+		<%= link_to "Remove", { :controller => "time_entries", :action => "destroy", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date }, :method=> :delete %>
+		</td>
 	</tr>
 <% end -%>
 </tbody>
