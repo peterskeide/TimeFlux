@@ -1,8 +1,7 @@
 class Activity < ActiveRecord::Base
   
   belongs_to :category
-  has_many :week_entries
-  has_many :time_entries, :through => :week_entries
+  has_many :time_entries
   has_and_belongs_to_many :users
   
   private

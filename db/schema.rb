@@ -36,14 +36,14 @@ ActiveRecord::Schema.define(:version => 20090613220405) do
   end
 
   create_table "time_entries", :force => true do |t|
-    t.float    "hours",         :default => 0.0
-    t.boolean  "billed",        :default => false
-    t.boolean  "locked",        :default => false
-    t.boolean  "counterpost",   :default => false
-    t.integer  "month"
+    t.float    "hours",       :default => 0.0
+    t.boolean  "billed",      :default => false
+    t.boolean  "locked",      :default => false
+    t.boolean  "counterpost", :default => false
     t.string   "notes"
-    t.date     "date"
-    t.integer  "week_entry_id"
+    t.date     "date",                           :null => false
+    t.integer  "activity_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -57,16 +57,6 @@ ActiveRecord::Schema.define(:version => 20090613220405) do
     t.string   "password_salt",     :null => false
     t.string   "persistence_token", :null => false
     t.string   "operative_status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "week_entries", :force => true do |t|
-    t.boolean  "locked"
-    t.integer  "year"
-    t.integer  "week_number"
-    t.integer  "user_id"
-    t.integer  "activity_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
