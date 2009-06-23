@@ -1,0 +1,21 @@
+
+<h2><%= @title %></h2>
+
+<% if @debug then %>
+  <p><%= @debug %>,  (<%= @debug.class %>)</p>
+<% end %>
+
+<% form_tag :action => 'activity', :method => 'get' do %>
+
+  <label for="active">Active</label>
+  <%= select_tag "active", options_for_select(['true','false'], params[:active]), {:include_blank => 'None'} %>
+
+  <%= submit_tag 'Generate' %>
+<% end %>
+
+<%= @table.to_html() -%>
+
+<%= render :partial => 'download', :locals => { :params => params } -%>
+
+
+ 

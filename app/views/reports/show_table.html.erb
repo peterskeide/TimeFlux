@@ -1,7 +1,13 @@
 
-<h3>Table</h3>
+<h2><%= @title %></h2>
 
-<p><%= @debug %>  (<%= if @debug then @debug.class end %>)</p>
+<% if @debug then %>
+  <p><%= @debug %>,  (<%= @debug.class %>)</p>
+<% end %>
 
 <%= @table.to_html() -%>
+
+<%= render :partial => 'download', :locals => { :params => params } -%>
+
+
  

@@ -4,8 +4,6 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :activity
   
   validates_format_of :hours, :with => /^[\d|.|,]*$/
-
-  acts_as_reportable
   
   named_scope :between, lambda { |*args|
     {  :conditions => ['date between ? and ?', (args.first || Time.now), (args.second || 7.days.ago )] }
@@ -18,5 +16,16 @@ class TimeEntry < ActiveRecord::Base
   def <=>(other)
     date <=> other.date
   end
+
+  def self.find_in_month (year, month)
+    start_of_month = Time.mktime(year.to_i, month.to_i, 1)
+    conditions = ['date between ? and ?', start_of_month, start_of_month.end_of_month]
+    self.find(:all, :conditions => conditions)
+  end
+
+  def to_s
+    "#{self.hours} hours on date #{self.date}"
+  end
+
     
 end

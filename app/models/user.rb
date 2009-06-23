@@ -23,5 +23,9 @@ class User < ActiveRecord::Base
     self.time_entries.each { |i| puts i.hours }
     return total
   end
+  
+  def to_s
+    "#{self.fullname} (id=#{self.object_id})"
+  end
 
 end

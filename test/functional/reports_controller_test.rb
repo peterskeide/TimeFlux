@@ -16,7 +16,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "with format=pdf" do
       setup { get :user, :format => 'dpf' }
-      #TODO the download works, why does the test repport a 406?
+      #TODO the download works, why does the test report a 406?
       #should_respond_with :sucsess
     end
 

@@ -24,6 +24,7 @@ class UsersController < ApplicationController
       flash[:notice] = "New user was created"
       redirect_to(:action => 'show', :id => @user.id) 
     else
+      flash[:notice] = 'Could not create user.'
       @user = User.new(params[:user])
       render :action => "new"
     end
@@ -36,8 +37,8 @@ class UsersController < ApplicationController
     #if @user.update_attributes(attributes)
 
     if params[:user][:password] then
-      # @user.password = params[:user][:password]
-      # @user.password_confirmation = params[:user][: password_confirmation]
+       @user.password = params[:user][:password]
+       @user.password_confirmation = params[:user][:password_confirmation]
     end
     @user.firstname = params[:user][:firstname]
     @user.lastname = params[:user][:lastname]

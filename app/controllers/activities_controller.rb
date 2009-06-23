@@ -8,11 +8,11 @@ class ActivitiesController < ApplicationController
   
   def new
     @activity = Activity.new(:default_activity => false, :active=> true)
-    @categories = Category.find(:all)
+    @tags = Tag.find(:all)
   end
 
   def edit
-    @categories = Category.find(:all) 
+    @tags = Tag.find(:all)
     @activity = Activity.find(params[:id])
   end
 

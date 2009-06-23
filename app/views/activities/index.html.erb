@@ -1,17 +1,21 @@
 <h1>Activities</h1>
 <p class="notice"><%= flash[:notice] %></p>
 <hr/>
+Activities |
+<%= link_to "Manage Tags", tags_url %> |
+<%= link_to "Tag Categories", tag_types_url %>
+  <hr/>
+<%= link_to "New Activity", :action => "new" %>
+  <hr/>
 <% @activities.each do |a| -%>
   <div>
     <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
-    <b>Category:</b> <%= a.category.name %><br/>
+    <b>Tags:</b> <%= a.tags.collect{ |t| "#{t.name}(#{t.tag_type.name})" }.join(', ')  -%><br/>
     <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date %><br/>
 	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>
 	<b>Default:</b> <%= if a.default_activity then 'Yes' else 'No' end %><br/>
 	<%= link_to 'Remove', activity_path(a), :method => :delete %>
   </div>
-  <hr/>
+
 <% end -%>
-<%= link_to "Create New", :action => "new" %>
-<%= link_to "Manage Categories", categories_url %>

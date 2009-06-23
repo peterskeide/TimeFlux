@@ -1,8 +1,0 @@
-internal_project:
-    name: Internal Project
-
-external_project:
-    name: External Project
-    
-meeting:
-    name: Meeting

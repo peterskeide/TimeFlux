@@ -1,14 +1,23 @@
 
-<h3>Users</h3>
+<h2><%= @title %></h2>
+
+<% if @debug then %>
+  <p><%= @debug %>,  (<%= @debug.class %>)</p>
+<% end %>
+
+<% form_tag :action => 'user', :method => 'get' do %>
+
+  <label for="status">Status</label>
+  <%= select_tag "status", options_for_select(User.status_values, params[:status].to_i), {:include_blank => 'None'} %>
+
+  <%= submit_tag 'Generate' %>
+<% end %>
+
+  <hr/>
 
 
-<% if @table.empty? then %>
-  <p>sorry, no users</p>
+<%= @table.to_html() -%>
 
-<% else %>
+<%= render :partial => 'download', :locals => { :params => params } -%>
 
- <%= link_to "pdf", :action => "user", :format => "pdf"%>
- <%= link_to "csv", :action => "user", :format => "csv"%>
- <%= @table.to_html() -%>
-<%  end %>
-  
+
