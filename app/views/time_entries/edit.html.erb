@@ -1,0 +1,35 @@
+<h1>Time Entry</h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p>
+	<h2>Week: <%= @date.cweek %></h2>
+</p>
+<p> 
+	<% form_for @user, :url => { :controller => "time_entries", :action => "update" } do |user_form| -%>
+		<%= hidden_field_tag "date", @date %>
+		<%= user_form.hidden_field :id %>
+		<table>
+			<% @time_entries.sort.each do |time_entry|  -%>
+				<% user_form.fields_for(:time_entries, time_entry) do |time_entry_form| -%>
+					<%= time_entry_form.hidden_field :date %>
+					<tr>
+					<td>
+						<%= date_label_for time_entry_form.object %>
+					</td>
+					<td>
+						<%= time_entry_form.label :hours, "Hours" %>
+						<%= time_entry_form.text_field :hours, :size => 5 %>
+					</td>
+					<td>
+						<%= time_entry_form.label :notes, "Notes" %>
+						<%= time_entry_form.text_field :notes, :size => 70 %>
+					</td>
+					</tr>
+				<% end -%>
+			<% end -%>
+		</table>
+		<p>
+			<%= user_form.submit "Submit" %>
+			<%= user_form.error_messages %>
+		</p>
+	<% end -%>
+</p>

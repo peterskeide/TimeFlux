@@ -9,6 +9,7 @@
 		<%= week_entry_form.hidden_field :week_number %>
 		<table>
 			<% week_entry_form.fields_for :time_entries do |time_entry_form| -%>
+				<%= time_entry_form.hidden_field :month %>
 				<%= time_entry_form.hidden_field :date %>
 				<tr>
 				<td>

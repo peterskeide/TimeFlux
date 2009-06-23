@@ -1,7 +1,6 @@
 class Activity < ActiveRecord::Base
-  
-  has_many :week_entries
-  has_many :time_entries, :through => :week_entries
+
+  has_many :time_entries
   has_and_belongs_to_many :users
   has_and_belongs_to_many :tags
 

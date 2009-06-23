@@ -1,0 +1,56 @@
+<h1>Entries for week <%= @date.cweek %></h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p>
+	<%= link_to "Previous week", previous_new_time_entry_url(:date => @date.beginning_of_week) %>
+	<%= link_to "Next week", next_new_time_entry_url(:date => @date.beginning_of_week) %>
+</p>
+<% if not @activities.empty? %>
+<table class="week_entries">
+<thead>
+	<tr>
+		<th>Activity</th>
+		<th class="week_entries_hours">Mon</th>
+		<th class="week_entries_hours">Tue</th>
+		<th class="week_entries_hours">Wed</th>
+		<th class="week_entries_hours">Thu</th>
+		<th class="week_entries_hours">Fri</th>
+		<th class="week_entries_hours">Sat</th>
+		<th class="week_entries_hours">Sun</th>
+	</tr>
+</thead>
+<tbody>
+<% @activities.each do |activity_name, time_entries| -%>
+	<tr> 
+		<td class="week_entries_activity">
+		<%= link_to activity_name, { :controller => "time_entries", :action => "edit", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date } %>
+		</td>
+		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
+		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
+		<td class="week_entries_hours"><%= time_entries[2].hours %></td>
+		<td class="week_entries_hours"><%= time_entries[3].hours %></td>
+		<td class="week_entries_hours"><%= time_entries[4].hours %></td>
+		<td class="week_entries_hours"><%= time_entries[5].hours %></td>
+		<td class="week_entries_hours"><%= time_entries[6].hours %></td>
+		<td>
+		<%= link_to "Remove", { :controller => "time_entries", :action => "destroy", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date }, :method=> :delete %>
+		</td>
+	</tr>
+<% end -%>
+</tbody>
+</table>
+<% else %>
+<p>
+	<b>There are no registered time entries for this week</b>
+</p>
+<% end %>
+<p> 
+	<% unless @activity_options.empty? -%> 
+		<% form_tag '/time_entries/new', :method => :get do -%>
+			<%= hidden_field_tag "date", @date %>
+			<%= select "activity", "activity_id", @activity_options %>
+			<%= submit_tag "Add selected activity to this week" %>
+		<% end -%>
+	<% else -%>
+		<b>No activities available for time entry</b>
+	<% end -%>
+</p>
