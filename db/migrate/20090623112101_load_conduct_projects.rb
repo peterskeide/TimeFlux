@@ -92,16 +92,24 @@ class LoadConductProjects < ActiveRecord::Migration
 "Forskningsprosjekt","Simula"
 "Migrering fra Weblogic","Skagerak"'
 
+    customer_type = TagType.create(:name => "Customer")
+    project_type = TagType.create(:name => "Project")
 
     projects.split("\n").each  do |name|
       entry = name.split(",")
-      name = entry[0].gsub(/"/, '')
-      parent = entry[1].gsub(/"/, '')
+      project = entry[0].gsub(/"/, '')
+      customer = entry[1].gsub(/"/, '')
 
-      c = Category.create( :name => "#{parent} > #{name}" )
-      if c.id
-        Activity.create(:name=> "Utvikling", :description => "General development", :default_activity => false, :active => true, :category_id => c.id )
-      end
+      p = Tag.create(:name => project, :tag_type_id => project_type.id)
+      #c = Tag.find_by_name customer
+      c = Tag.create(:name => customer, :tag_type_id => customer_type.id)
+
+      activity = Activity.create(:name=> "Utvikling", :description => "General development", :default_activity => false, :active => true )
+
+
+      activity.tags << p
+      activity.tags << c
+      #c = p = nil
     end
 
 

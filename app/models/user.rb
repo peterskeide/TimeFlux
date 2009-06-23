@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
     
   acts_as_authentic
    
-  validates_presence_of :firstname, :lastname, :login, :password
+  validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
 
   def fullname

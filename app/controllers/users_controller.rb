@@ -37,8 +37,8 @@ class UsersController < ApplicationController
     #if @user.update_attributes(attributes)
 
     if params[:user][:password] then
-      # @user.password = params[:user][:password]
-      # @user.password_confirmation = params[:user][: password_confirmation]
+       @user.password = params[:user][:password]
+       @user.password_confirmation = params[:user][:password_confirmation]
     end
     @user.firstname = params[:user][:firstname]
     @user.lastname = params[:user][:lastname]

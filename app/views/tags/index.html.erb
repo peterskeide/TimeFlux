@@ -1,0 +1,32 @@
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+<h1>Manage Tags</h1>
+<hr/>
+<%= link_to "Activities", activities_url %> |
+Manage Tags |
+<%= link_to "Tag Categories", tag_types_url %>
+  <hr/>
+ 	<% @tag_types.each do |tt| -%>
+		<%= link_to tt.name, :action => 'index', :tag_type => tt.id %> <%=  '|' if true -%>
+	<% end -%>
+  <hr/>
+<table>
+	<% @tags.each do |c| -%>
+		<tr>
+				<td><%= c.name_and_type %></td>
+				<td><%= link_to "Remove", :action => "destroy", :id => c %></td>
+		</tr>
+	<% end -%>
+</table>
+<hr/>
+<p>
+	<% form_for :tag, @tag, :url => {:action => "create"} do |f| -%>
+		Tag Name: <%= f.text_field :name %>
+                Type:  <!--%= select_tag "tag[tag_type]",
+                       options_from_collection_for_select( @tag_types, 'id', 'name', params[:tag_type] ) %-->
+                <%= collection_select(:tag_type_id, :id, @tag_types, :id, :name) %>
+
+
+  <%= submit_tag "Create" %>
+	<% end -%>
+</p>
