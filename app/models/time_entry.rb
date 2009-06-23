@@ -8,11 +8,11 @@ class TimeEntry < ActiveRecord::Base
   acts_as_reportable
   
   named_scope :between, lambda { |*args|
-      {  :conditions => ['date between ? and ?', (args.first || Time.now), (args.second || 7.days.ago )] }
-    }
+    {  :conditions => ['date between ? and ?', (args.first || Time.now), (args.second || 7.days.ago )] }
+  }
       
   named_scope :for_activity, lambda { |activity_id|
-     { :conditions => { :activity_id => activity_id } }
+    { :conditions => { :activity_id => activity_id } }
   }
   
   def <=>(other)

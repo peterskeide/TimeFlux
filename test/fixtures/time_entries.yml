@@ -1,11 +1,38 @@
-<% date = Date.today.beginning_of_week %>
-<% 7.times do |i| %>
-bob_<%= i %>:
+<% 
+weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] 
+activity = "timeflux"
+user = "bob"
+%>
+
+<% 
+date = Date.new(2009, 6, 15)
+week = date.cweek
+7.times do |i| %>
+<%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
     hours: 7.5
-    billed: false
-    locked: false
-    counterpost: false
     date: <%= date.+(i) %>
-    user: bob
-    activity: timeflux
+    user: <%= user %>
+    activity: <%= activity %>
+<% end %>
+
+<% 
+date = Date.new(2009, 6, 22)
+week = date.cweek
+7.times do |i| %>
+<%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
+    hours: 7.5
+    date: <%= date.+(i) %>
+    user: <%= user %>
+    activity: <%= activity %>
+<% end %>
+
+<% 
+date = Date.new(2009, 6, 29)
+week = date.cweek
+7.times do |i| %>
+<%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
+    hours: 7.5
+    date: <%= date.+(i) %>
+    user: <%= user %>
+    activity: <%= activity %>
 <% end %>

@@ -62,6 +62,8 @@ class TimeEntriesController < ApplicationController
   
   # Encapsulates common code used by index, next and previous actions.
   # Initializes instance variables for the index view-template.
+  # @activities is a map with keyset = names of activities that have
+  # time entries for the current week/user, and value = array of time entries (always size == 7)
   def prepare_index(date)
     @user = @current_user
     monday = date.beginning_of_week

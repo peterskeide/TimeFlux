@@ -6,6 +6,7 @@ bob:
     persistence_token: <%= Authlogic::Random.hex_token %>
     firstname: Bob
     lastname: Foobar
+    activities: timeflux, foobar
 
 bill:
     email: bill@foobar.com
