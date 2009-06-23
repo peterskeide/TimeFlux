@@ -23,19 +23,6 @@ class TimeEntry < ActiveRecord::Base
     self.find(:all, :conditions => conditions)
   end
 
-  named_scope :between, lambda { |*args|
-    {  :conditions => ['date between ? and ?',  (args.first || Time.now), (args.second || 7.days.ago )] }
-  }
-
-  named_scope :for_user, lambda { |user_id|
-     { :joins => :week_entry, :conditions => ['week_entries.user_id = ?', user_id] }
-  }
-
-  named_scope :for_activity, lambda { |activity_id|
-     { :joins => :week_entry, :conditions => ['week_entries.activity_id = ?', activity_id] }
-  }
-
-
   def to_s
     "#{self.hours} hours on date #{self.date}"
   end
