@@ -6,9 +6,9 @@
 Manage Tags |
 <%= link_to "Tag Categories", tag_types_url %>
   <hr/>
- 	<% @tag_types.each do |tt| -%>
-		<%= link_to tt.name, :action => 'index', :tag_type => tt.id %> <%=  '|' if true -%>
-	<% end -%>
+ 	<%= @tag_types.collect { |tt|
+		link_to tt.name, :action => 'index', :tag_type => tt.id }.join(' | ') %>
+        
   <hr/>
 <table>
 	<% @tags.each do |c| -%>
@@ -20,13 +20,11 @@ Manage Tags |
 </table>
 <hr/>
 <p>
-	<% form_for :tag, @tag, :url => {:action => "create"} do |f| -%>
-		Tag Name: <%= f.text_field :name %>
-                Type:  <!--%= select_tag "tag[tag_type]",
-                       options_from_collection_for_select( @tag_types, 'id', 'name', params[:tag_type] ) %-->
-                <%= collection_select(:tag_type_id, :id, @tag_types, :id, :name) %>
-
-
-  <%= submit_tag "Create" %>
-	<% end -%>
+  <% if params[:tag_type] %>
+    <% form_for :tag, @tag, :url => {:action => "create"} do |f| -%>
+		New tag: <%= f.text_field :name %>
+                <%= f.hidden_field(:tag_type_id, :value => params[:tag_type]) %>
+        <%= submit_tag "Create" %>
+    <% end -%>
+  <% end %>
 </p>

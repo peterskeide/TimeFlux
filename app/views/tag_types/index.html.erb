@@ -19,7 +19,7 @@ Tag Categories
 <hr/>
 <p>
 	<% form_for :tag_type, @tag_type, :url => {:action => "create"} do |f| -%>
-		Tag Name: <%= f.text_field :name %>
+		New category: <%= f.text_field :name %>
 		<%= submit_tag "Create" %>
 	<% end -%>
 </p>
