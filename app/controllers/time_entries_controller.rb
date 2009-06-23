@@ -64,7 +64,6 @@ class TimeEntriesController < ApplicationController
   
   def prepare_view(date)
     @user = @current_user
-    find_activities
     monday = date.beginning_of_week
     time_entries = @user.time_entries.between(monday, monday.+(6))
     @activities = {}
@@ -73,11 +72,16 @@ class TimeEntriesController < ApplicationController
       activity_names.each { |name| @activities[name] = [] }
       time_entries.sort.each { |te| @activities[te.activity.name]  << te } 
     end
+    find_activities
   end
   
+  # Initializes an array of arrays [ name, id ] for use as select options in the view.
+  # If the name of an activity in the user_and_default_activities array is present in 
+  # the @activities map keyset, that activity will not be available as an option. 
+  # The rationale is: You can create time entries for an activity once per week. 
   def find_activities
-    activities = @user.activities + Activity.find_all_by_default_activity(true) 
-    @activity_options = activities.collect { |a| [ a.name, a.id ] }
+    user_and_default_activities = @user.activities + Activity.find_all_by_default_activity(true) 
+    @activity_options = user_and_default_activities.collect { |a| @activities.keys.include?(a.name) ? nil : [ a.name, a.id ] }.compact
   end
     
 end

@@ -43,10 +43,14 @@
 	<b>There are no registered time entries for this week</b>
 </p>
 <% end %>
-<p>  
-	<% form_tag '/time_entries/new', :method => :get do -%>
-		<%= hidden_field_tag "date", @date %>
-		<%= select "activity", "activity_id", @activity_options %>
-		<%= submit_tag "Add selected activity to this week" %>
+<p> 
+	<% unless @activity_options.empty? -%> 
+		<% form_tag '/time_entries/new', :method => :get do -%>
+			<%= hidden_field_tag "date", @date %>
+			<%= select "activity", "activity_id", @activity_options %>
+			<%= submit_tag "Add selected activity to this week" %>
+		<% end -%>
+	<% else -%>
+		<b>No activities available for time entry</b>
 	<% end -%>
 </p>
