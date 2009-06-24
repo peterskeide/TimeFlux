@@ -1,15 +1,12 @@
 timeflux:
     name: TimeFlux
     description: devlop Open Source time management and billing application
-    category: internal_project
 
 foobar:
     name: FooBar
     description: Implement the FooBar for customer
-    category: external_project
 
 status:
     name: Weekly Status Meeting
     description: Ye olde weekly status. Argh.
-    category: internal_project
     default_activity: true

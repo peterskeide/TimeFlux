@@ -26,6 +26,5 @@ class TimeEntry < ActiveRecord::Base
   def to_s
     "#{self.hours} hours on date #{self.date}"
   end
-
     
 end

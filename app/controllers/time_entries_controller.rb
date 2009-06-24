@@ -74,14 +74,14 @@ class TimeEntriesController < ApplicationController
       activity_names.each { |name| @activities[name] = [] }
       time_entries.sort.each { |te| @activities[te.activity.name]  << te } 
     end
-    find_activities
+    find_activities_for_time_entry
   end
   
   # Initializes an array of arrays [ name, id ] for use as select options in the view.
   # If the name of an activity in the user_and_default_activities array is present in 
   # the @activities map keyset, that activity will not be available as an option. 
   # The rationale is: You can create time entries for an activity once per week. 
-  def find_activities
+  def find_activities_for_time_entry
     user_and_default_activities = @user.activities + Activity.find_all_by_default_activity(true) 
     @activity_options = user_and_default_activities.collect { |a| @activities.keys.include?(a.name) ? nil : [ a.name, a.id ] }.compact
   end

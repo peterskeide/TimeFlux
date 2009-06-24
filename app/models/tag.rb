@@ -1,4 +1,5 @@
-class Tag < ActiveRecord::Base
+class Tag < ActiveRecord::Base 
+  
   belongs_to :tag_type
   belongs_to :tag
   has_and_belongs_to_many :activities
@@ -9,5 +10,6 @@ class Tag < ActiveRecord::Base
 
   def to_s
     "#{self.tag_type.to_s}: #{self.name}"
-  end
+  end 
+  
 end

@@ -29,4 +29,5 @@ class TagTypesController < ApplicationController
       redirect_to :tag_types
     end
   end
+  
 end
