@@ -7,9 +7,20 @@ class ActivitiesController < ApplicationController
     activities = []
     TagType.all.each do |tt| 
       type = tt.name.to_sym
-      if params[type]
-        unless params[type] == 'ignore'
-          activities << (Tag.find params[type]).activities
+      if params[type] 
+        unless params[type] =~ /all|none/
+          tag = Tag.find_by_id(params[type])
+          puts "Tag: #{tag}, Activities: #{tag.activities}"
+          activities << tag.activities
+        end
+        if params[type] == 'all'
+          activities << tt.activities
+        end
+        if params[type] == 'none'
+          #TODO
+          #1. find tags where type = tt
+          #2. select the inverse
+          #Activity.all.each{|a| activities << a if a.tags.empty? }
         end
       end
     end
