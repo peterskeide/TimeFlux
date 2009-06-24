@@ -1,6 +1,6 @@
 class CreateActivitiesUsersTable < ActiveRecord::Migration
   def self.up
-    create_table :activities_users do |t|
+    create_table :activities_users, :id => false do |t|
       t.references :activity
       t.references :user
       t.timestamps

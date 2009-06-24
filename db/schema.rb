@@ -16,19 +16,18 @@ ActiveRecord::Schema.define(:version => 20090623112101) do
     t.string   "description"
     t.boolean  "active"
     t.boolean  "default_activity"
-    t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "activities_tags", :force => true do |t|
+  create_table "activities_tags", :id => false, :force => true do |t|
     t.integer  "activity_id"
     t.integer  "tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "activities_users", :force => true do |t|
+  create_table "activities_users", :id => false, :force => true do |t|
     t.integer  "activity_id"
     t.integer  "user_id"
     t.datetime "created_at"
