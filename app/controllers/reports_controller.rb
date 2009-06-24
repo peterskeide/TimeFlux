@@ -22,10 +22,10 @@ class ReportsController < ApplicationController
     end
     
     activity_data = activities.collect { |a|
-      [a.name, a.category.name, a.active]
+      [a.name, a.tags.to_s, a.active]
     }
     @table = Ruport::Data::Table.new( :data => activity_data,
-      :column_names => ['Activity name', 'Category', 'Active'] )
+      :column_names => ['Activity name', 'Tags', 'Active'] )
     respond_with_formatter@table, TestController, "Activity report"
   end
 
@@ -44,16 +44,16 @@ class ReportsController < ApplicationController
     respond_with_formatter @table, TestController, "User report"
   end
 
-  def week_entries
-    user = current_user_session.user
-    week_data = user.week_entries.collect do |week_entry|
-      [week_entry.year, week_entry.week_number, week_entry.activity.name, week_entry.hours]
-    end
-    table = Ruport::Data::Table.new( :data => week_data,
-      :column_names => ['Year', 'Week number', 'Activity name', 'Hours'])
-    @table = Grouping(table,:by => "Year")
-    respond_with_formatter_and_html @table, TestController, "Week entries report"
-  end
+#  def week_entries
+#    user = current_user_session.user
+#    week_data = user.week_entries.collect do |week_entry|
+#      [week_entry.year, week_entry.week_number, week_entry.activity.name, week_entry.hours]
+#    end
+#    table = Ruport::Data::Table.new( :data => week_data,
+#      :column_names => ['Year', 'Week number', 'Activity name', 'Hours'])
+#    @table = Grouping(table,:by => "Year")
+#    respond_with_formatter_and_html @table, TestController, "Week entries report"
+#  end
 
   def hours
     
@@ -72,7 +72,7 @@ class ReportsController < ApplicationController
     
     time_entries = @selected_user.time_entries.between(day.beginning_of_month, day.end_of_month)
 
-    time_data = time_entries.collect { |e| [e.week_entry.activity.name, e.hours, e.date, e.notes] }
+    time_data = time_entries.collect { |e| [e.activity.name, e.hours, e.date, e.notes] }
     table = Ruport::Data::Table.new( :data => time_data,
       :column_names => ['Activity name', 'Date', 'Hours', 'Notes'])
 

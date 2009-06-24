@@ -5,17 +5,34 @@ Activities |
 <%= link_to "Manage Tags", tags_url %> |
 <%= link_to "Tag Categories", tag_types_url %>
   <hr/>
-<%= link_to "New Activity", :action => "new" %>
-  <hr/>
+  
+
+  <% form_tag :action => 'index', :method => 'get' do %>
+
+    <% @tag_types.each do |tag_type| %>
+      <% unless tag_type.tags.empty? %>
+        <label><%= tag_type.name %></label>
+        <%= select_tag( tag_type.name, '<option value="none">---</option><option value="all">all</option>' +  options_from_collection_for_select( tag_type.tags, 'id', 'name', '---') ) %>
+        &nbsp;
+      <% end %>
+    <% end %>
+    <%= submit_tag 'Update' %>
+  <% end %>
+
+  Hits: <%= @activities.size %>
+
 <% @activities.each do |a| -%>
+  <hr/>
   <div>
     <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
-    <b>Tags:</b> <%= a.tags.collect{ |t| "#{t.name}(#{t.tag_type.name})" }.join(', ')  -%><br/>
+    <b>Tags:</b> <%# a.tags.collect{ |t| "#{t.name}(#{t.tag_type_name})" }.join(', ')  -%><br/>
     <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date %><br/>
 	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>
 	<b>Default:</b> <%= if a.default_activity then 'Yes' else 'No' end %><br/>
 	<%= link_to 'Remove', activity_path(a), :method => :delete %>
   </div>
-
 <% end -%>
+  
+  <hr/>
+<%= link_to "New Activity", :action => "new" %>

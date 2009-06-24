@@ -20,12 +20,12 @@ class TagTypesController < ApplicationController
   #TODO
   def destroy
     @tag_types = TagType.find(params[:id])
-    if false #not @tags.activities.empty?
-      flash[:error] = "Tag Type cannot be removed"
-      redirect_to :tag_types
-    else
+    if @tag_types.tags.empty?
       @tag_types.destroy
       flash[:notice] = "Tag Type removed"
+      redirect_to :tag_types          
+    else
+      flash[:error] = "Tag Type is in use and cannot be removed"
       redirect_to :tag_types
     end
   end
