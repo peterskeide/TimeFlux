@@ -65,7 +65,11 @@ class ActivitiesController < ApplicationController
   def destroy
     @activity = Activity.find(params[:id])
     begin
-      @activity.destroy
+      if @activity.time_entries.empty?
+        @activity.destroy
+      else
+        raise "Activity has hours registered - could not delete"
+      end
     rescue
       flash[:notice] = "#{$!}"
     end

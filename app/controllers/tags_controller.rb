@@ -18,11 +18,10 @@ class TagsController < ApplicationController
 
     if @tag.save
       flash[:notice] = "Tag successfully created"
-      redirect_to :action => :index, :tag_type => @tag.tag_type.id
     else
-      flash[:error] = @tag.errors.full_messages.to_s
-      redirect_to :tags, :tag_type => params[:tag_type]
+      flash[:error] = @tag.errors.full_messages.to_s      
     end
+    redirect_to :tags, :tag_type => params[:tag_type]
   end
 
   def show
@@ -40,7 +39,8 @@ class TagsController < ApplicationController
     attributes = params[@tag.class.name.underscore]
     if @tag.update_attributes(attributes)
       flash[:notice] = 'Tag was successfully updated.'
-      redirect_to(:action => 'index', :id => @tag.object_id)
+
+      redirect_to :action => 'index', :tag_type => params[:tag_type]
     else
       render :action => "edit"
     end
@@ -48,18 +48,14 @@ class TagsController < ApplicationController
 
   def destroy
     @tag = Tag.find(params[:id])
-    tag_type_id = if @tag then @tag.tag_type.id else "" end
-
-    puts "destroying #{@tag}"
 
     if @tag.activities.empty?
-      @tag.destroy
       flash[:notice] = "Tag removed"
-      redirect_to :action => :index, :tag_type => tag_type_id     
+      @tag.destroy 
     else
-      flash[:error] = "Tag is used by activity and cannot be removed"
-      redirect_to :action => :index, :tag_type => tag_type_id 
+      flash[:error] = "Tag is used by activity and cannot be removed"    
     end
+    redirect_to :action => :index, :tag_type => params[:tag_type]
   end
 
 end

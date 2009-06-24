@@ -14,7 +14,7 @@ Manage Tags |
   <% @tags.each do |tag| -%>
     <tr>
       <td><%= tag.tag_type_name %> - <%= link_to tag.name, :action => 'edit', :id => tag %></td>
-      <td><%= link_to 'Destroy', tag_path(tag), :method => :delete %></td>
+      <td><%= link_to 'Destroy', tag_path(tag), :method => :delete, :tag_type => params[:tag_type] %></td>
     </tr>
   <% end -%>
 </table>
