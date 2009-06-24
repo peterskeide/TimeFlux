@@ -1,6 +1,6 @@
 class CreateActivitiesTags < ActiveRecord::Migration
   def self.up
-    create_table :activities_tags do |t|
+    create_table :activities_tags, :id => false do |t|
       t.references :activity
       t.references :tag
       t.timestamps

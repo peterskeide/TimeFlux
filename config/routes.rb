@@ -34,12 +34,9 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "user_sessions", :action => "new"
   map.activities "Activities", :controller => "activities"
 
-
-  map.tags "tags", :controller => "tags"
   map.tag_types "tag_types", :controller => "tag_types"
 
-  
-
+  map.resources :tags
   map.resources :user_sessions
   map.resources :time_entries, :new => { :previous => :get, :next => :get }
   

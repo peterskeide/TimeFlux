@@ -1,4 +1,4 @@
-<h1>Edit Activity</h1>
+<h1>Edit activity</h1>
 
 <% form_for @activity do |f| %>
   <%= f.error_messages %>
@@ -8,11 +8,7 @@
   </p>
   <p>
     <%= f.label :description %><br />
-    <%= f.text_area :description %>
-  </p>
-  <p>
-    <%= f.label :tags %>
-    <!--%= collection_select(:activity, :category_id, @tags, :id, :name) %-->
+    <%= f.text_area :description, :size => '80x4' %>
   </p>
   <p>
 	<%= f.check_box :active %>
@@ -22,6 +18,27 @@
 	<%= f.check_box :default_activity %> 
 	<%= f.label :default_activity %>
   </p>
+  <p>
   	<%= f.submit "Update" %>
   </p>
 <% end %>
+
+ <hr/>
+
+ <h3>Tags</h3>
+
+ <p class="notice"><%= flash[:notice] %></p>
+ <p class="error"><%= flash[:error] %></p>
+
+ <ul>
+    <% @activity.tags.each do |tag| -%>
+      <li><%= tag.name_and_type %>
+          <%= link_to "Remove", :action => "remove_tag", :id => @activity.id, :tag => tag.id %></li>
+    <% end %>
+ </ul>
+
+<% form_tag :action => 'add_tag' do %>
+    <%= select_tag "tag", options_from_collection_for_select( @tags, 'id', 'name_and_type', ''  ) %>
+    <%= hidden_field(:activity, :id) %>
+    <%= submit_tag 'Add tag' %>
+  <% end %>

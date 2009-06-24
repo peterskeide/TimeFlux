@@ -6,7 +6,7 @@ class Activity < ActiveRecord::Base
 
 
   def to_s
-    "Activity: #{name}"
+    "[Activity: #{name}, id=#{self.id}]"
   end
 
   private
