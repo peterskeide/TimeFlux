@@ -61,7 +61,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-
   def destroy
     @activity = Activity.find(params[:id])
     begin

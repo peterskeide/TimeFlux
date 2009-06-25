@@ -9,12 +9,8 @@
   <label for="user">User</label>
    <%= select_tag('user', options_from_collection_for_select( @users, 'id', 'fullname', @selected_user.id) ) %>
 
-  <label for="year">Year</label>
-  <%= select_tag "year", options_for_select(@years, @selected_year), {:include_blank => 'None'} %>
-
-  <label for="month">Month</label>
-
-    <%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', @selected_month  ) %>
+  <%= render :partial => 'date_picker', :locals =>
+    { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
 
   <%= submit_tag 'Generate' %>
 <% end %>
