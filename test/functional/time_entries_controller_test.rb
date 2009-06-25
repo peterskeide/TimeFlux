@@ -65,10 +65,13 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       setup { get :new, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux).id} }
       
-      should_respond_with :success
+      should_respond_with :redirect
       should_not_set_the_flash
       should_assign_to :user, :date, :time_entries, :activity
-      should_render_template :edit
+      
+      should "redirect to edit time entries" do
+        assert_redirected_to :action => "edit", :id => users(:bob).id, :activity_id => activities(:timeflux).id, :date => @date
+      end
       
       should "create 7 time entries for given activity and week" do
         assert_difference("TimeEntry.count", 7) { get :new, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux).id} }

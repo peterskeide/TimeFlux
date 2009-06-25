@@ -25,7 +25,7 @@ class TimeEntriesController < ApplicationController
     @date = Date.parse(params[:date])
     @time_entries = []
     7.times { |i| @time_entries << @user.time_entries.create(:date => @date.+(i), :activity => @activity) }
-    render :edit
+    redirect_to :action => "edit", :id => @user.id, :activity_id => @activity.id, :date => @date
   end
    
   def update
