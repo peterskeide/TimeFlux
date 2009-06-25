@@ -1,4 +1,6 @@
 <h1>Edit activity</h1>
+ <p class="notice"><%= flash[:notice] %></p>
+ <p class="error"><%= flash[:error] %></p>
 
 <% form_for @activity do |f| %>
   <%= f.error_messages %>
@@ -26,19 +28,29 @@
  <hr/>
 
  <h3>Tags</h3>
-
- <p class="notice"><%= flash[:notice] %></p>
- <p class="error"><%= flash[:error] %></p>
-
  <ul>
     <% @activity.tags.each do |tag| -%>
       <li><%= tag.name_and_type %>
           <%= link_to "Remove", :action => "remove_tag", :id => @activity.id, :tag => tag.id %></li>
     <% end %>
  </ul>
-
+ <br/>
 <% form_tag :action => 'add_tag' do %>
     <%= select_tag "tag", options_from_collection_for_select( @tags, 'id', 'name_and_type', ''  ) %>
     <%= hidden_field(:activity, :id) %>
     <%= submit_tag 'Add tag' %>
-  <% end %>
+<% end %>
+
+ <h3>Assignments</h3>
+ <ul>
+    <% @activity.users.each do |user| -%>
+      <li><%= user.fullname %>
+          <%= link_to "Remove", :action => "remove_user", :id => @activity.id, :user => user.id %></li>
+    <% end %>
+ </ul>
+ <br/>
+<% form_tag :action => 'add_user' do %>
+    <%= select_tag "user", options_from_collection_for_select( User.all, 'id', 'fullname', ''  ) %>
+    <%= hidden_field(:activity, :id) %>
+    <%= submit_tag 'Add assignment' %>
+<% end %>

@@ -13,7 +13,7 @@
 <% if @tags %>
   <% form_tag :action => 'tag', :method => 'get' do %>
     <label for="tag">Select Tag</label>
-     <%= select_tag('tag', options_from_collection_for_select( @tags, 'id', 'name', '') ) %>
+     <%= select_tag('tag', options_from_collection_for_select( @tags, 'id', 'name', (if @tag then @tag.id else '' end) ) ) %>
 
       <%= render :partial => 'date_picker', :locals =>
     { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>

@@ -70,7 +70,7 @@ class ActivitiesController < ApplicationController
         raise "Activity has hours registered - could not delete"
       end
     rescue
-      flash[:notice] = "#{$!}"
+      flash[:error] = "#{$!}"
     end
     redirect_to(activities_url)
   end
@@ -94,5 +94,30 @@ class ActivitiesController < ApplicationController
     activity.tags.delete tag
     redirect_to(:action => 'edit', :id => activity.id)
   end
+
+
+
+ def add_user
+    activity = Activity.find(params["activity"]['id'])
+    user = User.find params["user"]
+
+    if activity.users.include? user then
+      flash[:error] = 'User already assigned to this activity'
+    else
+      activity.users << user
+    end
+
+    redirect_to(:action => 'edit', :id => activity.id)
+  end
+
+  def remove_user
+    activity = Activity.find(params[:id])
+    user = User.find params["user"]
+    activity.users.delete user
+    redirect_to(:action => 'edit', :id => activity.id)
+  end
+
+
+
 
 end

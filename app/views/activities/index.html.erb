@@ -1,11 +1,8 @@
 <h1>Activities</h1>
+  <%= render :partial => 'sub_menu', :locals => { :tag_types => @tag_types } -%>
+
+<p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
-<hr/>
-Activities |
-<%= link_to "Manage Tags", tags_url %> |
-<%= link_to "Tag Categories", tag_types_url %>
-  <hr/>
-  
 
   <% form_tag :action => 'index', :method => 'get' do %>
 
@@ -19,7 +16,7 @@ Activities |
     <%= submit_tag 'Update' %>
   <% end %>
 
-  Hits: <%= @activities.size %>
+  <h4>Hits: <%= @activities.size %></h4>
 
 <% @activities.each do |a| -%>
   <hr/>

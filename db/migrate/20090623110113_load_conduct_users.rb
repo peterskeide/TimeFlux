@@ -2,7 +2,7 @@ class LoadConductUsers < ActiveRecord::Migration
   def self.up
 
      #From existing timeflux: SELECT "firstname","lastname","username" FROM "public"."timeflux_person"
-    users = '"daniel","s","daniels","daniels@conduct.no"
+    users = '"Daniel","Skarpås","daniels","daniels@conduct.no"
     "Erik","Johansson","erikj",nil
 "Eirik","Meland","eirikm",nil
 "Alf","Sagen","alfs","alfs@conduct.no"

@@ -49,9 +49,8 @@ class ReportsController < ApplicationController
     
     @tag_types = TagType.find(:all)
     @tag_type = TagType.find(params[:tag_type]) if params[:tag_type]
-    @tag = Tag.find(params[:tag]) if params[:tag]
-    
     @tags = @tag_type.tags if @tag_type
+    @tag = Tag.find(params[:tag]) if params[:tag]
 
     if @tag
       report_data = []
@@ -78,9 +77,10 @@ class ReportsController < ApplicationController
     # Content of selects
     @users = User.find(:all)
 
-    time_entries = @selected_user.time_entries.between(@day.beginning_of_month, @day.end_of_month)
-
-    time_data = time_entries.collect { |e| [e.activity.name, e.hours, e.date, e.notes] }
+    time_data = [] 
+    @selected_user.time_entries.between(@day,@day >> 1).each do |t|
+      time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
+    end
     table = Ruport::Data::Table.new( :data => time_data,
       :column_names => ['Activity name', 'Date', 'Hours', 'Notes'])
 
@@ -94,13 +94,13 @@ private
     @day = first_in_month(params[:year], params[:month])
     @selected_year = @day.year
     @selected_month = @day.month
-    
+
     @years = (2007..Date.today.year).to_a.reverse
-    @months = []    
+    @months = []
     month_names = %w{ January Febrary March April May June July August September October November December}
     month_names.each_with_index { |name, i| @months << [ i+1, name ] }
   end
-  
+
   def first_in_month(year, month)
     year ||= Date.today.year
     month ||= Date.today.month
