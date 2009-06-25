@@ -1,0 +1,34 @@
+
+<h2>Tag Report</h2>
+
+
+<%= @tag_types.collect { |tt|
+  link_to tt.name, :action => 'tag', :tag_type => tt.id }.join(' | ') %>
+<hr/>
+<% if @debug then %>
+  <p><%= @debug %>,  (<%= @debug.class %>)</p>
+<% end %>
+
+
+<% if @tags %>
+  <% form_tag :action => 'tag', :method => 'get' do %>
+    <label for="tag">Select Tag</label>
+     <%= select_tag('tag', options_from_collection_for_select( @tags, 'id', 'name', (if @tag then @tag.id else '' end) ) ) %>
+
+      <%= render :partial => 'date_picker', :locals =>
+    { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
+
+
+    <%= hidden_field_tag "tag_type", params[:tag_type] %>
+    <%= submit_tag 'Generate' %>
+<% end %>
+
+    <hr/>
+
+<% if @table %>
+  <%= @table.to_html() -%>
+    <% end %>
+
+  <%= render :partial => 'download', :locals => { :params => params } -%>
+<% end %>
+

@@ -1,6 +1,8 @@
 class LoadConductProjects < ActiveRecord::Migration
   def self.up
 
+    project_type = TagType.create(:name => "Project")
+    
        #From existing app: select c.name, p.name as parent_name from timeflux_project as c, timeflux_project as p where c.parent_id = p.id and p."parent_id" IS NULL
     projects = '"AMA Low Cost","Norwegian Air Shuttle"
 "BIP","Oslo Børs"
@@ -92,8 +94,7 @@ class LoadConductProjects < ActiveRecord::Migration
 "Forskningsprosjekt","Simula"
 "Migrering fra Weblogic","Skagerak"'
 
-    customer_type = TagType.create(:name => "Customer")
-    project_type = TagType.create(:name => "Project")
+
 
     projects.split("\n").each  do |name|
       entry = name.split(",")
@@ -101,18 +102,14 @@ class LoadConductProjects < ActiveRecord::Migration
       customer = entry[1].gsub(/"/, '')
 
       p = Tag.create(:name => project, :tag_type_id => project_type.id)
-      #c = Tag.find_by_name customer
-      c = Tag.create(:name => customer, :tag_type_id => customer_type.id)
+      c = Tag.find_by_name(customer)
+      for_part = if c then "for #{c.name}" else "" end
 
-      activity = Activity.create(:name=> "Utvikling", :description => "General development", :default_activity => false, :active => true )
-
+      activity = Activity.create(:name=> "#{p.name} #{for_part}", :description => "General development", :default_activity => false, :active => true )
 
       activity.tags << p
-      activity.tags << c
-      #c = p = nil
+      activity.tags << c if c
     end
-
-
 
   end
 

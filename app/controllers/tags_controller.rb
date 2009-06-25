@@ -15,32 +15,47 @@ class TagsController < ApplicationController
 
   def create
     @tag = Tag.new(params[:tag])
+
     if @tag.save
       flash[:notice] = "Tag successfully created"
-      #redirect_to :tags, :tag_type => params[:tag_type]
-      redirect_to :action => :index, :tag_type => @tag.tag_type.id
     else
-      flash[:error] = @tag.errors.full_messages.to_s
-      redirect_to :tags, :tag_type => params[:tag_type]
+      flash[:error] = @tag.errors.full_messages.to_s      
     end
+    redirect_to :tags, :tag_type => params[:tag_type]
   end
 
   def show
     @tag = Tag.find(params[:id])
   end
 
-  #TODO: when tags may not be removed...
+  def edit
+    @tag = Tag.find(params[:id])
+    @tag_types = TagType.all
+  end
+
+
+  def update
+    @tag = Tag.find(params[:id])
+    attributes = params[@tag.class.name.underscore]
+    if @tag.update_attributes(attributes)
+      flash[:notice] = 'Tag was successfully updated.'
+
+      redirect_to :action => 'index', :tag_type => params[:tag_type]
+    else
+      render :action => "edit"
+    end
+  end
+
   def destroy
     @tag = Tag.find(params[:id])
+
     if @tag.activities.empty?
-      tag_type_id = @tag.tag_type.id
-      @tag.destroy
       flash[:notice] = "Tag removed"
-      redirect_to :action => :index, :tag_type => tag_type_id     
+      @tag.destroy 
     else
-      flash[:error] = "Tag is used by activity and cannot be removed"
-      redirect_to :tags
+      flash[:error] = "Tag is used by activity and cannot be removed"    
     end
+    redirect_to :action => :index, :tag_type => params[:tag_type]
   end
 
 end

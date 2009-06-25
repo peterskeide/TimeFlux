@@ -44,47 +44,64 @@ class ReportsController < ApplicationController
     respond_with_formatter @table, TestController, "User report"
   end
 
-#  def week_entries
-#    user = current_user_session.user
-#    week_data = user.week_entries.collect do |week_entry|
-#      [week_entry.year, week_entry.week_number, week_entry.activity.name, week_entry.hours]
-#    end
-#    table = Ruport::Data::Table.new( :data => week_data,
-#      :column_names => ['Year', 'Week number', 'Activity name', 'Hours'])
-#    @table = Grouping(table,:by => "Year")
-#    respond_with_formatter_and_html @table, TestController, "Week entries report"
-#  end
+  def tag
+    setup_calender
+    
+    @tag_types = TagType.find(:all)
+    @tag_type = TagType.find(params[:tag_type]) if params[:tag_type]
+    @tags = @tag_type.tags if @tag_type
+    @tag = Tag.find(params[:tag]) if params[:tag]
+
+    if @tag
+      report_data = []
+      @tag.activities.each do |activity|
+
+        activity.time_entries.between(@day,@day >> 1).each do |t|
+          report_data << [activity.name, t.hours, t.user.fullname, t.notes] if t.hours > 0
+        end
+      end
+      table = Ruport::Data::Table.new( :data => report_data,
+      :column_names => ['Activity name', 'Hours', 'Consultant', 'Notes'])
+    
+      @table = Grouping(table,:by => "Activity name")
+      respond_with_formatter @table, TestController, "Hour report for #{@tag.name}"
+    end
+  end
 
   def hours
-    
+    setup_calender
+     
     @selected_user = User.find(params[:user]) if params[:user]
     @selected_user ||= current_user_session.user
-    day = get_month(params[:year], params[:month])
-    @selected_year = day.year
-    @selected_month = day.month
-    
+
     # Content of selects
     @users = User.find(:all)
-    @years = (2007..Date.today.year).to_a.reverse
-    @months = []    
-    month_names = %w{ January Febrary March April May June July August September October November December}
-    month_names.each_with_index { |name, i| @months << [ i+1, name ] }
-    
-    time_entries = @selected_user.time_entries.between(day.beginning_of_month, day.end_of_month)
 
-    time_data = time_entries.collect { |e| [e.activity.name, e.hours, e.date, e.notes] }
+    time_data = [] 
+    @selected_user.time_entries.between(@day,@day >> 1).each do |t|
+      time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
+    end
     table = Ruport::Data::Table.new( :data => time_data,
       :column_names => ['Activity name', 'Date', 'Hours', 'Notes'])
 
     @table = Grouping(table,:by => "Activity name")
-
-    respond_with_formatter @table, TestController, "Hours report"
-      
+    respond_with_formatter @table, TestController, "Hour report for user: #{@selected_user.fullname}"
   end
 
 private
 
-  def get_month(year, month)
+  def setup_calender
+    @day = first_in_month(params[:year], params[:month])
+    @selected_year = @day.year
+    @selected_month = @day.month
+
+    @years = (2007..Date.today.year).to_a.reverse
+    @months = []
+    month_names = %w{ January Febrary March April May June July August September October November December}
+    month_names.each_with_index { |name, i| @months << [ i+1, name ] }
+  end
+
+  def first_in_month(year, month)
     year ||= Date.today.year
     month ||= Date.today.month
     return Date.new(year.to_i, month.to_i, 1)

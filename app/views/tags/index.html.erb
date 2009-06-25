@@ -1,30 +1,29 @@
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 <h1>Manage Tags</h1>
-<hr/>
-<%= link_to "Activities", activities_url %> |
-Manage Tags |
-<%= link_to "Tag Categories", tag_types_url %>
-  <hr/>
- 	<%= @tag_types.collect { |tt|
-		link_to tt.name, :action => 'index', :tag_type => tt.id }.join(' | ') %>
-        
-  <hr/>
+
+  <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
+
 <table>
-	<% @tags.each do |c| -%>
-		<tr>
-				<td><%= c.name_and_type %></td>
-				<td><%= link_to "Remove", :action => "destroy", :id => c %></td>
-		</tr>
-	<% end -%>
+  <% @tags.each do |tag| -%>
+    <tr>
+      <td><%= tag.tag_type_name %> - <%= link_to tag.name, :action => 'edit', :id => tag %></td>
+      <td><%= link_to 'Destroy', tag_path(tag), :method => :delete, :tag_type => params[:tag_type] %></td>
+    </tr>
+  <% end -%>
 </table>
 <hr/>
 <p>
-  <% if params[:tag_type] %>
-    <% form_for :tag, @tag, :url => {:action => "create"} do |f| -%>
-		New tag: <%= f.text_field :name %>
-                <%= f.hidden_field(:tag_type_id, :value => params[:tag_type]) %>
-        <%= submit_tag "Create" %>
+
+  <% form_for Tag.new do |f| -%>
+    <% if params[:tag_type] %>
+      New <%= TagType.find(params[:tag_type]).name -%> tag: <%= f.text_field :name %>
+      <%= f.hidden_field(:tag_type_id, :value => params[:tag_type]) %>
+    <% else %>          
+      New tag: <%= f.text_field :name %>
+      <%= collection_select(:tag, :tag_type_id, @tag_types, :id, :name) %>
     <% end -%>
-  <% end %>
+    <%= submit_tag "Create" %>
+  <% end -%>
+
 </p>

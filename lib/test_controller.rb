@@ -24,7 +24,17 @@ require "ruport"
     formatter :pdf do
       build :report do
         add_text options.title
-        draw_table data
+
+        #data.to_pdf
+
+        #draw_table data if data.class == Table
+        if data.is_a? Ruport::Data::Grouping
+          render_grouping data, options.to_hash.merge(:formatter => pdf_writer)
+        else
+          draw_table data
+        end
+        #
+        #
         #pad_bottom(20) do
         #  add_text "footer goes here"
         #end

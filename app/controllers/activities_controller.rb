@@ -1,36 +1,32 @@
 class ActivitiesController < ApplicationController
   
   before_filter :check_authentication
-  
+
   def index
-    @debug = ''
-    @activities = []
+    activities = []
+    no_data = 0
     TagType.all.each do |tt| 
       type = tt.name.to_sym
-      if params[type]
-        value = params[type]          
-        if value == 'all'
-          @activities += tt.activities
-        elsif value == 'none'
-          #TODO
-          #1. find tags where type = tt
-          #2. select the inverse
-          #Activity.all.each{|a| activities << a if a.tags.empty? }
-        else
-          tag = Tag.find_by_id(value)
-          @activities += tag.activities
+      if params[type] 
+        unless params[type] =~ /all|none/
+          tag = Tag.find params[type]
+          activities += tag.activities
         end
+        if params[type] == 'all'
+          activities += tt.activities
+        end
+        no_data += 1 if params[type] == 'none'
+      else
+        no_data += 1
       end
     end
-#    if params[:Project]
-#      project = Tag.find params[:Project]
-#      @activities << project.activities
-#    end
     
-    #@activities = Activity.find(:all)
+    if no_data == TagType.all.size then
+      @activities = Activity.find(:all)
+    else
+      @activities = activities.flatten.uniq
+    end
     @tag_types = TagType.find(:all)
-
-
   end
   
   def new
@@ -59,22 +55,69 @@ class ActivitiesController < ApplicationController
     attributes = params[@activity.class.name.underscore]
     if @activity.update_attributes(attributes)
       flash[:notice] = 'Activity was successfully updated.'
-      redirect_to(:action => 'index', :id => @activity.object_id)
+      redirect_to(:action => 'index', :id => @activity.id)
     else
       render :action => "edit"
     end
   end
 
-
   def destroy
     @activity = Activity.find(params[:id])
     begin
-      @activity.destroy
+      if @activity.time_entries.empty?
+        @activity.destroy
+      else
+        raise "Activity has hours registered - could not delete"
+      end
     rescue
-      flash[:notice] = "#{$!}"
+      flash[:error] = "#{$!}"
     end
     redirect_to(activities_url)
   end
 
-  
+  def add_tag
+    activity = Activity.find(params["activity"]['id'])
+    tag = Tag.find params["tag"]
+    
+    if activity.tags.include? tag then
+      flash[:error] = 'Tag already added to this activity'
+    else
+      activity.tags << tag
+    end
+
+    redirect_to(:action => 'edit', :id => activity.id)
+  end
+
+  def remove_tag
+    activity = Activity.find(params[:id])
+    tag = Tag.find params["tag"]
+    activity.tags.delete tag
+    redirect_to(:action => 'edit', :id => activity.id)
+  end
+
+
+
+ def add_user
+    activity = Activity.find(params["activity"]['id'])
+    user = User.find params["user"]
+
+    if activity.users.include? user then
+      flash[:error] = 'User already assigned to this activity'
+    else
+      activity.users << user
+    end
+
+    redirect_to(:action => 'edit', :id => activity.id)
+  end
+
+  def remove_user
+    activity = Activity.find(params[:id])
+    user = User.find params["user"]
+    activity.users.delete user
+    redirect_to(:action => 'edit', :id => activity.id)
+  end
+
+
+
+
 end

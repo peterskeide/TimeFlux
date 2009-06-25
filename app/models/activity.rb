@@ -5,7 +5,7 @@ class Activity < ActiveRecord::Base
   has_and_belongs_to_many :tags
 
   def to_s
-    "Activity: #{name}"
+    "[Activity: #{name}, id=#{self.id}]"
   end
 
   private

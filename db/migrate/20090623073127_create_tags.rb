@@ -4,7 +4,6 @@ class CreateTags < ActiveRecord::Migration
       t.string :name
       t.string :description
       t.references :tag_type
-      t.references :tag
       t.timestamps
     end
   end

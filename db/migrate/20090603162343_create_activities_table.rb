@@ -5,7 +5,6 @@ class CreateActivitiesTable < ActiveRecord::Migration
       t.string :description
       t.boolean :active
       t.boolean :default_activity
-      #t.references :category
       t.timestamps
     end
   end

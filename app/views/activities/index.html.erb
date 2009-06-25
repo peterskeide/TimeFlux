@@ -1,11 +1,8 @@
 <h1>Activities</h1>
+  <%= render :partial => 'sub_menu', :locals => { :tag_types => @tag_types } -%>
+
+<p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
-<hr/>
-Activities |
-<%= link_to "Manage Tags", tags_url %> |
-<%= link_to "Tag Categories", tag_types_url %>
-  <hr/>
-  
 
   <% form_tag :action => 'index', :method => 'get' do %>
 
@@ -13,19 +10,21 @@ Activities |
       <% unless tag_type.tags.empty? %>
         <label><%= tag_type.name %></label>
         <%= select_tag( tag_type.name, '<option value="none">---</option><option value="all">all</option>' +  options_from_collection_for_select( tag_type.tags, 'id', 'name', '---') ) %>
-        &nbsp;
+        &nbsp;<%= "OR" unless tag_type == @tag_types.last %>
       <% end %>
     <% end %>
     <%= submit_tag 'Update' %>
   <% end %>
 
-  Hits: <%= @activities.size %>
+  <h4>Hits: <%= @activities.size %></h4>
 
 <% @activities.each do |a| -%>
   <hr/>
   <div>
     <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
-    <b>Tags:</b> <%# a.tags.collect{ |t| "#{t.name}(#{t.tag_type_name})" }.join(', ')  -%><br/>
+    <b>Tags:</b> <% a.tags.each do |t| %>
+      <%=  "#{t.name}(#{t.tag_type_name})" -%>,
+    <% end %> <br/>
     <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date %><br/>
 	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>

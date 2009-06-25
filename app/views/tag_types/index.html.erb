@@ -2,11 +2,7 @@
 <p class="error"><%= flash[:error] %></p>
 <h1>Tag Categories</h1>
 
-<hr/>
-<%= link_to "Activities", activities_url %> |
-<%= link_to "Manage Tags", tags_url %> |
-Tag Categories
-  <hr/>
+  <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
 
 <table>
 	<% @tag_types.each do |c| -%>
