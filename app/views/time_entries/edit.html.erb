@@ -6,7 +6,6 @@
 <p> 
 	<% form_for @user, :url => { :controller => "time_entries", :action => "update" } do |user_form| -%>
 		<%= hidden_field_tag "date", @date %>
-		<%= user_form.hidden_field :id %>
 		<table>
 			<% @time_entries.sort.each do |time_entry|  -%>
 				<% user_form.fields_for(:time_entries, time_entry) do |time_entry_form| -%>
