@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'date_extensions'
 
 class TimeEntriesControllerTest < ActionController::TestCase
         
