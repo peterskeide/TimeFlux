@@ -9,13 +9,6 @@ class TimeEntriesControllerTest < ActionController::TestCase
       login_as :bob
       @date = Date.new(2009, 6, 22) # monday in week 26, 2009
       Date.stubs(:today).returns(@date)
-      @assert_activity_map_and_options_assigned = lambda {
-        activities = assigns(:activities)
-        assert_equal(1, activities.size)
-        assert_equal(7, activities["TimeFlux"].size)
-        activity_options = assigns(:activity_options)
-        assert_equal(2, activity_options.size) #should include foobar and status only 
-      }
     end
              
     context "GET to :index" do
@@ -28,7 +21,11 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_render_template :index
             
       should "assign activity map and options" do
-        @assert_activity_map_and_options_assigned.call
+        activities = assigns(:activities)
+        assert_equal(1, activities.size)
+        assert_equal(7, activities["TimeFlux"].size)
+        activity_options = assigns(:activity_options)
+        assert_equal(2, activity_options.size) #should include foobar and status only
       end
       
     end
@@ -39,16 +36,12 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :user
+      should_assign_to :user, :activities, :activity_options
       should_render_template :index
       
       should "assing date from previous week" do
         date = assigns(:date)
         assert_equal(25, date.cweek)
-      end
-      
-      should "assign activity map and options" do
-        @assert_activity_map_and_options_assigned.call
       end
       
     end
@@ -59,16 +52,12 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :user
+      should_assign_to :user, :activities, :activity_options
       should_render_template :index
       
       should "assing date from previous week" do
         date = assigns(:date)
         assert_equal(27, date.cweek)
-      end
-      
-      should "assign activity map and options" do
-        @assert_activity_map_and_options_assigned.call
       end
       
     end
@@ -108,27 +97,71 @@ class TimeEntriesControllerTest < ActionController::TestCase
         activity_id = activities(:timeflux).id
         time_entries.each { |te| assert_equal(activity_id, te.activity.id) }       
       end
-      
+            
     end
     
-    context "POST to :update" do
+    context "successful POST to :update" do
       
-      setup { 
-        put :update, {"user"=>
-          {"id"=>users(:bob).id, "time_entries_attributes"=>{
-            "0"=>{"date"=>"2009-06-22", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_monday).id, "hours"=>"7.5"}, 
-            "1"=>{"date"=>"2009-06-23", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_tuesday).id, "hours"=>"7.5"}, 
-            "2"=>{"date"=>"2009-06-24", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_wednesday).id, "hours"=>"7.5"}, 
-            "3"=>{"date"=>"2009-06-25", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_thursday).id, "hours"=>"7.5"}, 
-            "4"=>{"date"=>"2009-06-26", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_friday).id, "hours"=>"7.5"}, 
-            "5"=>{"date"=>"2009-06-27", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_saturday).id, "hours"=>"7.5"},
-            "6"=>{"date"=>"2009-06-28", "notes"=>"", "id"=>time_entries(:bob_timeflux_26_sunday).id, "hours"=>"7.5"}
-            }}, "date"=>"2009-06-22", "id"=>users(:bob).id}         
-         }
+      setup do 
+        put :update, { "user"=>
+          {"time_entries_attributes"=>{
+            "0"=>{"date"=>"2009-06-22", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_monday).id, "hours"=>"5"}, 
+            "1"=>{"date"=>"2009-06-23", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_tuesday).id, "hours"=>"5"}, 
+            "2"=>{"date"=>"2009-06-24", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_wednesday).id, "hours"=>"5"}, 
+            "3"=>{"date"=>"2009-06-25", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_thursday).id, "hours"=>"5"}, 
+            "4"=>{"date"=>"2009-06-26", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_friday).id, "hours"=>"5"}, 
+            "5"=>{"date"=>"2009-06-27", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_saturday).id, "hours"=>"5"},
+            "6"=>{"date"=>"2009-06-28", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_sunday).id, "hours"=>"5"}
+            }}, "date"=>"2009-06-22", "id"=>users(:bob).id }         
+      end
+      
               
-      should_respond_with :success
+      should_respond_with :redirect
+      should_set_the_flash_to("Time entries successfully saved")
+      should_redirect_to("Selected weeks time entries") { "/time_entries?date=#{@date}" }
+    
+      # All time entry fixtures should have 7.5 hours and no notes before update
+      should "update hours and notes for changed timed entries" do
+        activity_id = activities(:timeflux).id 
+        time_entries = users(:bob).time_entries.for_activity(activity_id).between(@date, @date.+(6))
+        time_entries.each do |te|
+          assert_equal(5, te.hours)
+          assert_equal("Foobar", te.notes)
+        end
+      end
+      
+     end
+      
+    context "unsuccessful POST to :update" do
+      
+      setup do
+        @user = User.find_by_id(users(:bob).id)
+        @user.stubs(:update_attributes).with(any_parameters).returns(false)
+        User.stubs(:find_by_id).with(any_parameters).returns(@user)
+        put :update, { "user"=>{}, "date"=>"2009-06-22", "id"=>users(:bob).id }
+      end
+        
       should_not_set_the_flash
-      should_redirect_to :action => "index"  
+      should_assign_to :user, :date, :time_entries
+      should_render_template :edit 
+                  
+    end
+    
+    context "DELETE to :destroy" do
+      
+      setup do
+        @time_entries_before_delete = TimeEntry.count 
+        delete :destroy, { :id => users(:bob).id, :activity_id => activities(:timeflux).id, :date => @date.to_s } 
+      end
+                 
+      should_render_template :index  
+      should_respond_with :success
+      should_assign_to :user, :date, :time_entries, :activities, :activity_options
+           
+      should "delete 7 time entries in week 26 for activity 'TimeFlux'" do
+        time_entries_after_delete = TimeEntry.count
+        assert_equal(7, @time_entries_before_delete - time_entries_after_delete)
+      end
       
     end
         
