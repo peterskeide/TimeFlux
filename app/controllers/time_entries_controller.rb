@@ -29,16 +29,22 @@ class TimeEntriesController < ApplicationController
   end
    
   def update
-    @user = User.find_by_id(params[:id])
-    if @user.update_attributes(params[:user])
-      flash[:notice] = "Time entries successfully saved"
-      redirect_to :action => "index", :date => params[:date]
-    else
-      @date = Date.parse(params[:date])
-      activity_id = params[:activity_id].to_i
-      @time_entries = find_time_entries_for_activity_and_date(activity_id, @date)
-      render :edit
+    time_entries_attributes = create_time_entries_params_hash()
+    time_entries_attributes.each do |day, attrs|
+      logger.debug("Key #{day} value #{attrs}")
+      time_entry = TimeEntry.find_by_id(attrs.delete("id"))
+      time_entry.update_attributes(attrs)
     end
+    redirect_to :action => "index", :date => params[:date]
+    #if @user.update_attributes(params[:user])
+    #  flash[:notice] = "Time entries successfully saved"
+    #  redirect_to :action => "index", :date => params[:date]
+    #else
+    #  @date = Date.parse(params[:date])
+    #  activity_id = params[:activity_id].to_i
+    #  @time_entries = find_time_entries_for_activity_and_date(activity_id, @date)
+    #  render :edit
+    #end
   end
     
   def edit
@@ -63,7 +69,18 @@ class TimeEntriesController < ApplicationController
     render :index
   end
   
-  private 
+  private
+  
+  def create_time_entries_params_hash()
+    time_entries_hash = {1 => {}, 2 => {}, 3 => {}, 4 => {}, 5 => {}, 6 => {}, 7 => {}}
+    params.select { |k, v| k.include? "-" }.each do |k, v|
+      day_field = k.split("-")
+      day = day_field[0].to_i
+      field = day_field[1]           
+      time_entries_hash[day].merge!({field => v})
+    end
+    time_entries_hash
+  end 
   
   # Encapsulates common code used by index, next, previous and destroy actions.
   # Initializes instance variables for the index view-template.
