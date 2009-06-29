@@ -4,7 +4,7 @@
 	<h2>Week: <%= @date.cweek %></h2>
 </p>
 <p> 
-	<% form_for @user, :url => { :controller => "time_entries", :action => "update" } do |user_form| -%>
+	<% form_for @user, :url => { :controller => "time_entries", :action => "update" }, :builder => TimeEntriesFormBuilder do |user_form| -%>
 		<%= hidden_field_tag "date", @date %>
 		<table>
 			<% @time_entries.sort.each do |time_entry|  -%>
@@ -16,11 +16,11 @@
 					</td>
 					<td>
 						<%= time_entry_form.label :hours, "Hours" %>
-						<%= time_entry_form.text_field :hours, :size => 5 %>
+						<%= time_entry_form.lock_checking_text_field :hours, :size => 5 %>
 					</td>
 					<td>
 						<%= time_entry_form.label :notes, "Notes" %>
-						<%= time_entry_form.text_field :notes, :size => 65 %>
+						<%= time_entry_form.lock_checking_text_field :notes, :size => 65 %>
 					</td>
 					</tr>
 				<% end -%>
@@ -31,4 +31,5 @@
 			<%= user_form.error_messages %>
 		</p>
 	<% end -%>
+	<%= link_to "Back", { :controller => "time_entries", :action => "index", :date => @date } %>
 </p>

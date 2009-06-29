@@ -7,15 +7,16 @@ class ActivitiesController < ApplicationController
     no_data = 0
     TagType.all.each do |tt| 
       type = tt.name.to_sym
-      if params[type] 
-        unless params[type] =~ /all|none/
+      if params[type]
+        value = params[type] 
+        if params[type] == 'all'
+          activities += tt.activities
+        elsif params[type] == 'none'
+          no_data += 1
+        else
           tag = Tag.find params[type]
           activities += tag.activities
         end
-        if params[type] == 'all'
-          activities += tt.activities
-        end
-        no_data += 1 if params[type] == 'none'
       else
         no_data += 1
       end

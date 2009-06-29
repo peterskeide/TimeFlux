@@ -48,6 +48,11 @@ class TimeEntriesController < ApplicationController
     @time_entries = find_time_entries_for_activity_and_date(activity_id, @date)
   end
   
+  def grid_edit
+    @date = Date.parse(params[:date])
+     init_index(@date)
+  end
+  
   def destroy
     @user = User.find_by_id(params[:id])
     @date = Date.parse(params[:date])

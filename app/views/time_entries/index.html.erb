@@ -22,7 +22,7 @@
 <% @activities.each do |activity_name, time_entries| -%>
 	<tr> 
 		<td class="week_entries_activity">
-		<%= link_to activity_name, { :controller => "time_entries", :action => "edit", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date } %>
+			<%= link_to activity_name, { :controller => "time_entries", :action => "edit", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date } %>
 		</td>
 		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
@@ -38,6 +38,9 @@
 <% end -%>
 </tbody>
 </table>
+<p>
+	<%= link_to "Edit in grid", {:controller => "time_entries", :action => "grid_edit", :id => @user.id, :date => @date} %>
+</p>
 <% else %>
 <p>
 	<b>There are no registered time entries for this week</b>

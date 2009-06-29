@@ -149,6 +149,35 @@ class TimeEntriesControllerTest < ActionController::TestCase
                   
     end
     
+    context "POST to :update for locked time entries" do
+      
+      setup do
+        put :update, { "user"=>
+          {"time_entries_attributes"=>{
+            "0"=>{"date"=>"2009-06-08", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_monday).id, "hours"=>"5"}, 
+            "1"=>{"date"=>"2009-06-09", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_tuesday).id, "hours"=>"5"}, 
+            "2"=>{"date"=>"2009-06-10", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_wednesday).id, "hours"=>"5"}, 
+            "3"=>{"date"=>"2009-06-11", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_thursday).id, "hours"=>"5"}, 
+            "4"=>{"date"=>"2009-06-12", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_friday).id, "hours"=>"5"}, 
+            "5"=>{"date"=>"2009-06-13", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_saturday).id, "hours"=>"5"},
+            "6"=>{"date"=>"2009-06-14", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_sunday).id, "hours"=>"5"}
+            }}, "date"=>"2009-06-08", "id"=>users(:bob).id }
+      end
+        
+      should_assign_to :user, :date, :time_entries
+      should_render_template :edit
+      
+      should "not save updates to locked entries" do
+        date = Date.new(2009, 6, 8)
+        time_entries = users(:bob).time_entries.for_activity(activities(:timeflux).id).between(date, date.+(6))
+        time_entries.each do |te| 
+          assert_equal(7.5, te.hours)
+          assert_nil(te.notes)
+        end
+      end
+                  
+    end
+    
     context "DELETE to :destroy" do
       
       setup do

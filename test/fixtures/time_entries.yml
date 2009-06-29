@@ -36,3 +36,16 @@ week = date.cweek
     user: <%= user %>
     activity: <%= activity %>
 <% end %>
+
+<%
+# Locked time entries 
+date = Date.new(2009, 6, 8)
+week = date.cweek
+7.times do |i| %>
+<%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
+    hours: 7.5
+    date: <%= date.+(i) %>
+    user: <%= user %>
+    activity: <%= activity %>
+    locked: true
+<% end %>

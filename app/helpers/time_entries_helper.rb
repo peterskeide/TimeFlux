@@ -5,5 +5,5 @@ module TimeEntriesHelper
   def date_label_for(object)
     "#{object.date} (#{Weekdays[object.date.wday - 1]})"
   end
-  
+    
 end

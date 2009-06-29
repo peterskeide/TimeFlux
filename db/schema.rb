@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20090624112101) do
     t.string   "name"
     t.string   "description"
     t.integer  "tag_type_id"
+    t.integer  "tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
