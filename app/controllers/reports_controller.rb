@@ -8,7 +8,7 @@ require 'ruport'
 
 class ReportsController < ApplicationController
 
-  before_filter :check_authentication
+  before_filter :check_authentication, :check_admin
 
   def index
     @reports = self.__send__(:action_methods).delete("index").sort

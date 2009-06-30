@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :check_authentication
+  before_filter :check_authentication, :check_admin
 
   def index
     @users = User.find(:all)

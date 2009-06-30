@@ -26,6 +26,14 @@ class ApplicationController < ActionController::Base
        redirect_to new_user_session_url
        return false
      end
-   end 
+  end
+  
+  def check_admin
+    unless current_user.admin
+      flash[:notice] = "That page is for admins only"
+       redirect_to time_entries_url
+       return false
+    end
+  end 
   
 end

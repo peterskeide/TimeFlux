@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
   
-  before_filter :check_authentication
+  before_filter :check_authentication, :check_admin
 
   def index
     activities = []

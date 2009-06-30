@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
 
-  before_filter :check_authentication
+  before_filter :check_authentication, :check_admin
 
   def index
     @tag_types = TagType.find(:all)
