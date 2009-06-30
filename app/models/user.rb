@@ -2,9 +2,7 @@ class User < ActiveRecord::Base
   
   has_many :time_entries
   has_and_belongs_to_many :activities
-  
-  accepts_nested_attributes_for :time_entries
-    
+      
   acts_as_authentic
    
   validates_presence_of :firstname, :lastname, :login
