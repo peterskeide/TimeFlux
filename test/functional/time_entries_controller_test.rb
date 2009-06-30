@@ -199,6 +199,55 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
     end
         
+  end
+  
+  context "User not logged in: " do
+    
+    context "GET to :index" do            
+      setup { get :index }            
+      should_redirect_to("Login page") { "/user_sessions/new" }          
+    end
+    
+    context "GET to :previous (Previous Week link)" do      
+      setup { get :previous }      
+      should_redirect_to("Login page") { "/user_sessions/new" }           
+    end
+    
+    context "GET to :next (Next Week link)" do      
+      setup { get :next }      
+      should_redirect_to("Login page") { "/user_sessions/new" }           
+    end
+    
+    context "GET to :new" do      
+      setup { get :new }      
+      should_redirect_to("Login page") { "/user_sessions/new" }           
+    end
+    
+    context "GET to :edit" do      
+      setup { get :edit }      
+      should_redirect_to("Login page") { "/user_sessions/new" }                  
+    end
+    
+    context "successful POST to :update" do      
+      setup { put :update }              
+      should_redirect_to("Login page") { "/user_sessions/new" }      
+     end
+      
+    context "unsuccessful POST to :update" do      
+      setup { put :update }      
+      should_redirect_to("Login page") { "/user_sessions/new" }                          
+    end
+    
+    context "POST to :update for locked time entries" do      
+      setup { put :update }      
+      should_redirect_to("Login page") { "/user_sessions/new" }                  
+    end
+    
+    context "DELETE to :destroy" do      
+      setup { delete :destroy }      
+      should_redirect_to("Login page") { "/user_sessions/new" }      
+    end
+    
   end 
   
 end
