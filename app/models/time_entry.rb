@@ -31,7 +31,6 @@ class TimeEntry < ActiveRecord::Base
   private
   
   def must_not_be_locked
-    logger.debug "Date: #{date}, Locked: #{locked}"
     if changed?
       errors.add_to_base("Updating locked time entries is not possible") if locked
     end

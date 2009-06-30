@@ -1,6 +1,6 @@
 <h1>Entries for week <%= @date.cweek %></h1>
 <p class="notice"><%= flash[:notice] %></p>
-<% form_for @user, :url => { :controller => "time_entries", :action => "update" }, :builder => TimeEntriesFormBuilder do |user_form| -%>
+<% form_tag('/time_entries/update') do -%>
 	<%= hidden_field_tag "date", @date %>
 	<table class="week_entries">
 	<thead>
@@ -20,17 +20,16 @@
 	<tr> 
 		<td class="week_entries_activity"><%= activity_name %></td>
 		<% time_entries.each do |te| -%>
-			<% user_form.fields_for(:time_entries, te) do |time_entry_form| -%>
-				<td><%= time_entry_form.lock_checking_text_field :hours, :size => 5 %></td>
-			<% end -%>  	
+			<% fields_for "time_entry[]", te, :builder => TimeEntriesFormBuilder do |f| -%>
+				<td><%= f.lock_checking_text_field :hours, :size => 5 %></td>
+			<% end -%>
 		<% end -%>
 	</tr>   	
 	<% end -%>
 	</tbody>
 	</table>
 	<p>
-		<%= user_form.submit "Submit" %>
-		<%= user_form.error_messages %>
+		<%= submit_tag "Submit" %>
 	</p> 
 <% end -%>
 <p>

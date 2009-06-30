@@ -104,17 +104,16 @@ class TimeEntriesControllerTest < ActionController::TestCase
     
     context "successful POST to :update" do
       
-      setup do 
-        put :update, { "user"=>
-          {"time_entries_attributes"=>{
-            "0"=>{"date"=>"2009-06-22", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_monday).id, "hours"=>"5"}, 
-            "1"=>{"date"=>"2009-06-23", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_tuesday).id, "hours"=>"5"}, 
-            "2"=>{"date"=>"2009-06-24", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_wednesday).id, "hours"=>"5"}, 
-            "3"=>{"date"=>"2009-06-25", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_thursday).id, "hours"=>"5"}, 
-            "4"=>{"date"=>"2009-06-26", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_friday).id, "hours"=>"5"}, 
-            "5"=>{"date"=>"2009-06-27", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_saturday).id, "hours"=>"5"},
-            "6"=>{"date"=>"2009-06-28", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_26_sunday).id, "hours"=>"5"}
-            }}, "date"=>"2009-06-22", "id"=>users(:bob).id }         
+      setup do        
+        put :update, {"date"=>"2009-06-22", "activity_id"=>activities(:timeflux).id, 
+          "time_entry"=>{
+          time_entries(:bob_timeflux_26_monday).id    =>{"date"=>"2009-06-22", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_26_tuesday).id   =>{"date"=>"2009-06-23", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_26_wednesday).id =>{"date"=>"2009-06-24", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_26_thursday).id  =>{"date"=>"2009-06-25", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_26_friday).id    =>{"date"=>"2009-06-26", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_26_saturday).id  =>{"date"=>"2009-06-27", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_26_sunday).id    =>{"date"=>"2009-06-28", "notes"=>"Foobar", "hours"=>"5"}}}       
       end
       
               
@@ -137,31 +136,35 @@ class TimeEntriesControllerTest < ActionController::TestCase
     context "unsuccessful POST to :update" do
       
       setup do
-        @user = User.find_by_id(users(:bob).id)
-        @user.stubs(:update_attributes).with(any_parameters).returns(false)
-        User.stubs(:find_by_id).with(any_parameters).returns(@user)
-        put :update, { "user"=>{}, "date"=>"2009-06-22", "id"=>users(:bob).id }
+        @time_entry = TimeEntry.find_by_id(time_entries(:bob_timeflux_24_monday).id)
+        @time_entry.stubs(:update_attributes!).with(any_parameters).returns(false)
+        TimeEntry.stubs(:find_by_id).with(any_parameters).raises(StandardError)
+        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux).id, 
+          "time_entry"=>{
+          time_entries(:bob_timeflux_24_monday).id => {"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
-      should_not_set_the_flash
       should_assign_to :user, :date, :time_entries
-      should_render_template :edit 
+      should_render_template :edit
+      
+      should "set an error message in flash" do
+        assert_not_nil flash[:error]
+      end 
                   
     end
     
     context "POST to :update for locked time entries" do
       
       setup do
-        put :update, { "user"=>
-          {"time_entries_attributes"=>{
-            "0"=>{"date"=>"2009-06-08", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_monday).id, "hours"=>"5"}, 
-            "1"=>{"date"=>"2009-06-09", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_tuesday).id, "hours"=>"5"}, 
-            "2"=>{"date"=>"2009-06-10", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_wednesday).id, "hours"=>"5"}, 
-            "3"=>{"date"=>"2009-06-11", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_thursday).id, "hours"=>"5"}, 
-            "4"=>{"date"=>"2009-06-12", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_friday).id, "hours"=>"5"}, 
-            "5"=>{"date"=>"2009-06-13", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_saturday).id, "hours"=>"5"},
-            "6"=>{"date"=>"2009-06-14", "notes"=>"Foobar", "id"=>time_entries(:bob_timeflux_24_sunday).id, "hours"=>"5"}
-            }}, "date"=>"2009-06-08", "id"=>users(:bob).id }
+        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux).id, 
+          "time_entry"=>{
+          time_entries(:bob_timeflux_24_monday).id    =>{"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_24_tuesday).id   =>{"date"=>"2009-06-09", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_24_wednesday).id =>{"date"=>"2009-06-10", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_24_thursday).id  =>{"date"=>"2009-06-11", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_24_friday).id    =>{"date"=>"2009-06-12", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_24_saturday).id  =>{"date"=>"2009-06-13", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_24_sunday).id    =>{"date"=>"2009-06-14", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
       should_assign_to :user, :date, :time_entries

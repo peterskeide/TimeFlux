@@ -1,29 +1,31 @@
 <h1>Time Entry</h1>
 <p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
 <p>
 	<h2>Week: <%= @date.cweek %></h2>
 </p>
 <p>  
 	<% form_tag('/time_entries/update') do -%>
-		<%# hidden_field_tag "date", @date %>
-		<table>
+		<%= hidden_field_tag "date", @date %>
+		<%= hidden_field_tag "activity_id", @activity.id %>
+		<table> 
 			<% @time_entries.sort.each do |time_entry|  -%>
-					<% day = time_entry.date.cwday %>
-					<%= hidden_field_tag "#{day}-id", time_entry.id %>
-					<%= hidden_field_tag "#{day}-date", time_entry.date %>
+				<% fields_for "time_entry[]", time_entry, :builder => TimeEntriesFormBuilder do |f| -%>
+					<%= f.hidden_field :date %>
 					<tr>
 					<td>
 						<%= date_label_for time_entry %>
 					</td>
 					<td>
-						<%= label_tag "Hours" %>
-						<%= text_field_tag :hours, time_entry.hours, :size => 5, :id => "#{day}-hours", :name => "#{day}-hours" %>
+						<%= f.label :hours %>
+						<%= f.lock_checking_text_field :hours, :size => 5 %>
 					</td>
 					<td>
-						<%= label_tag :notes, "Notes" %>
-						<%= text_field_tag :notes, time_entry.notes, :size => 65, :id => "#{day}-notes", :name => "#{day}-notes" %>
+						<%= f.label :notes %>
+						<%= f.lock_checking_text_field :notes, :size => 65 %>
 					</td>
 					</tr>
+				<% end -%>
 			<% end -%>
 		</table>
 		<p>
