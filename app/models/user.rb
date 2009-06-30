@@ -23,6 +23,13 @@ class User < ActiveRecord::Base
     self.time_entries.each { |i| puts i.hours }
     return total
   end
+
+  def hours_on_day(day)
+    entries = self.time_entries.on_day day
+    hours = entries.collect{|t| t.hours}.sum
+    if hours > 0 then hours.to_s else '-' end
+  end
+
   
   def to_s
     "#{self.fullname} (id=#{self.object_id})"

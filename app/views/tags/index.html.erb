@@ -3,7 +3,7 @@
 <h1>Manage Tags</h1>
 
   <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
-
+<%= will_paginate @tags %>
 <table>
   <% @tags.each do |tag| -%>
     <tr>
@@ -12,6 +12,7 @@
     </tr>
   <% end -%>
 </table>
+<%= will_paginate @tags %>
 <hr/>
 <p>
 

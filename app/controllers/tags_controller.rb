@@ -4,12 +4,12 @@ class TagsController < ApplicationController
 
   def index
     @tag_types = TagType.find(:all)
-    @tags = Tag.find(:all)
+
     if params[:tag_type]
       type = TagType.find(params[:tag_type])
-      @tags = type.tags
+      @tags = type.tags.paginate( :page => params[:page] || 1, :per_page => 20 )
     else
-      @tags = Tag.find(:all)
+      @tags = Tag.paginate( :page => params[:page] || 1, :per_page => 20 )
     end
   end
 

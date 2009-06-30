@@ -7,6 +7,7 @@
     <th>Status</th>
   </tr>
 
+  <%= will_paginate @users %>
 <% for user in @users %>
   <tr>
     <td><%=h user.fullname %></td>
@@ -18,6 +19,9 @@
   </tr>
 <% end %>
 </table>
+
+<br />
+<%= will_paginate @users %>
 
 <br />
 

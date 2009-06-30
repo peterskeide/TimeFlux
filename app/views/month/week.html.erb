@@ -1,0 +1,24 @@
+
+
+<h1>Review Month</h1>
+
+<%= render :partial => 'select_view' -%>
+
+<% form_tag :action => 'week', :method => 'get' do %>
+  <%= render :partial => 'reports/date_picker', :locals =>
+    { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
+  <%= submit_tag 'View' %>
+<% end %>
+
+  <hr/>
+   <% last_in_month = (@day >> 1) -1 %>
+
+  <h2>Week view</h2>
+  <table>
+     <tr>
+  <% @day.beginning_of_week.upto last_in_month.end_of_week  do |d| %>
+    <%= '</tr><tr><th>'+d.cweek.to_s+'</ht>' if d.wday == 1 %>
+    <td <%= 'class ="grayed"' if d.month != @day.month%> ><%= @user.hours_on_day d -%></td>
+  <% end %>
+    </tr>
+  </table>

@@ -4,7 +4,16 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :activity
   
   validates_format_of :hours, :with => /^[\d|.|,]*$/
-  
+
+  named_scope :on_day, lambda { |day|
+    {  :conditions => ['date = ?', day ] }
+  }
+
+  named_scope :for_user, lambda { |user_id|
+    { :conditions => { :user_id => user_id } }
+  }
+
+
   named_scope :between, lambda { |*args|
     {  :conditions => ['date between ? and ?', (args.first || Time.now), (args.second || 7.days.ago )] }
   }
@@ -26,5 +35,10 @@ class TimeEntry < ActiveRecord::Base
   def to_s
     "#{self.hours} hours on date #{self.date}"
   end
+
+  def hours_to_s
+    if self.hours > 0 then self.hours.to_s else '-' end
+  end
+
     
 end

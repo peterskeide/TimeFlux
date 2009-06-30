@@ -16,8 +16,9 @@
     <%= submit_tag 'Update' %>
   <% end %>
 
-  <h4>Hits: <%= @activities.size %></h4>
-
+        <br/>
+ <%= page_entries_info @activities %>
+ <%= will_paginate @activities %>
 <% @activities.each do |a| -%>
   <hr/>
   <div>
@@ -32,6 +33,8 @@
 	<%= link_to 'Remove', activity_path(a), :method => :delete %>
   </div>
 <% end -%>
-  
+
+  <br />
+<%= will_paginate @activities %>
   <hr/>
 <%= link_to "New Activity", :action => "new" %>

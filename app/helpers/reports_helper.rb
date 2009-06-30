@@ -1,13 +1,24 @@
 module ReportsHelper
 
-
   def render_table(table)
-    if table.is_a? Ruport::Data::Grouping then
-        return "No data" if table.none?
-    elsif table.is_a? Ruport::Data::Table then
-        return "No data" if table.empty?
+    if not table
+      "please select"
+    elsif is_empty? table
+      "No data"
+    else
+      table.to_html()
     end
-    return table.to_html()
   end
+
+  def is_empty?(table)
+    if not table
+      true
+    elsif table.is_a? Ruport::Data::Grouping then
+      table.none?
+    elsif table.is_a? Ruport::Data::Table then
+      table.empty?
+    end
+  end
+
 
 end

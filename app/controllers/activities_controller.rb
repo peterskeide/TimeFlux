@@ -22,9 +22,9 @@ class ActivitiesController < ApplicationController
     end
     
     if no_data == TagType.all.size then
-      @activities = Activity.find(:all)
+      @activities = Activity.paginate( :page => params[:page] || 1, :per_page => 10 )
     else
-      @activities = activities.flatten.uniq
+      @activities = activities.flatten.uniq.paginate( :page => params[:page] || 1, :per_page => 10 )
     end
     @tag_types = TagType.find(:all)
   end
