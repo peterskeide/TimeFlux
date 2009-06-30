@@ -7,25 +7,21 @@ class ActivitiesController < ApplicationController
     no_data = 0
     TagType.all.each do |tt| 
       type = tt.name.to_sym
-      if params[type]
-        value = params[type] 
-        if params[type] == 'all'
-          activities += tt.activities
-        elsif params[type] == 'none'
+      if value = params[type]        
+        if value == 'all'
+          @activities += tt.activities
+        elsif value == 'none'
           no_data += 1
         else
-          tag = Tag.find params[type]
-          activities += tag.activities
+          tag = Tag.find(value)
+          @activities += tag.activities
         end
       else
         no_data += 1
       end
-    end
-    
+    end    
     if no_data == TagType.all.size then
       @activities = Activity.find(:all)
-    else
-      @activities = activities.flatten.uniq
     end
     @tag_types = TagType.find(:all)
   end
@@ -96,8 +92,6 @@ class ActivitiesController < ApplicationController
     redirect_to(:action => 'edit', :id => activity.id)
   end
 
-
-
  def add_user
     activity = Activity.find(params["activity"]['id'])
     user = User.find params["user"]
@@ -117,8 +111,5 @@ class ActivitiesController < ApplicationController
     activity.users.delete user
     redirect_to(:action => 'edit', :id => activity.id)
   end
-
-
-
 
 end

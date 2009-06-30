@@ -6,17 +6,21 @@ class ActivitiesControllerTest < ActionController::TestCase
 
     setup { login_as(:bob) }
 
-    context "GET to :index" do
+    context "GET to :index without TagType param" do
 
       setup { get :index }
 
       should_respond_with :success
+      should_assign_to :tag_types, :activities
 
-      should "find all activities" do
-        get :index
-        #assigned_categories = assigns(:categories)
-        #assert_equal 3, assigned_categories.size
-      end
+    end
+    
+    context "GET to :index with TagType Customer" do
+
+      setup { get :index, "Customer" => "foo" }
+
+      should_respond_with :success
+      should_assign_to :tag_types, :activities
 
     end
     
