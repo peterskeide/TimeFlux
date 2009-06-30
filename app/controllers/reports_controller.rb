@@ -59,8 +59,8 @@ class ReportsController < ApplicationController
       @tag.activities.each do |activity|
 
         activity.time_entries.between(@day,(@day >> 1) -1).each do |t|
-          report_data << [activity.name, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0
-          if request.post? then t.billed = true; t.save end
+          if params[:method] == 'post' then t.billed = true; t.save end
+          report_data << [activity.name, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0 
         end
       end
       table = Ruport::Data::Table.new( :data => report_data,

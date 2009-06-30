@@ -29,8 +29,11 @@ class MonthController < ApplicationController
     end
       headers = ["activity_name","hours","date","notes"]
 
-    @table = Ruport::Data::Table.new( :data => time_data,
+    table = Ruport::Data::Table.new( :data => time_data,
           :column_names => headers.collect { |h| h.capitalize.gsub('_',' ') } )
+    table.sort_rows_by!(["date"])
+
+    @table = Grouping(table,:by => "Activity name")
     respond_with_formatter @table, TestController, "Hour report for #{user.fullname}"
   end
 
