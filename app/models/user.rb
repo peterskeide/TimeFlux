@@ -1,3 +1,5 @@
+require 'net/ldap'
+
 class User < ActiveRecord::Base
   
   has_many :time_entries
@@ -5,7 +7,7 @@ class User < ActiveRecord::Base
   
   accepts_nested_attributes_for :time_entries
     
-  acts_as_authentic
+  acts_as_authentic { |c| c.validate_password_field = false }
    
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
@@ -34,5 +36,26 @@ class User < ActiveRecord::Base
   def to_s
     "#{self.fullname} (id=#{self.object_id})"
   end
+  
+  def update_from_ldap
+    ldap = Net::LDAP.new
+    ldap.host = "jokke.conduct.no"
+    ldap.auth 'uid=timeflux,ou=systems,dc=conduct,dc=no', '55wJ479HfeL'
+    entry = ldap.search(:base => "ou=people,dc=conduct,dc=no", :filter => "(uid=#{login})")[0]
+    self.firstname = entry.givenname[0]
+    self.lastname = entry.sn[0]
+    self.email = entry.mail[0]
+  end  
+
+  protected
+
+  def valid_ldap_credentials?(password_plaintext)
+    ldap = Net::LDAP.new
+    ldap.host = "jokke.conduct.no"
+    ldap.auth "uid=#{self.login},ou=people,dc=conduct,dc=no", password_plaintext
+    ldap.bind # will return false if authentication is NOT successful
+  end
+
+
 
 end
