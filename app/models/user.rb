@@ -6,8 +6,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :activities
   
   accepts_nested_attributes_for :time_entries
-    
-  acts_as_authentic { |c| c.validate_password_field = false }
+
+  ### NOTE: include comment for ldap authentication
+  acts_as_authentic #{ |c| c.validate_password_field = false }
    
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
