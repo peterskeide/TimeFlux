@@ -18,6 +18,7 @@
       rescue
           raise "Conversion of class #{object.class} not supported"
       end
+      
     end
   end
 

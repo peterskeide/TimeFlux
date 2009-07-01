@@ -27,7 +27,7 @@ class MonthController < ApplicationController
         time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
         data << {"activity_name" =>t.activity.name, "hours" => t.hours, "date" => t.date, "notes" => t.notes} if t.hours > 0
     end
-      headers = ["activity_name","hours","date","notes"]
+    headers = ["activity_name","hours","date","notes"]
 
     table = Ruport::Data::Table.new( :data => time_data,
           :column_names => headers.collect { |h| h.capitalize.gsub('_',' ') } )
