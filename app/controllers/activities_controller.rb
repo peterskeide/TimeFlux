@@ -3,26 +3,21 @@ class ActivitiesController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    no_data = 0
-    @activities = []
     @tag_types = TagType.find(:all)
-    @tag_types.each do |tt| 
-      type = tt.name.to_sym
-      if value = params[type]        
-        if value == 'all'
-          @activities += tt.activities
-        elsif value == 'none'
-          no_data += 1
-        else
-          tag = Tag.find(value)
-          @activities += tag.activities
-        end
+    @activities = []
+    if params[:tag_type] && !params[:tag_type][:id].empty?
+      @tag_type = TagType.find_by_id(params[:tag_type][:id])
+      @tag_type.tags.each { |tag| @activities += tag.activities }
+    elsif params[:tag]
+      unless params[:tag][:id].empty?
+        @tag = Tag.find_by_id(params[:tag][:id])
+        @activities += @tag.activities
+        @tag_type = @tag.tag_type 
       else
-        no_data += 1
+        @tag_type = TagType.find_by_id(params[:tag_type_id])
       end
-    end    
-    if no_data == TagType.all.size then
-      @activities = Activity.find(:all)
+    else
+      @activities = Activity.all
     end
   end
   

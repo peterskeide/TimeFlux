@@ -3,19 +3,28 @@
 
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
-
-  <% form_tag :action => 'index', :method => 'get' do %>
-    <% @tag_types.each do |tag_type| %>
-      <% unless tag_type.tags.empty? %>
-        <%= label_tag tag_type.name %>
-        <%= select_tag( tag_type.name, '<option value="none">---</option><option value="all">all</option>' +  options_from_collection_for_select( tag_type.tags, 'id', 'name', '---') ) %>
-        &nbsp;<%= "OR" unless tag_type == @tag_types.last %>
-      <% end %>
-    <% end %>
-    <%= submit_tag 'Update' %>
-  <% end %>
-
-  <h4>Number of activities for selected tag: <%= @activities.size %></h4>
+<table>
+	<% form_tag(:action => "index", :method => "get") do %>
+		<tr>
+			<td><%= label_tag "Tag type"%></td>
+			<td><%= collection_select(:tag_type, :id, @tag_types, :id, :name, {:prompt => true}) %></td>
+			<td><%= submit_tag "Apply Filter" %></td>
+		</tr>
+	<% end -%>
+	<% if defined? @tag_type %>
+		<% form_tag(:action => "index", :method => "get") do %>
+			<%= hidden_field_tag "tag_type_id", @tag_type.id %>
+			<tr>
+		   	 	<td><%= label_tag "Tag"%></td>
+				<td><%= collection_select(:tag, :id, @tag_type.tags, :id, :name, {:prompt => true, :selected => "foo"}) %></td>
+				<td><%= submit_tag "Apply Filter" %></td> 
+			</tr>
+		<% end -%>
+	<% end -%>
+</table>
+<% if defined? @tag_type %>
+	<h4>Number of activities for <%= if defined? @tag then "tag #{@tag.name}" else "tag type #{@tag_type.name}" end %>: <%= @activities.size %></h4>
+<% end -%>
 
 <% @activities.each do |a| -%>
   <hr/>

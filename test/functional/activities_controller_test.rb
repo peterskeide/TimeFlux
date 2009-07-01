@@ -6,7 +6,7 @@ class ActivitiesControllerTest < ActionController::TestCase
 
     setup { login_as(:bob) }
 
-    context "GET to :index without TagType param" do
+    context "GET to :index" do
 
       setup { get :index }
 
@@ -15,12 +15,21 @@ class ActivitiesControllerTest < ActionController::TestCase
 
     end
     
-    context "GET to :index with TagType Customer" do
+    context "GET to :index with TagType selected" do
 
-      setup { get :index, "Customer" => "foo" }
+      setup { get :index, :tag_type => {:id => tag_types(:customer).id.to_s} }
 
       should_respond_with :success
-      should_assign_to :tag_types, :activities
+      should_assign_to :tag_types, :tag_type, :activities
+
+    end
+    
+    context "GET to :index with Tag selected" do
+
+      setup { get :index, :tag => {:id => tags(:timeflux).id.to_s}, :tag_type_id => tag_types(:customer).id.to_s }
+
+      should_respond_with :success
+      should_assign_to :tag_types, :tag_type, :tag, :activities
 
     end
     
