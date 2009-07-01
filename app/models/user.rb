@@ -40,11 +40,12 @@ class User < ActiveRecord::Base
   def update_from_ldap
     ldap = Net::LDAP.new
     ldap.host = "jokke.conduct.no"
-    ldap.auth 'uid=timeflux,ou=systems,dc=conduct,dc=no', '55wJ479HfeL'
+    ldap.auth 'uid=timeflux,ou=systems,dc=conduct,dc=no', 'password_goes_here'
     entry = ldap.search(:base => "ou=people,dc=conduct,dc=no", :filter => "(uid=#{login})")[0]
     self.firstname = entry.givenname[0]
     self.lastname = entry.sn[0]
     self.email = entry.mail[0]
+    self.save
   end  
 
   protected
