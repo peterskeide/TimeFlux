@@ -22,7 +22,7 @@ class ActivitiesController < ApplicationController
   end
   
   def new
-    @activity = Activity.new(:default_activity => false, :active=> true)
+    @activity = Activity.new
     @tags = Tag.find(:all)
   end
 
@@ -87,7 +87,7 @@ class ActivitiesController < ApplicationController
     redirect_to(:action => 'edit', :id => activity.id)
   end
 
- def add_user
+  def add_user
     activity = Activity.find(params["activity"]['id'])
     user = User.find params["user"]
 
