@@ -6,23 +6,39 @@ class ReportsControllerTest < ActionController::TestCase
     login_as(:bob)
   end
 
-  context "on GET to :user_report" do
+  context "Accessing reports," do
 
-    context "with html" do
-      setup { get :user }
-      should_respond_with :success
-      should_not_set_the_flash
-    end
+    reports = { :user => {},:activity => {}, :billing => { :month=>7, :year=>2009},:hours => {} }
+ 
+    reports.each do |report, params|
+      context "on GET to #{report.to_s}" do
 
-    context "with format=pdf" do
-      setup { get :user, :format => 'dpf' }
-      #TODO the download works, why does the test report a 406?
-      #should_respond_with :sucsess
-    end
+        context "with html" do
+          setup { get report }
+          should_respond_with :success
+          should respond_with_content_type(:html)
+          should_not_set_the_flash
+        end
 
-    context "with format=csv" do
-      setup { get :user, :format => 'csv' }
-      should_respond_with :success
+        context "with format=pdf" do
+          setup { get report, {:format => 'pdf', :tag=> tags(:timeflux).id }.merge(params) }
+          should_respond_with :success
+          should respond_with_content_type(:pdf)
+        end
+
+        context "with format=csv" do
+          setup { get report, {:format => 'csv', :tag=> tags(:timeflux).id }.merge(params) }
+          should_respond_with :success
+          should respond_with_content_type(:csv)
+        end
+
+        context "with format=text" do
+          setup { get report, {:format => 'text', :tag=> tags(:timeflux).id}.merge(params) }
+          should_respond_with :success
+          should respond_with_content_type(:text)
+        end
+
+      end
     end
   end
 end
