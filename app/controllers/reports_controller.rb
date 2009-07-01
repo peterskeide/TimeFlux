@@ -21,7 +21,7 @@ class ReportsController < ApplicationController
       activities = Activity.find(:all)
     end
     
-    activity_data = activities.collect { |a|
+    activity_data = activities.sort.collect { |a|
       [a.name, a.tags.to_s, a.active]
     }
     @table = Ruport::Data::Table.new( :data => activity_data,
@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
       users = User.find(:all)
     end
         
-    user_data = users.collect { |u|
+    user_data = users.sort.collect { |u|
       [u.fullname, u.login, u.email, u.operative_status]
     }
     @table = Ruport::Data::Table.new( :data => user_data,
@@ -58,13 +58,13 @@ class ReportsController < ApplicationController
       report_data = []
       @tag.activities.each do |activity|
 
-        activity.time_entries.between(@day,(@day >> 1) -1).each do |t|
+        activity.time_entries.between(@day,(@day >> 1) -1).sort.each do |t|
           if params[:method] == 'post' then t.billed = true; t.save end
-          report_data << [activity.name, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0 
+          report_data << [activity.name, t.date, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0
         end
       end
       table = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Activity name', 'Hours', 'Consultant', 'Billed','Notes'])
+      :column_names => ['Activity name', 'Date', 'Hours', 'Consultant', 'Billed','Notes'])
 
       @table = Grouping(table,:by => "Activity name")
       title = "Hour report for #{@tag.name}"

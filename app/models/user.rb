@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
     if hours > 0 then hours.to_s else '-' end
   end
 
+  def <=>(other)
+    lastname <=> other.lastname
+  end
+
   def to_s
     "#{self.fullname} (id=#{self.object_id})"
   end

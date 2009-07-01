@@ -23,7 +23,7 @@ class MonthController < ApplicationController
     user = current_user_session.user
       time_data = []
       data =[]
-      user.time_entries.between(@day,(@day >> 1) -1).each do |t|
+      user.time_entries.between(@day,(@day >> 1) -1).sort.each do |t|
         time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
         data << {"activity_name" =>t.activity.name, "hours" => t.hours, "date" => t.date, "notes" => t.notes} if t.hours > 0
     end
