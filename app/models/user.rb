@@ -41,9 +41,9 @@ class User < ActiveRecord::Base
   
   def update_from_ldap
     ldap = Net::LDAP.new
-    ldap.host = "jokke.conduct.no"
-    ldap.auth 'uid=timeflux,ou=systems,dc=conduct,dc=no', 'password_goes_here'
-    entry = ldap.search(:base => "ou=people,dc=conduct,dc=no", :filter => "(uid=#{login})")[0]
+    ldap.host = "host goes here"
+    ldap.auth 'uid goes here', 'password_goes_here'
+    entry = ldap.search(:base => "search from goes here", :filter => "(uid=#{login})")[0]
     self.firstname = entry.givenname[0]
     self.lastname = entry.sn[0]
     self.email = entry.mail[0]
@@ -54,8 +54,8 @@ class User < ActiveRecord::Base
 
   def valid_ldap_credentials?(password_plaintext)
     ldap = Net::LDAP.new
-    ldap.host = "jokke.conduct.no"
-    ldap.auth "uid=#{self.login},ou=people,dc=conduct,dc=no", password_plaintext
+    ldap.host = "host goes here"
+    ldap.auth "uid goes here", password_plaintext
     ldap.bind # will return false if authentication is NOT successful
   end
 
