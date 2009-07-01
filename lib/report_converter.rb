@@ -7,16 +7,16 @@
   def self.convert(object)
     return nil unless object
 
-    case object.class
-    when Ruport::Data::Grouping.class
+    if object.is_a? Ruport::Data::Grouping
       convert_grouping(object)
-    when Ruport::Data::Table.class
+    elsif object.is_a? Ruport::Data::Table
       convert_table(object)
     else
       begin
         CONVERTER.iconv(object)
       rescue
-          raise "Conversion of class #{object.class} not supported"
+        puts "Conversion of class #{object.class} not supported"
+        object
       end
       
     end
@@ -25,7 +25,7 @@
   def self.convert_grouping(grouping)
     new_grouping = Ruport::Data::Grouping.new
     grouping.each() {|n,g|
-        new_grouping << convert_group(g)
+        new_grouping << convert_group(g) if g
       }
     return new_grouping
   end
