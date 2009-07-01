@@ -32,7 +32,6 @@ class User < ActiveRecord::Base
     if hours > 0 then hours.to_s else '-' end
   end
 
-  
   def to_s
     "#{self.fullname} (id=#{self.object_id})"
   end
@@ -56,7 +55,5 @@ class User < ActiveRecord::Base
     ldap.auth "uid=#{self.login},ou=people,dc=conduct,dc=no", password_plaintext
     ldap.bind # will return false if authentication is NOT successful
   end
-
-
 
 end

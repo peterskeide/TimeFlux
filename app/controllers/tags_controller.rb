@@ -7,9 +7,9 @@ class TagsController < ApplicationController
 
     if params[:tag_type]
       type = TagType.find(params[:tag_type])
-      @tags = type.tags.paginate( :page => params[:page] || 1, :per_page => 20 )
+      @tags = type.tags.paginate( :page => params[:page] || 1, :per_page => 20, :order => 'name' )
     else
-      @tags = Tag.paginate( :page => params[:page] || 1, :per_page => 20 )
+      @tags = Tag.paginate( :page => params[:page] || 1, :per_page => 20, :order => 'name' )
     end
   end
 
