@@ -22,9 +22,9 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should "assign activity map and options" do
         activities = assigns(:activities)
         assert_equal(1, activities.size)
-        assert_equal(7, activities["TimeFlux"].size)
+        assert_equal(7, activities["TimeFlux Development"].size)
         activity_options = assigns(:activity_options)
-        assert_equal(2, activity_options.size) #should include foobar and status only
+        assert_equal(1, activity_options.size)
       end
       
     end
@@ -63,21 +63,21 @@ class TimeEntriesControllerTest < ActionController::TestCase
     
     context "GET to :new" do
       
-      setup { get :new, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux).id} }
+      setup { get :new, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux_development).id} }
       
       should_respond_with :redirect
       should_not_set_the_flash
       should_assign_to :user, :date, :time_entries, :activity
       
       should "redirect to edit time entries" do
-        assert_redirected_to :action => "edit", :id => users(:bob).id, :activity_id => activities(:timeflux).id, :date => @date
+        assert_redirected_to :action => "edit", :id => users(:bob).id, :activity_id => activities(:timeflux_development).id, :date => @date
       end
       
       should "create 7 time entries for given activity and week" do
-        assert_difference("TimeEntry.count", 7) { get :new, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux).id} }
+        assert_difference("TimeEntry.count", 7) { get :new, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux_development).id} }
         time_entries = assigns(:time_entries)
         time_entries.each { |te| assert_equal(26, te.date.cweek) }
-        activity_id = activities(:timeflux).id
+        activity_id = activities(:timeflux_development).id
         time_entries.each { |te| assert_equal(activity_id, te.activity.id) }       
       end
             
@@ -85,7 +85,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
     
     context "GET to :edit" do
       
-      setup { get :edit, :id => users(:bob).id, :date => @date.to_s, :activity_id => activities(:timeflux).id }
+      setup { get :edit, :id => users(:bob).id, :date => @date.to_s, :activity_id => activities(:timeflux_development).id }
       
       should_respond_with :success
       should_not_set_the_flash
@@ -96,7 +96,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
         time_entries = assigns(:time_entries)
         assert_equal(7, time_entries.size)
         time_entries.each { |te| assert_equal(26, te.date.cweek) }
-        activity_id = activities(:timeflux).id
+        activity_id = activities(:timeflux_development).id
         time_entries.each { |te| assert_equal(activity_id, te.activity.id) }       
       end
             
@@ -105,25 +105,24 @@ class TimeEntriesControllerTest < ActionController::TestCase
     context "successful POST to :update" do
       
       setup do        
-        put :update, {"date"=>"2009-06-22", "activity_id"=>activities(:timeflux).id, 
+        put :update, {"date"=>"2009-06-22", "activity_id"=>activities(:timeflux_development).id, 
           "time_entry"=>{
-          time_entries(:bob_timeflux_26_monday).id    =>{"date"=>"2009-06-22", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_26_tuesday).id   =>{"date"=>"2009-06-23", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_26_wednesday).id =>{"date"=>"2009-06-24", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_26_thursday).id  =>{"date"=>"2009-06-25", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_26_friday).id    =>{"date"=>"2009-06-26", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_26_saturday).id  =>{"date"=>"2009-06-27", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_26_sunday).id    =>{"date"=>"2009-06-28", "notes"=>"Foobar", "hours"=>"5"}}}       
+          time_entries(:bob_timeflux_development_26_monday).id    =>{"date"=>"2009-06-22", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_26_tuesday).id   =>{"date"=>"2009-06-23", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_26_wednesday).id =>{"date"=>"2009-06-24", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_26_thursday).id  =>{"date"=>"2009-06-25", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_26_friday).id    =>{"date"=>"2009-06-26", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_26_saturday).id  =>{"date"=>"2009-06-27", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_26_sunday).id    =>{"date"=>"2009-06-28", "notes"=>"Foobar", "hours"=>"5"}}}       
       end
-      
-              
+                  
       should_respond_with :redirect
       should_set_the_flash_to("Time entries successfully saved")
       should_redirect_to("Selected weeks time entries") { "/time_entries?date=#{@date}" }
     
       # All time entry fixtures should have 7.5 hours and no notes before update
       should "update hours and notes for changed timed entries" do
-        activity_id = activities(:timeflux).id 
+        activity_id = activities(:timeflux_development).id 
         time_entries = users(:bob).time_entries.for_activity(activity_id).between(@date, @date.+(6))
         time_entries.each do |te|
           assert_equal(5, te.hours)
@@ -136,12 +135,12 @@ class TimeEntriesControllerTest < ActionController::TestCase
     context "unsuccessful POST to :update" do
       
       setup do
-        @time_entry = TimeEntry.find_by_id(time_entries(:bob_timeflux_24_monday).id)
+        @time_entry = TimeEntry.find_by_id(time_entries(:bob_timeflux_development_24_monday).id)
         @time_entry.stubs(:update_attributes!).with(any_parameters).returns(false)
         TimeEntry.stubs(:find_by_id).with(any_parameters).raises(StandardError)
-        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux).id, 
+        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux_development).id, 
           "time_entry"=>{
-          time_entries(:bob_timeflux_24_monday).id => {"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}}}
+          time_entries(:bob_timeflux_development_24_monday).id => {"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
       should_assign_to :user, :date, :time_entries
@@ -156,15 +155,15 @@ class TimeEntriesControllerTest < ActionController::TestCase
     context "POST to :update for locked time entries" do
       
       setup do
-        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux).id, 
+        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux_development).id, 
           "time_entry"=>{
-          time_entries(:bob_timeflux_24_monday).id    =>{"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_24_tuesday).id   =>{"date"=>"2009-06-09", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_24_wednesday).id =>{"date"=>"2009-06-10", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_24_thursday).id  =>{"date"=>"2009-06-11", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_24_friday).id    =>{"date"=>"2009-06-12", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_24_saturday).id  =>{"date"=>"2009-06-13", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_24_sunday).id    =>{"date"=>"2009-06-14", "notes"=>"Foobar", "hours"=>"5"}}}
+          time_entries(:bob_timeflux_development_24_monday).id    =>{"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_24_tuesday).id   =>{"date"=>"2009-06-09", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_24_wednesday).id =>{"date"=>"2009-06-10", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_24_thursday).id  =>{"date"=>"2009-06-11", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_24_friday).id    =>{"date"=>"2009-06-12", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_24_saturday).id  =>{"date"=>"2009-06-13", "notes"=>"Foobar", "hours"=>"5"}, 
+          time_entries(:bob_timeflux_development_24_sunday).id    =>{"date"=>"2009-06-14", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
       should_assign_to :user, :date, :time_entries
@@ -172,7 +171,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should "not save updates to locked entries" do
         date = Date.new(2009, 6, 8)
-        time_entries = users(:bob).time_entries.for_activity(activities(:timeflux).id).between(date, date.+(6))
+        time_entries = users(:bob).time_entries.for_activity(activities(:timeflux_development).id).between(date, date.+(6))
         time_entries.each do |te| 
           assert_equal(7.5, te.hours)
           assert_nil(te.notes)
@@ -185,7 +184,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       setup do
         @time_entries_before_delete = TimeEntry.count 
-        delete :destroy, { :id => users(:bob).id, :activity_id => activities(:timeflux).id, :date => @date.to_s } 
+        delete :destroy, { :id => users(:bob).id, :activity_id => activities(:timeflux_development).id, :date => @date.to_s } 
       end
                  
       should_render_template :index  

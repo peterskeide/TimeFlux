@@ -1,12 +1,10 @@
-timeflux:
-    name: TimeFlux
-    description: devlop Open Source time management and billing application
+timeflux_development:
+    name: TimeFlux Development
+    description: Implement Open Source time management and billing application
+    tags: conduct, timeflux
 
-foobar:
-    name: FooBar
-    description: Implement the FooBar for customer
-
-status:
-    name: Weekly Status Meeting
-    description: Ye olde weekly status. Argh.
+timeflux_administration:
+    name: TimeFlux Administration
+    description: Administration of TimeFlux in production
     default_activity: true
+    tags: conduct, timeflux

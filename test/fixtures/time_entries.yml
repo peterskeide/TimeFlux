@@ -1,6 +1,6 @@
 <% 
 weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] 
-activity = "timeflux"
+activity = "timeflux_development"
 user = "bob"
 %>
 

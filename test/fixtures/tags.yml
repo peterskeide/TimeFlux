@@ -1,13 +1,9 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+conduct:
+  name: Conduct
+  description: IT consulting company specializing in professional open source
+  tag_type: customer
 
-one:
-  name: MyString
-  description: MyString
-  tag_type_id: 
-  tag_type: 
-
-two:
-  name: MyString
-  description: MyString
-  tag_type_id: 
-  tag_type: 
+timeflux:
+    name: TimeFlux
+    description: Open source time management and billing application
+    tag_type: project

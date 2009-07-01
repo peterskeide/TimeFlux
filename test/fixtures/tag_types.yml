@@ -1,7 +1,5 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+customer:
+  name: Customer
 
-one:
-  name: MyString
-
-two:
-  name: MyString
+project:
+  name: Project

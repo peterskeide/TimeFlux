@@ -5,10 +5,9 @@
 <p class="notice"><%= flash[:notice] %></p>
 
   <% form_tag :action => 'index', :method => 'get' do %>
-
     <% @tag_types.each do |tag_type| %>
       <% unless tag_type.tags.empty? %>
-        <label><%= tag_type.name %></label>
+        <%= label_tag tag_type.name %>
         <%= select_tag( tag_type.name, '<option value="none">---</option><option value="all">all</option>' +  options_from_collection_for_select( tag_type.tags, 'id', 'name', '---') ) %>
         &nbsp;<%= "OR" unless tag_type == @tag_types.last %>
       <% end %>
@@ -16,7 +15,7 @@
     <%= submit_tag 'Update' %>
   <% end %>
 
-  <h4>Hits: <%= @activities.size %></h4>
+  <h4>Number of activities for selected tag: <%= @activities.size %></h4>
 
 <% @activities.each do |a| -%>
   <hr/>
@@ -26,7 +25,7 @@
       <%=  "#{t.name}(#{t.tag_type_name})" -%>,
     <% end %> <br/>
     <b>Description:</b> <%= a.description %><br/>
-    <b>Created:</b> <%= a.created_at.to_date %><br/>
+    <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>
 	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>
 	<b>Default:</b> <%= if a.default_activity then 'Yes' else 'No' end %><br/>
 	<%= link_to 'Remove', activity_path(a), :method => :delete %>
