@@ -1,7 +1,5 @@
 require "ruport"
 
-
-
  class TestController < Ruport::Controller
 
     stage :report
@@ -23,21 +21,23 @@ require "ruport"
 
     formatter :pdf do
       build :report do
-        add_text options.title
 
-        #data.to_pdf
+        pdf = pdf_writer
 
-        #draw_table data if data.class == Table
+        pdf.select_font "Times-Roman"
+        
+        pdf.text options.title, :font_size => 26, :leading => 40, :justification => :center
+        pdf.text '__________', :font_size => 12, :justification => :center
+        pdf.text "Timeflux Report", :font_size => 10, :justification => :center
+
+        pdf.move_pointer(50)
+
         if data.is_a? Ruport::Data::Grouping
           render_grouping data, options.to_hash.merge(:formatter => pdf_writer)
         else
           draw_table data
         end
-        #
-        #
-        #pad_bottom(20) do
-        #  add_text "footer goes here"
-        #end
+
       end
     end
 

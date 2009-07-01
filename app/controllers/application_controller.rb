@@ -35,5 +35,50 @@ class ApplicationController < ActionController::Base
        return false
     end
   end 
+
+  #Used in month and report controller
+  def setup_calender
+    @day = first_in_month(params[:year], params[:month])
+    @selected_year = @day.year
+    @selected_month = @day.month
+
+    @years = (2007..Date.today.year).to_a.reverse
+    @months = []
+    month_names = %w{ January Febrary March April May June July August September October November December}
+    month_names.each_with_index { |name, i| @months << [ i+1, name ] }
+  end
+
+   #Used in month and report controller
+  def first_in_month(year, month)
+    year ||= Date.today.year
+    month ||= Date.today.month
+    return Date.new(year.to_i, month.to_i, 1)
+  end
+
+  #Used in month and report controller
+  def respond_with_formatter(table, formatter, title="report")
+
+    conv = ReportConverter
+
+    respond_to do |format|
+      format.html do
+        @title = title
+        @table = table
+      end
+
+      format.pdf do
+        send_data formatter.render_pdf(:data => conv.convert(table), :title => conv.convert_string(title)),
+          { :type => "	application/pdf", :disposition  => "inline", :filename => "#{title}.pdf" }
+      end
+      format.csv do
+        send_data formatter.render_csv(:data => conv.convert(table), :title => conv.convert_string(title)),
+          { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.csv" }
+      end
+      format.text do
+        send_data formatter.render(:text, :data => conv.convert(table), :title => conv.convert_string(title)),
+          { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.txt" }
+      end
+    end
+  end
   
 end

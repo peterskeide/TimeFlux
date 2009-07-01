@@ -30,6 +30,10 @@ table tbody tr td, table tbody tr th  {
         padding-right: 20px;
 }
 
+table.compact tbody tr td, table.compact tbody tr th  {
+        padding-right: 0px;
+}
+
 table tbody tr th  {
         background:#EEEEEE none repeat scroll 0 0;
 }
@@ -63,6 +67,10 @@ a img {
 
 .notice {
 	color: green;
+}
+
+.grayed {
+        color: #bbbbbb;
 }
 
 .content {

@@ -26,6 +26,9 @@
 	<h4>Number of activities for <%= if defined? @tag then "tag #{@tag.name}" else "tag type #{@tag_type.name}" end %>: <%= @activities.size %></h4>
 <% end -%>
 
+        <br/>
+ <%= page_entries_info @activities %>
+ <%= will_paginate @activities %>
 <% @activities.each do |a| -%>
   <hr/>
   <div>
@@ -40,6 +43,8 @@
 	<%= link_to 'Remove', activity_path(a), :method => :delete %>
   </div>
 <% end -%>
-  
+
+  <br />
+<%= will_paginate @activities %>
   <hr/>
 <%= link_to "New Activity", :action => "new" %>

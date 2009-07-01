@@ -6,6 +6,14 @@ class TimeEntry < ActiveRecord::Base
   validates_format_of :hours, :with => /^[\d|.|,]*$/
   validate_on_update :must_not_be_locked
   
+  named_scope :on_day, lambda { |day|
+    {  :conditions => ['date = ?', day ] }
+  }
+
+  named_scope :for_user, lambda { |user_id|
+    { :conditions => { :user_id => user_id } }
+  }
+
   named_scope :between, lambda { |*args|
     {  :conditions => ['date between ? and ?', (args.first || Time.now), (args.second || 7.days.ago )] }
   }
@@ -35,5 +43,10 @@ class TimeEntry < ActiveRecord::Base
       errors.add_to_base("Updating locked time entries is not possible") if locked
     end
   end
+
+  def hours_to_s
+    if self.hours > 0 then self.hours.to_s else '-' end
+  end
+
     
 end

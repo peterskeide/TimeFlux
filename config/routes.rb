@@ -40,7 +40,10 @@ ActionController::Routing::Routes.draw do |map|
   map.reports "Reports", :controller => "reports"
   map.users "Users", :controller => "users"
   map.resources :users, :activities
-  map.month "Month", :controller => "month"
+
+  map.month "month", :controller => "month"
+  map.month_list "month/:action.:format", :controller => "month"
+
 
   # See how all your routes lay out with "rake routes"
 

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    @users = User.find(:all)
+    @users = User.paginate :page => params[:page] || 1, :per_page => 15, :order => 'lastname'
   end
 
   def show

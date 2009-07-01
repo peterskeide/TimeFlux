@@ -4,20 +4,19 @@ class ActivitiesController < ApplicationController
 
   def index
     @tag_types = TagType.find(:all)
-    @activities = []
     if params[:tag_type] && !params[:tag_type][:id].empty?
       @tag_type = TagType.find_by_id(params[:tag_type][:id])
-      @tag_type.tags.each { |tag| @activities += tag.activities }
+      @tag_type.tags.each { |tag| @activities = tag.activities.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' ) }
     elsif params[:tag]
       unless params[:tag][:id].empty?
         @tag = Tag.find_by_id(params[:tag][:id])
-        @activities += @tag.activities
+        @activities = @tag.activities.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' )
         @tag_type = @tag.tag_type 
       else
         @tag_type = TagType.find_by_id(params[:tag_type_id])
       end
     else
-      @activities = Activity.all
+      @activities = Activity.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' )
     end
   end
   

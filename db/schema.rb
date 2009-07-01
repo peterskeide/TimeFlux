@@ -34,13 +34,6 @@ ActiveRecord::Schema.define(:version => 20090624112101) do
     t.datetime "updated_at"
   end
 
-  create_table "categories", :force => true do |t|
-    t.string   "name"
-    t.string   "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "tag_types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"

@@ -1,0 +1,35 @@
+
+<h1>Review Month</h1>
+
+<%= render :partial => 'select_view' -%>
+
+<% form_tag :action => 'month', :method => 'get' do %>
+  <%= render :partial => 'reports/date_picker', :locals =>
+    { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
+  <%= submit_tag 'View' %>
+<% end %>
+
+  <hr/>
+
+  <h2>Month view</h2>
+  <table class="compact">
+  <tr>
+    <td></td>
+  <% @day.upto @last_in_month do |d| %>
+    <th <%= 'class="error"' if d.wday >= 5 -%> ><%= d.day -%></th>
+  <% end %>
+  </tr>
+  <% @activities.each do |activity| %>
+    <tr><td><%=  activity.name %></td>
+    <% @day.upto @last_in_month do |d| %>
+      <% entry = TimeEntry.on_day(d).for_user(@user).for_activity(activity) %>
+      <% if entry && entry.any? then %>
+          <td><%= entry.first.hours_to_s %></td>
+      <% else %>
+        <td>-</td>
+      <% end %>
+    <% end %>
+    </tr>
+  <% end %>
+  </tr>
+  </table>

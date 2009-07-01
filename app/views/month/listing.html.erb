@@ -1,0 +1,19 @@
+
+<h1>Review Month</h1>
+
+<%= render :partial => 'select_view' -%>
+
+<% form_tag :action => 'listing', :method => 'get' do %>
+  <%= render :partial => 'reports/date_picker', :locals =>
+    { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
+  <%= submit_tag 'View' %>
+<% end %>
+
+  <hr/>
+
+  <h2>Listing view</h2>
+
+<%= render_table @table -%>
+<%= render :partial => 'reports/download', :locals => { :params => params } -%>
+
+
