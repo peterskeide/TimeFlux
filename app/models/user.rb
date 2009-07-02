@@ -2,12 +2,11 @@ require 'net/ldap'
 
 class User < ActiveRecord::Base
   
+  TimeFlux.configure self
+    
   has_many :time_entries
   has_and_belongs_to_many :activities
-
-  ### NOTE: include comment for ldap authentication
-  acts_as_authentic #{ |c| c.validate_password_field = false }
-   
+     
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
 
@@ -37,26 +36,6 @@ class User < ActiveRecord::Base
 
   def to_s
     "#{self.fullname} (id=#{self.object_id})"
-  end
-  
-  def update_from_ldap
-    ldap = Net::LDAP.new
-    ldap.host = "host goes here"
-    ldap.auth 'uid goes here', 'password_goes_here'
-    entry = ldap.search(:base => "search from goes here", :filter => "(uid=#{login})")[0]
-    self.firstname = entry.givenname[0]
-    self.lastname = entry.sn[0]
-    self.email = entry.mail[0]
-    self.save
-  end  
-
-  protected
-
-  def valid_ldap_credentials?(password_plaintext)
-    ldap = Net::LDAP.new
-    ldap.host = "host goes here"
-    ldap.auth "uid goes here", password_plaintext
-    ldap.bind # will return false if authentication is NOT successful
   end
 
 end
