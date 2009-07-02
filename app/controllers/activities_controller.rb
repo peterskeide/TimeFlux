@@ -5,8 +5,9 @@ class ActivitiesController < ApplicationController
   def index
     @tag_types = TagType.find(:all)
     if params[:tag_type] && !params[:tag_type][:id].empty?
-      @tag_type = TagType.find_by_id(params[:tag_type][:id])
-      @tag_type.tags.each { |tag| @activities = tag.activities.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' ) }
+      @tag_type = TagType.find_by_id(params[:tag_type][:id]) 
+      @activities = @tag_type.activities.flatten.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' )
+      #@tag_type.tags.each { |tag| @activities = tag.activities.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' ) }
     elsif params[:tag]
       unless params[:tag][:id].empty?
         @tag = Tag.find_by_id(params[:tag][:id])

@@ -11,6 +11,4 @@ class TagType < ActiveRecord::Base
     self.tags.collect { |tag| tag.activities }
   end
 
-  private
-
 end
