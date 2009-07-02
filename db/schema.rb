@@ -9,13 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090624112101) do
+ActiveRecord::Schema.define(:version => 20090623073330) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
     t.string   "description"
-    t.boolean  "active"
-    t.boolean  "default_activity"
+    t.boolean  "active",           :default => true
+    t.boolean  "default_activity", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

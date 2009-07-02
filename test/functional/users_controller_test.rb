@@ -42,7 +42,7 @@ class UsersControllerTest < ActionController::TestCase
 
     #TODO implement
     context "a GET to :edit" do
-      setup { get :edit, :id => users(:bob).object_id }
+      setup { get :edit, :id => users(:bob).id }
     end
 
   end

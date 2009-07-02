@@ -34,8 +34,11 @@ class TimeEntry < ActiveRecord::Base
 
   def to_s
     "#{self.hours} hours on date #{self.date}"
-  end 
-  
+  end
+
+  def hours_to_s
+    if self.hours > 0 then self.hours.to_s else '-' end
+  end
   private
   
   def must_not_be_locked
@@ -44,9 +47,7 @@ class TimeEntry < ActiveRecord::Base
     end
   end
 
-  def hours_to_s
-    if self.hours > 0 then self.hours.to_s else '-' end
-  end
+
 
     
 end
