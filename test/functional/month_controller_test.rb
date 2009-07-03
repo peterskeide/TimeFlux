@@ -20,6 +20,7 @@ class MonthControllerTest < ActionController::TestCase
         should_respond_with :success
       end
     end
+    
   end
   
   context "Logged in as user Bob on GET to :index" do
