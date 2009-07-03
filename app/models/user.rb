@@ -19,12 +19,6 @@ class User < ActiveRecord::Base
     %w(active retired m.i.a.)
   end
 
-  def hours_total
-    total = "hours:"
-    self.time_entries.each { |i| puts i.hours }
-    return total
-  end
-
   def hours_on_day(day)
     entries = self.time_entries.on_day day
     hours = entries.collect{|t| t.hours}.sum
