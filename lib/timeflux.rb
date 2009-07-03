@@ -10,13 +10,11 @@ module TimeFlux
   # will be compiled to e.g 'uid=bob,ou=people,dc=foobar,dc=com'
   Configuration = {:authentication_method => :database}
   
-  # Container for modules that implement custom configurable behavior
-  # for various TimeFlux classes. These modules should implement the
-  # 'included' method to add configurable behavior to their target classes.
+  # Container for modules that implement custom configurable behavior for various TimeFlux classes. 
+  # These modules should implement the 'included' method to add configurable behavior to their target classes.
   module ConfigurableBehavior
     
-    # Configurable behavior for the User model. Enables support for
-    # configuring authentication backed by database or ldap.
+    # Enables support for configuring authentication backed by database or ldap in the User model.
     module UserModel
       def self.included(klass)
         raise "Can only be included by User class" unless klass.name == 'User'
@@ -43,8 +41,7 @@ module TimeFlux
       end
     end
     
-    # Configurable behavior for the UserSession model. Enables support for
-    # configuring authentication backed by database or ldap.
+    # Enables support for configuring authentication backed by database or ldap in the UserSession model.
     module UserSessionModel
       def self.included(klass)
         raise "Can only be included by UserSession class" unless klass.name == 'UserSession'

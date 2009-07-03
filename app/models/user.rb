@@ -3,7 +3,7 @@ require 'net/ldap'
 class User < ActiveRecord::Base
   
   include TimeFlux::ConfigurableBehavior::UserModel
-    
+      
   has_many :time_entries
   has_and_belongs_to_many :activities
      
