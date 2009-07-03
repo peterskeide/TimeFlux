@@ -1,3 +1,3 @@
 class UserSession < Authlogic::Session::Base
-  TimeFlux.configure self
+  include TimeFlux::ConfigurableBehavior::UserSessionModel
 end
