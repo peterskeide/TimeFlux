@@ -45,7 +45,6 @@ class UsersController < ApplicationController
     @user.login = params[:user][:login]
     @user.email = params[:user][:email]
 
-
     if @user.save
       flash[:notice] = 'User was successfully updated.'
       redirect_to(:controller => 'users', :action => 'show', :id => @user.id)

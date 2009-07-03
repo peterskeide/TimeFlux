@@ -40,6 +40,19 @@ class UsersControllerTest < ActionController::TestCase
         should_render_template :edit
       end
 
+      context "a POST to update (new email)" do
+        setup do
+          put :update, :id => users(:bob).id, :user =>{:password_confirmation=>"", :lastname=>"Foobar", :firstname=>"Bob",
+           :operative_status=>"active", :password=>"", :login=>"bob", :email=>"new@emailaddress.com"}
+        end
+        should_redirect_to("New user") { "/users/#{users(:bob).id}" }
+        should_set_the_flash_to(/successfully updated/i)
+
+        should 'change Bob´s email to new@emailaddress.com' do
+          assert_equal "new@emailaddress.com", users(:bob).reload.email
+        end
+      end
+
     end
   end
   
