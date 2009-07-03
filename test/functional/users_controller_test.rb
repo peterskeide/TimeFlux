@@ -26,9 +26,9 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     context "a POST to :create" do
-      setup { post :create, :user => {:firstname => 'Ronald', :lastname => 'McDonald', :password => "something", :login => "uniquesdfkjgcsndfc" } }
-      #should_respond_with :redirect
-      #should_assign_to :user
+      setup { post :create, :user => {:firstname => 'Ronald', :lastname => 'McDonald', :password => "something", :password_confirmation => "something", :login => "uniq_login" } }
+      should_respond_with :success
+      should_assign_to :user
       #should_redirect_to "user_url(@user)"
       #should_set_the_flash_to(/created/i)
     end
