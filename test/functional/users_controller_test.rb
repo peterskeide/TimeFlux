@@ -37,12 +37,10 @@ class UsersControllerTest < ActionController::TestCase
 
       context "a GET to :edit" do
         setup { get :edit, :id => users(:bob).id }
-        should_respond_with :success
         should_render_template :edit
       end
 
     end
-
   end
   
   context 'Logged in as bill on GET to :index' do
