@@ -8,7 +8,7 @@ class ReportsControllerTest < ActionController::TestCase
       login_as(:bob)
     end
 
-    # depends on private access :action_methods which returns nil during tests
+    # depends on controllers private function :action_methods which returns nil during tests
     context "on GET report index" do
       #setup { get :index }
       #should_respond_with :success
@@ -45,7 +45,6 @@ class ReportsControllerTest < ActionController::TestCase
             should_respond_with :success
             should respond_with_content_type(:text)
           end
-
         end
       end
     end
@@ -66,7 +65,6 @@ class ReportsControllerTest < ActionController::TestCase
   end
 
   context "Not logged in" do
-
     reports = [:user, :activity, :billing, :hours]
     reports.each do |report|
       context "on GET to :#{report}" do
