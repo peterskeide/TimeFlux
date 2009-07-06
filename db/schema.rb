@@ -12,7 +12,7 @@
 ActiveRecord::Schema.define(:version => 20090623073330) do
 
   create_table "activities", :force => true do |t|
-    t.string   "name"
+    t.string   "name",                                :null => false
     t.string   "description"
     t.boolean  "active",           :default => true
     t.boolean  "default_activity", :default => false

@@ -1,7 +1,7 @@
 class CreateActivitiesTable < ActiveRecord::Migration
   def self.up
     create_table :activities do |t|
-      t.string :name
+      t.string :name,              :null => false
       t.string :description
       t.boolean :active,           :default => true
       t.boolean :default_activity, :default => false
