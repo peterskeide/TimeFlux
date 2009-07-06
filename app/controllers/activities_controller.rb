@@ -7,7 +7,6 @@ class ActivitiesController < ApplicationController
     if params[:tag_type] && !params[:tag_type][:id].empty?
       @tag_type = TagType.find_by_id(params[:tag_type][:id]) 
       @activities = @tag_type.activities.flatten.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' )
-      #@tag_type.tags.each { |tag| @activities = tag.activities.paginate( :page => params[:page] || 1, :per_page => 10, :order => 'name' ) }
     elsif params[:tag]
       unless params[:tag][:id].empty?
         @tag = Tag.find_by_id(params[:tag][:id])
@@ -37,34 +36,37 @@ class ActivitiesController < ApplicationController
       flash[:notice] = "New Activity was created"
       redirect_to(:action => 'index', :id => @activity.id)
     else
-      @activity = User.new(params[:activity])
       render :action => "new"
     end
   end
 
   def update
     @activity = Activity.find(params[:id])
-    attributes = params[@activity.class.name.underscore]
+    attributes = params[:activity]
     if @activity.update_attributes(attributes)
       flash[:notice] = 'Activity was successfully updated.'
       redirect_to(:action => 'index', :id => @activity.id)
     else
+      @tags = Tag.find(:all)
       render :action => "edit"
     end
   end
 
   def destroy
-    @activity = Activity.find(params[:id])
-    begin
-      if @activity.time_entries.empty?
-        @activity.destroy
+    @activity = Activity.find_by_id(params[:id])
+    if @activity.time_entries.empty?
+      if @activity.destroy
+        flash[:notice]= "Activity successfully removed"
+        redirect_to(activities_url)
       else
-        raise "Activity has hours registered - could not delete"
+        @tags = Tag.find(:all)
+        render :edit        
       end
-    rescue
-      flash[:error] = "#{$!}"
-    end
-    redirect_to(activities_url)
+    else
+      flash[:error]= "Activity has hours registered - could not delete"
+      @tags = Tag.find(:all)
+      render :edit
+    end      
   end
 
   def add_tag
