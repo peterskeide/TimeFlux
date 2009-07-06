@@ -2,6 +2,12 @@ require 'net/ldap'
 
 class User < ActiveRecord::Base
   
+  has_many :time_entries
+  has_and_belongs_to_many :activities
+     
+  validates_presence_of :firstname, :lastname, :login
+  validates_uniqueness_of :login
+  
   if TimeFlux::CONFIG.use_ldap
         
     acts_as_authentic { |c| c.validate_password_field = false }
@@ -20,12 +26,6 @@ class User < ActiveRecord::Base
   else
     acts_as_authentic    
   end
-      
-  has_many :time_entries
-  has_and_belongs_to_many :activities
-     
-  validates_presence_of :firstname, :lastname, :login
-  validates_uniqueness_of :login
 
   def fullname
     "#{self.firstname} #{self.lastname}"
