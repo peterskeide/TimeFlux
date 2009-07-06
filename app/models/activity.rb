@@ -3,6 +3,8 @@ class Activity < ActiveRecord::Base
   has_many :time_entries
   has_and_belongs_to_many :users
   has_and_belongs_to_many :tags
+  
+  validates_presence_of :name
 
   def <=>(other)
     name <=> other.name
