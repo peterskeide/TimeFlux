@@ -1,5 +1,8 @@
-TimeFlux::Configuration[:authentication_method]= :database
+require 'timeflux'
 
-# Uncomment for LDAP authentication support:
-# TimeFlux::Configuration[:authentication_method]= :ldap
-# TimeFlux::Configuration[:authentication_options]= {:host => 'your.host.here', :base => 'ou=people,dc=foobar,dc=com'} 
+# Uncomment to authenticate with LDAP.
+#TimeFlux.configure do |config|
+#  config.use_ldap= true
+#  config.ldap_host= 'jokke.conduct.no'
+#  config.ldap_base= 'ou=people,dc=conduct,dc=no'
+#end

@@ -2,7 +2,24 @@ require 'net/ldap'
 
 class User < ActiveRecord::Base
   
-  include TimeFlux::ConfigurableBehavior::UserModel
+  if TimeFlux::CONFIG.use_ldap
+        
+    acts_as_authentic { |c| c.validate_password_field = false }
+
+    def valid_ldap_credentials?(password_plaintext)
+      ldap = Net::LDAP.new
+      ldap.host = TimeFlux::CONFIG.ldap_host
+      base = TimeFlux::CONFIG.ldap_base
+      auth_str = "uid=" + self.login + ",#{base}"
+      ldap.auth auth_str, password_plaintext
+      ldap.bind # will return false if authentication is NOT successful
+    end
+
+    private :valid_ldap_credentials?
+    
+  else
+    acts_as_authentic    
+  end
       
   has_many :time_entries
   has_and_belongs_to_many :activities

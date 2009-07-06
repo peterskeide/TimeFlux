@@ -1,3 +1,3 @@
 class UserSession < Authlogic::Session::Base
-  include TimeFlux::ConfigurableBehavior::UserSessionModel
+  verify_password_method(:valid_ldap_credentials?) if TimeFlux::CONFIG.use_ldap
 end
