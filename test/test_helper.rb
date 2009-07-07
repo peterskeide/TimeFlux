@@ -47,5 +47,9 @@ class ActiveSupport::TestCase
     Authlogic::Session::Base.controller = Authlogic::ControllerAdapters::RailsAdapter.new(self)
     UserSession.create(users(user)) # logs a user in
   end
-
+  
+  def assert_false(condition)
+    assert(!condition)
+  end
+  
 end
