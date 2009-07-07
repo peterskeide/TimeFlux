@@ -49,8 +49,8 @@
     <% end %>
  </ul>
  <br/>
-<% form_tag :action => 'add_user' do %>
-    <%= select_tag "user", options_from_collection_for_select( User.all, 'id', 'fullname', ''  ) %>
+<% form_tag :action => "add_user" do %>
+    <%= select_tag "user", options_from_collection_for_select( @users, 'id', 'fullname', ''  ) %>
     <%= hidden_field(:activity, :id) %>
     <%= submit_tag 'Add assignment' %>
 <% end %>

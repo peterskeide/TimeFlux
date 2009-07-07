@@ -4,19 +4,19 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 <table>
-	<% form_tag(:action => "index", :method => "get") do %>
+	<% form_tag(:action => "filter_by_tag_type") do %>
 		<tr>
 			<td><%= label_tag "Tag type"%></td>
-			<td><%= collection_select(:tag_type, :id, @tag_types, :id, :name, {:prompt => true}) %></td>
+			<td><%= collection_select(:tag_type, :id, @tag_types, :id, :name) %></td>
 			<td><%= submit_tag "Apply Filter" %></td>
 		</tr>
 	<% end -%>
 	<% if defined? @tag_type %>
-		<% form_tag(:action => "index", :method => "get") do %>
+		<% form_tag(:action => "filter_by_tag") do %>
 			<%= hidden_field_tag "tag_type_id", @tag_type.id %>
 			<tr>
 		   	 	<td><%= label_tag "Tag"%></td>
-				<td><%= collection_select(:tag, :id, @tag_type.tags, :id, :name, {:prompt => true, :selected => "foo"}) %></td>
+				<td><%= collection_select(:tag, :id, @tag_type.tags, :id, :name) %></td>
 				<td><%= submit_tag "Apply Filter" %></td> 
 			</tr>
 		<% end -%>

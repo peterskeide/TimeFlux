@@ -189,12 +189,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
                  
       should_render_template :index  
       should_respond_with :success
-      should_assign_to :user, :date, :time_entries, :activities, :activity_options
-           
-      should "delete 7 time entries in week 26 for activity 'TimeFlux'" do
-        time_entries_after_delete = TimeEntry.count
-        assert_equal(7, @time_entries_before_delete - time_entries_after_delete)
-      end
+      should_assign_to :user, :date, :time_entries, :activities, :activity_options          
+      should_change "TimeEntry.count", :by => -7
       
     end
         
