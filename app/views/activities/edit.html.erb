@@ -35,11 +35,15 @@
     <% end %>
  </ul>
  <br/>
-<% form_tag :action => 'add_tag' do %>
-    <%= select_tag "tag", options_from_collection_for_select( @tags, 'id', 'name_and_type', ''  ) %>
-    <%= hidden_field(:activity, :id) %>
-    <%= submit_tag 'Add tag' %>
-<% end %>
+<% if @tags.empty? -%>
+   <b>No tags available</b>
+<% else -%>
+	<% form_tag :action => 'add_tag' do -%>
+	    <%= select_tag "tag", options_from_collection_for_select( @tags, 'id', 'name_and_type', ''  ) %>
+	    <%= hidden_field(:activity, :id) %>
+	    <%= submit_tag 'Add tag' %>
+	<% end -%>
+<% end -%>
 
  <h3>Assignments</h3>
  <ul>
@@ -49,8 +53,12 @@
     <% end %>
  </ul>
  <br/>
-<% form_tag :action => "add_user" do %>
-    <%= select_tag "user", options_from_collection_for_select( @users, 'id', 'fullname', ''  ) %>
-    <%= hidden_field(:activity, :id) %>
-    <%= submit_tag 'Add assignment' %>
-<% end %>
+<% if @users.empty? -%>
+	<b>No users available</b>
+<% else -%>
+	<% form_tag :action => "add_user" do -%>
+	    <%= select_tag "user", options_from_collection_for_select( @users, 'id', 'fullname', ''  ) %>
+	    <%= hidden_field(:activity, :id) %>
+	    <%= submit_tag 'Add assignment' %>
+	<% end -%>
+<% end -%>
