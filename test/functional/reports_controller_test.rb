@@ -24,26 +24,26 @@ class ReportsControllerTest < ActionController::TestCase
           context "with html" do
             setup { get report, {}.merge(params) }
             should_respond_with :success
-            should respond_with_content_type(:html)
+            should_respond_with_content_type(:html)
             should_not_set_the_flash
           end
 
           context "with format=pdf" do
             setup { get report, {:format => 'pdf', :tag=> tags(:timeflux).id }.merge(params) }
             should_respond_with :success
-            should respond_with_content_type(:pdf)
+            should_respond_with_content_type(:pdf)
           end
 
           context "with format=csv" do
             setup { get report, {:format => 'csv', :tag=> tags(:timeflux).id }.merge(params) }
             should_respond_with :success
-            should respond_with_content_type(:csv)
+            should_respond_with_content_type(:text)
           end
 
           context "with format=text" do
             setup { get report, {:format => 'text', :tag=> tags(:timeflux).id}.merge(params) }
             should_respond_with :success
-            should respond_with_content_type(:text)
+            should_respond_with_content_type(:text)
           end
         end
       end
