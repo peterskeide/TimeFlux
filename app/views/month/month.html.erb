@@ -16,7 +16,7 @@
   <tr>
     <td></td>
   <% @day.upto @last_in_month do |d| %>
-    <th <%= 'class="error"' if d.wday >= 5 -%> ><%= d.day -%></th>
+    <th <%= 'class="error"' if d.wday >= 5 -%> ><%= d.day -%><%='</th>'-%>
   <% end %>
   </tr>
   <% @activities.each do |activity| %>
@@ -33,3 +33,5 @@
   <% end %>
   </tr>
   </table>
+
+  <!--%= render :partial => 'summary',:locals => { :activities_summary => @activities_summary } -%-->
