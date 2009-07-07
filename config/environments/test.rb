@@ -1,5 +1,5 @@
-require 'shoulda'
 
+config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
 
 # Settings specified here will take precedence over those in config/environment.rb
 

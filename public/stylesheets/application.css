@@ -32,6 +32,7 @@ table tbody tr td, table tbody tr th  {
 
 table.compact tbody tr td, table.compact tbody tr th  {
         padding-right: 0px;
+        background: #FFDDAA;
 }
 
 table tbody tr th  {

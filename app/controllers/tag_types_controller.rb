@@ -17,7 +17,6 @@ class TagTypesController < ApplicationController
     end
   end
 
-  #TODO
   def destroy
     @tag_types = TagType.find(params[:id])
     if @tag_types.tags.empty?

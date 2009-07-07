@@ -33,6 +33,7 @@ Rails::Initializer.run do |config|
     :lib => 'will_paginate',                # gem sources -a http://gems.github.com
     :source => 'http://gems.github.com'     # gem install mislav-will_paginate
   #config.gem 'ruby-net-ldap'
+
   
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.

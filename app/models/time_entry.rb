@@ -15,7 +15,7 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :between, lambda { |*args|
-    {  :conditions => ['date between ? and ?', (args.first || Time.now), (args.second || 7.days.ago )] }
+    {  :conditions => ['date between ? and ?', args.first, args.second] }
   }
       
   named_scope :for_activity, lambda { |activity_id|
@@ -26,16 +26,13 @@ class TimeEntry < ActiveRecord::Base
     date <=> other.date
   end
 
-  def self.find_in_month (year, month)
-    start_of_month = Time.mktime(year.to_i, month.to_i, 1)
-    conditions = ['date between ? and ?', start_of_month, start_of_month.end_of_month]
-    self.find(:all, :conditions => conditions)
-  end
-
   def to_s
     "#{self.hours} hours on date #{self.date}"
-  end 
-  
+  end
+
+  def hours_to_s
+    if self.hours > 0 then self.hours.to_s else '-' end
+  end
   private
   
   def must_not_be_locked
@@ -43,10 +40,5 @@ class TimeEntry < ActiveRecord::Base
       errors.add_to_base("Updating locked time entries is not possible") if locked
     end
   end
-
-  def hours_to_s
-    if self.hours > 0 then self.hours.to_s else '-' end
-  end
-
-    
+  
 end

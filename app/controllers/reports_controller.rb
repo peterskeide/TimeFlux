@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
     end
     
     activity_data = activities.sort.collect { |a|
-      [a.name, a.tags.to_s, a.active]
+      [a.name, a.tags.join(', '), a.active]
     }
     @table = Ruport::Data::Table.new( :data => activity_data,
       :column_names => ['Activity name', 'Tags', 'Active'] )
@@ -59,7 +59,7 @@ class ReportsController < ApplicationController
       @tag.activities.each do |activity|
 
         activity.time_entries.between(@day,(@day >> 1) -1).sort.each do |t|
-          if params[:method] == 'post' then t.billed = true; t.save end
+          if params[:method] == 'post' then t.billed = true; t.save; end
           report_data << [activity.name, t.date, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0
         end
       end
