@@ -65,8 +65,7 @@ class ReportsControllerTest < ActionController::TestCase
         assert time_entry.billed
       end
     end
-    
-    
+       
   end
 
   context 'Logged in as bill' do
