@@ -33,9 +33,6 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    #attributes = params[@user.class.name.underscore]
-    #if @user.update_attributes(attributes)
-
     if params[:user][:password] then
        @user.password = params[:user][:password]
        @user.password_confirmation = params[:user][:password_confirmation]
@@ -53,10 +50,25 @@ class UsersController < ApplicationController
     end
   end
 
-
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
+    errors = []
+    if User.find_all_by_admin(true).size == 1 then
+      errors << 'Cannot not remove last admin user'
+    end
+    if @user.activities then
+      errors << 'User is assigned to activities'
+    end
+    if @user.time_entries then
+      errors << 'User has time_entries registrered'
+    end
+
+    unless errors 
+      @user.destroy
+      flash[:notice] = 'User was removed.'
+    else
+      flash[:error] = "Could not remove user due to error(s): #{errors.join(', ')}"
+    end
     redirect_to(users_url)
   end
 end

@@ -13,7 +13,7 @@ class MonthControllerTest < ActionController::TestCase
     end
 
 
-    pages = [:week,:month,:listing]
+    pages = [:week,:month,:summary,:listing]
     pages.each do |page|  
       context "on GET to #{page}" do
         setup { get page }
@@ -23,7 +23,7 @@ class MonthControllerTest < ActionController::TestCase
     
   end
   
-  context "Logged in as user Bob on GET to :index" do
+  context "Logged in as user Bill on GET to :index" do
     setup {
       login_as(:bill)
       get :index
