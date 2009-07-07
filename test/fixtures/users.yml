@@ -7,7 +7,7 @@ bob:
     firstname: Bob
     lastname: Foobar
     admin: true
-    activities: timeflux, foobar
+    activities: timeflux_development
 
 bill:
     email: bill@foobar.com

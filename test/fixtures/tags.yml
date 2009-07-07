@@ -4,6 +4,11 @@ conduct:
   tag_type: customer
 
 timeflux:
-    name: TimeFlux
-    description: Open source time management and billing application
-    tag_type: project
+  name: TimeFlux
+  description: Open source time management and billing application
+  tag_type: project
+    
+foobar:
+  name: Foobar
+  description: The Foo the Bar
+  tag_type: project
