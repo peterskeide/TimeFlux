@@ -53,10 +53,21 @@ class UsersControllerTest < ActionController::TestCase
         end
       end
 
+      context "destroying Bob" do
+        setup { post :destroy, :id => users(:bob).id}
+        should_redirect_to("Index") { "/users" }
+        should_set_the_flash_to(/error/i)
+      end
+
+      context "destroying Bill" do
+        setup { post :destroy, :id => users(:bill).id}
+        should_redirect_to("Index") { "/users" }
+        should_set_the_flash_to('User was removed.')
+      end
     end
   end
   
-  context 'Logged in as bill on GET to :index' do
+  context 'As bill on GET to :index' do
     setup { login_as(:bill); get :index }
     should_redirect_to("Time Entries") { "/time_entries" }
   end

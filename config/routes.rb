@@ -37,8 +37,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tags
   map.resources :user_sessions
   map.resources :time_entries, :new => { :previous => :get, :next => :get }  
-  map.reports "Reports", :controller => "reports"
-  map.users "Users", :controller => "users"
+  map.reports "reports", :controller => "reports"
+  #map.users "Users", :controller => "users"
   map.resources :users, :activities
 
   map.month "month", :controller => "month"

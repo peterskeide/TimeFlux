@@ -53,17 +53,17 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     errors = []
-    if User.find_all_by_admin(true).size == 1 then
+    if @user.admin && User.find_all_by_admin(true).size == 1 then
       errors << 'Cannot not remove last admin user'
     end
-    if @user.activities then
+    if @user.activities.size > 0 then
       errors << 'User is assigned to activities'
     end
-    if @user.time_entries then
+    if @user.time_entries.size > 0 then
       errors << 'User has time_entries registrered'
     end
 
-    unless errors 
+    if errors.empty?
       @user.destroy
       flash[:notice] = 'User was removed.'
     else

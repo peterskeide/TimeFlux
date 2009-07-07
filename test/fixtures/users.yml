@@ -16,4 +16,4 @@ bill:
     crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("foo" + salt) %>
     persistence_token: <%= Authlogic::Random.hex_token %>
     firstname: Bill
-    lastname: Foobar 
+    lastname: Foobar
