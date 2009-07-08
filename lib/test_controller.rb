@@ -33,9 +33,23 @@ require "ruport"
         pdf.move_pointer(50)
 
         if data.is_a? Ruport::Data::Grouping
-          render_grouping data, options.to_hash.merge(:formatter => pdf_writer)
+          #render_grouping data, options.to_hash.merge(:formatter => pdf_writer)
+          data.each do |name,group|
+            pdf.move_pointer(40)
+            pdf.text name, :font_size => 16, :leading => 20
+            pdf.move_pointer(20)
+            draw_table group, :position => :left, :orientation => :right
+            pdf.move_pointer(20)
+
+            if group.column_names.include? 'Hours'
+              pdf.text "Total hours: #{group.sum('Hours')}", :font_size => 12
+            end
+          end
         else
           draw_table data
+          if data.column_names.include? 'Hours'
+            pdf.text "Total hours : #{data.sum('Hours')}", :font_size => 12
+          end
         end
 
       end

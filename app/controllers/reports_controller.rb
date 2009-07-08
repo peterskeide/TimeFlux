@@ -42,6 +42,7 @@ class ReportsController < ApplicationController
     respond_with_formatter @table, TestController, "User report"
   end
 
+
   #Supports GET and POST
   def unbilled
     setup_calender
@@ -54,9 +55,19 @@ class ReportsController < ApplicationController
 
     table = Ruport::Data::Table.new( :data => report_data,
       :column_names => ['Activity name', 'Date', 'Hours', 'Consultant', 'Billed','Notes'])
-    @table = Grouping(table,:by => "Activity name")
+    grouping = Grouping(table,:by => "Activity name")
 
-    respond_with_formatter @table, TestController, "Unbilled_#{@day.year}-#{@day.month}"
+    result = Ruport::Data::Grouping.new
+    grouping.each do |name,group|
+      g2 = Grouping(group,:by => "Consultant")
+      g2.each do |n2,g3|
+        result << Ruport::Data::Group.new( :name => "#{name} - #{n2}",
+                    :data => g3.data,
+                    :column_names => g3.column_names )
+      end
+    end
+
+    respond_with_formatter result, TestController, "Unbilled_#{@day.year}-#{@day.month}"
   end
 
   #Supports GET and POST
