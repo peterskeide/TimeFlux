@@ -4,6 +4,7 @@ class Tag < ActiveRecord::Base
   belongs_to :tag
   has_and_belongs_to_many :activities
 
+
   def activities_filtered(filter=:all)
     if filter == :active then
       self.activities.select { |a| a.active == true }

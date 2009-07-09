@@ -18,7 +18,7 @@ class ActivitiesController < ApplicationController
       @tag = Tag.find_by_id(params[:tag][:id])
       @tag_type = @tag.tag_type
       @activities = @tag.activities_filtered(@active_selected).paginate(PAGINATION_OPTIONS)
-    elsif params[:tag_type][:id] != "" then
+    elsif params[:tag_type] && params[:tag_type][:id] != "" then
       @tag_type = TagType.find_by_id(params[:tag_type][:id])
       @activities = @tag_type.activities_filtered(@active_selected).paginate(PAGINATION_OPTIONS)
     else
