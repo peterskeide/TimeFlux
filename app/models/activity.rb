@@ -7,7 +7,17 @@ class Activity < ActiveRecord::Base
   validates_presence_of :name
   
   before_destroy :verify_no_time_entries
-    
+
+  named_scope :filtered, lambda { |filter|
+    if filter == :passive then
+      { :conditions => { :active => false } }
+    elsif filter == :all then
+      { :conditions => {} }
+    else
+      { :conditions => { :active => true } }
+    end
+  }
+
   def <=>(other)
     name <=> other.name
   end

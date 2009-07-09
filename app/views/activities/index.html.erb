@@ -4,23 +4,34 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 <table>
-	<% form_tag(:action => "filter_by_tag_type") do %>
+
+	<% form_tag(:action => "index") do %>
+                <tr>
+                  <td><%= radio_button(:active, "active", "active", :checked => @active_selected == :active) %><%= label_tag "Active"%></td>
+                  <td><%= radio_button(:active, "active", "passive", :checked => @active_selected == :passive) %><%= label_tag "Passive"%></td>
+                  <td><%= radio_button(:active, "active", "all", :checked => @active_selected == :all) %><%= label_tag "All"%></td>
+                </tr>
+
 		<tr>
-			<td><%= label_tag "Tag type"%></td>
-			<td><%= collection_select(:tag_type, :id, @tag_types, :id, :name) %></td>
-			<td><%= submit_tag "Apply Filter" %></td>
+                  <td><%= label_tag "Tag type"%></td>
+                  <td><%= collection_select( :tag_type, :id, @tag_types, :id, :name, {:include_blank => 'All'} ) %></td>
 		</tr>
+
+                <tr>
+                  <td><%= label_tag "Tag"%></td>
+                  <% if defined? @tag_type %>
+                    <td><%= collection_select( :tag, :id, @tag_type.tags, :id, :name, {:include_blank => 'All'} ) %></td>
+                  <% else %>
+                    <td>--------</td>
+                  <% end %>
+                </tr>
+		
+                <tr><td></td></tr>
+                <tr><td><%= submit_tag "Apply Filter" %></td> </tr>
 	<% end -%>
-	<% if defined? @tag_type %>
-		<% form_tag(:action => "filter_by_tag") do %>
-			<%= hidden_field_tag "tag_type_id", @tag_type.id %>
-			<tr>
-		   	 	<td><%= label_tag "Tag"%></td>
-				<td><%= collection_select(:tag, :id, @tag_type.tags, :id, :name) %></td>
-				<td><%= submit_tag "Apply Filter" %></td> 
-			</tr>
-		<% end -%>
-	<% end -%>
+
+	
+
 </table>
 <% if defined? @tag_type %>
 	<h4>Number of activities for <%= if defined? @tag then "tag #{@tag.name}" else "tag type #{@tag_type.name}" end %>: <%= @activities.size %></h4>

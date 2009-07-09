@@ -1,7 +1,4 @@
 
-require 'report_renderer'
-require 'test_controller'
-
 require 'ruport'
 
 class ReportsController < ApplicationController
@@ -67,7 +64,7 @@ class ReportsController < ApplicationController
       end
     end
 
-    respond_with_formatter result, TestController, "Unbilled_#{@day.year}-#{@day.month}"
+    respond_with_formatter result, ReportRendererUnbilled, "Unbilled_#{@day.year}-#{@day.month}"
   end
 
   #Supports GET and POST
