@@ -8,22 +8,23 @@ class Activity < ActiveRecord::Base
   
   before_destroy :verify_no_time_entries
 
-
-
-  named_scope :for_tag, lambda { |tag_id|
-
-      { :joins => 'INNER JOIN "activities_tags" ON "tags".id = "activities_tags".tag_id',
-      }
-
-  }
-
-  named_scope :filtered, lambda { |filter|
-    if filter == :passive then
+  named_scope :active, lambda { |active|
+    if active == :passive then
       { :conditions => { :active => false } }
-    elsif filter == :all then
+    elsif active == :all then
       { :conditions => {} }
     else
       { :conditions => { :active => true } }
+    end
+  }
+
+  named_scope :default, lambda { |default|
+    if default == :default then
+      { :conditions => { :default_activity => true } }
+    elsif default == :all then
+      { :conditions => {} }
+    else
+      { :conditions => { :default_activity => false } }
     end
   }
 

@@ -8,21 +8,21 @@ class ActivitiesController < ApplicationController
   def index
     @tag_types = TagType.find(:all)
 
-    if params[:active] then
-      @active_selected = params[:active][:active].intern
-    else
-      @active_selected = :active
-    end
+    @active_selected = params[:active][:active].intern if params[:active]
+    @active_selected ||= :active
+
+    @default_selected = params[:default][:default].intern if params[:default]
+    @default_selected ||= :all
 
     if params[:tag] && params[:tag][:id] != "" && params[:tag_type][:id] != "" then
       @tag = Tag.find_by_id(params[:tag][:id])
       @tag_type = @tag.tag_type
-      @activities = @tag.activities_filtered(@active_selected).paginate(PAGINATION_OPTIONS)
+      @activities = filter_activity(@tag.activities, @active_selected, @default_selected).paginate(PAGINATION_OPTIONS)
     elsif params[:tag_type] && params[:tag_type][:id] != "" then
       @tag_type = TagType.find_by_id(params[:tag_type][:id])
-      @activities = @tag_type.activities_filtered(@active_selected).paginate(PAGINATION_OPTIONS)
+      @activities =  filter_activity(@tag_type.activities, @active_selected, @default_selected).paginate(PAGINATION_OPTIONS)
     else
-      @activities = Activity.filtered(@active_selected).paginate(PAGINATION_OPTIONS)
+      @activities = Activity.active(@active_selected).default(@default_selected).paginate(PAGINATION_OPTIONS)
     end
   end
   
@@ -112,6 +112,19 @@ class ActivitiesController < ApplicationController
   end
   
   private
+
+  def filter_activity(list,active=:all,default=:all)
+
+    unless active == :all then
+      list = list.select{ |a| a.active == (active == :active) }
+    end
+
+    unless default == :all then
+      list = list.select{ |a| a.default_activity == (default == :default) }
+    end
+
+    return list
+  end
   
   def set_current_page_for_pagination
     PAGINATION_OPTIONS[:page]= params[:page] if params[:page]

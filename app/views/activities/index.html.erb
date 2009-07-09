@@ -7,6 +7,11 @@
 
 	<% form_tag(:action => "index") do %>
                 <tr>
+                  <td><%= radio_button(:default, "default", "default", :checked => @default_selected == :default) %><%= label_tag "Default"%></td>
+                  <td><%= radio_button(:default, "default", "non_default", :checked => @default_selected == :non_default) %><%= label_tag "Non default"%></td>
+                  <td><%= radio_button(:default, "default", "all", :checked => @default_selected == :all) %><%= label_tag "All"%></td>
+                </tr>
+                <tr>
                   <td><%= radio_button(:active, "active", "active", :checked => @active_selected == :active) %><%= label_tag "Active"%></td>
                   <td><%= radio_button(:active, "active", "passive", :checked => @active_selected == :passive) %><%= label_tag "Passive"%></td>
                   <td><%= radio_button(:active, "active", "all", :checked => @active_selected == :all) %><%= label_tag "All"%></td>
