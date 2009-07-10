@@ -8,7 +8,7 @@ class Activity < ActiveRecord::Base
   
   before_destroy :verify_no_time_entries
   
-  PAGINATION_OPTIONS = { :page => 1, :per_page => 10, :order => "activities.name" }
+  PAGINATION_OPTIONS = { :per_page => 10, :order => "activities.name" }
   BOOLEAN_OPTIONS = ["any", "true", "false"]
   
   named_scope :active, lambda { |active|
