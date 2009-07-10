@@ -8,7 +8,7 @@ class TagType < ActiveRecord::Base
 
   #Rails does not support has many :through habtm yet
   def activities
-    self.tags.collect { |tag| tag.activities }.flatten
+      self.tags.collect { |tag| tag.activities }.flatten
   end
 
 end

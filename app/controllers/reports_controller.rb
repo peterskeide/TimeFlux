@@ -1,8 +1,3 @@
-Mime::Type.register 'application/pdf', :pdf
-#Mime::Type.register 'text/plain', :csv
-
-require 'report_renderer'
-require 'test_controller'
 
 require 'ruport'
 
@@ -42,6 +37,34 @@ class ReportsController < ApplicationController
     @table = Ruport::Data::Table.new( :data => user_data,
       :column_names => ['Full name', 'Login', 'E-mail', 'Status'] )
     respond_with_formatter @table, TestController, "User report"
+  end
+
+
+  #Supports GET and POST
+  def unbilled
+    setup_calender
+
+    report_data = []
+    TimeEntry.unbilled.between(@day,(@day >> 1) -1).sort.each do |t|
+      if params[:method] == 'post' then t.billed = true; t.save; end
+      report_data << [t.activity.name, t.date, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0
+    end
+
+    table = Ruport::Data::Table.new( :data => report_data,
+      :column_names => ['Activity name', 'Date', 'Hours', 'Consultant', 'Billed','Notes'])
+    grouping = Grouping(table,:by => "Activity name")
+
+    result = Ruport::Data::Grouping.new
+    grouping.each do |name,group|
+      g2 = Grouping(group,:by => "Consultant")
+      g2.each do |n2,g3|
+        result << Ruport::Data::Group.new( :name => "#{name} - #{n2}",
+                    :data => g3.data,
+                    :column_names => g3.column_names )
+      end
+    end
+
+    respond_with_formatter result, ReportRendererUnbilled, "Unbilled_#{@day.year}-#{@day.month}"
   end
 
   #Supports GET and POST

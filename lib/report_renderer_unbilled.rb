@@ -1,6 +1,6 @@
 require "ruport"
 
- class TestController < Ruport::Controller
+ class ReportRendererUnbilled < Ruport::Controller
 
     stage :report
 
@@ -35,13 +35,13 @@ require "ruport"
         if data.is_a? Ruport::Data::Grouping
           #render_grouping data, options.to_hash.merge(:formatter => pdf_writer)
           data.each do |name,group|
-            pdf.move_pointer(30)
-
+            #pdf.move_pointer(30)
+            pdf.start_new_page
             pdf.text name, :font_size => 16, :leading => 20
             pdf.move_pointer(10)
             draw_table group, :position => :left, :orientation => :right
             pdf.move_pointer(20)
-
+#
             if group.column_names.include? 'Hours'
               sum = group.sum('Hours')
               pdf.text "Total hours: #{sum}", :font_size => 12

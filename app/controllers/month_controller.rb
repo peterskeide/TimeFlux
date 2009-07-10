@@ -1,4 +1,4 @@
-Mime::Type.register 'application/pdf', :pdf
+
 
 class MonthController < ApplicationController
 

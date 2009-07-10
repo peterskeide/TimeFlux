@@ -14,6 +14,9 @@ class TimeEntry < ActiveRecord::Base
     { :conditions => { :user_id => user_id } }
   }
 
+  named_scope :unbilled, 
+     :conditions => { :billed => false } 
+
   named_scope :between, lambda { |*args|
     {  :conditions => ['date between ? and ?', args.first, args.second] }
   }
