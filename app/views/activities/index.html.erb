@@ -8,11 +8,11 @@
 	<% form_tag(:action => "index") do %>
     <tr> 
 		<td><%= label_tag "Default status" %></td>
-		<td><%= select_tag "default", options_for_select(Activity::DEFAULT_OPTIONS, @default_selected) %></td>
+		<td><%= select_tag "default", options_for_select(Activity::BOOLEAN_OPTIONS, @default_selected) %></td>
     </tr>
 	<tr> 
 		<td><%= label_tag "Active status" %></td>
-		<td><%= select_tag "active", options_for_select(Activity::ACTIVE_OPTIONS, @active_selected) %></td>
+		<td><%= select_tag "active", options_for_select(Activity::BOOLEAN_OPTIONS, @active_selected) %></td>
     </tr>
 	<tr>
 	    <td><%= label_tag "Tag type"%></td>
@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td><%= label_tag "Tag"%></td>
-	    <% if defined? @tag_type %>
+	    <% if @tag_type %>
 	    	<td><%= collection_select( :tag, :id, @tag_type.tags, :id, :name, {:include_blank => 'All'} ) %></td>
 	  	<% else %>
 	    	<td>--------</td>
@@ -30,10 +30,6 @@
 	<tr><td><%= submit_tag "Apply Filter" %></td> </tr>
 	<% end -%>
 </table>
-
-<% if defined? @tag_type %>
-	<h4>Number of activities for <%= if defined? @tag then "tag #{@tag.name}" else "tag type #{@tag_type.name}" end %>: <%= @activities.size %></h4>
-<% end -%>
 
 <br/>
 <%= page_entries_info @activities %>
@@ -57,4 +53,4 @@
   <br />
 <%= will_paginate @activities %>
   <hr/>
-<%= link_to "New Activity", :action => "new" %>
+<%= link_to "New Activity", new_activity_path %>

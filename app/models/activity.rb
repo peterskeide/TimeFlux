@@ -8,7 +8,9 @@ class Activity < ActiveRecord::Base
   
   before_destroy :verify_no_time_entries
   
-  ACTIVE_OPTIONS = ["any", "true", "false"]
+  PAGINATION_OPTIONS = { :page => 1, :per_page => 10, :order => "activities.name" }
+  BOOLEAN_OPTIONS = ["any", "true", "false"]
+  
   named_scope :active, lambda { |active|
     if active == "false"
       { :conditions => { :active => false } }
@@ -19,7 +21,6 @@ class Activity < ActiveRecord::Base
     end
   }
   
-  DEFAULT_OPTIONS = ["any", "true", "false"]
   named_scope :default, lambda { |default|
     if default == "false"
       { :conditions => { :default_activity => false } }
@@ -29,7 +30,26 @@ class Activity < ActiveRecord::Base
       { :conditions => { :default_activity => true } }
     end
   }
-
+  
+  named_scope :for_tag, lambda { |tag_id|
+     {:joins => :tags, :conditions => ["tags.id = ?", tag_id]}
+  }
+  
+  named_scope :for_tag_type, lambda { |tag_type_id|
+     {:joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id]}
+  }
+    
+  def self.search(active_option, default_option, tag, tag_type, page)
+    PAGINATION_OPTIONS[:page]= page
+     if tag
+       return self.for_tag(tag.id).active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
+     elsif tag_type
+       return self.for_tag_type(tag_type.id).active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
+     else
+       return self.active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
+     end
+  end
+  
   def <=>(other)
     name <=> other.name
   end
@@ -46,5 +66,5 @@ class Activity < ActiveRecord::Base
        return false
     end 
   end
-
+  
 end
