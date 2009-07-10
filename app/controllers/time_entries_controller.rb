@@ -19,7 +19,7 @@ class TimeEntriesController < ApplicationController
     render :index
   end
   
-  def new
+  def create
     @activity = Activity.find_by_id(params[:activity][:activity_id])
     @user = @current_user
     @date = Date.parse(params[:date])

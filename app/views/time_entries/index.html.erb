@@ -48,7 +48,7 @@
 <% end %>
 <p> 
 	<% unless @activity_options.empty? -%> 
-		<% form_tag '/time_entries/new', :method => :get do -%>
+		<% form_tag time_entries_url do -%>
 			<%= hidden_field_tag "date", @date %>
 			<%= select "activity", "activity_id", @activity_options %>
 			<%= submit_tag "Add selected activity to this week" %>
