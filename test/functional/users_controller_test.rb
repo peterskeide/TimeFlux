@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
-  context 'Logged in as Bob' do
+  context "Logged in as Bob" do
 
     setup do
       login_as(:bob)

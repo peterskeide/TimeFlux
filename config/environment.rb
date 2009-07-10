@@ -29,11 +29,8 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "authlogic"
   config.gem "ruport"
-  config.gem 'mislav-will_paginate',        # NOTE: If will paginate will not load, use these gem commands
-    :lib => 'will_paginate',                # gem sources -a http://gems.github.com
-    :source => 'http://gems.github.com'     # gem install mislav-will_paginate
-  #config.gem 'ruby-net-ldap'
-
+  config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
+  config.gem 'ruby-net-ldap', :lib => 'net/ldap'
   
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.

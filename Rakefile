@@ -20,4 +20,3 @@ namespace :test do
     system("open coverage/index.html") if PLATFORM['darwin']
   end
 end
-

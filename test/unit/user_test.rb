@@ -1,8 +1,3 @@
-
-$:.unshift File.join(File.dirname(__FILE__),'..','lib')
-
-require 'test/unit'
-require 'user'
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
@@ -19,5 +14,5 @@ class UserTest < ActiveSupport::TestCase
     end
 
   end
+  
 end
-
