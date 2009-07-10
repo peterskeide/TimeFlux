@@ -23,7 +23,10 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
- 
+
+# Test unit must be loaded before mocha/shoulda or you will get a const_missing (NameError)
+# when running rake test tasks 
 # ref: http://floehopper.lighthouseapp.com/projects/22289-mocha/tickets/50
 config.gem 'test-unit',          :lib => 'test/unit'
+config.gem 'mocha'
 config.gem 'thoughtbot-shoulda', :lib => 'shoulda'
