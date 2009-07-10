@@ -4,8 +4,8 @@ class ActivitiesController < ApplicationController
   
   def index    
     @tag_types = TagType.find(:all)
-    @active_selected = params[:active] ? params[:active] : "any"
-    @default_selected = params[:default] ? params[:default] : "any"
+    @selected_active_option = params[:active] ? params[:active] : "any"
+    @selected_default_option = params[:default] ? params[:default] : "any"
     @tag = tag_selected? ? Tag.find(params[:tag][:id]) : nil
     @tag_type = tag_type_selected? ? TagType.find(params[:tag_type][:id]) : nil
     @activities = Activity.search(@active_selected, @default_selected, @tag, @tag_type, params[:page])

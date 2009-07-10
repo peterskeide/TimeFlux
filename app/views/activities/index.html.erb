@@ -8,11 +8,11 @@
 	<% form_tag(:action => "index") do %>
     <tr> 
 		<td><%= label_tag "Default status" %></td>
-		<td><%= select_tag "default", options_for_select(Activity::BOOLEAN_OPTIONS, @default_selected) %></td>
+		<td><%= select_tag "default", options_for_select(Activity::BOOLEAN_OPTIONS, @selected_default_option) %></td>
     </tr>
 	<tr> 
 		<td><%= label_tag "Active status" %></td>
-		<td><%= select_tag "active", options_for_select(Activity::BOOLEAN_OPTIONS, @active_selected) %></td>
+		<td><%= select_tag "active", options_for_select(Activity::BOOLEAN_OPTIONS, @selected_active_option) %></td>
     </tr>
 	<tr>
 	    <td><%= label_tag "Tag type"%></td>
