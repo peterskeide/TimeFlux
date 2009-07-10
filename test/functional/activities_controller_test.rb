@@ -14,25 +14,7 @@ class ActivitiesControllerTest < ActionController::TestCase
       should_assign_to :tag_types, :activities
 
     end
-    
-    context "POST to :filter_by_tag_type" do
-
-      setup { post :filter_by_tag_type, :tag_type => {:id => tag_types(:customer).id.to_s} }
-
-      should_respond_with :success
-      should_assign_to :tag_types, :tag_type, :activities
-
-    end
-    
-    context "POST to :filter_by_tag" do
-
-      setup { post :filter_by_tag, :tag => {:id => tags(:timeflux).id.to_s}, :tag_type_id => tag_types(:customer).id.to_s }
-
-      should_respond_with :success
-      should_assign_to :tag_types, :tag_type, :tag, :activities
-
-    end
-    
+        
     context "GET to :new" do
       
       setup { get :new }

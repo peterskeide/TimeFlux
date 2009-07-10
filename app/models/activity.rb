@@ -7,24 +7,26 @@ class Activity < ActiveRecord::Base
   validates_presence_of :name
   
   before_destroy :verify_no_time_entries
-
+  
+  ACTIVE_OPTIONS = ["any", "true", "false"]
   named_scope :active, lambda { |active|
-    if active == :passive then
+    if active == "false"
       { :conditions => { :active => false } }
-    elsif active == :all then
+    elsif active == "any"
       { :conditions => {} }
     else
       { :conditions => { :active => true } }
     end
   }
-
+  
+  DEFAULT_OPTIONS = ["any", "true", "false"]
   named_scope :default, lambda { |default|
-    if default == :default then
-      { :conditions => { :default_activity => true } }
-    elsif default == :all then
+    if default == "false"
+      { :conditions => { :default_activity => false } }
+    elsif default == "any"
       { :conditions => {} }
     else
-      { :conditions => { :default_activity => false } }
+      { :conditions => { :default_activity => true } }
     end
   }
 

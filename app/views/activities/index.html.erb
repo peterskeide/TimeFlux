@@ -1,57 +1,51 @@
 <h1>Activities</h1>
-  <%= render :partial => 'sub_menu', :locals => { :tag_types => @tag_types } -%>
+<%= render :partial => 'sub_menu', :locals => { :tag_types => @tag_types } -%>
 
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
+
 <table>
-
 	<% form_tag(:action => "index") do %>
-                <tr>
-                  <td><%= radio_button(:default, "default", "default", :checked => @default_selected == :default) %><%= label_tag "Default"%></td>
-                  <td><%= radio_button(:default, "default", "non_default", :checked => @default_selected == :non_default) %><%= label_tag "Non default"%></td>
-                  <td><%= radio_button(:default, "default", "all", :checked => @default_selected == :all) %><%= label_tag "All"%></td>
-                </tr>
-                <tr>
-                  <td><%= radio_button(:active, "active", "active", :checked => @active_selected == :active) %><%= label_tag "Active"%></td>
-                  <td><%= radio_button(:active, "active", "passive", :checked => @active_selected == :passive) %><%= label_tag "Passive"%></td>
-                  <td><%= radio_button(:active, "active", "all", :checked => @active_selected == :all) %><%= label_tag "All"%></td>
-                </tr>
-
-		<tr>
-                  <td><%= label_tag "Tag type"%></td>
-                  <td><%= collection_select( :tag_type, :id, @tag_types, :id, :name, {:include_blank => 'All'} ) %></td>
-		</tr>
-
-                <tr>
-                  <td><%= label_tag "Tag"%></td>
-                  <% if defined? @tag_type %>
-                    <td><%= collection_select( :tag, :id, @tag_type.tags, :id, :name, {:include_blank => 'All'} ) %></td>
-                  <% else %>
-                    <td>--------</td>
-                  <% end %>
-                </tr>
-		
-                <tr><td></td></tr>
-                <tr><td><%= submit_tag "Apply Filter" %></td> </tr>
+    <tr> 
+		<td><%= label_tag "Default status" %></td>
+		<td><%= select_tag "default", options_for_select(Activity::DEFAULT_OPTIONS, @default_selected) %></td>
+    </tr>
+	<tr> 
+		<td><%= label_tag "Active status" %></td>
+		<td><%= select_tag "active", options_for_select(Activity::ACTIVE_OPTIONS, @active_selected) %></td>
+    </tr>
+	<tr>
+	    <td><%= label_tag "Tag type"%></td>
+	    <td><%= collection_select( :tag_type, :id, @tag_types, :id, :name, {:include_blank => 'All'} ) %></td>
+	</tr>
+	<tr>
+		<td><%= label_tag "Tag"%></td>
+	    <% if defined? @tag_type %>
+	    	<td><%= collection_select( :tag, :id, @tag_type.tags, :id, :name, {:include_blank => 'All'} ) %></td>
+	  	<% else %>
+	    	<td>--------</td>
+	    <% end %>
+	</tr>
+	<tr><td></td></tr>
+	<tr><td><%= submit_tag "Apply Filter" %></td> </tr>
 	<% end -%>
-
-	
-
 </table>
+
 <% if defined? @tag_type %>
 	<h4>Number of activities for <%= if defined? @tag then "tag #{@tag.name}" else "tag type #{@tag_type.name}" end %>: <%= @activities.size %></h4>
 <% end -%>
 
-        <br/>
- <%= page_entries_info @activities %>
- <%= will_paginate @activities %>
+<br/>
+<%= page_entries_info @activities %>
+<%= will_paginate @activities %>
+
 <% @activities.each do |a| -%>
   <hr/>
   <div>
     <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
     <b>Tags:</b> <% a.tags.each do |t| %>
-      <%=  "#{t.name}(#{t.tag_type_name})" -%>,
-    <% end %> <br/>
+                   <%=  "#{t.name}(#{t.tag_type_name})" -%>,
+                 <% end %><br/>
     <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>
 	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>

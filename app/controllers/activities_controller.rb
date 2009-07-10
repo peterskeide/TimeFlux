@@ -5,17 +5,15 @@ class ActivitiesController < ApplicationController
   before_filter :check_authentication, :check_admin
   before_filter :set_current_page_for_pagination, :only => [:index, :filter_by_tag_type, :filter_by_tag]
   
-  def index
+  def index    
     @tag_types = TagType.find(:all)
-
-    @active_selected = params[:active] ? params[:active][:active].intern : :all
-    @default_selected = params[:default] ? params[:default][:default].intern : :all
-
-    if params[:tag] && params[:tag][:id] != "" && params[:tag_type][:id] != "" then
+    @active_selected = params[:active] ? params[:active] : "any"
+    @default_selected = params[:default] ? params[:default] : "any"
+    if tag_selected?
       @tag = Tag.find_by_id(params[:tag][:id])
       @tag_type = @tag.tag_type
       @activities = filter_activity(@tag.activities, @active_selected, @default_selected).paginate(PAGINATION_OPTIONS)
-    elsif params[:tag_type] && params[:tag_type][:id] != "" then
+    elsif tag_type_selected?
       @tag_type = TagType.find_by_id(params[:tag_type][:id])
       @activities =  filter_activity(@tag_type.activities, @active_selected, @default_selected).paginate(PAGINATION_OPTIONS)
     else
@@ -94,18 +92,19 @@ class ActivitiesController < ApplicationController
   end
   
   private
+  
+  def tag_selected?
+    params[:tag] && params[:tag][:id] != "" && params[:tag_type][:id] != ""
+  end
+  
+  def tag_type_selected?
+    params[:tag_type] && params[:tag_type][:id] != ""
+  end
 
-  def filter_activity(list,active=:all,default=:all)
-
-    unless active == :all then
-      list = list.select{ |a| a.active == (active == :active) }
-    end
-
-    unless default == :all then
-      list = list.select{ |a| a.default_activity == (default == :default) }
-    end
-
-    return list
+  def filter_activity(list, active = "any", default = "any")
+    list = list.select{ |a| a.active == (active == "true") } unless active == "any"    
+    list = list.select{ |a| a.default_activity == (default == "true") } unless default == "any"
+    list
   end
   
   def set_current_page_for_pagination
