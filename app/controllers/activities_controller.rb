@@ -1,7 +1,6 @@
 class ActivitiesController < ApplicationController
       
   before_filter :check_authentication, :check_admin
-  before_filter :set_current_page_for_pagination, :only => [:index, :filter_by_tag_type, :filter_by_tag]
   
   def index    
     @tag_types = TagType.find(:all)
@@ -83,10 +82,6 @@ class ActivitiesController < ApplicationController
   end
   
   private
-  
-  def set_current_page_for_pagination
-    params[:page]= 1 unless params[:page]
-  end
   
   def initialize_unselected_associations_for_activity
     @tags = Tag.all - @activity.tags

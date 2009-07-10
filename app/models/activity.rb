@@ -39,7 +39,7 @@ class Activity < ActiveRecord::Base
      {:joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id]}
   }
     
-  def self.search(active_option = "any", default_option = "any", tag, tag_type, page)
+  def self.search(active_option = "any", default_option = "any", tag = nil, tag_type = nil, page = 1)
     PAGINATION_OPTIONS[:page]= page
      if tag
        return self.for_tag(tag.id).active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
