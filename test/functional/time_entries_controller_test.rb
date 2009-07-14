@@ -38,7 +38,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :user, :activities, :activity_options
       should_render_template :index
       
-      should "assing date from previous week" do
+      should "assign date from previous week" do
         date = assigns(:date)
         assert_equal(25, date.cweek)
       end
@@ -54,7 +54,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :user, :activities, :activity_options
       should_render_template :index
       
-      should "assing date from next week" do
+      should "assign date from next week" do
         date = assigns(:date)
         assert_equal(27, date.cweek)
       end
