@@ -7,47 +7,25 @@ class Activity < ActiveRecord::Base
   validates_presence_of :name
   
   before_destroy :verify_no_time_entries
-  
-  PAGINATION_OPTIONS = { :per_page => 10, :order => "activities.name" }
-  BOOLEAN_OPTIONS = ["any", "true", "false"]
-  
-  named_scope :active, lambda { |active|
-    if active == "false"
-      { :conditions => { :active => false } }
-    elsif active == "any"
-      { :conditions => {} }
+     
+  named_scope :active, lambda { |active| { :conditions => { :active => active } } }
+  named_scope :default, lambda { |default| { :conditions => { :default_activity => default } } }
+  named_scope :for_tag, lambda { |tag_id| { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } }  
+  named_scope :for_tag_type, lambda { |tag_type_id| { :joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id] } }
+      
+  def self.search(active, default, tag_id, tag_type_id, page)
+    search = ["Activity"]
+    search << "active(#{active})" unless active.blank?
+    search << "default(#{default})" unless default.blank?
+    unless tag_id.blank?
+      search << "for_tag(#{tag_id})" 
     else
-      { :conditions => { :active => true } }
+      search << "for_tag_type(#{tag_type_id})" unless tag_type_id.blank?
     end
-  }
-  
-  named_scope :default, lambda { |default|
-    if default == "false"
-      { :conditions => { :default_activity => false } }
-    elsif default == "any"
-      { :conditions => {} }
-    else
-      { :conditions => { :default_activity => true } }
-    end
-  }
-  
-  named_scope :for_tag, lambda { |tag_id|
-     {:joins => :tags, :conditions => ["tags.id = ?", tag_id]}
-  }
-  
-  named_scope :for_tag_type, lambda { |tag_type_id|
-     {:joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id]}
-  }
-    
-  def self.search(active_option = "any", default_option = "any", tag = nil, tag_type = nil, page = 1)
-    PAGINATION_OPTIONS[:page]= page
-     if tag
-       return self.for_tag(tag.id).active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
-     elsif tag_type
-       return self.for_tag_type(tag_type.id).active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
-     else
-       return self.active(active_option).default(default_option).paginate(PAGINATION_OPTIONS)
-     end
+    search << "paginate(:page => #{page}, :per_page => 10, :order => 'activities.name')"
+    query = search.join(".")
+    logger.debug("Activity Search Query: #{query}")
+    eval query
   end
   
   def <=>(other)
@@ -66,5 +44,5 @@ class Activity < ActiveRecord::Base
        return false
     end 
   end
-  
+
 end

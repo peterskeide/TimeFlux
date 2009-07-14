@@ -5,27 +5,25 @@
 <p class="notice"><%= flash[:notice] %></p>
 
 <table>
-	<% form_tag(:action => "index") do %>
+	<% form_tag activities_path, :method => :get do %>
     <tr> 
-		<td><%= label_tag "Default status" %></td>
-		<td><%= select_tag "default", options_for_select(Activity::BOOLEAN_OPTIONS, @selected_default_option) %></td>
+		<td><%= label_tag "Default" %></td>
+		<td><%= select_tag "default", options_for_select(boolean_options, params[:default]) %></td>
     </tr>
 	<tr> 
-		<td><%= label_tag "Active status" %></td>
-		<td><%= select_tag "active", options_for_select(Activity::BOOLEAN_OPTIONS, @selected_active_option) %></td>
+		<td><%= label_tag "Active" %></td>
+		<td><%= select_tag "active", options_for_select(boolean_options, params[:active]) %></td>
     </tr>
 	<tr>
 	    <td><%= label_tag "Tag type"%></td>
-	    <td><%= collection_select( :tag_type, :id, @tag_types, :id, :name, {:include_blank => 'All'} ) %></td>
+	    <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
 	</tr>
-	<tr>
-		<td><%= label_tag "Tag"%></td>
-	    <% if @tag_type %>
-	    	<td><%= collection_select( :tag, :id, @tag_type.tags, :id, :name, {:include_blank => 'All'} ) %></td>
-	  	<% else %>
-	    	<td>--------</td>
+	    <% unless @tags.empty? %>
+		<tr>  		
+			<td><%= label_tag "Tag"%></td>
+	    	<td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(@tags, :id, :name, params[:tag_id].to_i) %></td>
+		</tr>
 	    <% end %>
-	</tr>
 	<tr><td></td></tr>
 	<tr><td><%= submit_tag "Apply Filter" %></td> </tr>
 	<% end -%>

@@ -17,8 +17,8 @@ class TagsControllerTest < ActionController::TestCase
       end
 
       context "a POST to :create" do
-        setup { post :create, :tag => {:name => 'Internal project'} }
-        should_redirect_to("Index") { "/tags" }
+        setup { post :create, :tag => {:name => 'Internal project', :tag_type_id => tag_types(:project).id} }
+        should_redirect_to("Index") { tags_url }
         should_set_the_flash_to(/created/i)
       end
 
@@ -30,7 +30,7 @@ class TagsControllerTest < ActionController::TestCase
 
       context "destroying a tag" do
         setup {
-          post :create, :tag => {:name => 'Internal project'}
+          post :create, :tag => {:name => 'Internal project', :tag_type_id => tag_types(:project).id}
           new_tag = Tag.find_by_name 'Internal project'
           post :destroy, :id => new_tag.id
         }

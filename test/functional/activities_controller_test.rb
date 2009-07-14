@@ -5,16 +5,68 @@ class ActivitiesControllerTest < ActionController::TestCase
   context "User logged in: " do
 
     setup { login_as(:bob) }
-
-    context "GET to :index" do
+    
+    context "GET to :index without search criteria" do
 
       setup { get :index }
 
       should_respond_with :success
-      should_assign_to :tag_types, :activities
+      should_assign_to :tags, :activities
+      
+      should "assign empty tags array" do
+        assert assigns(:tags).empty?
+      end
 
     end
-        
+  
+    context "GET to :index with search criteria" do
+      
+      should "find all default activities if 'default' criteria is true" do
+        get :index, :default => "true"
+        activities = assigns(:activities)
+        activities.each { |a| assert a.default_activity }
+      end
+      
+      should "find all non-default activities if 'default' criteria is false" do
+        get :index, :default => "false"
+        activities = assigns(:activities)
+        activities.each { |a| assert_false a.default_activity }
+      end
+            
+      should "find all active activities if 'active' criteria is true" do
+        get :index, :active => "true"
+        activities = assigns(:activities)
+        activities.each { |a| assert a.active }
+      end
+      
+      should "find all inactive activities if 'active' criteria is false" do
+        get :index, :active => "false"
+        activities = assigns(:activities)
+        activities.each { |a| assert_false a.active }
+      end
+      
+      should "find all activities if all search criteria are empty" do
+        get :index, :active => "", :default => "", :tag_id => "", :tag_type_id => ""
+        activities = assigns(:activities)
+        assert_equal(Activity.count, activities.size)
+      end
+      
+      should "find all activities for a TagType with the given tag_type_id" do
+        tag_type = tag_types(:project)
+        get :index, :tag_type_id => tag_type.id
+        activities = assigns(:activities)
+        assert_same_elements tag_type.activities, activities
+      end
+      
+      should "find all activities for a Tag with the given tag_id" do
+        tag = tags(:timeflux)
+        get :index, :tag_id => tag.id
+        activities = assigns(:activities)
+        assert_same_elements tag.activities, activities
+      end
+
+    end 
+ 
     context "GET to :new" do
       
       setup { get :new }

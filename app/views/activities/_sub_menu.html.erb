@@ -4,7 +4,7 @@
       </li>
       <li class="menu"><%= link_to "Manage Tags", tags_url %>
         <ul>
-          <% tag_types.each do |type| %>
+          <% TagType.all.each do |type| %>
             <li class="sub"><%= link_to type.name, :controller => 'tags', :action => 'index', :tag_type => type.id %></li>
           <% end %>
         </ul>
@@ -12,6 +12,6 @@
       <li class="menu"><%= link_to "Tag Categories", tag_types_url %>
       </li>
 </ul>
-<% tag_types.size.times do %> <br/> <% end %>
+<% TagType.count.times do %> <br/> <% end %>
 
 <hr/>

@@ -2,13 +2,10 @@ class ActivitiesController < ApplicationController
       
   before_filter :check_authentication, :check_admin
   
-  def index    
-    @tag_types = TagType.find(:all)
-    @selected_active_option = params[:active] ? params[:active] : "any"
-    @selected_default_option = params[:default] ? params[:default] : "any"
-    @tag = tag_selected? ? Tag.find(params[:tag][:id]) : nil
-    @tag_type = tag_type_selected? ? TagType.find(params[:tag_type][:id]) : nil
-    @activities = Activity.search(@active_selected, @default_selected, @tag, @tag_type, params[:page])
+  def index
+    @tags = params[:tag_type_id].blank? ? [] : Tag.find_all_by_tag_type_id(params[:tag_type_id])
+    page = params[:page] || 1
+    @activities = Activity.search(params[:active], params[:default], params[:tag_id], params[:tag_type_id], page)
   end
  
   def new
@@ -86,14 +83,6 @@ class ActivitiesController < ApplicationController
   def initialize_unselected_associations_for_activity
     @tags = Tag.all - @activity.tags
     @users = User.all - @activity.users
-  end
-  
-  def tag_selected?
-    params[:tag] && params[:tag][:id] != ""
-  end
-  
-  def tag_type_selected?
-    params[:tag_type] && params[:tag_type][:id] != ""
   end
 
 end
