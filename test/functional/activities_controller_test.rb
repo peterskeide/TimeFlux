@@ -84,10 +84,6 @@ class ActivitiesControllerTest < ActionController::TestCase
       end
       
       should_respond_with :success
-            
-      should "find all unselected tags" do
-        assert_equal(1, assigns(:tags).size)
-      end
       
       should "find activity 'TimeFlux Development'" do
          assert_equal(@id, assigns(:activity).id)
@@ -98,7 +94,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     context "successful POST to :create" do
       
       setup do
-        post :create, "activity"=>{"name"=>"Foobar", "default_activity"=>"0", "description"=>"Put the foo in the bar", "active"=>"1"}
+        post :create, "activity"=>{"name"=>"Foobar", "default_activity"=>"0", "description"=>"Put the foo in the bar", "active"=>"1", "tag_ids" => "#{tags(:timeflux).id}"}
       end
        
       should_change "Activity.count", :by => 1            
@@ -145,7 +141,7 @@ class ActivitiesControllerTest < ActionController::TestCase
           "activity"=>{"name"=>"", "default_activity"=>"1", "description"=>"Administration of TimeFlux in production", "active"=>"0"}        
         end
       
-        should_assign_to :activity, :tags, :users
+        should_assign_to :activity
         should_render_template :edit
         should_not_change "@activity.name"
       
@@ -178,7 +174,7 @@ class ActivitiesControllerTest < ActionController::TestCase
       
       should_not_change "Activity.count"      
       should_render_template :edit
-      should_assign_to :tags, :users, :activity
+      should_assign_to :activity
       
     end
     
@@ -191,74 +187,10 @@ class ActivitiesControllerTest < ActionController::TestCase
       
       should_not_change "Activity.count"           
       should_render_template :edit
-      should_assign_to :tags, :users, :activity
+      should_assign_to :activity
       
     end
-    
-    context "POST to :add_tag" do
-      
-      setup do
-        @tag = tags(:timeflux)
-        @activity = activities(:timeflux_administration) 
-        post :add_tag, :tag => @tag.id, :activity => {:id => @activity.id}
-      end
-      
-      should_redirect_to(":edit") { edit_activity_url(@activity) }
-      
-      should "add selected tag to activity" do
-        assert(@activity.tags.include?(@tag))
-      end
-      
-    end
-    
-    context "GET to :remove_tag" do
-      
-      setup do
-        @activity = activities(:timeflux_development)
-        @tag = tags(:timeflux)
-        get :remove_tag, :id => @activity.id, :tag => @tag.id
-      end
-      
-      should_redirect_to(":edit") { edit_activity_url(@activity) }
-      
-      should "remove selected tag from activity" do
-         assert_false(@activity.tags.include?(@tag))
-      end
-      
-    end
-    
-    context "POST to :add_user" do
-      
-      setup do
-        @bob = users(:bob)
-        @activity = activities(:timeflux_administration)
-        post :add_user, "user" => @bob.id, "activity" => {"id" => @activity.id}
-      end
-      
-      should_redirect_to(":edit") { edit_activity_url(@activity) }
-      
-      should "add selected user to activity" do
-        assert(@activity.users.include?(@bob))
-      end
-      
-    end
-    
-    context "GET to :remove_user" do
-      
-      setup do
-        @activity = activities(:timeflux_development)
-        @bill = users(:bill)
-        get :remove_user, :id => @activity.id, :user => @bill.id
-      end
-      
-      should_redirect_to(":edit") { edit_activity_url(@activity) }
-      
-      should "remove selected user from activity" do
-         assert_false(@activity.users.include?(@bill))
-      end
-      
-    end
-        
+            
   end
 
   context "User logged out: " do

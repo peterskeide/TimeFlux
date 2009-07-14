@@ -3,62 +3,34 @@
  <p class="error"><%= flash[:error] %></p>
 
 <% form_for @activity do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_area :description, :size => '80x4' %>
-  </p>
-  <p>
-	<%= f.check_box :active %>
-	<%= f.label :active %>
-  </p>
-  <p>
-	<%= f.check_box :default_activity %> 
-	<%= f.label :default_activity %>
-  </p>
-  <p>
-  	<%= f.submit "Update" %>
-  </p>
+	<%= f.error_messages %>
+	<p>
+		<%= f.label :name %><br />
+		<%= f.text_field :name %>
+	</p>
+	<p>
+		<%= f.label :description %><br />
+		<%= f.text_field :description %>
+	</p>
+	<p>
+		<%= f.check_box :active %>
+		<%= f.label :active %>
+	</p>
+	<p>
+		<%= f.check_box :default_activity %> 
+		<%= f.label :default_activity %>
+	</p>
+    <p> 
+		<%= f.label :tags %><br/>
+        <%= f.collection_select(:tag_ids, Tag.all, :id, :name_and_type, {}, {:multiple => true, :size => 10, :class => "activity_multiselect"})%>
+		<%= hidden_field_tag "activity[tag_ids][]", "" %> <%# Make sure ids are included in the params hash on requests if no elements are selected %>
+    </p>
+	<p> 
+		<%= f.label :assignments %><br/>
+        <%= f.collection_select(:user_ids, User.all, :id, :fullname, {}, {:multiple => true, :size => 10, :class => "activity_multiselect"})%>
+		<%= hidden_field_tag "activity[user_ids][]", "" %> <%# Make sure ids are included in the params hash on requests if no elements are selected %>
+    </p>
+	<p>
+		<%= f.submit "Update" %>
+	</p>
 <% end %>
-
- <hr/>
-
- <h3>Tags</h3>
- <ul>
-    <% @activity.tags.each do |tag| -%>
-      <li><%= tag.name_and_type %>
-          <%= link_to "Remove", :action => "remove_tag", :id => @activity.id, :tag => tag.id %></li>
-    <% end %>
- </ul>
- <br/>
-<% if @tags.empty? -%>
-   <b>No tags available</b>
-<% else -%>
-	<% form_tag :action => 'add_tag' do -%>
-	    <%= select_tag "tag", options_from_collection_for_select( @tags, 'id', 'name_and_type', ''  ) %>
-	    <%= hidden_field(:activity, :id) %>
-	    <%= submit_tag 'Add tag' %>
-	<% end -%>
-<% end -%>
-
- <h3>Assignments</h3>
- <ul>
-    <% @activity.users.each do |user| -%>
-      <li><%= user.fullname %>
-          <%= link_to "Remove", :action => "remove_user", :id => @activity.id, :user => user.id %></li>
-    <% end %>
- </ul>
- <br/>
-<% if @users.empty? -%>
-	<b>No users available</b>
-<% else -%>
-	<% form_tag :action => "add_user" do -%>
-	    <%= select_tag "user", options_from_collection_for_select( @users, 'id', 'fullname', ''  ) %>
-	    <%= hidden_field(:activity, :id) %>
-	    <%= submit_tag 'Add assignment' %>
-	<% end -%>
-<% end -%>

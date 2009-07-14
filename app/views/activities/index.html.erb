@@ -38,7 +38,7 @@
   <div>
     <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
     <b>Tags:</b> <% a.tags.each do |t| %>
-                   <%=  "#{t.name}(#{t.tag_type_name})" -%>,
+                   <%=  t.name_and_type -%>,
                  <% end %><br/>
     <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>

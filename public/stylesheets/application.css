@@ -100,6 +100,10 @@ td.week_entries_hours {
 	text-align: left;
 }
 
+.activity_multiselect {
+	width: 220px;
+}
+
 #container {
 	margin-left: auto;
 	margin-right: auto;
@@ -143,7 +147,6 @@ td.week_entries_hours {
 	border: 0;
 	vertical-align: middle;	
 }
-
 
 /* sub drop down menu */
 
