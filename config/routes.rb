@@ -34,12 +34,9 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "user_sessions", :action => "new"
   map.activities "Activities", :controller => "activities"
   map.tag_types "tag_types", :controller => "tag_types"
-  map.resources :tags
-  map.resources :user_sessions
-  map.resources :time_entries, :new => { :previous => :get, :next => :get }  
+  map.resources :tags, :user_sessions, :time_entries, :users, :activities
   map.reports "reports", :controller => "reports"
   #map.users "Users", :controller => "users"
-  map.resources :users, :activities
 
   map.month "month", :controller => "month"
   map.month_list "month/:action.:format", :controller => "month"

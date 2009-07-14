@@ -1,8 +1,8 @@
 <h1>Entries for week <%= @date.cweek %></h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p>
-	<%= link_to "Previous week", previous_new_time_entry_url(:date => @date.beginning_of_week) %>
-	<%= link_to "Next week", next_new_time_entry_url(:date => @date.beginning_of_week) %>
+	<%= link_to "Previous week", time_entries_url(:date => @date.beginning_of_week.-(7)) %>
+	<%= link_to "Next week", time_entries_url(:date => @date.beginning_of_week.+(7)) %>
 </p>
 <% if not @activities.empty? %>
 <table class="week_entries">

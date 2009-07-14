@@ -7,18 +7,6 @@ class TimeEntriesController < ApplicationController
     init_index(@date)
   end
   
-  def previous
-    @date = Date.parse(params[:date]).- 7
-    init_index(@date)
-    render :index
-  end
-  
-  def next
-    @date = Date.parse(params[:date]).+ 7
-    init_index(@date)
-    render :index
-  end
-  
   def create
     @activity = Activity.find_by_id(params[:activity][:activity_id])
     @user = @current_user
@@ -70,7 +58,7 @@ class TimeEntriesController < ApplicationController
   
   private
     
-  # Encapsulates common code used by index, next, previous and destroy actions.
+  # Encapsulates common code used by index and destroy actions.
   # Initializes instance variables for the index view-template.
   # @activities is a map with keyset = names of activities that have
   # time entries for the current week/user, and value = array of time entries (always size == 7)

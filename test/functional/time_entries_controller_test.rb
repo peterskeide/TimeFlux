@@ -10,7 +10,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       Date.stubs(:today).returns(@date)
     end
              
-    context "GET to :index" do
+    context "GET to :index with no date param" do
             
       setup { get :index }
       
@@ -29,9 +29,9 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
     end
     
-    context "GET to :previous (Previous Week link)" do
+    context "GET to :index with date from previous week" do
       
-      setup { get :previous, :date => @date.to_s }
+      setup { get :index, :date => @date.-(7).to_s }
       
       should_respond_with :success
       should_not_set_the_flash
@@ -45,16 +45,16 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
     end
     
-    context "GET to :next (Next Week link)" do
+    context "GET to :index with date from next week" do
       
-      setup { get :next, :date => @date.to_s }
+      setup { get :index, :date => @date.+(7).to_s }
       
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :user, :activities, :activity_options
       should_render_template :index
       
-      should "assing date from previous week" do
+      should "assing date from next week" do
         date = assigns(:date)
         assert_equal(27, date.cweek)
       end
