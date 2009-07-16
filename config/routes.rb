@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activities "Activities", :controller => "activities"
   map.tag_types "tag_types", :controller => "tag_types"
   map.resources :tags, :user_sessions, :time_entries, :users, :activities
-  map.resources :time_entries, :only => :index, :collection => {:edit_multiple => :post, :destroy_multiple => :delete, :update_multiple => :put, :create_multiple => :post, :grid_edit => :post}
+  map.resources :time_entries, :only => :index, :collection => {:edit_multiple => :post, :destroy_multiple => :post, :update_multiple => :put, :create_multiple => :post, :grid_edit => :post}
   map.reports "reports", :controller => "reports"
   #map.users "Users", :controller => "users"
 

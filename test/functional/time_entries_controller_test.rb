@@ -114,7 +114,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
                   
       should_respond_with :redirect
       should_set_the_flash_to("Time entries successfully updated")
-      should_redirect_to("Selected weeks time entries") { time_entries_path(:date => @date) }
+      should_redirect_to("Selected weeks time entries") { time_entries_url(:date => @date) }
     
       # All time entry fixtures should have 7.5 hours and no notes before update
       should "update hours and notes for changed timed entries" do
@@ -176,11 +176,11 @@ class TimeEntriesControllerTest < ActionController::TestCase
                   
     end
     
-    context "DELETE to :destroy_multiple" do
+    context "POST to :destroy_multiple" do
       
       setup do
         @time_entries_before_delete = TimeEntry.count 
-        delete :destroy_multiple, { :ids => [
+        post :destroy_multiple, { :ids => [
           time_entries(:bob_timeflux_development_26_monday).id, 
           time_entries(:bob_timeflux_development_26_tuesday).id, 
           time_entries(:bob_timeflux_development_26_wednesday).id, 
@@ -192,7 +192,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       end
                  
       should_respond_with :redirect
-      should_redirect_to("Selected weeks time entries") { time_entries_path(:date => @date) }
+      should_redirect_to("Selected weeks time entries") { time_entries_url(:date => @date) }
       should_change "TimeEntry.count", :by => -7
       
     end

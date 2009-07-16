@@ -23,7 +23,7 @@ class TimeEntriesController < ApplicationController
         time_entry.update_attributes!(attrs)
       end
       flash[:notice] = "Time entries successfully updated"
-      redirect_to time_entries_path(:date => params[:date])
+      redirect_to time_entries_url(:date => params[:date])
     rescue Exception => e
       flash[:error] = e.message
       @date = Date.parse(params[:date])
@@ -48,7 +48,7 @@ class TimeEntriesController < ApplicationController
   
   def destroy_multiple
     TimeEntry.delete_all(["id IN (?)", params[:ids]])
-    redirect_to time_entries_path(:date => params[:date])
+    redirect_to time_entries_url(:date => params[:date])
   end
   
   private
