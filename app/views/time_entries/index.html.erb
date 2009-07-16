@@ -22,7 +22,7 @@
 <% @activities.each do |activity_name, time_entries| -%>
 	<tr> 
 		<td class="week_entries_activity">
-			<%= link_to activity_name, { :controller => "time_entries", :action => "edit", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date } %>
+			<%= link_to activity_name, edit_multiple_time_entries_url(:ids => ids_from(time_entries), :date => @date), :method => :post %>
 		</td>
 		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
@@ -32,7 +32,7 @@
 		<td class="week_entries_hours"><%= time_entries[5].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[6].hours %></td>
 		<td>
-		<%= link_to "Remove", { :controller => "time_entries", :action => "destroy", :id => @user.id, :activity_id => time_entries[0].activity.id, :date => @date }, :method=> :delete %>
+		<%= link_to "Remove", destroy_multiple_time_entries_url(:ids => ids_from(time_entries), :date => @date), :method => :delete %>
 		</td>
 	</tr>
 <% end -%>
@@ -48,7 +48,7 @@
 <% end %>
 <p> 
 	<% unless @activity_options.empty? -%> 
-		<% form_tag time_entries_url do -%>
+		<% form_tag create_multiple_time_entries_url do -%>
 			<%= hidden_field_tag "date", @date %>
 			<%= select "activity", "activity_id", @activity_options %>
 			<%= submit_tag "Add selected activity to this week" %>

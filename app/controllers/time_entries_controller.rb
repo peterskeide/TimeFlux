@@ -1,5 +1,5 @@
 class TimeEntriesController < ApplicationController
-  
+    
   before_filter :check_authentication
     
   def index    
@@ -7,16 +7,16 @@ class TimeEntriesController < ApplicationController
     init_index(@date)
   end
   
-  def create
+  def create_multiple
     @activity = Activity.find_by_id(params[:activity][:activity_id])
     @user = @current_user
     @date = Date.parse(params[:date])
     @time_entries = []
     7.times { |i| @time_entries << @user.time_entries.create(:date => @date.+(i), :activity => @activity) }
-    redirect_to :action => "edit", :id => @user.id, :activity_id => @activity.id, :date => @date
+    redirect_to edit_multiple_time_entries_path(:ids => ActionController::Base.helper(:time_entries).ids_for(@time_entries), :date => @date), :method => :post
   end
    
-  def update
+  def update_multiple
     begin
       params[:time_entry].each do |id, attrs|
         time_entry = TimeEntry.find_by_id(id)
@@ -30,15 +30,15 @@ class TimeEntriesController < ApplicationController
       @date = Date.parse(params[:date])
       @activity = Activity.find_by_id(params[:activity_id])
       @time_entries = find_time_entries_for_activity_and_date(@activity.id, @date)
-      render :edit
+      render :edit_multiple
     end 
   end
     
-  def edit
-    @user = User.find_by_id(params[:id])
-    @date = Date.parse(params[:date])
-    @activity = Activity.find_by_id(params[:activity_id])
-    @time_entries = find_time_entries_for_activity_and_date(@activity.id, @date)
+  def edit_multiple
+    if request.post?
+      @date = Date.parse(params[:date])
+      @time_entries = TimeEntry.find(params[:ids])
+    end
   end
   
   def grid_edit
@@ -46,12 +46,9 @@ class TimeEntriesController < ApplicationController
      init_index(@date)
   end
   
-  def destroy
-    @user = User.find_by_id(params[:id])
+  def destroy_multiple
     @date = Date.parse(params[:date])
-    activity_id = params[:activity_id].to_i
-    @time_entries = find_time_entries_for_activity_and_date(activity_id, @date)
-    @time_entries.each { |te| te.destroy }
+    TimeEntry.delete_all(["id IN (?)", params[:ids]])
     init_index(@date)
     render :index
   end
@@ -87,5 +84,7 @@ class TimeEntriesController < ApplicationController
   def find_time_entries_for_activity_and_date(activity_id, monday)
      @user.time_entries.for_activity(activity_id).between(monday, monday.+(6))
   end
+  
+  def ids_from
     
 end

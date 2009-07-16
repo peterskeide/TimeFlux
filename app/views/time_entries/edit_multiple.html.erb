@@ -1,0 +1,36 @@
+<h1>Time Entry</h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+<p>
+	<h2>Week: <%= @date.cweek %></h2>
+</p>
+<p>  
+	<% form_tag('/time_entries/update') do -%>
+		<%= hidden_field_tag "date", @date %>
+		<%= hidden_field_tag "activity_id", @time_entries[0].activity.id %>
+		<table> 
+			<% @time_entries.sort.each do |time_entry|  -%>
+				<% fields_for "time_entry[]", time_entry, :builder => TimeEntriesFormBuilder do |f| -%>
+					<%= f.hidden_field :date %>
+					<tr>
+					<td>
+						<%= date_label_for time_entry %>
+					</td>
+					<td>
+						<%= f.label :hours %>
+						<%= f.lock_checking_text_field :hours, :size => 5 %>
+					</td>
+					<td>
+						<%= f.label :notes %>
+						<%= f.lock_checking_text_field :notes, :size => 65 %>
+					</td>
+					</tr>
+				<% end -%>
+			<% end -%>
+		</table>
+		<p>
+			<%= submit_tag "Update" %>
+		</p>
+	<% end -%>
+	<%= link_to "Back", { :controller => "time_entries", :action => "index", :date => @date } %>
+</p>
