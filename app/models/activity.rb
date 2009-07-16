@@ -7,7 +7,7 @@ class Activity < ActiveRecord::Base
   validates_presence_of :name, :tags
   
   before_destroy :verify_no_time_entries
-     
+  
   named_scope :active, lambda { |active| { :conditions => { :active => active } } }
   named_scope :default, lambda { |default| { :conditions => { :default_activity => default } } }
   named_scope :for_tag, lambda { |tag_id| { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } }  

@@ -1,13 +1,14 @@
-<h1>Time Entry</h1>
+<% activity = @time_entries[0].activity %>
+<h1>Edit Time Entries for <%= activity.name %></h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 <p>
 	<h2>Week: <%= @date.cweek %></h2>
 </p>
 <p>  
-	<% form_tag('/time_entries/update') do -%>
+	<% form_tag('/time_entries/update_multiple') do -%>
 		<%= hidden_field_tag "date", @date %>
-		<%= hidden_field_tag "activity_id", @time_entries[0].activity.id %>
+		<%= hidden_field_tag "activity_id", activity.id %>
 		<table> 
 			<% @time_entries.sort.each do |time_entry|  -%>
 				<% fields_for "time_entry[]", time_entry, :builder => TimeEntriesFormBuilder do |f| -%>

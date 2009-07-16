@@ -3,17 +3,17 @@ class TimeEntriesController < ApplicationController
   before_filter :check_authentication
     
   def index    
-    @date = params[:date] ? Date.parse(params[:date]) : Date.today.beginning_of_week
-    init_index(@date)
+    @date = params[:date] ? Date.parse(params[:date]).beginning_of_week : Date.today.beginning_of_week
+    init_time_entries_and_activities
+    find_activity_options
   end
   
   def create_multiple
-    @activity = Activity.find_by_id(params[:activity][:activity_id])
-    @user = @current_user
+    activity = Activity.find_by_id(params[:activity][:activity_id])
     @date = Date.parse(params[:date])
     @time_entries = []
-    7.times { |i| @time_entries << @user.time_entries.create(:date => @date.+(i), :activity => @activity) }
-    redirect_to edit_multiple_time_entries_path(:ids => ActionController::Base.helper(:time_entries).ids_for(@time_entries), :date => @date), :method => :post
+    7.times { |i| @time_entries << @current_user.time_entries.create(:date => @date.+(i), :activity => activity) }
+    render :edit_multiple
   end
    
   def update_multiple
@@ -22,14 +22,12 @@ class TimeEntriesController < ApplicationController
         time_entry = TimeEntry.find_by_id(id)
         time_entry.update_attributes!(attrs)
       end
-      flash[:notice] = "Time entries successfully saved"
-      redirect_to :action => "index", :date => params[:date]
+      flash[:notice] = "Time entries successfully updated"
+      redirect_to time_entries_path(:date => params[:date])
     rescue Exception => e
       flash[:error] = e.message
-      @user = @current_user
       @date = Date.parse(params[:date])
-      @activity = Activity.find_by_id(params[:activity_id])
-      @time_entries = find_time_entries_for_activity_and_date(@activity.id, @date)
+      @time_entries = TimeEntry.find(params[:time_entry].keys)
       render :edit_multiple
     end 
   end
@@ -42,49 +40,31 @@ class TimeEntriesController < ApplicationController
   end
   
   def grid_edit
-    @date = Date.parse(params[:date])
-     init_index(@date)
+    if request.post?
+      @date = Date.parse(params[:date])
+      init_time_entries_and_activities 
+    end
   end
   
   def destroy_multiple
-    @date = Date.parse(params[:date])
     TimeEntry.delete_all(["id IN (?)", params[:ids]])
-    init_index(@date)
-    render :index
+    redirect_to time_entries_path(:date => params[:date])
   end
   
   private
     
-  # Encapsulates common code used by index and destroy actions.
-  # Initializes instance variables for the index view-template.
-  # @activities is a map with keyset = names of activities that have
-  # time entries for the current week/user, and value = array of time entries (always size == 7)
-  def init_index(date)
-    @user = @current_user
-    monday = date.beginning_of_week
-    time_entries = @user.time_entries.between(monday, monday.+(6))
-    @activities = {}
-    if time_entries
-      activity_names = time_entries.collect { |te| te.activity.name }.uniq
-      activity_names.each { |name| @activities[name] = [] }
-      time_entries.sort.each { |te| @activities[te.activity.name]  << te } 
-    end
-    find_activities_for_time_entry
+  def init_time_entries_and_activities
+    @time_entries = @current_user.time_entries.between(@date, @date.+(6))
+    @activities = @time_entries.collect { |te| te.activity }.uniq
   end
   
   # Initializes an array of arrays [[ name, id ]] for use as select options in the view.
   # If the name of an activity in the user_and_default_activities array is present in 
   # the @activities map keyset, that activity will not be available as an option. 
   # The rationale is: An activity can only have one set of time entries per user per week. 
-  def find_activities_for_time_entry
-    user_and_default_activities = @user.activities + Activity.find_all_by_default_activity(true) 
-    @activity_options = user_and_default_activities.collect { |a| @activities.keys.include?(a.name) ? nil : [ a.name, a.id ] }.compact
+  def find_activity_options
+    user_and_default_activities = @current_user.activities + Activity.find_all_by_default_activity(true) 
+    @activity_options = user_and_default_activities.collect { |a| @activities.include?(a) ? nil : [ a.name, a.id ] }.compact
   end
-  
-  def find_time_entries_for_activity_and_date(activity_id, monday)
-     @user.time_entries.for_activity(activity_id).between(monday, monday.+(6))
-  end
-  
-  def ids_from
-    
+      
 end

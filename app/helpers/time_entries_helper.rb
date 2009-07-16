@@ -9,5 +9,9 @@ module TimeEntriesHelper
   def ids_from(models)
     models.collect { |model| model.id }
   end
+  
+  def select_by_activity(time_entries, activity)
+    time_entries.select { |te| te.activity == activity }.sort
+  end
     
 end

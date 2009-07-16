@@ -1,6 +1,6 @@
 <h1>Entries for week <%= @date.cweek %></h1>
 <p class="notice"><%= flash[:notice] %></p>
-<% form_tag('/time_entries/update') do -%>
+<% form_tag('/time_entries/update_multiple') do -%>
 	<%= hidden_field_tag "date", @date %>
 	<table class="week_entries">
 	<thead>
@@ -16,9 +16,10 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% @activities.each do |activity_name, time_entries| -%>
+	<% @activities.each do |activity| -%>
 	<tr> 
-		<td class="week_entries_activity"><%= activity_name %></td>
+		<td class="week_entries_activity"><%= activity.name %></td>
+		<% time_entries = select_by_activity(@time_entries, activity)  %>
 		<% time_entries.each do |te| -%>
 			<% fields_for "time_entry[]", te, :builder => TimeEntriesFormBuilder do |f| -%>
 				<td><%= f.lock_checking_text_field :hours, :size => 5 %></td>
@@ -33,5 +34,5 @@
 	</p> 
 <% end -%>
 <p>
-	<%= link_to "Back", {:controller => "time_entries", :action => "index", :date => @date} %>
+	<%= link_to "Back", time_entries_path(:date => @date) %>
 </p>

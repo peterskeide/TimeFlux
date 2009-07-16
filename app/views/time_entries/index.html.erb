@@ -19,10 +19,11 @@
 	</tr>
 </thead>
 <tbody>
-<% @activities.each do |activity_name, time_entries| -%>
+<% @activities.each do |activity| -%>
+	<% time_entries = select_by_activity(@time_entries, activity) %>
 	<tr> 
 		<td class="week_entries_activity">
-			<%= link_to activity_name, edit_multiple_time_entries_url(:ids => ids_from(time_entries), :date => @date), :method => :post %>
+			<%= link_to truncate(activity.name, :length => 20), edit_multiple_time_entries_url(:ids => ids_from(time_entries), :date => @date), :method => :post %>
 		</td>
 		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
@@ -39,7 +40,7 @@
 </tbody>
 </table>
 <p>
-	<%= link_to "Edit in grid", {:controller => "time_entries", :action => "grid_edit", :id => @user.id, :date => @date} %>
+	<%= link_to "Edit in grid", grid_edit_time_entries_path(:date => @date), :method => :post %>
 </p>
 <% else %>
 <p>

@@ -16,17 +16,9 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :date, :user
+      should_assign_to :date, :activities, :time_entries, :activity_options
       should_render_template :index
-            
-      should "assign activity map and options" do
-        activities = assigns(:activities)
-        assert_equal(1, activities.size)
-        assert_equal(7, activities["TimeFlux Development"].size)
-        activity_options = assigns(:activity_options)
-        assert_equal(1, activity_options.size)
-      end
-      
+                
     end
     
     context "GET to :index with date from previous week" do
@@ -35,7 +27,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :user, :activities, :activity_options
+      should_assign_to :activities, :time_entries, :activity_options
       should_render_template :index
       
       should "assign date from previous week" do
@@ -51,7 +43,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :user, :activities, :activity_options
+      should_assign_to :activities, :time_entries, :activity_options
       should_render_template :index
       
       should "assign date from next week" do
@@ -61,18 +53,14 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
     end
     
-    context "POST to :create" do
+    context "POST to :create_multiple" do
       
-      setup { post :create, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux_development).id} }
+      setup { post :create_multiple, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux_development).id} }
       
-      should_respond_with :redirect
+      should_render_template :edit_multiple
       should_not_set_the_flash
-      should_assign_to :user, :date, :time_entries, :activity
+      should_assign_to :date, :time_entries
       should_change "TimeEntry.count", :by => 7
-      
-      should "redirect to edit time entries" do
-        assert_redirected_to :action => "edit", :id => users(:bob).id, :activity_id => activities(:timeflux_development).id, :date => @date
-      end
       
       should "create 7 time entries for given activity and week" do
         time_entries = assigns(:time_entries)
@@ -83,14 +71,22 @@ class TimeEntriesControllerTest < ActionController::TestCase
             
     end
     
-    context "GET to :edit" do
+    context "POST to :edit_multiple" do
       
-      setup { get :edit, :id => users(:bob).id, :date => @date.to_s, :activity_id => activities(:timeflux_development).id }
+      setup { post :edit_multiple, :ids => [
+        time_entries(:bob_timeflux_development_26_monday).id, 
+        time_entries(:bob_timeflux_development_26_tuesday).id, 
+        time_entries(:bob_timeflux_development_26_wednesday).id, 
+        time_entries(:bob_timeflux_development_26_thursday).id, 
+        time_entries(:bob_timeflux_development_26_friday).id, 
+        time_entries(:bob_timeflux_development_26_saturday).id, 
+        time_entries(:bob_timeflux_development_26_sunday).id
+        ], :date => @date.to_s }
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :user, :date, :time_entries
-      should_render_template :edit
+      should_assign_to :date, :time_entries
+      should_render_template :edit_multiple
       
       should "find 7 user time entries for given activity and week" do
         time_entries = assigns(:time_entries)
@@ -102,10 +98,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
             
     end
     
-    context "successful POST to :update" do
+    context "successful PUT to :update_multiple" do
       
       setup do        
-        put :update, {"date"=>"2009-06-22", "activity_id"=>activities(:timeflux_development).id, 
+        put :update_multiple, {"date"=>"2009-06-22", 
           "time_entry"=>{
           time_entries(:bob_timeflux_development_26_monday).id    =>{"date"=>"2009-06-22", "notes"=>"Foobar", "hours"=>"5"}, 
           time_entries(:bob_timeflux_development_26_tuesday).id   =>{"date"=>"2009-06-23", "notes"=>"Foobar", "hours"=>"5"}, 
@@ -117,8 +113,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
       end
                   
       should_respond_with :redirect
-      should_set_the_flash_to("Time entries successfully saved")
-      should_redirect_to("Selected weeks time entries") { "/time_entries?date=#{@date}" }
+      should_set_the_flash_to("Time entries successfully updated")
+      should_redirect_to("Selected weeks time entries") { time_entries_path(:date => @date) }
     
       # All time entry fixtures should have 7.5 hours and no notes before update
       should "update hours and notes for changed timed entries" do
@@ -132,19 +128,19 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
      end
       
-    context "unsuccessful POST to :update" do
+    context "unsuccessful PUT to :update_multiple" do
       
       setup do
         @time_entry = TimeEntry.find_by_id(time_entries(:bob_timeflux_development_24_monday).id)
         @time_entry.stubs(:update_attributes!).with(any_parameters).returns(false)
         TimeEntry.stubs(:find_by_id).with(any_parameters).raises(StandardError)
-        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux_development).id, 
+        put :update_multiple, {"date"=>"2009-06-08", 
           "time_entry"=>{
           time_entries(:bob_timeflux_development_24_monday).id => {"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
-      should_assign_to :user, :date, :time_entries
-      should_render_template :edit
+      should_assign_to :date, :time_entries
+      should_render_template :edit_multiple
       
       should "set an error message in flash" do
         assert_not_nil flash[:error]
@@ -152,10 +148,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
                   
     end
     
-    context "POST to :update for locked time entries" do
+    context "PUT to :update_multiple for locked time entries" do
       
       setup do
-        put :update, {"date"=>"2009-06-08", "activity_id"=>activities(:timeflux_development).id, 
+        put :update_multiple, {"date"=>"2009-06-08", 
           "time_entry"=>{
           time_entries(:bob_timeflux_development_24_monday).id    =>{"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}, 
           time_entries(:bob_timeflux_development_24_tuesday).id   =>{"date"=>"2009-06-09", "notes"=>"Foobar", "hours"=>"5"}, 
@@ -166,8 +162,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
           time_entries(:bob_timeflux_development_24_sunday).id    =>{"date"=>"2009-06-14", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
-      should_assign_to :user, :date, :time_entries
-      should_render_template :edit
+      should_assign_to :date, :time_entries
+      should_render_template :edit_multiple
       
       should "not save updates to locked entries" do
         date = Date.new(2009, 6, 8)
@@ -180,16 +176,23 @@ class TimeEntriesControllerTest < ActionController::TestCase
                   
     end
     
-    context "DELETE to :destroy" do
+    context "DELETE to :destroy_multiple" do
       
       setup do
         @time_entries_before_delete = TimeEntry.count 
-        delete :destroy, { :id => users(:bob).id, :activity_id => activities(:timeflux_development).id, :date => @date.to_s } 
+        delete :destroy_multiple, { :ids => [
+          time_entries(:bob_timeflux_development_26_monday).id, 
+          time_entries(:bob_timeflux_development_26_tuesday).id, 
+          time_entries(:bob_timeflux_development_26_wednesday).id, 
+          time_entries(:bob_timeflux_development_26_thursday).id, 
+          time_entries(:bob_timeflux_development_26_friday).id, 
+          time_entries(:bob_timeflux_development_26_saturday).id, 
+          time_entries(:bob_timeflux_development_26_sunday).id
+          ], :date => @date.to_s } 
       end
                  
-      should_render_template :index  
-      should_respond_with :success
-      should_assign_to :user, :date, :time_entries, :activities, :activity_options          
+      should_respond_with :redirect
+      should_redirect_to("Selected weeks time entries") { time_entries_path(:date => @date) }
       should_change "TimeEntry.count", :by => -7
       
     end
