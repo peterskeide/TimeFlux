@@ -3,6 +3,7 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :user
   belongs_to :activity
   
+  validates_numericality_of :hours, :greater_than_or_equal_to => 0.0, :less_than_or_equal_to => 24.0
   validates_format_of :hours, :with => /^[\d|.|,]*$/
   validate_on_update :must_not_be_locked
   
