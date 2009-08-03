@@ -7,8 +7,9 @@
 <table>
 	<% @tag_types.each do |c| -%>
 		<tr>
-				<td><%= c.name %></td>
-				<td><%= link_to "Remove", :action => "destroy", :id => c %></td>
+                  <td><%= c.name %></td>
+                  <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => c %>
+                      <%= link_to image_tag("delete.png", :title => "Delete"), tag_type_path(c), :method => :delete, :confirm => 'Really remove category?' %></td>
 		</tr>
 	<% end -%>
 </table>

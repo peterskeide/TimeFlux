@@ -17,6 +17,20 @@ class TagTypesController < ApplicationController
     end
   end
 
+  def edit
+    @tag_type = TagType.find(params[:id])
+  end
+
+  def update
+    @tag_type = TagType.find(params[:id])
+    if @tag_type.update_attributes(params[:tag_type])
+      flash[:notice] = "Tag category was successfully updated."
+      redirect_to :action => "index"
+    else
+      render :action => "edit"
+    end
+  end
+
   def destroy
     @tag_types = TagType.find(params[:id])
     if @tag_types.tags.empty?

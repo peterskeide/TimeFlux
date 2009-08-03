@@ -1,0 +1,15 @@
+<h1>Edit activity</h1>
+ <p class="notice"><%= flash[:notice] %></p>
+ <p class="error"><%= flash[:error] %></p>
+
+<% form_for @tag_type do |f| %>
+	<%= f.error_messages %>
+	<p>
+		<%= f.label :name %><br />
+		<%= f.text_field :name %>
+	</p>
+	
+	<p>
+		<%= f.submit "Update" %>
+	</p>
+<% end %>
