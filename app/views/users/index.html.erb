@@ -16,9 +16,11 @@
     <td><%=h user.fullname %></td>
     <td><%=h user.login %></td>
     <td><%=h user.operative_status %></td>
-    <td><%= link_to 'Show', user_path(user) %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Destroy', user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td>
+      <%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %>
+      <%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => user %>
+      <%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => 'Really remove category?' %>
+    </td>
   </tr>
 <% end %>
 </table>

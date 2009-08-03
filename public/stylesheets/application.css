@@ -14,12 +14,13 @@ background:#EEEEFF none repeat scroll 0 0;
 padding-top:5px;
 }
 
-.activities_status_icons{
+.status_icons{
     padding-left: 20px;
 }
-.activities_action_icons{
+.action_icons{
+    clear:both;
     float:right;
-    padding-right: 20px;
+    padding-right:20px;
 }
 
 ul.reports{
