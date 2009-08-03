@@ -1,6 +1,6 @@
 <h1>Create New Activity</h1>
 
-<% form_for @activity do |f| %>
+<% form_for :activity, @activity, :url => {:action => "create"} do |f| -%>
 	<%= f.error_messages %>
 	<p>
 		<%= f.label :name %><br />

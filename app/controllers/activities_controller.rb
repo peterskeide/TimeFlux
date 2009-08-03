@@ -9,6 +9,7 @@ class ActivitiesController < ApplicationController
   end
  
   def new
+    puts "**********   IN NEW"
     @activity = Activity.new
   end
 
@@ -17,6 +18,7 @@ class ActivitiesController < ApplicationController
   end
   
   def create
+    puts "**********    CREATING ACTIVITY"
     @activity = Activity.new(params[:activity])
     if @activity.save
       flash[:notice] = "New Activity was created"

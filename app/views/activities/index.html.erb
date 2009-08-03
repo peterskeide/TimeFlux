@@ -34,18 +34,27 @@
 <%= will_paginate @activities %>
 
 <% @activities.each do |a| -%>
-  <hr/>
+  
   <div>
-    <b>Name:</b> <%= link_to a.name, edit_activity_path(a) %><br/>
+    <div class="activities_header">
+    <span class="activities_action_icons">
+        <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete %>
+    </span>
+    <%= link_to a.name, edit_activity_path(a) %>
+    <span class="activities_status_icons">
+        <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
+        <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
+    </span>
+    </div>
+
+    <%= a.description %><br/>
     <b>Tags:</b> <% a.tags.each do |t| %>
                    <%=  t.name_and_type -%>,
                  <% end %><br/>
-    <b>Description:</b> <%= a.description %><br/>
     <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>
-	<b>Active:</b> <%= if a.active then 'Yes' else 'No' end %><br/>
-	<b>Default:</b> <%= if a.default_activity then 'Yes' else 'No' end %><br/>
-	<%= link_to 'Remove', activity_path(a), :method => :delete %>
+
   </div>
+  </br>
 <% end -%>
 
   <br />
