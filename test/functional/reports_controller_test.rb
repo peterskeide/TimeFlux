@@ -16,7 +16,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "accessing reports," do
 
-      reports = { :user => {},:activity => {}, :billing => { :month=>7, :year=>2009},:hours => {} }
+      reports = { :user => {},:activity => {}, :hours => { :month=>7, :year=>2009} }
       reports.each do |report, params|
 
         context "on GET to :#{report}" do
@@ -54,7 +54,7 @@ class ReportsControllerTest < ActionController::TestCase
         time_entry = tags(:timeflux).activities.collect { |a| a.time_entries.on_day( Date.new(2009,7,1) )}.flatten[0]
         @billed_before = time_entry.billed
 
-        post :billing, :month=>7, :year=>2009, :tag=>tags(:timeflux).id, :method => 'post'
+        post :hours, :month=>7, :year=>2009, :tag=>tags(:timeflux).id, :method => 'post'
       end
       should 'have billed=false initially' do
         assert ! @billed_before
@@ -73,7 +73,7 @@ class ReportsControllerTest < ActionController::TestCase
       login_as(:bill)
     end
 
-    reports = [:user, :activity, :billing, :hours]
+    reports = [:user, :activity, :hours]
     reports.each do |report|
       context "on GET to :#{report}" do
         setup { get report }
@@ -83,7 +83,7 @@ class ReportsControllerTest < ActionController::TestCase
   end
 
   context "Not logged in" do
-    reports = [:user, :activity, :billing, :hours]
+    reports = [:user, :activity, :hours]
     reports.each do |report|
       context "on GET to :#{report}" do
         setup { get report }

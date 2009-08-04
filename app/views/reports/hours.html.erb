@@ -1,0 +1,77 @@
+
+<h2>Hours Report</h2>
+
+<p class="error"><%= flash[:error] %></p>
+<p class="notice"><%= flash[:notice] %></p>
+
+<% form_tag :action => 'hours', :method => 'get' do %>
+  <div style="width:60%">
+
+    <table style="float:right">
+      <tr>
+        <td><%= label_tag "Group by" %></td>
+        <td><%= select_tag "grouping", empty_option("No grouping") + options_for_select(['Consultant','Activity','Date'], params[:grouping]) %></td>
+      </tr>
+      <tr>
+        <td><%= label_tag "New page" %></td>
+        <td><%= check_box_tag "page_break", 1, params[:page_break] %></td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td><%= label_tag "Year" %></td>
+        <td><%= select_tag "year", options_for_select(@years, @selected_year), {:include_blank => 'None'} %></td>
+      </tr>
+      <tr>
+        <td><%= label_tag "month" %></td>
+        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', @selected_month  ) %></td>
+      </tr>
+      <tr>
+        <td><%= label_tag "Billed" %></td>
+        <td><%= select_tag "billed", options_for_select(boolean_options, params[:billed]) %></td>
+      </tr>
+      <tr>
+        <td><%= label_tag "User" %></td>
+        <td><%= select_tag "user", empty_option("All") + options_from_collection_for_select( User.all, :id, :fullname, params[:user].to_i ) %></td>
+      </tr>
+      <tr>
+        <td><%= label_tag "Tag Category"%></td>
+        <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
+      </tr>
+      <% if @tag_type %>
+        <tr>
+          <td><%= label_tag 'Tag'%></td>
+          <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(@tag_type.tags, :id, :name, params[:tag_id].to_i) %></td>
+        </tr>
+      <% end %>
+      <tr><td></td></tr>
+      <tr><td><%= submit_tag "Apply Filter" %></td> </tr>
+    </table>
+
+  </div>
+<% end -%>
+
+<hr/>
+
+<%= render_table @table -%>
+
+<% unless is_empty? @table %>
+  <br/>
+  <% form_tag :action => 'hours', :method => 'post' do %>
+    <%= hidden_field_tag 'grouping',  params[:grouping] %>
+    <%= hidden_field_tag 'page_break',  params[:page_break] %>
+    <%= hidden_field_tag 'year',  params[:year] %>
+    <%= hidden_field_tag 'month',  params[:month] %>
+    <%= hidden_field_tag 'billed',  params[:billed] %>
+    <%= hidden_field_tag 'user',  params[:user] %>
+    <%= hidden_field_tag 'tag_type_id',  params[:tag_type_id] %>
+    <%= hidden_field_tag 'tag_id',  params[:tag_id] %>
+    <%= submit_tag 'Mark as billed' %>
+  <% end %>
+<% end %>
+
+<%#= params.to_json %>
+
+<%= render :partial => 'download', :locals => { :params => params } -%>
+

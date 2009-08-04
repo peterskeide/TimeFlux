@@ -63,7 +63,7 @@ class TimeEntriesController < ApplicationController
   # the @activities map keyset, that activity will not be available as an option. 
   # The rationale is: An activity can only have one set of time entries per user per week. 
   def find_activity_options
-    user_and_default_activities = @current_user.activities + Activity.find_all_by_default_activity(true) 
+    user_and_default_activities = ( @current_user.activities + Activity.find_all_by_default_activity(true) ).uniq
     @activity_options = user_and_default_activities.collect { |a| @activities.include?(a) ? nil : [ a.name, a.id ] }.compact
   end
       

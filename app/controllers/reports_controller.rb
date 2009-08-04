@@ -9,6 +9,44 @@ class ReportsController < ApplicationController
     @reports = self.__send__(:action_methods).delete("index").sort
   end
 
+  # Marks hours as billed on :POST
+  def hours
+    setup_calender
+
+    if params[:tag] && params[:tag] != ""
+      activities = Tag.find(params[:tag]).activities
+    end
+
+    if params[:tag_type_id] && params[:tag_type_id] != ""
+      @tag_type = TagType.find(params[:tag_type_id])
+      activities = @tag_type.activities
+    end
+
+    user = User.find(params[:user]) if params[:user] && params[:user] != ""
+    
+    time_entries = TimeEntry.search(@day, activities, user, params[:billed])
+
+    if params[:method] == 'post' 
+      TimeEntry.mark_as_billed(time_entries)
+    end
+
+    report_data = []
+    time_entries.each do |t|
+      report_data << [t.activity.name, t.date, t.hours, t.user.fullname, t.locked, t.billed, t.notes] if t.hours > 0
+    end
+
+    table = Ruport::Data::Table.new( :data => report_data,
+      :column_names => ['Activity', 'Date', 'Hours', 'Consultant', 'Locked', 'Billed', 'Notes'])
+    table.sort_rows_by!(["Date"])
+
+    if params[:grouping] && params[:grouping] != ""
+      table = Grouping(table,:by => params[:grouping])
+    end
+
+    title = "Hour report"
+    respond_with_formatter table, TestController, title
+  end
+
   def activity
      if params[:active] then
       activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
@@ -38,88 +76,6 @@ class ReportsController < ApplicationController
       :column_names => ['Full name', 'Login', 'E-mail', 'Status'] )
     respond_with_formatter @table, TestController, "User report"
   end
-
-
-  #Supports GET and POST
-  def unbilled
-    setup_calender
-
-    report_data = []
-    TimeEntry.unbilled.between(@day,(@day >> 1) -1).sort.each do |t|
-      if params[:method] == 'post' then t.billed = true; t.save; end
-      report_data << [t.activity.name, t.date, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0
-    end
-
-    table = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Activity name', 'Date', 'Hours', 'Consultant', 'Billed','Notes'])
-    grouping = Grouping(table,:by => "Activity name")
-
-    result = Ruport::Data::Grouping.new
-    grouping.each do |name,group|
-      g2 = Grouping(group,:by => "Consultant")
-      g2.each do |n2,g3|
-        result << Ruport::Data::Group.new( :name => "#{name} - #{n2}",
-                    :data => g3.data,
-                    :column_names => g3.column_names )
-      end
-    end
-
-    respond_with_formatter result, ReportRendererUnbilled, "Unbilled_#{@day.year}-#{@day.month}"
-  end
-
-  #Supports GET and POST
-  def billing
-    setup_calender
-
-    @tag_types = TagType.all
-    @tag_type = TagType.find(params[:tag_type]) if params[:tag_type]
-    @tag_type ||= TagType.first
-    @tags = @tag_type.tags if @tag_type
-    @tag = Tag.find(params[:tag]) if params[:tag]
-
-    if @tag
-      report_data = []
-      @tag.activities.each do |activity|
-
-        activity.time_entries.between(@day,(@day >> 1) -1).sort.each do |t|
-          if params[:method] == 'post' then t.billed = true; t.save; end
-          report_data << [activity.name, t.date, t.hours, t.user.fullname, t.billed, t.notes] if t.hours > 0
-        end
-      end
-      table = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Activity name', 'Date', 'Hours', 'Consultant', 'Billed','Notes'])
-
-      @table = Grouping(table,:by => "Activity name")
-      title = "Hour report for #{@tag.name}"
-    end
-    respond_with_formatter @table, TestController, title
-  end
-
-
-  def hours
-    setup_calender
-     
-    @selected_user = User.find(params[:user]) if params[:user]
-    @selected_user ||= current_user_session.user
-
-    # Content of selects
-    @users = User.find(:all)
-
-    time_data = [] 
-    @selected_user.time_entries.between(@day,(@day >> 1) -1).each do |t|
-      time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
-    end
-    table = Ruport::Data::Table.new( :data => time_data,
-      :column_names => ['Activity name', 'Date', 'Hours', 'Notes'])
-
-    @table = Grouping(table,:by => "Activity name")
-    respond_with_formatter @table, TestController, "Hour report for user: #{@selected_user.fullname}"
-  end
-
-private
-
-
-
 
 
 end
