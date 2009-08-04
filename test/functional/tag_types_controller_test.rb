@@ -22,6 +22,12 @@ class TagTypesControllerTest < ActionController::TestCase
         should_set_the_flash_to(/created/i)
       end
 
+      context "updating a tag-type" do
+        setup { post :update, :id => tag_types(:project), :name => "Konklave" }
+        should_redirect_to("Index") { "/tag_types" }
+        should_set_the_flash_to(/updated/i)
+      end
+
       context "destroying a tag-type in use" do
         setup { post :destroy, :id => tag_types(:project) }
         should_redirect_to("Index") { "/tag_types" }
