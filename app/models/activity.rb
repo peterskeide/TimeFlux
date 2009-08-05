@@ -31,10 +31,10 @@ class Activity < ActiveRecord::Base
   def <=>(other)
     name <=> other.name
   end
-
-  def to_s
-    "[Activity: #{name}, id=#{self.id}]"
-  end
+#
+#  def to_s
+#    "[Activity: #{name}, id=#{self.id}]"
+#  end
 
   private
 

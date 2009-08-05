@@ -40,6 +40,11 @@ class UsersControllerTest < ActionController::TestCase
         should_render_template :edit
       end
 
+      context "a GET to :show" do
+        setup { get :show, :id => users(:bob).id }
+        should_render_template :show
+      end
+
       context "a POST to update (new email)" do
         setup do
           put :update, :id => users(:bob).id, :user =>{:password_confirmation=>"", :lastname=>"Foobar", :firstname=>"Bob",
@@ -51,6 +56,15 @@ class UsersControllerTest < ActionController::TestCase
         should 'change Bob´s email to new@emailaddress.com' do
           assert_equal "new@emailaddress.com", users(:bob).reload.email
         end
+      end
+
+      context "a POST to update (providing an existing username)" do
+        setup do
+          put :update, :id => users(:bob).id, :user =>{:password_confirmation=>"", :lastname=>"Foobar", :firstname=>"Bob",
+           :operative_status=>"active", :password=>"", :login=>"bill", :email=>"new@emailaddress.com"}
+        end
+        should_render_template :edit
+        #should display "Login has already been taken"
       end
 
       context "destroying Bob" do

@@ -1,10 +1,15 @@
 require 'test_helper'
 
 class MonthControllerTest < ActionController::TestCase
-  
-  context "Logged in as user Bill" do
+
+  setup do
+    @date = Date.new(2009, 6, 22) # monday in week 26, 2009
+    Date.stubs(:today).returns(@date)
+  end
+
+  context "Logged in as user Bob" do
     setup do
-      login_as(:bill)
+      login_as(:bob)
     end
     
     context "on GET to :index" do

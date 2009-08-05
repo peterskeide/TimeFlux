@@ -36,10 +36,6 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
-  def get_bob
-    users(:bob)
-  end
-
   def login_as(user)
     :activate_authlogic
     Authlogic::Session::Base.controller = Authlogic::ControllerAdapters::RailsAdapter.new(self)

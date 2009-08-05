@@ -3,9 +3,10 @@ require 'test_helper'
 class ReportsControllerTest < ActionController::TestCase
 
   context "Logged in as user Bob" do
-
+    
     setup do
       login_as(:bob)
+      @tag_type_id = tag_types(:project).id
     end
 
     # depends on controllers private function :action_methods which returns nil during tests
@@ -15,11 +16,16 @@ class ReportsControllerTest < ActionController::TestCase
     end
 
     context "accessing reports," do
-
-      reports = { :user => {},:activity => {}, :hours => { :month=>7, :year=>2009} }
+ 
+      reports = [
+        [:user, {} ],
+        [:activity, {} ],
+        [:hours, {:month=>7, :year=>2009, :billed => false} ],
+        [:hours, {:month=>7, :year=>2009, :grouping => 'Activity', :tag_type_id => @tag_type_id} ]
+      ]
       reports.each do |report, params|
 
-        context "on GET to :#{report}" do
+        context "on GET to :#{report} with params #{params}" do
 
           context "with html" do
             setup { get report, {}.merge(params) }
@@ -49,7 +55,7 @@ class ReportsControllerTest < ActionController::TestCase
       end
     end
 
-    context 'on POST to :billing' do
+    context 'marking hours as billed (POST to :hours)' do
       setup do
         time_entry = tags(:timeflux).activities.collect { |a| a.time_entries.on_day( Date.new(2009,7,1) )}.flatten[0]
         @billed_before = time_entry.billed

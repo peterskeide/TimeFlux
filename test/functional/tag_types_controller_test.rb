@@ -16,6 +16,11 @@ class TagTypesControllerTest < ActionController::TestCase
         should_not_set_the_flash
       end
 
+      context "a GET to :edit" do
+        setup { get :edit, :id => tag_types(:project) }
+        should_render_template :edit
+      end
+
       context "a POST to :create" do
         setup { post :create, :tag_type => {:name => 'Payment Agreement'} }
         should_redirect_to("Index") { "/tag_types" }

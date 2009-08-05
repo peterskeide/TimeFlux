@@ -56,7 +56,7 @@
 
 <%= render_table @table -%>
 
-<% unless is_empty? @table %>
+<% if ! is_empty? @table && params[:year] && params[:month] %>
   <br/>
   <% form_tag :action => 'hours', :method => 'post' do %>
     <%= hidden_field_tag 'grouping',  params[:grouping] %>

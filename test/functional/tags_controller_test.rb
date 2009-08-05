@@ -16,6 +16,12 @@ class TagsControllerTest < ActionController::TestCase
         should_not_set_the_flash
       end
 
+      context "a GET to :index supplying a :tag_type" do
+        setup { get :index, :tag_type => tag_types(:project).id }
+        should_render_template :index
+        should_not_set_the_flash
+      end
+
       context "a POST to :create" do
         setup { post :create, :tag => {:name => 'Internal project', :tag_type_id => tag_types(:project).id} }
         should_redirect_to("Index") { tags_url }

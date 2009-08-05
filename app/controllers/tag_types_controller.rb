@@ -7,14 +7,13 @@ class TagTypesController < ApplicationController
   end
 
   def create
-    @tag_types = TagType.new(params[:tag_type])
-    if @tag_types.save
+    tag_type = TagType.new(params[:tag_type])
+    if tag_type.save
       flash[:notice] = "Tag Type successfully created"
-      redirect_to :tag_types
     else
-      flash[:error] = @tag_types.errors.full_messages.to_s
-      redirect_to :tag_types
+      flash[:error] = tag_type.errors.full_messages.to_s
     end
+    redirect_to :tag_types
   end
 
   def edit
@@ -27,6 +26,7 @@ class TagTypesController < ApplicationController
       flash[:notice] = "Tag category was successfully updated."
       redirect_to :action => "index"
     else
+      flash[:error] = @tag_type.errors.full_messages.to_s
       render :action => "edit"
     end
   end

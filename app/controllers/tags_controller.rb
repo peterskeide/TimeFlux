@@ -39,9 +39,9 @@ class TagsController < ApplicationController
     attributes = params[@tag.class.name.underscore]
     if @tag.update_attributes(attributes)
       flash[:notice] = 'Tag was successfully updated.'
-
       redirect_to :action => 'index', :tag_type => params[:tag_type]
     else
+      flash[:error] = @tag.errors.full_messages.to_s
       render :action => "edit"
     end
   end
