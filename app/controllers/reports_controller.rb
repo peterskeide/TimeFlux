@@ -7,25 +7,13 @@ class ReportsController < ApplicationController
 
   def index
     redirect_to(:action => 'hours')
+    #  @reports = self.__send__(:action_methods).delete("index").sort
   end
-
-  #deprecated.... Only one hours report
-  #def index
-  #  @reports = self.__send__(:action_methods).delete("index").sort
-  #end
 
   # Marks hours as billed on :POST
   def hours
     setup_calender
-
-    if params[:tag] && params[:tag] != ""
-      activities = Tag.find(params[:tag]).activities
-    end
-
-    if params[:tag_type_id] && params[:tag_type_id] != ""
-      @tag_type = TagType.find(params[:tag_type_id])
-      activities = @tag_type.activities
-    end
+    activities = setup_hours_form
 
     user = User.find(params[:user]) if params[:user] && params[:user] != ""
     
@@ -51,6 +39,14 @@ class ReportsController < ApplicationController
     title = "Hour report"
     respond_with_formatter table, TestController, title
   end
+
+
+  def update_hours_form
+    setup_calender
+    setup_hours_form
+    render :partial => 'hours_form', :locals => { :params => params, :tag_type => @tag_type, :years => @years, :months => @months }
+  end
+
 
   #deprecated....
   def activity
@@ -84,5 +80,19 @@ class ReportsController < ApplicationController
     respond_with_formatter @table, TestController, "User report"
   end
 
+  private 
+  
+  def setup_hours_form
+    params[:month] ||= @day.month
+
+    if params[:tag_type_id] && params[:tag_type_id] != ""
+      @tag_type = TagType.find(params[:tag_type_id])
+      return @tag_type.activities
+    end
+
+    if params[:tag] && params[:tag] != ""
+      return Tag.find(params[:tag]).activities
+    end
+  end
 
 end
