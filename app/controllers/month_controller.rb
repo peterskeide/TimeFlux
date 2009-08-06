@@ -1,8 +1,5 @@
 
-
 class MonthController < ApplicationController
-
-  #load 'test_controller.rb'
 
   before_filter :check_authentication
 
@@ -24,9 +21,7 @@ class MonthController < ApplicationController
 
   def listing
     setup_month_view
-
     create_listing
-
     respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
   end
 
@@ -34,6 +29,11 @@ class MonthController < ApplicationController
     setup_month_view
     create_listing
     render :partial => 'listing_content', :locals => { :table => @table, :params => params }
+  end
+
+  def update_week
+    setup_month_view
+    render :partial => 'week_content', :locals => { :day => @day, :user => @user, :activities_summary => @activities_summary }
   end
 
   private

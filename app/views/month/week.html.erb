@@ -4,31 +4,18 @@
 
 <%= render :partial => 'select_view' -%>
 
-<% form_tag :action => 'week', :method => 'get' do %>
+<% form_tag 'week', :method => 'get', :id => 'week_form' do %>
   <%= render :partial => 'reports/date_picker', :locals =>
     { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
-  <%= submit_tag 'View' %>
+  <noscript><%= submit_tag 'View' %></noscript>
 <% end %>
 
-  <hr/>
-   <% last_in_month = (@day >> 1) -1 %>
+<%= observe_form 'week_form',
+  :url => {:action => 'update_week'},
+  :update => 'week_content' %>
 
-  <br/>
-  <table>
-    <tr><th></th>
-      <% @day.beginning_of_week.upto last_in_month.end_of_week  do |d| %>
-        <% if d.wday == 1 %>
-        </tr><tr><th><%=d.cweek.to_s%></ht>
-          <% end %>
-        <td <%= 'class ="grayed"' if d.month != @day.month%> ><%= @user.hours_on_day d -%></td>
-<% end %>
-      </tr>
-    </table>
+<div id="week_content">
+  <%= render :partial => 'week_content', :locals =>
+    { :day => @day, :user => @user, :activities_summary => @activities_summary } -%>
+</div>
 
-  <br/><br/><br/>
-    <table>
-        <%  @activities_summary.each do |entry| %>
-        <tr><td><%= entry[:name] -%></td><td><%=  entry[:hours] -%></td></tr>
-        <% end %>
-        <tr><td>Total:</td><td> <%= @activities_summary.collect { |i| i[:hours] }.sum  -%></td></tr>
-  </table>

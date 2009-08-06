@@ -1,0 +1,22 @@
+  <hr/>
+   <% last_in_month = (day >> 1) -1 %>
+
+  <br/>
+  <table>
+    <tr><th></th>
+      <% day.beginning_of_week.upto last_in_month.end_of_week  do |d| %>
+        <% if d.wday == 1 %>
+        </tr><tr><th><%=d.cweek.to_s%></ht>
+          <% end %>
+        <td <%= 'class ="grayed"' if d.month != day.month%> ><%= user.hours_on_day d -%></td>
+<% end %>
+      </tr>
+    </table>
+
+  <br/><br/><br/>
+    <table>
+        <%  activities_summary.each do |entry| %>
+        <tr><td><%= entry[:name] -%></td><td><%=  entry[:hours] -%></td></tr>
+        <% end %>
+        <tr><td>Total:</td><td> <%= activities_summary.collect { |i| i[:hours] }.sum  -%></td></tr>
+  </table>

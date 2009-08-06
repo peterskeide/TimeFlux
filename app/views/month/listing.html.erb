@@ -6,20 +6,17 @@
 <% form_tag 'listing', :method => 'get', :id => 'listing_form' do %>
   <%= render :partial => 'reports/date_picker', :locals =>
     { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
- 
+
   <noscript><%= submit_tag 'View' %></noscript>
 <% end %>
 
-    <%= observe_form 'listing_form',
-      :url => {:action => 'update_listing'},
-      :update => 'listing_content'
-       %>
+<%= observe_form 'listing_form',
+  :url => {:action => 'update_listing'},
+  :update => 'listing_content'
+%>
 
-  <hr/>
+<hr/>
 
 <div id="listing_content">
   <%= render :partial => 'listing_content', :locals => { :table => @table, :params => params } -%>
 </div>
-
-<%#= render_table @table -%>
-<%#= render :partial => 'reports/download', :locals => { :params => params } -%>
