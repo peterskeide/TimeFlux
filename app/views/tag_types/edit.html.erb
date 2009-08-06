@@ -1,15 +1,25 @@
-<h1>Edit activity</h1>
- <p class="notice"><%= flash[:notice] %></p>
- <p class="error"><%= flash[:error] %></p>
+<h1>Edit tag category</h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
 
 <% form_for @tag_type do |f| %>
-	<%= f.error_messages %>
-	<p>
-		<%= f.label :name %><br />
-		<%= f.text_field :name %>
-	</p>
-	
-	<p>
-		<%= f.submit "Update" %>
-	</p>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    Icon<br />
+    <select>
+      <% @icons.each do |icon| %>
+        <optgroup style="background-image: url(/images/led-icons/<%= icon%>.png); background-repeat:no-repeat; height:18px;">
+          <option value="<%=icon%>"><%=icon%></option>
+        </optgroup>
+      <% end %>
+    </select>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
 <% end %>

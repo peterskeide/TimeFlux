@@ -1,30 +1,38 @@
+
+<h1>Tags</h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
-<h1>Manage Tags</h1>
 
-  <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
-<%= will_paginate @tags %>
+<%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
+
 <table>
-  <% @tags.each do |tag| -%>
+  <% form_tag tags_path, :method => :get, :id => 'category_filter' do %>
     <tr>
-      <td><%= tag.tag_type.name %> - <%= link_to tag.name, :action => 'edit', :id => tag %></td>
-      <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => tag %>
-          <%= link_to image_tag("delete.png", :title => "Delete"), tag_path(tag), :method => :delete, :tag_type => params[:tag_type] %></td>
+      <td><%= label_tag "Category"%></td>
+      <td><%= select_tag "tag_type", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type].to_i) %></td>
+    <td><noscript><%= submit_tag "Apply Filter" %></noscript></td>
     </tr>
   <% end -%>
 </table>
-<%= will_paginate @tags %>
+
+<%= observe_field 'tag_type',
+      :url => {:action => 'update_tags'},
+      :update => 'tags',
+      :with => 'tag_type'
+       %>
+
+<hr/>
+
+<div id="tags">
+  <%=  render :partial => 'tags', :locals => { :tags => @tags } %>
+</div>
+
 <hr/>
 <p>
 
-  <% form_for Tag.new do |f| -%>
-    <% if params[:tag_type] %>
-      New <%= TagType.find(params[:tag_type]).name -%> tag: <%= f.text_field :name %>
-      <%= f.hidden_field(:tag_type_id, :value => params[:tag_type]) %>
-    <% else %>          
+  <% form_for Tag.new do |f| -%>          
       New tag: <%= f.text_field :name %>
       <%= collection_select(:tag, :tag_type_id, @tag_types, :id, :name) %>
-    <% end -%>
     <%= submit_tag "Create" %>
   <% end -%>
 

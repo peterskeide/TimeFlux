@@ -1,0 +1,41 @@
+
+<% form_tag activities_path, :method => :get, :id => 'filter_form' do %>
+<table>
+    <tr>
+      <td><%= label_tag "Default" %></td>
+      <td><%= select_tag "default", options_for_select(boolean_options, params[:default]) %></td>
+    </tr>
+    <tr>
+      <td><%= label_tag "Active" %></td>
+      <td><%= select_tag "active", options_for_select(boolean_options, params[:active]) %></td>
+    </tr>
+    <tr>
+      <td><%= label_tag "Category"%></td>
+      <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
+    </tr>
+
+    <tr>
+<% if tags.empty?%>
+      <td><%= label_tag "Tag", nil, :class => 'disabled' %></td>
+      <td><%= select_tag "tag_id", empty_option("-----------"), {:disabled => true} %></td>
+<% else %>
+      <td><%= label_tag "Tag"%></td>
+      <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(tags, :id, :name, params[:tag_id].to_i ) %></td>
+<% end %>
+    </tr>
+
+    <tr><td></td></tr>
+    <tr><td></td><td><%= submit_tag "Apply Filter" %></td> </tr>
+  </table>
+<% end -%>
+
+    <%= observe_form 'filter_form',
+      :url => {:action => 'update_form'},
+      :update => 'activities_filter'
+       %>
+
+<%#TODO: Somehow remove the Apply filter button?.., or at least use form_remote_tag. Or put the results into this partial? Or nothing? %>
+    <%#= observe_form 'filter_form',
+      :url => {:action => 'update_activities'},
+      :update => 'activities'
+       %>

@@ -4,63 +4,13 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<table>
-	<% form_tag activities_path, :method => :get do %>
-    <tr> 
-		<td><%= label_tag "Default" %></td>
-		<td><%= select_tag "default", options_for_select(boolean_options, params[:default]) %></td>
-    </tr>
-	<tr> 
-		<td><%= label_tag "Active" %></td>
-		<td><%= select_tag "active", options_for_select(boolean_options, params[:active]) %></td>
-    </tr>
-	<tr>
-	    <td><%= label_tag "Tag type"%></td>
-	    <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
-	</tr>
-	    <% unless @tags.empty? %>
-		<tr>  		
-			<td><%= label_tag "Tag"%></td>
-	    	<td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(@tags, :id, :name, params[:tag_id].to_i) %></td>
-		</tr>
-	    <% end %>
-	<tr><td></td></tr>
-	<tr><td><%= submit_tag "Apply Filter" %></td> </tr>
-	<% end -%>
-</table>
+<div id="activities_filter">
+  <%=  render :partial => 'form', :locals => { :tags => @tags, :params => params } %>
+</div>
 
-<br/>
-<%= page_entries_info @activities %>
-<hr/>
-<%= will_paginate @activities %>
+<div id="activities">
+  <%=  render :partial => 'activities', :locals => { :activities => @activities } %>
+</div>
 
-<% @activities.each do |a| -%>
-  
-  <div>
-    <div class="activities_header">
-      <span class="action_icons">
-          <%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(a) %>
-          <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete, :confirm => 'Really remove category?' %>
-      </span>
-      <b><%= link_to a.name, edit_activity_path(a) %></b>
-
-      <span class="status_icons">
-          <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
-          <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
-      </span>
-    </div>
-
-    <%= a.description %><br/>
-    <b>Tags:</b> <% a.tags.each do |t| %>
-                   <%=  t.name_and_type -%>,
-                 <% end %><br/>
-    <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>
-
-  </div>
-  </br>
-<% end -%>
-
-  <br />
-<%= will_paginate @activities %>
   <hr/>
 <%= link_to "New Activity", new_activity_path %>

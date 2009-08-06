@@ -1,5 +1,5 @@
 
-<h2>Hours Report</h2>
+<h1>Hours Report</h1>
 
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
@@ -73,5 +73,5 @@
 
 <%#= params.to_json %>
 
-<%= render :partial => 'download', :locals => { :params => params } -%>
+<%= render :partial => 'download', :locals => { :params => params, :action => 'hours' } -%>
 

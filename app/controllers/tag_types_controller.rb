@@ -18,10 +18,16 @@ class TagTypesController < ApplicationController
 
   def edit
     @tag_type = TagType.find(params[:id])
+    @icons = Dir.glob("public/images/led-icons/*.png")
+    @icons.each { |i| 
+      i.sub! "public/images/led-icons/", ''
+      i.sub! ".png", ''
+    }
   end
 
   def update
     @tag_type = TagType.find(params[:id])
+
     if @tag_type.update_attributes(params[:tag_type])
       flash[:notice] = "Tag category was successfully updated."
       redirect_to :action => "index"

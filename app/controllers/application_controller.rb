@@ -34,7 +34,8 @@ class ApplicationController < ActionController::Base
        redirect_to time_entries_url
        return false
     end
-  end 
+  end
+
 
   #Used in month and report controller
   def setup_calender
@@ -44,8 +45,8 @@ class ApplicationController < ActionController::Base
 
     @years = (2007..Date.today.year).to_a.reverse
     @months = []
-    month_names = %w{ January Febrary March April May June July August September October November December}
-    month_names.each_with_index { |name, i| @months << [ i+1, name ] }
+    @month_names = %w{ January Febrary March April May June July August September October November December}
+    @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
   end
 
    #Used in month and report controller

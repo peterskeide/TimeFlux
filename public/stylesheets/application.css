@@ -88,6 +88,10 @@ a img {
         color: #bbbbbb;
 }
 
+.disabled {
+        color: gray;
+}
+
 .content {
 	padding: 1em;
 }

@@ -1,6 +1,7 @@
  <hr/>
   <p>Download report:
-<%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf"}) %>
-<%= link_to image_tag("csvicon_small.gif", :alt => "csv"), params.merge({:format => "csv"}) %>
-<%= link_to image_tag("icon_txt.gif", :alt => "txt"), params.merge({:format => "text"}) %>
+    <%action ||= 'index' %>
+<%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => action}) %>
+<%= link_to image_tag("csvicon_small.gif", :alt => "csv"), params.merge({:format => "csv",:action => action}) %>
+<%= link_to image_tag("icon_txt.gif", :alt => "txt"), params.merge({:format => "text",:action => action}) %>
   </p>

@@ -6,8 +6,13 @@ class ReportsController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    @reports = self.__send__(:action_methods).delete("index").sort
+    redirect_to(:action => 'hours')
   end
+
+  #deprecated.... Only one hours report
+  #def index
+  #  @reports = self.__send__(:action_methods).delete("index").sort
+  #end
 
   # Marks hours as billed on :POST
   def hours
@@ -47,6 +52,7 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, title
   end
 
+  #deprecated....
   def activity
      if params[:active] then
       activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
@@ -62,6 +68,7 @@ class ReportsController < ApplicationController
     respond_with_formatter@table, TestController, "Activity report"
   end
 
+  #deprecated....
   def user
     if params[:status] then
       users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] )

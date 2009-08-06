@@ -5,7 +5,7 @@ class TagsController < ApplicationController
   def index
     @tag_types = TagType.find(:all)
 
-    if params[:tag_type]
+    if params[:tag_type] && params[:tag_type] != ""
       type = TagType.find(params[:tag_type])
       @tags = type.tags.paginate( :page => params[:page] || 1, :per_page => 20, :order => 'name' )
     else
@@ -56,6 +56,28 @@ class TagsController < ApplicationController
       flash[:error] = "Tag is used by activity and cannot be removed"    
     end
     redirect_to :action => :index, :tag_type => params[:tag_type]
+  end
+
+  def update_tags
+    if params[:tag_type] && params[:tag_type] != ""
+      type = TagType.find(params[:tag_type])
+      tags = type.tags.paginate( :page => 1, :per_page => 20, :order => 'name' )
+    else
+      tags = Tag.paginate( :page => params[:page] || 1, :per_page => 20, :order => 'name' )
+    end
+
+
+    render :partial => 'tags', :locals => { :tags => tags_for_tag_type(params[:tag_type]) }
+  end
+
+  private
+
+  def tags_for_tag_type(tag_type_id, page=1)
+    if tag_type_id && tag_type_id != ""
+      TagType.find(tag_type_id).tags.paginate( :page => 1, :per_page => 20, :order => 'name' )
+    else
+      Tag.paginate( :page => page, :per_page => 20, :order => 'name' )
+    end
   end
 
 end

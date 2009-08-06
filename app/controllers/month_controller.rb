@@ -25,7 +25,21 @@ class MonthController < ApplicationController
   def listing
     setup_month_view
 
-    time_data = []
+    create_listing
+
+    respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
+  end
+
+  def update_listing
+    setup_month_view
+    create_listing
+    render :partial => 'listing_content', :locals => { :table => @table, :params => params }
+  end
+
+  private
+
+  def create_listing
+        time_data = []
     @user.time_entries.between(@day,(@day >> 1) -1).sort.each do |t|
       time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
     end
@@ -37,21 +51,11 @@ class MonthController < ApplicationController
     activities_data = @activities_summary.collect { |a| [a[:name],a[:hours]] }
     activities_data << ['Sum',@activities_summary.collect { |i| i[:hours] }.sum]
 
-#    summary =  Ruport::Data::Group.new( :name => 'Summary',:data => activities_data,
-#      :column_names => ['Activity name','Hours'] )
-
     @table = Grouping(table,:by => "Activity name", :order => :name)
 
     @summary = @table.summary(:name, :hours => lambda { |g| g.sigma(:Hours) },
                      :order => [:name] )
-
-
-    #@table.sort_grouping_by! { |g| (g.name == 'Summary' ? 'h' : 'b') + g.name }
-
-    respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
   end
-
-  private
 
   def setup_month_view
     setup_calender

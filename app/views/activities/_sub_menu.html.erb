@@ -1,17 +1,7 @@
-<br/>
-<ul id="nav">
-      <li class="menu"><%= link_to "Activities", activities_url %>
-      </li>
-      <li class="menu"><%= link_to "Tags", tags_url %>
-        <ul>
-          <% TagType.all.each do |type| %>
-            <li class="sub"><%= link_to type.name, :controller => 'tags', :action => 'index', :tag_type => type.id %></li>
-          <% end %>
-        </ul>
-      </li>
-      <li class="menu"><%= link_to "Tag Categories", tag_types_url %>
-      </li>
-</ul>
-<% TagType.count.times do %> <br/> <% end %>
+<div id="nav">
+      <%= link_to "Activities", activities_url %> |
+      <%= link_to "Tags", tags_url %> |
+      <%= link_to "Categories", tag_types_url %>   
+</div>
 
 <hr/>
