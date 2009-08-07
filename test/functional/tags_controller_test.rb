@@ -36,9 +36,8 @@ class TagsControllerTest < ActionController::TestCase
 
       context "destroying a tag" do
         setup {
-          post :create, :tag => {:name => 'Internal project', :tag_type_id => tag_types(:project).id}
-          new_tag = Tag.find_by_name 'Internal project'
-          post :destroy, :id => new_tag.id
+          temporary_tag = Tag.create(:name => 'Internal project', :tag_type_id => tag_types(:project).id)
+          post :destroy, :id => temporary_tag.id
         }
         should_redirect_to("Index") { "/tags" }
         should_set_the_flash_to("Tag removed")

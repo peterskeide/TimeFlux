@@ -6,7 +6,7 @@
 <% activities.each do |a| -%>
 
   <div>
-    <div class="activities_header">
+    <div class="activity_header">
       <span class="action_icons">
           <%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(a) %>
           <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete, :confirm => 'Really remove category?' %>

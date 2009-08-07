@@ -9,10 +9,9 @@ class ReportsControllerTest < ActionController::TestCase
       @tag_type_id = tag_types(:project).id
     end
 
-    # depends on controllers private function :action_methods which returns nil during tests
     context "on GET report index" do
-      #setup { get :index }
-      #should_respond_with :success
+      setup { get :index }
+      should_redirect_to("Hours report") { "/reports/hours" }
     end
 
     context "accessing reports," do

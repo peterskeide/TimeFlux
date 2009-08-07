@@ -41,9 +41,8 @@ class TagTypesControllerTest < ActionController::TestCase
 
       context "destroying a tag-type" do
         setup {
-          post :create, :tag_type => {:name => 'Payment Agreement'}
-          new_tag_type = TagType.find_by_name 'Payment Agreement'
-          post :destroy, :id => new_tag_type.id
+          temporary_tag_type = TagType.create(:name => 'Payment Agreement')
+          post :destroy, :id => temporary_tag_type.id
         }
         should_redirect_to("Index") { "/tag_types" }
         should_set_the_flash_to("Tag Type removed")

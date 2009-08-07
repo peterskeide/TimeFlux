@@ -23,19 +23,21 @@ class ActivitiesControllerTest < ActionController::TestCase
       
       should "find all default activities if 'default' criteria is true" do
         get :index, :default => "true"
-        assert_select "div.activities_header", :count => 1
+        assert_select "div.activity_header"
         activities = assigns(:activities)
         activities.each { |a| assert a.default_activity }
       end
       
       should "find all non-default activities if 'default' criteria is false" do
         get :index, :default => "false"
+        assert_select "div.activity_header"
         activities = assigns(:activities)
         activities.each { |a| assert_false a.default_activity }
       end
             
       should "find all active activities if 'active' criteria is true" do
         get :index, :active => "true"
+        assert_select "div.activity_header"
         activities = assigns(:activities)
         activities.each { |a| assert a.active }
       end

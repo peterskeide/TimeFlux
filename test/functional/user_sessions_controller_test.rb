@@ -8,6 +8,9 @@ class UserSessionsControllerTest < ActionController::TestCase
       setup { get :new }
       should_render_template :new
       should_not_set_the_flash
+      should "display a login form" do
+        assert_select 'form#new_user_session'
+      end
     end
 
     context "login in with correct credentials" do
