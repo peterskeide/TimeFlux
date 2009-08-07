@@ -48,10 +48,11 @@ class TimeEntriesController < ApplicationController
   
   def destroy_multiple
     time_entries = TimeEntry.find(params[:ids])
-    time_entries.each do |e|
-      flash[:error] = "Week contain time entries which are locked" if e.locked
+    if time_entries.any? {|e| e.locked}
+      flash[:error] = "Week contain time entries which are locked"
+    else
+      TimeEntry.delete_all(["id IN (?)", params[:ids]])
     end
-    TimeEntry.delete_all(["id IN (?)", params[:ids]]) unless flash[:error]
     redirect_to time_entries_url(:date => params[:date])
   end
   

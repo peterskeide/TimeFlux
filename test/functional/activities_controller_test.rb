@@ -23,6 +23,7 @@ class ActivitiesControllerTest < ActionController::TestCase
       
       should "find all default activities if 'default' criteria is true" do
         get :index, :default => "true"
+        assert_select "div.activities_header", :count => 1
         activities = assigns(:activities)
         activities.each { |a| assert a.default_activity }
       end

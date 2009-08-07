@@ -25,7 +25,7 @@ class ReportsController < ApplicationController
 
     report_data = []
     time_entries.each do |t|
-      report_data << [t.activity.name, t.date, t.hours, t.user.fullname, t.locked, t.billed, t.notes] if t.hours > 0
+      report_data << [ t.activity.name, t.date, t.hours, t.user.fullname, t.locked, t.billed, t.notes ] if t.hours > 0
     end
 
     table = Ruport::Data::Table.new( :data => report_data,

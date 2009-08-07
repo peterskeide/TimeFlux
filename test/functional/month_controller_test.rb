@@ -17,7 +17,7 @@ class MonthControllerTest < ActionController::TestCase
       should_redirect_to("Week view") { "/month/week" }
     end
 
-    pages = [:week,:month,:summary,:listing]
+    pages = [:week,:month,:summary,:listing,:update_listing,:update_week]
     pages.each do |page|  
       context "on GET to #{page}" do
         setup { get page }
@@ -26,12 +26,12 @@ class MonthControllerTest < ActionController::TestCase
     end
   end
   
-  context "As the user Bill calling GET to :index" do
+  context "As the user Bill" do
     setup {
       login_as(:bill)
-      get :index
+      get :week
     }
-    should_redirect_to("Week view") { "/month/week" }
+    should_respond_with :success
   end
 
   context "Not logged in" do

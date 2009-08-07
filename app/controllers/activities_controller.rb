@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
       
-  before_filter :check_authentication, :check_admin
+  before_filter :check_authentication
+  before_filter :check_admin, {:except => :show}
   
   def index
     @tags = params[:tag_type_id].blank? ? [] : Tag.find_all_by_tag_type_id(params[:tag_type_id])
@@ -13,6 +14,10 @@ class ActivitiesController < ApplicationController
   end
 
   def edit
+    @activity = Activity.find(params[:id])
+  end
+
+  def show
     @activity = Activity.find(params[:id])
   end
   

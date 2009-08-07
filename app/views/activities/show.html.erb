@@ -1,0 +1,26 @@
+<h1><%= @activity.name %></h1>
+
+<p>
+  <b>Description</b><br />
+  <%= @activity.description %>
+</p>
+
+<p>
+  <b>active</b><br />
+  <%= @activity.active %>
+</p>
+
+<p>
+  <b>Default</b><br />
+  <%= @activity.default_activity %>
+</p>
+
+<p>
+  <b>Tags</b><br />
+  <%= @activity.tags.join(", ") %>
+</p>
+
+<p>
+  <b>Assignments</b><br />
+  <%= @activity.users.join(", ") %>
+</p>

@@ -9,7 +9,7 @@
     <%= f.text_field :name %>
   </p>
   <p>
-    Icon<br />
+    Icon (looks great in Firefox)<br />
     <select>
       <% @icons.each do |icon| %>
         <optgroup style="background-image: url(/images/led-icons/<%= icon%>.png); background-repeat:no-repeat; height:18px;">
@@ -23,3 +23,14 @@
     <%= f.submit "Update" %>
   </p>
 <% end %>
+
+
+  Alternative (add ajax?) icon select
+  <table><tr>
+  <% @icons.each_with_index do |icon, index| %>
+    <%= if index % 10 == 0 then "</tr><tr>" else "" end %>
+    <td><% form_tag do %>
+      <%= image_submit_tag "/images/led-icons/#{icon}.png" %>
+    <% end %>
+  <% end %></td>
+  </tr></table>

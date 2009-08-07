@@ -1,4 +1,4 @@
-<br/>
+
 <%= page_entries_info activities %>
 <hr/>
 <%= will_paginate activities %>
@@ -22,12 +22,12 @@
     <%= a.description %><br/>
     <b>Tags:</b> <% a.tags.each do |t| %>
                    <%=  t.name_and_type -%>,
-                 <% end %><br/>
+                 <% end %>
     <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>
 
   </div>
-  </br>
+  <br/>
 <% end -%>
 
-  <br />
+  <br/>
 <%= will_paginate activities %>

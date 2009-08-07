@@ -1,7 +1,7 @@
 class TimeEntry < ActiveRecord::Base
 
   def before_destroy
-    errors.add_to_base "Cannot delete booking with payments" if locked
+    errors.add_to_base "Cannot delete locked hours"; return false if locked
   end
 
   belongs_to :user

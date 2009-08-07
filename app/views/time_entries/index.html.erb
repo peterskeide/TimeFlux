@@ -22,9 +22,10 @@
 <tbody>
 <% @activities.each do |activity| -%>
 	<% time_entries = select_by_activity(@time_entries, activity) %>
+        <% locked = time_entries.all? {|e| e.locked} %>
 	<tr> 
 		<td class="week_entries_activity">
-			<%= link_to truncate(activity.name, :length => 20), edit_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
+			<%= link_to truncate(activity.name, :length => 20), activity_path(activity) %>
 		</td>
 		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
@@ -34,8 +35,13 @@
 		<td class="week_entries_hours"><%= time_entries[5].hours %></td>
 		<td class="week_entries_hours"><%= time_entries[6].hours %></td>
 		<td>
-		<%= link_to "Remove", destroy_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
-		</td>
+                <%= link_to image_tag("pencil.png", :title => "Edit"), edit_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
+                <% if locked %>
+                  <%= image_tag("lock.png", :title => "Locked") %>
+                <% else %>
+                   <%= link_to image_tag("delete.png", :title => "Delete"), destroy_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
+		<% end %>
+                </td>
 	</tr>
 <% end -%>
 </tbody>
