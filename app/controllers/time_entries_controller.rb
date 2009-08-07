@@ -33,10 +33,10 @@ class TimeEntriesController < ApplicationController
   end
     
   def edit_multiple
-    if request.post?
+    #if request.post?
       @date = Date.parse(params[:date])
       @time_entries = TimeEntry.find(params[:ids])
-    end
+    #end
   end
   
   def grid_edit
@@ -47,7 +47,11 @@ class TimeEntriesController < ApplicationController
   end
   
   def destroy_multiple
-    TimeEntry.delete_all(["id IN (?)", params[:ids]])
+    time_entries = TimeEntry.find(params[:ids])
+    time_entries.each do |e|
+      flash[:error] = "Week contain time entries which are locked" if e.locked
+    end
+    TimeEntry.delete_all(["id IN (?)", params[:ids]]) unless flash[:error]
     redirect_to time_entries_url(:date => params[:date])
   end
   

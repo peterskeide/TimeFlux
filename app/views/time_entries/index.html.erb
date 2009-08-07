@@ -1,5 +1,6 @@
 <h1>Entries for week <%= @date.cweek %></h1>
 <p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
 <p>
 	<%= link_to "Previous week", time_entries_path(:date => @date.beginning_of_week.-(7)) %>
 	<%= link_to "Next week", time_entries_path(:date => @date.beginning_of_week.+(7)) %>

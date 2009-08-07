@@ -1,12 +1,16 @@
 class TimeEntry < ActiveRecord::Base
-      
+
+  def before_destroy
+    errors.add_to_base "Cannot delete booking with payments" if locked
+  end
+
   belongs_to :user
   belongs_to :activity
   
   validates_numericality_of :hours, :greater_than_or_equal_to => 0.0, :less_than_or_equal_to => 24.0
   validates_format_of :hours, :with => /^[\d|.|,]*$/
   validate_on_update :must_not_be_locked
-  
+
   named_scope :on_day, lambda { |day|
     {  :conditions => ['date = ?', day ] }
   }
