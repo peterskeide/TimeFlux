@@ -1,7 +1,7 @@
- <%# local variables: years, months, selected_year, selected_month %>
-
+<div>
 <label for="year">Year</label>
   <%= select_tag "year", options_for_select(years, selected_year) %>
 
   <label for="month">Month</label>
   <%= select_tag "month", options_from_collection_for_select( months, 'first', 'last', selected_month  ) %>
+</div>

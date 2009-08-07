@@ -4,22 +4,22 @@
   <div style="width:65%">
     <table style="float:right">
       <tr>
-        <td><%= label_tag "Group by" %></td>
+        <td><%= label_tag "grouping","Group by" %></td>
         <td><%= select_tag "grouping", empty_option("No grouping") + options_for_select(['Consultant','Activity','Date'], params[:grouping]) %></td>
       </tr>
       <tr>
-        <td><%= label_tag "Sort by", nil, :class => 'disabled' %></td>
+        <td><%= label_tag "sort by", nil, :class => 'disabled' %></td>
         <td><%= select_tag "sort_by", empty_option("----------"), {:disabled => true} %></td>
       </tr>
       <tr>
-        <td><%= label_tag "Pagebreak in PDF", nil, :class => 'disabled' %></td>
+        <td><%= label_tag "page_break","Pagebreak in PDF", :class => 'disabled' %></td>
         <td><%= check_box_tag "page_break", 1, params[:page_break], {:disabled => true} %></td>
       </tr>
     </table>
 
     <table>
       <tr>
-        <td><%= label_tag "Year" %></td>
+        <td><%= label_tag "year" %></td>
         <td><%= select_tag "year", options_for_select(years, params[:year].to_i) %></td>
       </tr>
       <tr>
@@ -27,23 +27,23 @@
         <td><%= select_tag "month", options_from_collection_for_select( months, 'first', 'last', params[:month].to_i  ) %></td>
       </tr>
       <tr>
-        <td><%= label_tag "Billed" %></td>
+        <td><%= label_tag "billed" %></td>
         <td><%= select_tag "billed", options_for_select(boolean_options, params[:billed]) %></td>
       </tr>
       <tr>
-        <td><%= label_tag "User" %></td>
+        <td><%= label_tag "user" %></td>
         <td><%= select_tag "user", empty_option("All") + options_from_collection_for_select( User.all, :id, :fullname, params[:user].to_i ) %></td>
       </tr>
       <tr>
-        <td><%= label_tag "Category"%></td>
+        <td><%= label_tag "tag_type_id","Category"%></td>
         <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
       </tr>
       <tr>
         <% if tag_type %>
-          <td><%= label_tag 'Tag'%></td>
+          <td><%= label_tag "tag_id",'Tag'%></td>
           <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(tag_type.tags, :id, :name, params[:tag_id].to_i) %></td>
         <% else %>
-          <td><%= label_tag "Tag", nil, :class => 'disabled' %></td>
+          <td><%= label_tag "tag_id","Tag", :class => 'disabled' %></td>
           <td><%= select_tag "tag_id", empty_option("-----------"), {:disabled => true} %></td>
         <% end %>
       </tr>

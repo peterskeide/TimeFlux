@@ -18,9 +18,9 @@
 </table>
 
 <hr/>
-<p>
-  <% form_for :tag_type, @tag_type, :url => {:action => "create"} do |f| -%>
-                  New tag type: <%= f.text_field :name %>
-    <%= submit_tag "Create" %>
-  <% end -%>
-</p>
+
+<% form_for :tag_type, @tag_type, :url => {:action => "create"} do |f| %>
+  <div><%= label_tag "tag_type_name","New tag type"%> <%= f.text_field :name %>
+    <%= submit_tag "Create" %></div>
+  
+<% end -%>

@@ -64,7 +64,9 @@ class UsersControllerTest < ActionController::TestCase
            :operative_status=>"active", :password=>"", :login=>"bill", :email=>"new@emailaddress.com"}
         end
         should_render_template :edit
-        #should display "Login has already been taken"
+        should "display Login has already been taken" do
+          assert_select "li", "Login has already been taken"
+        end
       end
 
       context "destroying Bob" do

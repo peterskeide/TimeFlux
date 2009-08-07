@@ -5,15 +5,15 @@
 
 <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
 
+<% form_tag tags_path, :method => :get, :id => 'category_filter' do %>
 <table>
-  <% form_tag tags_path, :method => :get, :id => 'category_filter' do %>
     <tr>
-      <td><%= label_tag "Category"%></td>
+      <td><%= label_tag "tag_type","Category"%></td>
       <td><%= select_tag "tag_type", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type].to_i) %></td>
-    <td><noscript><%= submit_tag "Apply Filter" %></noscript></td>
+    <td><noscript><div><%= submit_tag "Apply Filter" %></div></noscript></td>
     </tr>
-  <% end -%>
 </table>
+<% end -%>
 
 <%= observe_field 'tag_type',
       :url => {:action => 'update_tags'},
@@ -28,12 +28,12 @@
 </div>
 
 <hr/>
-<p>
 
-  <% form_for Tag.new do |f| -%>          
-      New tag: <%= f.text_field :name %>
-      <%= collection_select(:tag, :tag_type_id, @tag_types, :id, :name) %>
+
+<% form_for Tag.new do |f| -%>          
+  <p>New tag: <%= f.text_field :name %>
+    <%= collection_select(:tag, :tag_type_id, @tag_types, :id, :name) %>
     <%= submit_tag "Create" %>
-  <% end -%>
+  </p>
+<% end -%>
 
-</p>

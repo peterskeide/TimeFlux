@@ -7,7 +7,7 @@
   <%= render :partial => 'reports/date_picker', :locals =>
     { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
 
-  <noscript><%= submit_tag 'View' %></noscript>
+<noscript><div><%= submit_tag 'View' %></div></noscript>
 <% end %>
 
 <%= observe_form 'listing_form',
