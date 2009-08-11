@@ -40,8 +40,6 @@ class ApplicationController < ActionController::Base
   #Used in month and report controller
   def setup_calender
     @day = first_in_month(params[:year], params[:month])
-    @selected_year = @day.year
-    @selected_month = @day.month
 
     @years = (2007..Date.today.year).to_a.reverse
     @months = []

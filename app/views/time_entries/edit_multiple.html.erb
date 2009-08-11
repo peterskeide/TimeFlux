@@ -25,6 +25,19 @@
 						<%= f.label :notes %>
 						<%= f.lock_checking_text_field :notes, :size => 65 %>
 					</td>
+                                        
+					<td>
+
+                                          <% if time_entry.locked %>
+                                            <% unless time_entry.counterpost %>
+                                              <%= link_to image_tag("attach.png", :title => "Add correction"), :action => "counterpost", :id => time_entry %>
+                                            <% end %>
+                                            <%= image_tag("lock.png", :title => "Locked") %>
+                                          <% end %>
+                                          <% if time_entry.counterpost %>
+                                            <%= link_to image_tag("delete.png", :title => "Delete"), time_entry_path(time_entry), :date => @date, :method => :delete, :confirm => 'Really remove counterpost?' %>
+                                          <% end %>
+                                        </td>
 					</tr>
 				<% end -%>
 			<% end -%>

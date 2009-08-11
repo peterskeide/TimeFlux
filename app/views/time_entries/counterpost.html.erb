@@ -1,0 +1,29 @@
+<h1>Counterpost for <%=  @time_entry %></h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+
+<p>
+<h2>Week: <%= @time_entry.date.cweek %></h2>
+</p>
+<p>  
+  <% form_for @counterpost do |f| %>
+    <%= hidden_field_tag "original_time_entry", @time_entry.id %>
+    <%= hidden_field_tag "time_entry[date]", @counterpost.date %>
+    <%= hidden_field_tag "time_entry[activity_id", @counterpost.activity.id %>
+
+    Originally reported: <%= @time_entry.hours %>
+
+    <p>
+      <%= f.label :hours %><br />
+      <%= f.text_field :hours %>
+    </p>
+    <p>
+      <%= f.label :notes %><br />
+      <%= f.text_field :notes %>
+    </p>
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end -%>
+<%= link_to "Back", { :controller => "time_entries", :action => "index", :date => @date } %>
+</p>

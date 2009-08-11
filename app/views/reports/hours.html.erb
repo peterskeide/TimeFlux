@@ -16,17 +16,19 @@
 
 <% if ! is_empty? @table && params[:year] && params[:month] %>
   <br/>
-  <% form_tag :action => 'hours', :method => 'post' do %>
-    <%= hidden_field_tag 'grouping',  params[:grouping] %>
-    <%= hidden_field_tag 'page_break',  params[:page_break] %>
-    <%= hidden_field_tag 'year',  params[:year] %>
-    <%= hidden_field_tag 'month',  params[:month] %>
-    <%= hidden_field_tag 'billed',  params[:billed] %>
-    <%= hidden_field_tag 'user',  params[:user] %>
-    <%= hidden_field_tag 'tag_type_id',  params[:tag_type_id] %>
-    <%= hidden_field_tag 'tag_id',  params[:tag_id] %>
+
+  <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+    <%= render_hidden_hours_tags(params) %>
+    <%= hidden_field_tag 'mark_as',  'locked' %>
+    <%= submit_tag 'Mark as locked' %>
+  <% end %>
+
+  <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+    <%= render_hidden_hours_tags(params) %>
+    <%= hidden_field_tag 'mark_as',  'billed' %>
     <%= submit_tag 'Mark as billed' %>
   <% end %>
+
 <% end %>
 
 <%#= params.to_json %>

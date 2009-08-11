@@ -8,8 +8,8 @@
         <td><%= select_tag "grouping", empty_option("No grouping") + options_for_select(['Consultant','Activity','Date'], params[:grouping]) %></td>
       </tr>
       <tr>
-        <td><%= label_tag "sort by", nil, :class => 'disabled' %></td>
-        <td><%= select_tag "sort_by", empty_option("----------"), {:disabled => true} %></td>
+        <td><%= label_tag "sort by" %></td>
+        <td><%= select_tag "sort_by", options_for_select(['Date','Consultant - Date','Activity - Date'], params[:sort_by]) %></td>
       </tr>
       <tr>
         <td><%= label_tag "page_break","Pagebreak in PDF", :class => 'disabled' %></td>

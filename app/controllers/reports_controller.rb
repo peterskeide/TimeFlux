@@ -10,18 +10,43 @@ class ReportsController < ApplicationController
     #  @reports = self.__send__(:action_methods).delete("index").sort
   end
 
-  # Marks hours as billed on :POST
+    # Currently not in use
+  def activity
+     if params[:active] then
+      activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
+    else
+      activities = Activity.find(:all)
+    end
+
+    activity_data = activities.sort.collect { |a|
+      [a.name, a.tags.join(', '), a.active]
+    }
+    @table = Ruport::Data::Table.new( :data => activity_data,
+      :column_names => ['Activity name', 'Tags', 'Active'] )
+    respond_with_formatter@table, TestController, "Activity report"
+  end
+
+  # Currently not in use
+  def user
+    if params[:status] then
+      users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] )
+    else
+      users = User.find(:all)
+    end
+
+    user_data = users.sort.collect { |u|
+      [u.fullname, u.login, u.email, u.operative_status]
+    }
+    @table = Ruport::Data::Table.new( :data => user_data,
+      :column_names => ['Full name', 'Login', 'E-mail', 'Status'] )
+    respond_with_formatter @table, TestController, "User report"
+  end
+
   def hours
     setup_calender
     activities = setup_hours_form
-
     user = User.find(params[:user]) if params[:user] && params[:user] != ""
-    
     time_entries = TimeEntry.search(@day, activities, user, params[:billed])
-
-    if params[:method] == 'post' 
-      TimeEntry.mark_as_billed(time_entries)
-    end
 
     report_data = []
     time_entries.each do |t|
@@ -30,7 +55,11 @@ class ReportsController < ApplicationController
 
     table = Ruport::Data::Table.new( :data => report_data,
       :column_names => ['Activity', 'Date', 'Hours', 'Consultant', 'Locked', 'Billed', 'Notes'])
-    table.sort_rows_by!(["Date"])
+
+    if params[:sort_by] && params[:sort_by] != ""
+      table.sort_rows_by!( params[:sort_by].split(' - ') )
+    end
+    
 
     if params[:grouping] && params[:grouping] != ""
       table = Grouping(table,:by => params[:grouping])
@@ -40,6 +69,20 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, title
   end
 
+  def mark_time_entries
+    if params[:method] == 'post'
+      setup_calender
+      activities = setup_hours_form
+      user = User.find(params[:user]) if params[:user] && params[:user] != ""
+      time_entries = TimeEntry.search(@day, activities, user, params[:billed])
+      if params[:mark_as] == 'billed'
+        TimeEntry.mark_as_billed(time_entries)
+      elsif params[:mark_as] == 'locked'
+        TimeEntry.mark_as_locked(time_entries)
+      end
+    end
+    redirect_to( params.merge( {:action => 'hours'}) )
+  end
 
   def update_hours_form
     setup_calender
@@ -47,41 +90,8 @@ class ReportsController < ApplicationController
     render :partial => 'hours_form', :locals => { :params => params, :tag_type => @tag_type, :years => @years, :months => @months }
   end
 
-
-  #deprecated....
-  def activity
-     if params[:active] then
-      activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
-    else
-      activities = Activity.find(:all)
-    end
-    
-    activity_data = activities.sort.collect { |a|
-      [a.name, a.tags.join(', '), a.active]
-    }
-    @table = Ruport::Data::Table.new( :data => activity_data,
-      :column_names => ['Activity name', 'Tags', 'Active'] )
-    respond_with_formatter@table, TestController, "Activity report"
-  end
-
-  #deprecated....
-  def user
-    if params[:status] then
-      users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] )
-    else
-      users = User.find(:all)
-    end
-        
-    user_data = users.sort.collect { |u|
-      [u.fullname, u.login, u.email, u.operative_status]
-    }
-    @table = Ruport::Data::Table.new( :data => user_data,
-      :column_names => ['Full name', 'Login', 'E-mail', 'Status'] )
-    respond_with_formatter @table, TestController, "User report"
-  end
-
   private 
-  
+
   def setup_hours_form
     params[:month] ||= @day.month
 

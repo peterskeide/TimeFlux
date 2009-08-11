@@ -20,6 +20,7 @@ class TimeEntriesController < ApplicationController
     begin
       params[:time_entry].each do |id, attrs|
         time_entry = TimeEntry.find_by_id(id)
+        raise "Cannot update locked time entry" if time_entry.locked
         time_entry.update_attributes!(attrs)
       end
       flash[:notice] = "Time entries successfully updated"
@@ -37,6 +38,42 @@ class TimeEntriesController < ApplicationController
       @date = Date.parse(params[:date])
       @time_entries = TimeEntry.find(params[:ids])
     #end
+  end
+
+  def create
+    original = TimeEntry.find params[:original_time_entry]
+    time_entry = TimeEntry.new( params[:time_entry].merge({:user => @current_user, :counterpost => true}) )
+    time_entry.hours = time_entry.hours - original.hours
+    if time_entry.save
+      flash[:notice] = "Counterpost successfully created"
+    else
+      flash[:error] = time_entry.errors.full_messages.to_s
+    end
+    redirect_to time_entries_url(:date => params[:time_entry][:date])
+  end
+
+  def destroy
+    time_entry = TimeEntry.find params[:id]
+    if time_entry.destroy
+      flash[:notice] = "Counterpost was removed"
+    else
+      flash[:error] = time_entry.errors.full_messages.to_s
+    end
+    redirect_to time_entries_url(:date => params[:date])
+  end
+
+  def counterpost
+    time_entry = TimeEntry.find(params[:id])
+    if time_entry.counterpost
+      @counterpost = time_entry
+      @time_entry = TimeEntry.find(:user => time_entry.user, :activity => time_entry.activity, :date => time_entry.date, :counterpost => false)
+    else
+      @time_entry = time_entry
+      @counterpost = @current_user.time_entries.new(:date => @time_entry.date, :activity => @time_entry.activity, :counterpost => true)
+    end
+
+    #display the number of hours worked, not the correction
+    @counterpost.hours = @counterpost.hours + @time_entry.hours
   end
   
   def grid_edit

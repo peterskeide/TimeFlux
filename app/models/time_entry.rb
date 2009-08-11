@@ -9,7 +9,9 @@ class TimeEntry < ActiveRecord::Base
   
   validates_numericality_of :hours, :greater_than_or_equal_to => 0.0, :less_than_or_equal_to => 24.0
   validates_format_of :hours, :with => /^[\d|.|,]*$/
-  validate_on_update :must_not_be_locked
+
+  # This also makes updating the time entry to locked impossible
+  #validate_on_update :must_not_be_locked
 
   named_scope :on_day, lambda { |day|
     {  :conditions => ['date = ?', day ] }
@@ -43,14 +45,19 @@ class TimeEntry < ActiveRecord::Base
     (eval query).between(day,(day >> 1) -1)
   end
 
-  def self.mark_as_billed(time_entries)
-    logger.debug "Marking up to #{time_entries.size} time_entries as billed!"
+  def self.mark_as_locked(time_entries)
     time_entries.each do |t|
-      unless t.billed
-        t.billed = true
-        t.save
-        logger.debug "#{t}, marked as billed"
-      end
+      t.locked = true
+      t.save
+    end
+  end
+
+  # Billed time entries are always locked
+  def self.mark_as_billed(time_entries)
+    time_entries.each do |t|
+      t.locked = true
+      t.billed = true
+      t.save
     end
   end
   
@@ -67,7 +74,8 @@ class TimeEntry < ActiveRecord::Base
   end
 
   private
-  
+
+  # Not in use
   def must_not_be_locked
     if changed?
       errors.add_to_base("Updating locked time entries is not possible") if locked
