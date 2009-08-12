@@ -3,12 +3,13 @@
 <h1>Categories</h1>
 
 <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
-
+<br/>
 
 <table>
   <% @tag_types.each do |c| -%>
   <tr>
-    <td> <%= c.name %></td>
+    <td><%= image_tag "led-icons/#{c.icon}.png", :alt => "#{c.icon}_icon" %></td>
+    <td><%= c.name %></td>
     <td>
       <%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => c %>
       <%= link_to image_tag("delete.png", :title => "Delete"), tag_type_path(c), :method => :delete, :confirm => 'Really remove category?' %>

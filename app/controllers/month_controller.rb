@@ -37,7 +37,7 @@ class MonthController < ApplicationController
 
     @table = Ruport::Data::Table.new( :data => user_data,
       :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
-    respond_with_formatter @table, TestController, "Public time entries (incorrect data)"
+    respond_with_formatter @table, TestController, "Shared time entries (incorrect data)"
   end
 
   def update_listing

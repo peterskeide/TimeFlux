@@ -27,6 +27,7 @@ class TagTypesController < ApplicationController
 
   def update
     @tag_type = TagType.find(params[:id])
+    params[:tag_type][:icon] = params[:icon]
 
     if @tag_type.update_attributes(params[:tag_type])
       flash[:notice] = "Tag category was successfully updated."
@@ -58,7 +59,7 @@ class TagTypesController < ApplicationController
       @icons.each { |i| 
         i.sub! "public/images/led-icons/", ''
         i.sub! ".png", ''
-        @icon = i if params["#{i}.x".to_sym]
+        @tag_type.icon = i if params["#{i}.x".to_sym]
       }
       render :edit
     end

@@ -13,8 +13,9 @@
   </p>
 
     <p>
-  <input id="activity_default_activity" type="checkbox" value="1" name="activity[default_activity]" checked="checked"/>
-  Public</p>
+    <%= f.check_box :shared %>
+    <%= f.label :shared, "Shared" %><br />
+  </p>
 
   <p>
     <%= f.submit "Update" %>
