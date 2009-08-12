@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20090623073330) do
   create_table "tag_types", :force => true do |t|
     t.string   "name"
     t.string   "icon"
-    t.boolean  "mutually_exclusive"
+    t.boolean  "mutually_exclusive", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20090623073330) do
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.string   "description"
-    t.boolean  "shared"
+    t.boolean  "shared",      :default => false
     t.integer  "tag_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -2,7 +2,7 @@
 <table>
   <% tags.each do |tag| -%>
     <tr>
-      <td><%= tag.tag_type.name %> - <%= link_to tag.name, :action => 'edit', :id => tag %></td>
+      <td><%= image_tag "led-icons/#{tag.tag_type.icon}.png", :alt => "#{tag.tag_type.name} - " %> <%= link_to tag.name, :action => 'edit', :id => tag %></td>
       <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => tag %>
           <%= link_to image_tag("delete.png", :title => "Delete"), tag_path(tag), :method => :delete, :tag_type => params[:tag_type] %></td>
     </tr>

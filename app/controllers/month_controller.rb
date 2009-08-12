@@ -24,20 +24,28 @@ class MonthController < ApplicationController
   def shared
     setup_calender
 
+    @shared_activities = Activity.shared(true)
+    if params[:activity] && params[:activity] != ""
+      activity = Activity.find(params[:activity])
+    else
+      activity = @shared_activities[0]
+    end
+    
     users = User.find(:all)
     start = Date.today.beginning_of_week + 56 #looking 8 weeks ahead
     weeks = []
     1..10.times { |i| weeks << start - (i * 7) }
+    weeks.reverse!
 
     user_data = users.sort.collect do |user|
       [user.fullname ] + weeks.collect do |day|
-        TimeEntry.for_user(user).between(day, (day + 6)).to_a.sum(&:hours)
+        TimeEntry.for_user(user).for_activity(activity).between(day, (day + 6)).to_a.sum(&:hours)
       end
     end
 
     @table = Ruport::Data::Table.new( :data => user_data,
       :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
-    respond_with_formatter @table, TestController, "Shared time entries (incorrect data)"
+    respond_with_formatter @table, TestController, "Shared time entries"
   end
 
   def update_listing

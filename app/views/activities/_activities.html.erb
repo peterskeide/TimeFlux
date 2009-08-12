@@ -8,26 +8,25 @@
   <div>
     <div class="activity_header">
       <span class="action_icons">
-          <%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(a) %>
-          <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete, :confirm => 'Really remove category?' %>
+        <%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(a) %>
+        <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete, :confirm => 'Really remove category?' %>
       </span>
       <b><%= link_to a.name, edit_activity_path(a) %></b>
 
       <span class="status_icons">
-          <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
-          <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
+        <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
+        <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
       </span>
     </div>
 
     <%= a.description %><br/>
     <b>Tags:</b> <% a.tags.each do |t| %>
-                   <%=  t.name_and_type -%>,
-                 <% end %>
-    <b>Created:</b> <%= a.created_at.to_date if a.created_at %><br/>
+      <%= image_tag "led-icons/#{t.tag_type.icon}.png", :title => t.tag_type.name -%><%=  t.name -%>,
+    <% end %>
 
   </div>
   <br/>
 <% end -%>
 
-  <br/>
+<br/>
 <%= will_paginate activities %>

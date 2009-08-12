@@ -4,8 +4,8 @@
 <%= render :partial => 'sub_menu' -%>
 
 <% form_tag :action => 'shared', :method => 'get' do %>
-  <label for="tag">Tag</label>
-  <%= select_tag "tag", options_from_collection_for_select( Tag.find_all_by_shared(true), 'id', 'name', params[:tag].to_i  ) %>
+  <label for="activity">Activity</label>
+  <%= select_tag "activity", options_from_collection_for_select( @shared_activities, 'id', 'name', params[:activity].to_i  ) %>
 
   <%= submit_tag 'View' %>
 <% end %>

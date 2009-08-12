@@ -37,7 +37,8 @@ class ReportsController < ApplicationController
     start = Date.today.beginning_of_week
     weeks = []
     1..10.times { |i| weeks << start - (i * 7) }
-
+    weeks.reverse!
+    
     user_data = users.sort.collect do |user|
       [user.fullname ] + weeks.collect do |day|
         TimeEntry.for_user(user).between(day, (day + 6)).to_a.sum(&:hours)

@@ -8,7 +8,7 @@
 <table>
   <% @tag_types.each do |c| -%>
   <tr>
-    <td><%= image_tag "led-icons/#{c.icon}.png", :alt => "#{c.icon}_icon" %></td>
+    <td><%= image_tag "led-icons/#{c.icon}.png", :alt => "" %></td>
     <td><%= c.name %></td>
     <td>
       <%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => c %>

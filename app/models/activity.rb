@@ -12,6 +12,7 @@ class Activity < ActiveRecord::Base
   named_scope :default, lambda { |default| { :conditions => { :default_activity => default } } }
   named_scope :for_tag, lambda { |tag_id| { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } }  
   named_scope :for_tag_type, lambda { |tag_type_id| { :joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id] } }
+  named_scope :shared, lambda { |shared| { :joins => :tags, :conditions => ["tags.shared = ?", shared] } }
       
   def self.search(active, default, tag_id, tag_type_id, page)
     search = ["Activity"]
