@@ -27,7 +27,6 @@ class TagTypesController < ApplicationController
 
   def update
     @tag_type = TagType.find(params[:id])
-    params[:tag_type][:icon] = params[:icon]
 
     if @tag_type.update_attributes(params[:tag_type])
       flash[:notice] = "Tag category was successfully updated."

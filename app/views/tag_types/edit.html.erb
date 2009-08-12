@@ -19,7 +19,7 @@
             <td>
               <%= hidden_field_tag 'id', @tag_type.id %>
               <%= image_submit_tag "/images/led-icons/#{icon}.png", :name => icon,
-                :onClick => "document.icon_form.icon.value='#{icon}';document.tag_type_form.icon.value='#{icon}'" %>
+                :onClick => "document.icon_form.icon.value='#{icon}';document.tag_type_form.tag_type_icon.value='#{icon}'" %>
             </td>
           <% end %>
         </tr></table>
@@ -39,7 +39,7 @@
     </p>
 
     <p style="clear:both">
-      <%= hidden_field_tag 'icon', @tag_type.icon %>
+      <%= hidden_field_tag 'tag_type[icon]', @tag_type.icon %>
       <%= f.submit "Update" %>
     </p>
   <% end %>

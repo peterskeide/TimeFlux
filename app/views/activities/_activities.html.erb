@@ -15,7 +15,9 @@
 
       <span class="status_icons">
         <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
+        <%= if a.shared then image_tag("lock_unlock.png", :title => "Shared", :alt => "shared") end %>
         <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
+
       </span>
     </div>
 

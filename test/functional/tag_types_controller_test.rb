@@ -22,7 +22,7 @@ class TagTypesControllerTest < ActionController::TestCase
       end
 
       context "a POST to :create" do
-        setup { post :create, :tag_type => {:name => 'Payment Agreement'} }
+        setup { post :create, :tag_type => {:name => 'Payment Agreement', :mutually_exclusive => false}, :icon => 'dollar' }
         should_redirect_to("Index") { "/tag_types" }
         should_set_the_flash_to(/created/i)
       end
