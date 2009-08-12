@@ -12,11 +12,6 @@
     <%= collection_select(:tag, :tag_type_id, @tag_types, :id, :name) %>
   </p>
 
-    <p>
-    <%= f.check_box :shared %>
-    <%= f.label :shared, "Shared" %><br />
-  </p>
-
   <p>
     <%= f.submit "Update" %>
   </p>

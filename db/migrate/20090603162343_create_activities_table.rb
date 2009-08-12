@@ -5,6 +5,7 @@ class CreateActivitiesTable < ActiveRecord::Migration
       t.string :description
       t.boolean :active,           :default => true
       t.boolean :default_activity, :default => false
+      t.boolean :shared,           :default => false
       t.timestamps
     end
   end

@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(:version => 20090623073330) do
     t.string   "description"
     t.boolean  "active",           :default => true
     t.boolean  "default_activity", :default => false
+    t.boolean  "shared",           :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,7 +46,6 @@ ActiveRecord::Schema.define(:version => 20090623073330) do
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.string   "description"
-    t.boolean  "shared",      :default => false
     t.integer  "tag_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
