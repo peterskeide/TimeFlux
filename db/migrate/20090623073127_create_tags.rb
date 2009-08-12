@@ -3,6 +3,7 @@ class CreateTags < ActiveRecord::Migration
     create_table :tags do |t|
       t.string :name
       t.string :description
+      t.boolean :shared
       t.references :tag_type
       t.timestamps
     end
