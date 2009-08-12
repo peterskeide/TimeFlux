@@ -48,5 +48,20 @@ class TagTypesController < ApplicationController
       redirect_to :tag_types
     end
   end
+
+  def update_icon
+    if request.xhr?
+      render :partial => 'icon', :locals => { :icon => params[:icon] }
+    else
+      @tag_type = TagType.find(params[:id])
+      @icons = Dir.glob("public/images/led-icons/*.png")
+      @icons.each { |i| 
+        i.sub! "public/images/led-icons/", ''
+        i.sub! ".png", ''
+        @icon = i if params["#{i}.x".to_sym]
+      }
+      render :edit
+    end
+  end
   
 end
