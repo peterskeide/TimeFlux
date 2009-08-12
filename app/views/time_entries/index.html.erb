@@ -22,18 +22,15 @@
 <tbody>
 <% @activities.each do |activity| -%>
 	<% time_entries = select_by_activity(@time_entries, activity) %>
-        <% locked = time_entries.all? {|e| e.locked} %>
+        <% locked = time_entries.any? {|e| e.locked} %>
 	<tr> 
 		<td class="week_entries_activity">
 			<%= link_to truncate(activity.name, :length => 20), activity_path(activity) %>
 		</td>
-		<td class="week_entries_hours"><%= time_entries[0].hours %></td>
-		<td class="week_entries_hours"><%= time_entries[1].hours %></td>
-		<td class="week_entries_hours"><%= time_entries[2].hours %></td>
-		<td class="week_entries_hours"><%= time_entries[3].hours %></td>
-		<td class="week_entries_hours"><%= time_entries[4].hours %></td>
-		<td class="week_entries_hours"><%= time_entries[5].hours %></td>
-		<td class="week_entries_hours"><%= time_entries[6].hours %></td>
+                <% time_entries.group_by(&:date).each do |date, entries| %>
+                  <td class="week_entries_hours"><%= entries.sum(&:hours) %><%= entries.size > 1 ? '*' : '' %>   </td>
+                <% end %>
+
 		<td>
                 <%= link_to image_tag("pencil.png", :title => "Edit"), edit_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
                 <% if locked %>

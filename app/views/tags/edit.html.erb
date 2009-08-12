@@ -7,6 +7,9 @@
     <%= f.text_field :name %>
   </p>
 
+  <p>TODO: Public
+  <input id="activity_default_activity" type="checkbox" value="1" name="activity[default_activity]" checked="checked"/>
+  </p>
    <p>
     <%= f.label :tag_type %><br />
     <%= collection_select(:tag, :tag_type_id, @tag_types, :id, :name) %>

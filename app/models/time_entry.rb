@@ -7,8 +7,8 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :user
   belongs_to :activity
   
-  validates_numericality_of :hours, :greater_than_or_equal_to => 0.0, :less_than_or_equal_to => 24.0
-  validates_format_of :hours, :with => /^[\d|.|,]*$/
+  validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
+  #validates_format_of :hours, :with => /^[\d|.|,]*$/
 
   # This also makes updating the time entry to locked impossible
   #validate_on_update :must_not_be_locked
@@ -33,7 +33,7 @@ class TimeEntry < ActiveRecord::Base
     {  :conditions =>  ["activity_id IN (?)", activity_ids ] }
   }
   
-  def self.search(day, activities, user, billed)
+  def self.search(from_date, to_date, activities=nil, user=nil, billed=nil)
     search = ["TimeEntry"]
     search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
     search << "for_user(#{user.id})" unless user.blank?
@@ -42,7 +42,7 @@ class TimeEntry < ActiveRecord::Base
     query = search.join(".")
 
     logger.debug("Time entry Search Query: #{query}")
-    (eval query).between(day,(day >> 1) -1)
+    (eval query).between(from_date,to_date)
   end
 
   def self.mark_as_locked(time_entries)

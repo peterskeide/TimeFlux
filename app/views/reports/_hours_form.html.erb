@@ -27,6 +27,10 @@
         <td><%= select_tag "month", options_from_collection_for_select( months, 'first', 'last', params[:month].to_i  ) %></td>
       </tr>
       <tr>
+        <td><%= label_tag "days" %></td>
+        <td><%= select_tag "days", empty_option("All") + options_for_select(['1..15','16..31'], params[:days]) %></td>
+      </tr>
+      <tr>
         <td><%= label_tag "billed" %></td>
         <td><%= select_tag "billed", options_for_select(boolean_options, params[:billed]) %></td>
       </tr>

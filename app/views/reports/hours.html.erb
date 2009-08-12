@@ -1,3 +1,4 @@
+<%= render :partial => 'sub_menu' -%>
 
 <h1>Hours Report</h1>
 
@@ -17,18 +18,19 @@
 <% if ! is_empty? @table && params[:year] && params[:month] %>
   <br/>
 
+  <table><tr><td>
   <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
     <%= render_hidden_hours_tags(params) %>
     <%= hidden_field_tag 'mark_as',  'locked' %>
     <%= submit_tag 'Mark as locked' %>
   <% end %>
 
-  <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+  </td><td><% form_tag :action => 'mark_time_entries', :method => 'post' do %>
     <%= render_hidden_hours_tags(params) %>
     <%= hidden_field_tag 'mark_as',  'billed' %>
     <%= submit_tag 'Mark as billed' %>
   <% end %>
-
+  </td></tr></table>
 <% end %>
 
 <%#= params.to_json %>

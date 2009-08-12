@@ -8,6 +8,7 @@ bob:
     lastname: Foobar
     admin: true
     activities: timeflux_development
+    operative_status: active
 
 bill:
     email: bill@foobar.com
@@ -17,3 +18,5 @@ bill:
     persistence_token: <%= Authlogic::Random.hex_token %>
     firstname: Bill
     lastname: Foobar
+    operative_status: active
+

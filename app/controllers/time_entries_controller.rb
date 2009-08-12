@@ -18,11 +18,12 @@ class TimeEntriesController < ApplicationController
    
   def update_multiple
     begin
+
       params[:time_entry].each do |id, attrs|
         time_entry = TimeEntry.find_by_id(id)
-        raise "Cannot update locked time entry" if time_entry.locked
-        time_entry.update_attributes!(attrs)
+        time_entry.update_attributes!(attrs) unless time_entry.locked
       end
+
       flash[:notice] = "Time entries successfully updated"
       redirect_to time_entries_url(:date => params[:date])
     rescue Exception => e

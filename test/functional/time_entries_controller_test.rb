@@ -162,8 +162,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
           time_entries(:bob_timeflux_development_24_sunday).id    =>{"date"=>"2009-06-14", "notes"=>"Foobar", "hours"=>"5"}}}
       end
         
-      should_assign_to :date, :time_entries
-      should_render_template :edit_multiple
+      #should_assign_to :date, :time_entries
+      #should_render_template :edit_multiple
       
       should "not save updates to locked entries" do
         date = Date.new(2009, 6, 8)
@@ -196,7 +196,36 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_change "TimeEntry.count", :by => -7
       
     end
-        
+
+    context "displaying form for a counterpost" do
+      setup do
+        post :counterpost, :id => time_entries(:bob_timeflux_development_24_monday).id
+      end
+      should_render_template :counterpost
+    end
+
+    context "POST to counterpost" do
+      setup do
+        post :create, :time_entry => { :date => "2009-08-16", :activity_id => activities(:timeflux_development).id, :notes =>"pluss 1", :hours =>"1.0" },
+          :original_time_entry => time_entries(:bob_timeflux_development_24_monday).id
+      end
+      should_respond_with :redirect
+      should "add a counterpost entry" do
+        assert TimeEntry.find_by_counterpost(true).notes == "pluss 1"
+      end
+      
+    end
+
+    context "POST to detroy" do
+      setup do
+        @t = TimeEntry.create :date => "2009-08-16", :activity_id => activities(:timeflux_development).id, :notes =>"pluss 1", :hours =>"1.0", :counterpost => true
+        post :destroy, :id => @t.id
+      end
+      should "remove the counterpost" do
+        assert_nil TimeEntry.find_by_counterpost(true)
+      end
+    end
+
   end
   
   context "User not logged in: " do

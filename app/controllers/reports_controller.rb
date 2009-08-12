@@ -26,19 +26,26 @@ class ReportsController < ApplicationController
     respond_with_formatter@table, TestController, "Activity report"
   end
 
-  # Currently not in use
   def user
+    setup_calender
     if params[:status] then
       users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] )
     else
       users = User.find(:all)
     end
 
-    user_data = users.sort.collect { |u|
-      [u.fullname, u.login, u.email, u.operative_status]
-    }
+    start = Date.today.beginning_of_week
+    weeks = []
+    1..10.times { |i| weeks << start - (i * 7) }
+
+    user_data = users.sort.collect do |user|
+      [user.fullname ] + weeks.collect do |day|
+        TimeEntry.for_user(user).between(day, (day + 6)).to_a.sum(&:hours)
+      end
+    end
+    
     @table = Ruport::Data::Table.new( :data => user_data,
-      :column_names => ['Full name', 'Login', 'E-mail', 'Status'] )
+      :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
     respond_with_formatter @table, TestController, "User report"
   end
 
@@ -46,15 +53,16 @@ class ReportsController < ApplicationController
     setup_calender
     activities = setup_hours_form
     user = User.find(params[:user]) if params[:user] && params[:user] != ""
-    time_entries = TimeEntry.search(@day, activities, user, params[:billed])
+
+    time_entries = TimeEntry.search( @from_day, @to_day, activities, user, params[:billed] )
 
     report_data = []
     time_entries.each do |t|
-      report_data << [ t.activity.name, t.date, t.hours, t.user.fullname, t.locked, t.billed, t.notes ] if t.hours > 0
+      report_data << [ t.activity.name, t.date, t.hours, t.user.fullname, t.locked, t.billed, t.counterpost, t.notes ] if t.hours > 0
     end
 
     table = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Activity', 'Date', 'Hours', 'Consultant', 'Locked', 'Billed', 'Notes'])
+      :column_names => ['Activity', 'Date', 'Hours', 'Consultant', 'Locked', 'Billed', 'Counterpost', 'Notes'])
 
     if params[:sort_by] && params[:sort_by] != ""
       table.sort_rows_by!( params[:sort_by].split(' - ') )
@@ -69,12 +77,28 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, title
   end
 
+  def summary
+    setup_calender
+    activities = setup_hours_form
+
+    time_entries = TimeEntry.search( @from_day, @to_day, activities )
+
+    data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
+      [activity.name, time_entries.sum(&:hours)]
+     end
+
+    table = Ruport::Data::Table.new( :data => data_set,
+      :column_names => ['Activity', 'hours'])
+
+    respond_with_formatter table, TestController, activities
+  end
+
   def mark_time_entries
     if params[:method] == 'post'
       setup_calender
       activities = setup_hours_form
       user = User.find(params[:user]) if params[:user] && params[:user] != ""
-      time_entries = TimeEntry.search(@day, activities, user, params[:billed])
+      time_entries = TimeEntry.search(@from_day, @to_day, activities, user, params[:billed])
       if params[:mark_as] == 'billed'
         TimeEntry.mark_as_billed(time_entries)
       elsif params[:mark_as] == 'locked'
@@ -85,15 +109,24 @@ class ReportsController < ApplicationController
   end
 
   def update_hours_form
-    setup_calender
-    setup_hours_form
-    render :partial => 'hours_form', :locals => { :params => params, :tag_type => @tag_type, :years => @years, :months => @months }
+    if request.xhr?
+      setup_calender
+      setup_hours_form
+      render :partial => 'hours_form', :locals => { :params => params, :tag_type => @tag_type, :years => @years, :months => @months }
+    end
   end
 
   private 
 
   def setup_hours_form
     params[:month] ||= @day.month
+    
+    @from_day = @day
+    @to_day = (@day >> 1) -1
+    case params[:days]
+    when '1..15' then  @to_day = @day + 14
+    when '16..31' then @from_day = @day + 15
+    end
 
     if params[:tag_type_id] && params[:tag_type_id] != ""
       @tag_type = TagType.find(params[:tag_type_id])
@@ -103,6 +136,8 @@ class ReportsController < ApplicationController
     if params[:tag] && params[:tag] != ""
       return Tag.find(params[:tag]).activities
     end
+    
+
   end
 
 end
