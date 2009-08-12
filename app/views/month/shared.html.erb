@@ -1,0 +1,18 @@
+
+<h1><%= @title %></h1>
+
+<%= render :partial => 'sub_menu' -%>
+
+<% form_tag :action => 'shared', :method => 'get' do %>
+  <label for="tag">Public Tag</label>
+  <%= select_tag "tag", options_from_collection_for_select( Tag.all, 'id', 'name', params[:tag].to_i  ) %>
+
+  <%= submit_tag 'View' %>
+<% end %>
+
+<hr/>
+
+<%= @table.to_html() -%>
+
+<%= render :partial => '/reports/download', :locals => { :params => params, :action => 'shared' } -%>
+

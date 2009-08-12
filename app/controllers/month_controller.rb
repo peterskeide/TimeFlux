@@ -7,10 +7,6 @@ class MonthController < ApplicationController
     redirect_to(:action => 'week')
   end
 
-  def week
-    setup_month_view
-  end
-
   def month
     setup_month_view
   end
@@ -25,10 +21,33 @@ class MonthController < ApplicationController
     respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
   end
 
+  def shared
+    setup_calender
+
+    users = User.find(:all)
+    start = Date.today.beginning_of_week + 56 #looking 8 weeks ahead
+    weeks = []
+    1..10.times { |i| weeks << start - (i * 7) }
+
+    user_data = users.sort.collect do |user|
+      [user.fullname ] + weeks.collect do |day|
+        TimeEntry.for_user(user).between(day, (day + 6)).to_a.sum(&:hours)
+      end
+    end
+
+    @table = Ruport::Data::Table.new( :data => user_data,
+      :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
+    respond_with_formatter @table, TestController, "Public time entries (incorrect data)"
+  end
+
   def update_listing
     setup_month_view
     create_listing
     render :partial => 'listing_content', :locals => { :table => @table, :params => params }
+  end
+
+  def week
+    setup_month_view
   end
 
   def update_week
