@@ -1,45 +1,51 @@
 require 'test_helper'
 
 class HolidaysControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:holidays)
-  end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create holiday" do
-    assert_difference('Holiday.count') do
-      post :create, :holiday => { }
+  context "Logged in as user Bob" do
+    setup do
+      login_as(:bob)
     end
 
-    assert_redirected_to holiday_path(assigns(:holiday))
-  end
-
-  test "should show holiday" do
-    get :show, :id => holidays(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => holidays(:one).to_param
-    assert_response :success
-  end
-
-  test "should update holiday" do
-    put :update, :id => holidays(:one).to_param, :holiday => { }
-    assert_redirected_to holiday_path(assigns(:holiday))
-  end
-
-  test "should destroy holiday" do
-    assert_difference('Holiday.count', -1) do
-      delete :destroy, :id => holidays(:one).to_param
+    context "get index" do
+      setup {get :index}
+      should_respond_with :success
+      should_assign_to :holidays
     end
 
-    assert_redirected_to holidays_path
+    context "get new" do
+      setup {get :new}
+      should_respond_with :success
+      should_render_template :edit
+    end
+
+    context "creating holiday" do
+      setup do
+        post :create, :holiday => {:date => Date.new(2009, 6, 22), :repeat => "0", :working_hours => 4, :note =>"gdfg"}
+      end
+
+      should_assign_to :holiday
+      should_redirect_to("Index page") { "/holidays" }
+    end
+
+    context "get edit" do
+      setup{get :edit, :id => holidays(:good_friday).id}
+      should_respond_with :success
+      should_render_template :edit
+    end
+
+    context "update holiday" do
+      setup{ put :update, :id => holidays(:good_friday).to_param, :holiday => { } }
+      should_assign_to :holiday
+      should_redirect_to("Index page") { "/holidays" }
+    end
+
+    context "destroy holiday" do
+      setup{ delete :destroy, :id => holidays(:good_friday).id }
+      should "remove the holiday" do
+        assert_nil Holiday.find_by_id(holidays(:good_friday).id)
+      end
+      should_redirect_to("Index page") { "/holidays" }
+    end
   end
 end
