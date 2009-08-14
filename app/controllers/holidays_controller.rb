@@ -38,10 +38,6 @@ class HolidaysController < ApplicationController
     end
   end
 
-  def update_holiday_form
-    render :text => "hello"
-  end
-
   def destroy
     @holiday = Holiday.find(params[:id])
     @holiday.destroy

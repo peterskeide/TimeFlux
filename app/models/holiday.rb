@@ -21,11 +21,6 @@ class Holiday < ActiveRecord::Base
      ['July',7],['August',8],['September',9],['October',10],['November',11],['December',12]]
   end
 
-  def self.years
-    #[['Any',1]] +
-      ( 2009..Date.today.year+3 ).map{|i| i}
-  end
-
   def self.expected_hours_for(date)
     if date.cwday >= 6
       return 0
@@ -47,10 +42,4 @@ class Holiday < ActiveRecord::Base
     return ret
   end
 
-  #TODO make efficient
-  def self.expected_hours_between(from_date, to_date)
-    sum = 0
-    (from_date .. to_date).each{ |date| sum += expected_hours_for(date) }
-    return sum
-  end
 end
