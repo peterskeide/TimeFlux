@@ -26,27 +26,38 @@ class ReportsController < ApplicationController
     respond_with_formatter@table, TestController, "Activity report"
   end
 
+  #TODO use or remove report specific code (user_data)
   def user
     setup_calender
     if params[:status] then
-      users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] )
+      @users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] ).sort
     else
-      users = User.find(:all)
+      @users = User.find(:all).sort
     end
 
     start = Date.today.beginning_of_week
-    weeks = []
-    1..8.times { |i| weeks << start - (i * 7) }
+    @weeks = []
+    1..8.times { |i| @weeks << start - (i * 7) }
 
-    user_data = users.sort.collect do |user|
-       [user.fullname] + weeks.collect do |day|
+    user_data = @users.collect do |user|
+       [user.fullname] + @weeks.collect do |day|
         TimeEntry.for_user(user).between(day, (day + 6)).sum(:hours)
       end
     end
-    
-    @table = Ruport::Data::Table.new( :data => user_data,
-      :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
-    respond_with_formatter @table, TestController, "User report"
+
+    @expected = @weeks.collect do |day|
+       Holiday.expected_between( day, (day + 5) ) 
+    end
+    user_data << ["Expected"] + @expected
+
+    @totals = @weeks.collect do |day|
+      TimeEntry.between(day, (day + 6)).sum(:hours)
+    end
+    user_data << ["Total"] + @totals
+
+    table = Ruport::Data::Table.new( :data => user_data,
+      :column_names => ['Full name'] + @weeks.collect { |d| "Week #{d.cweek}" } )
+    respond_with_formatter table, TestController, "User report"
   end
 
   def hours
@@ -136,8 +147,6 @@ class ReportsController < ApplicationController
     if params[:tag] && params[:tag] != ""
       return Tag.find(params[:tag]).activities
     end
-    
-
   end
 
 end

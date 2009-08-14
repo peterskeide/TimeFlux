@@ -3,16 +3,23 @@
 
 <%= render :partial => 'sub_menu' -%>
 
-<% form_tag :action => 'shared', :method => 'get' do %>
-  <label for="activity">Activity</label>
-  <%= select_tag "activity", options_from_collection_for_select( @shared_activities, 'id', 'name', params[:activity].to_i  ) %>
+<%# form_tag tags_path, :method => :get, :id => 'category_filter' do %>
 
-  <%= submit_tag 'View' %>
+<% form_tag 'shared', :method => :get, :id => "shared_form" do %>
+  <label for="activity">Activity</label>
+  <%= select_tag "activity", options_from_collection_for_select( @shared_activities, 'id', 'name', params[:activity].to_i),
+    :onchange => remote_function( :update => 'shared_table', :with => "'activity_id=' + this.value", :url => {:action => 'update_shared'}  ) %>
+
+  <noscript><span><%= submit_tag "View" %></span></noscript>
 <% end %>
 
 <hr/>
 
-<%= @table.to_html() -%>
+<div id="shared_table">
+  <%=  render :partial => 'table', :locals => { :table => @table } %>
+</div>
+
+<%#= @table.to_html() -%>
 
 <%= render :partial => '/reports/download', :locals => { :params => params, :action => 'shared' } -%>
 

@@ -23,7 +23,7 @@
 
         <tr class="grayed"><td>Expected hours</td>
             <% (beginning_of_week .. beginning_of_week + 6).each do |date| %>
-          <% expected = Holiday.expected_hours_for date %>
+          <% expected = Holiday.expected_on_day date %>
             <th style="text-align:center;"><%= if expected > 0 then expected else '-' end %></th>
             <% end %>
         </tr>

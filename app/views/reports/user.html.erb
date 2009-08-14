@@ -1,24 +1,53 @@
 
-<h1><%= @title %></h1>
+<h1>User Report</h1>
 
 <%= render :partial => 'sub_menu' -%>
 
-<% if @debug then %>
-  <p><%= @debug %>,  (<%= @debug.class %>)</p>
-<% end %>
-
 <% form_tag :action => 'user', :method => 'get' do %>
-
   <label for="status">Status</label>
   <%= select_tag "status", options_for_select(User.status_values, params[:status].to_i), {:include_blank => 'None'} %>
-
   <%= submit_tag 'Generate' %>
 <% end %>
 
   <hr/>
 
+  <table>
+    <tr>
+      <th></th>
+      <% @weeks.each do |date| %>
+      <th>Week <%= date.cweek %> </th>
+      <% end %>
+    </tr>
 
-<%= @table.to_html() -%>
+    <tr class="grayed">
+      <td>Normal working hours</td>
+      <% @expected.each do |hours| %>
+      <td><%= hours %> </td>
+      <% end %>
+    </tr>
+
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.fullname %> </td>
+        <% @weeks.each_with_index do |date, index| %>
+          <% hours = TimeEntry.for_user(user).between(date, (date + 6)).sum(:hours) %>
+          <% if hours >= @expected[index] %>
+            <td><%= hours %></td>
+          <% else %>
+            <td class="error"><%= hours %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+
+    <tr>
+      <th>Total</th>
+      <% @totals.each do |total| %>
+      <th><%= total %></th>
+      <% end %>
+    </tr>
+    
+  </table>
 
 <%= render :partial => 'download', :locals => { :params => params, :action => 'user' } -%>
 

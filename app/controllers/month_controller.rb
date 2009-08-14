@@ -22,9 +22,9 @@ class MonthController < ApplicationController
   end
 
   def shared
-    #setup_calender
 
     @shared_activities = Activity.shared(true)
+
     if params[:activity] && params[:activity] != ""
       activity = Activity.find(params[:activity])
     else
@@ -48,6 +48,13 @@ class MonthController < ApplicationController
     respond_with_formatter @table, TestController, "Shared time entries"
   end
 
+  def update_shared
+    activity = Activity.find(params[:activity_id])
+    #activity = Activity.first
+    table = create_shared_report(activity)
+    render :partial => 'table', :locals => { :table => table }
+  end
+
   def update_listing
     setup_month_view
     create_listing
@@ -64,6 +71,25 @@ class MonthController < ApplicationController
   end
 
   private
+
+
+
+  def create_shared_report(activity)
+    start = Date.today.beginning_of_week + 56 #looking 8 weeks ahead
+    weeks = []
+    1..10.times { |i| weeks << start - (i * 7) }
+    weeks.reverse!
+
+    user_data = User.all.sort.collect do |user|
+      [user.fullname ] + weeks.collect do |day|
+        TimeEntry.for_user(user).for_activity(activity).between(day, (day + 6)).to_a.sum(&:hours)
+      end
+    end
+
+    return Ruport::Data::Table.new( :data => user_data,
+      :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
+  end
+
 
   def create_listing
         time_data = []
