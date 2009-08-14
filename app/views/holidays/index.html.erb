@@ -6,19 +6,18 @@
 <table>
   <tr>
     <th>Date</th>
-    <th>Note</th>
-    <th>Repeating</th>
     <th>Working Hours</th>
+    <th>Note</th>
   </tr>
 
 <% @holidays.each do |holiday| %>
   <tr>
     <td><%=h holiday.show_date %></td>
-    <td><%=h holiday.note %></td>
-    <td><%=h holiday.repeat %></td>
     <td><%=h holiday.working_hours %></td>
+    <td><%=h holiday.note %></td>
+    
     <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_holiday_path(holiday) %>
-        <%= link_to image_tag("delete.png", :title => "Delete"), holiday, :confirm => 'Are you sure?', :method => :delete %></td>
+        <%= link_to image_tag("delete.png", :title => "Delete"), holiday, :confirm => 'Really delete holiday?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
