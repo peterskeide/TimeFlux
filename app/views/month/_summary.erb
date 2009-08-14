@@ -1,7 +1,0 @@
-  <table>
-        <tr><th>Activity name</th><th>Hours</th></tr>
-        <%  activities_summary.each do |entry| %>
-        <tr><td><%= entry[:name] -%></td><td><%=  entry[:hours] -%></td></tr>
-        <% end %>
-        <tr><td>Total:</td><td> <%= activities_summary.collect { |i| i[:hours] }.sum  -%></td></tr>
-  </table>

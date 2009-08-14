@@ -4,18 +4,18 @@
 
 <%= render :partial => 'sub_menu' -%>
 
-<% form_tag 'week', :method => 'get', :id => 'week_form' do %>
+<% form_tag 'calender', :method => 'get', :id => 'calender_form' do %>
   <%= render :partial => 'reports/date_picker', :locals =>
     { :years => @years, :months => @months, :selected_year => @selected_year, :selected_month => @selected_month } -%>
   <noscript><div><%= submit_tag 'View' %></div></noscript>
 <% end %>
 
-<%= observe_form 'week_form',
-  :url => {:action => 'update_week'},
-  :update => 'week_content' %>
+<%= observe_form 'calender_form',
+  :url => {:action => 'update_calender'},
+  :update => 'calender_content' %>
 
-<div id="week_content">
-  <%= render :partial => 'week_content', :locals =>
+<div id="calender_content">
+  <%= render :partial => 'calender_content', :locals =>
     { :day => @day, :user => @user, :activities_summary => @activities_summary } -%>
 </div>
 

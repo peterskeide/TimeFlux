@@ -14,10 +14,10 @@ class MonthControllerTest < ActionController::TestCase
     
     context "on GET to :index" do
       setup { get :index }
-      should_redirect_to("Week view") { "/month/week" }
+      should_redirect_to("Calender view") { "/month/calender" }
     end
 
-    pages = [:week,:month,:summary,:listing,:update_listing,:update_week,:shared]
+    pages = [:calender,:month,:listing,:update_listing,:update_calender,:shared]
     pages.each do |page|  
       context "on GET to #{page}" do
         setup { get page }
@@ -29,13 +29,13 @@ class MonthControllerTest < ActionController::TestCase
   context "logged in as a regular user" do
     setup {
       login_as(:bill)
-      get :week
+      get :calender
     }
     should_respond_with :success
   end
 
   context "Not logged in" do
-    pages = [:week,:month,:listing]
+    pages = [:calender,:month,:listing]
     pages.each do |page|
       context "a GET to :#{page}" do
         setup { get page }

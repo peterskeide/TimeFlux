@@ -4,7 +4,7 @@ class MonthController < ApplicationController
   before_filter :check_authentication
 
   def index
-    redirect_to(:action => 'week')
+    redirect_to(:action => 'calender')
   end
 
   def month
@@ -30,27 +30,13 @@ class MonthController < ApplicationController
     else
       activity = @shared_activities[0]
     end
-    
-    users = User.find(:all)
-    start = Date.today.beginning_of_week + 56 #looking 8 weeks ahead
-    weeks = []
-    1..10.times { |i| weeks << start - (i * 7) }
-    weeks.reverse!
+    report = create_shared_report(activity)
 
-    user_data = users.sort.collect do |user|
-      [user.fullname ] + weeks.collect do |day|
-        TimeEntry.for_user(user).for_activity(activity).between(day, (day + 6)).to_a.sum(&:hours)
-      end
-    end
-
-    @table = Ruport::Data::Table.new( :data => user_data,
-      :column_names => ['Full name'] + weeks.collect { |d| "Week #{d.cweek}" } )
-    respond_with_formatter @table, TestController, "Shared time entries"
+    respond_with_formatter report, TestController, "Shared time entries"
   end
 
   def update_shared
     activity = Activity.find(params[:activity_id])
-    #activity = Activity.first
     table = create_shared_report(activity)
     render :partial => 'table', :locals => { :table => table }
   end
@@ -61,18 +47,16 @@ class MonthController < ApplicationController
     render :partial => 'listing_content', :locals => { :table => @table, :params => params }
   end
 
-  def week
+  def calender
     setup_month_view
   end
 
-  def update_week
+  def update_calender
     setup_month_view
-    render :partial => 'week_content', :locals => { :day => @day, :user => @user, :activities_summary => @activities_summary }
+    render :partial => 'calender_content', :locals => { :day => @day, :user => @user, :activities_summary => @activities_summary }
   end
 
   private
-
-
 
   def create_shared_report(activity)
     start = Date.today.beginning_of_week + 56 #looking 8 weeks ahead
