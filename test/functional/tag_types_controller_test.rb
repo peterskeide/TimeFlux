@@ -48,6 +48,20 @@ class TagTypesControllerTest < ActionController::TestCase
         should_set_the_flash_to("Tag Type removed")
       end
 
+      context "updating the icon - noscript" do
+        setup {
+          post :update_icon, :id => tag_types(:project), :icon => 'hammer'
+        }
+        should_render_template :edit
+      end
+
+      context "updating the icon - ajax style" do
+        setup {
+          xhr :post, :update_icon, :id => tag_types(:project), :icon => 'hammer'
+        }
+        should_render_template :_icon
+      end      
+ 
     end
   end
 

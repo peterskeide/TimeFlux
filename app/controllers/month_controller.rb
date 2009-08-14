@@ -22,7 +22,7 @@ class MonthController < ApplicationController
   end
 
   def shared
-    setup_calender
+    #setup_calender
 
     @shared_activities = Activity.shared(true)
     if params[:activity] && params[:activity] != ""

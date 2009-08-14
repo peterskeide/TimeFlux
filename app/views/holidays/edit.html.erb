@@ -1,0 +1,36 @@
+<h1><%= @holiday.id ? 'Editing' : 'Create' %> holiday</h1>
+
+<% form_for(@holiday) do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :date %><br />
+    <%= f.date_select :date, :start_year => 2009, :end_year => Date.today.year + 5 %>
+  </p>
+   <p>
+    <%= f.label :note %><br />
+    <%= f.text_field :note %>
+  </p>
+  <p>
+    <%= f.label :working_hours %><br />
+    <%= f.text_field :working_hours %>
+  </p>
+  <p>
+    <%= f.label :repeat %><br />
+    <%= f.check_box :repeat, {:onclick=>'enable_disable_year()'} %>
+  </p>
+  <p>
+    <%= hidden_field_tag 'holiday[date(1i)]', 1992 %>
+    <%= f.submit @holiday.id ? 'Update' : 'Create' %>
+  </p>
+<% end %>
+
+<script type="text/javascript">
+function enable_disable_year() {
+  var repeat = document.getElementById("holiday_repeat").checked;
+  document.getElementById("holiday_date_1i").disabled=repeat;
+  document.getElementById("holiday_date_1i_").disabled=!repeat;
+}
+enable_disable_year();
+</script>
+
+<%= link_to 'Back', holidays_path %>

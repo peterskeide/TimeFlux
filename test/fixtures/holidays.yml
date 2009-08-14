@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+christmas_eve:
+  date: 1992-12-24
+  note: Christmas eve
+  working_hours: 4.0
+
+good_friday:
+  date: 2009-4-17
+  note: repeating
+  working_hours: 0.0
