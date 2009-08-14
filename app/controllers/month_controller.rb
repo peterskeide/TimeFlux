@@ -52,8 +52,20 @@ class MonthController < ApplicationController
   end
 
   def update_calender
-    setup_month_view
-    render :partial => 'calender_content', :locals => { :day => @day, :user => @user, :activities_summary => @activities_summary }
+
+    day = Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i,1)
+    last_in_month = (day >> 1) -1
+    user = current_user_session.user
+    activities = []
+    user.time_entries.between(day,last_in_month).each do |t|
+      activities << t.activity unless activities.include? t.activity
+    end
+    activities_summary = activities.collect do |activity|
+      { :name => activity.name,
+        :hours => activity.time_entries.for_user(user).between(day,last_in_month).sum(:hours) }
+    end
+    render :partial => 'calender_content', :locals => { :day => day, :user => user, :activities_summary => activities_summary }
+
   end
 
   private
