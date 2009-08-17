@@ -78,13 +78,15 @@ class ReportsController < ApplicationController
       table.sort_rows_by!( params[:sort_by].split(' - ') )
     end
     
-
     if params[:grouping] && params[:grouping] != ""
       table = Grouping(table,:by => params[:grouping])
     end
 
-    title = "Hour report"
-    respond_with_formatter table, TestController, title
+    if params[:page_break]
+      page_break = true
+    end
+
+    respond_with_formatter table, TestController, "Hour report", pdf_options = {:page_break => page_break}
   end
 
   def summary

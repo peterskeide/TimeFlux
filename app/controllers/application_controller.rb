@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   #Used in month and report controller
-  def respond_with_formatter(table, formatter, title="report")
+  def respond_with_formatter(table, formatter, title="report", pdf_options={})
 
     conv = ReportConverter
 
@@ -66,32 +66,33 @@ class ApplicationController < ActionController::Base
       end
 
       format.pdf do
-        remove_billed_column!(table)
-        send_data formatter.render_pdf(:data => conv.convert(table), :title => conv.convert_string(title)),
+        remove_sensitive_columns!(table)
+        send_data formatter.render_pdf( {:data => conv.convert(table), :title => conv.convert_string(title)}.merge pdf_options ),
           { :type => "	application/pdf", :disposition  => "inline", :filename => "#{title}.pdf" }
       end
       format.csv do
-        remove_billed_column!(table)
+        #remove_billed_column!(table)
         send_data formatter.render_csv(:data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.csv" }
       end
       format.text do
-        remove_billed_column!(table)
+        #remove_billed_column!(table)
         send_data formatter.render(:text, :data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.txt" }
       end
     end
   end
 
-  def remove_billed_column!(table)
+  def remove_sensitive_columns!(table)
     if table.is_a? Ruport::Data::Grouping
       table.each do |name,group|
+        group.remove_column('Locked')
         group.remove_column('Billed')
       end
     elsif table.is_a? Ruport::Data::Table
+      table.remove_column('Locked')
       table.remove_column('Billed')
     end
-
   end
   
 end

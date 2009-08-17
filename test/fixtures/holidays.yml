@@ -3,9 +3,16 @@
 christmas_eve:
   date: 1992-12-24
   note: Christmas eve
+  repeat: true
   working_hours: 4.0
+
+national_day_norway:
+  date: 1992-6-17
+  note: Hurra for 17 Mai!
+  repeat: true
+  working_hours: 0.0
 
 good_friday:
   date: 2009-4-17
-  note: repeating
+  note: one time
   working_hours: 0.0

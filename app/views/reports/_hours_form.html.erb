@@ -12,8 +12,8 @@
         <td><%= select_tag "sort_by", options_for_select(['Date','Consultant - Date','Activity - Date'], params[:sort_by]) %></td>
       </tr>
       <tr>
-        <td><%= label_tag "page_break","Pagebreak in PDF", :class => 'disabled' %></td>
-        <td><%= check_box_tag "page_break", 1, params[:page_break], {:disabled => true} %></td>
+        <td><%= label_tag "page_break","Pagebreak in PDF", :class => '___disabled' %></td>
+        <td><%= check_box_tag "page_break", 1, params[:page_break] %></td>
       </tr>
     </table>
 
