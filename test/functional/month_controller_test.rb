@@ -17,13 +17,21 @@ class MonthControllerTest < ActionController::TestCase
       should_redirect_to("Calender view") { "/month/calender" }
     end
 
-    pages = [:calender,:month,:listing,:update_listing,:update_calender,:shared]
+    pages = [:calender,:month,:listing,:update_listing,:shared]
     pages.each do |page|  
       context "on GET to #{page}" do
         setup { get page }
         should_respond_with :success
       end
     end
+
+    context "AJAX updating calender" do
+      setup { post :update_calender, :calender => { "date(1i)" => 2007, "date(2i)" => 8, "date(3i)" => 1 } }
+        should_respond_with :success
+        should_render_template :calender_content
+    end
+
+
   end
   
   context "logged in as a regular user" do

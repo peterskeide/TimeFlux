@@ -11,9 +11,6 @@ class MonthController < ApplicationController
     setup_month_view
   end
 
-  def summary
-    setup_month_view
-  end
 
   def listing
     setup_month_view
