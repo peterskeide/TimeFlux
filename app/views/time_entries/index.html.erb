@@ -1,11 +1,11 @@
 <% beginning_of_week = @date.beginning_of_week %>
 
-<h1>Entries for week <%= @date.cweek %></h1>
+<h1>Entries for week <%= @date.cweek %> (<%= User.find(params[:user_id]).fullname %>)</h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 <p>
-	<%= link_to "Previous week", time_entries_path(:date => @date.beginning_of_week.-(7)) %>
-	<%= link_to "Next week", time_entries_path(:date => @date.beginning_of_week.+(7)) %>
+	<%= link_to "Previous week", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.-(7)) %>
+	<%= link_to "Next week", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.+(7)) %>
 </p>
 <% if not @activities.empty? %>
 <table class="week_entries">
@@ -43,11 +43,11 @@
                 <% end %>
 
 		<td>
-                <%= link_to image_tag("pencil.png", :title => "Edit"), edit_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
+                <%= link_to image_tag("pencil.png", :title => "Edit"), edit_multiple_user_time_entries_path(:user_id => params[:user_id], :ids => ids_from(time_entries), :date => @date), :method => :post %>
                 <% if locked %>
                   <%#= image_tag("lock.png", :title => "Locked") %>
                 <% else %>
-                   <%= link_to image_tag("delete.png", :title => "Delete"), destroy_multiple_time_entries_path(:ids => ids_from(time_entries), :date => @date), :method => :post %>
+                   <%= link_to image_tag("delete.png", :title => "Delete"), destroy_multiple_user_time_entries_path(:user_id => params[:user_id], :ids => ids_from(time_entries), :date => @date), :method => :post %>
 		<% end %>
                 </td>
 	</tr>
@@ -55,7 +55,7 @@
 </tbody>
 </table>
 <p>
-	<%= link_to "Edit in grid", grid_edit_time_entries_path(:date => @date), :method => :post %>
+	<%= link_to "Edit in grid", grid_edit_user_time_entries_path(:user_id => params[:user_id], :date => @date), :method => :post %>
 </p>
 <% else %>
 <p>
@@ -64,7 +64,7 @@
 <% end %>
 <p> 
 	<% unless @activity_options.empty? -%> 
-		<% form_tag create_multiple_time_entries_path do -%>
+		<% form_tag create_multiple_user_time_entries_path(params[:user_id]) do -%>
 			<%= hidden_field_tag "date", @date %>
 			<%= select "activity", "activity_id", @activity_options %>
 			<%= submit_tag "Add selected activity to this week" %>
@@ -73,3 +73,12 @@
 		<b>No activities available for time entry</b>
 	<% end -%>
 </p>
+<% if @current_user.admin -%>
+	<p>
+	    <% form_tag("/time_entries/change_user") do -%>
+			<%= hidden_field_tag "date", @date %>
+			<%= select_tag "user_id", options_from_collection_for_select(User.all, :id, :fullname) %>
+			<%= submit_tag "View for selected user" %>	
+		<% end -%>
+	</p>
+<% end -%>

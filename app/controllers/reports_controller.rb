@@ -7,26 +7,8 @@ class ReportsController < ApplicationController
 
   def index
     redirect_to(:action => 'hours')
-    #  @reports = self.__send__(:action_methods).delete("index").sort
   end
 
-    # Currently not in use
-  def activity
-     if params[:active] then
-      activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
-    else
-      activities = Activity.find(:all)
-    end
-
-    activity_data = activities.sort.collect { |a|
-      [a.name, a.tags.join(', '), a.active]
-    }
-    @table = Ruport::Data::Table.new( :data => activity_data,
-      :column_names => ['Activity name', 'Tags', 'Active'] )
-    respond_with_formatter@table, TestController, "Activity report"
-  end
-
-  #TODO use or remove report specific code (user_data)
   def user
     setup_calender
     if params[:status] then

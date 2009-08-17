@@ -6,7 +6,7 @@
 	<h2>Week: <%= @date.cweek %></h2>
 </p>
 <p>  
-	<% form_tag('/time_entries/update_multiple') do -%>
+	<% form_tag update_multiple_user_time_entries_path(params[:user_id]), :method => :put do -%>
 		<%= hidden_field_tag "date", @date %>
 		<%= hidden_field_tag "activity_id", activity.id %>
 		<table> 
@@ -28,16 +28,16 @@
                                         
 					<td>
 
-                                          <% if time_entry.locked %>
-                                            <% unless time_entry.counterpost %>
-                                              <%= link_to image_tag("attach.png", :title => "Add correction"), :action => "counterpost", :id => time_entry %>
-                                            <% end %>
-                                            <%#= image_tag("lock.png", :title => "Locked") %>
-                                          <% end %>
-                                          <% if time_entry.counterpost %>
-                                            <%= link_to image_tag("delete.png", :title => "Delete"), time_entry_path(time_entry), :date => @date, :method => :delete, :confirm => 'Really remove counterpost?' %>
-                                          <% end %>
-                                        </td>
+                        <% if time_entry.locked %>
+                          <% unless time_entry.counterpost %>
+                            <%= link_to image_tag("attach.png", :title => "Add correction"), :action => "counterpost", :id => time_entry, :user_id => params[:user_id] %>
+                          <% end %>
+                          <%#= image_tag("lock.png", :title => "Locked") %>
+                        <% end %>
+                        <% if time_entry.counterpost %>
+                          <%= link_to image_tag("delete.png", :title => "Delete"), user_time_entry_path(params[:user_id], time_entry), :date => @date, :method => :delete, :confirm => 'Really remove counterpost?' %>
+                        <% end %>
+                      </td>
 					</tr>
 				<% end -%>
 			<% end -%>
@@ -46,5 +46,5 @@
 			<%= submit_tag "Update" %>
 		</p>
 	<% end -%>
-	<%= link_to "Back", { :controller => "time_entries", :action => "index", :date => @date } %>
+	<%= link_to "Back", user_time_entries_path(params[:user_id], :date => @date) %>
 </p>

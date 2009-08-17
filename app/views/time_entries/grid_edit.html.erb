@@ -1,6 +1,6 @@
 <h1>Entries for week <%= @date.cweek %></h1>
 <p class="notice"><%= flash[:notice] %></p>
-<% form_tag('/time_entries/update_multiple') do -%>
+<% form_tag update_multiple_user_time_entries_path(params[:user_id]), :method => :put do -%>
 	<%= hidden_field_tag "date", @date %>
 	<table class="week_entries">
 	<thead>
@@ -34,5 +34,5 @@
 	</p> 
 <% end -%>
 <p>
-	<%= link_to "Back", time_entries_path(:date => @date) %>
+	<%= link_to "Back", user_time_entries_path(params[:user_id], :date => @date) %>
 </p>

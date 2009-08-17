@@ -15,7 +15,7 @@
 			</div>
 			<div id="menu">
 				<% if defined? @current_user_session -%>
-                    <span class="menu_item"><%= link_to "Time Entry", time_entries_url, :class => "menu_link" %></span>
+                    <span class="menu_item"><%= link_to "Time Entry", user_time_entries_url(@current_user.id), :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Review", month_url, :class => "menu_link" %></span>
 					<% if @current_user.admin -%>
 						<span class="menu_item"><%= link_to "Reports", reports_url, :class => "menu_link" %></span>

@@ -7,6 +7,7 @@
 </p>
 <p>  
   <% form_for @counterpost do |f| %>
+	<%= hidden_field_tag "user_id", @user_id %>
     <%= hidden_field_tag "original_time_entry", @time_entry.id %>
     <%= hidden_field_tag "time_entry[date]", @counterpost.date %>
     <%= hidden_field_tag "time_entry[activity_id", @counterpost.activity.id %>
@@ -25,5 +26,5 @@
     <%= submit_tag "Update" %>
   </p>
 <% end -%>
-<%= link_to "Back", { :controller => "time_entries", :action => "index", :date => @date } %>
+<%# link_to "Back", user_time_entries_path(:user_id => @user_id, :date => @date) %>
 </p>

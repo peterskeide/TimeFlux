@@ -16,7 +16,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     context "login in with correct credentials" do
       setup { post :create, :user_session => {:login => 'bob', :password => 'foo' } }
       should_set_session(:user_credentials_id) { users('bob').id }
-      should_redirect_to("Time Entries") { "/time_entries" }
+      should_redirect_to("Time Entries") { user_time_entries_url(users(:bob).id) }
     end
 
     context "login in with bad credentials" do

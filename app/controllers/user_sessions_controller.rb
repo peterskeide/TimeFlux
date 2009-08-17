@@ -7,7 +7,7 @@ class UserSessionsController < ApplicationController
   def create
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
-      redirect_to time_entries_url
+      redirect_to user_time_entries_url(@user_session.user.id)
     else
       render :new
     end

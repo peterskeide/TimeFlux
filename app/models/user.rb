@@ -45,8 +45,8 @@ class User < ActiveRecord::Base
     lastname <=> other.lastname
   end
 
-  def to_s
-    "#{self.fullname} (id=#{self.object_id})"
-  end
+  #def to_s
+  #  "#{self.fullname} (id=#{self.object_id})"
+  #end
 
 end

@@ -19,7 +19,6 @@ class ReportsControllerTest < ActionController::TestCase
       reports = [
         [:user, {} ],
         [:summary, {} ],
-        [:activity, {} ],
         [:hours, {:month=>7, :year=>2009, :billed => false} ],
         [:hours, {:month=>7, :year=>2009, :grouping => 'Activity', :tag_type_id => @tag_type_id} ]
       ]
