@@ -26,7 +26,6 @@ class ReportsController < ApplicationController
     respond_with_formatter@table, TestController, "Activity report"
   end
 
-  #TODO use or remove report specific code (user_data)
   def user
     setup_calender
     if params[:status] then
