@@ -31,7 +31,7 @@ class MonthController < ApplicationController
     end
     report = create_shared_report(activity)
 
-    respond_with_formatter report, TestController, "Shared time entries"
+    respond_with_formatter report, TestController, "Public time entries"
   end
 
   def update_shared

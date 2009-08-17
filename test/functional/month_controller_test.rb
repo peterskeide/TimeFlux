@@ -35,7 +35,6 @@ class MonthControllerTest < ActionController::TestCase
         should_render_template :calender_content
     end
 
-
   end
   
   context "logged in as a regular user" do
