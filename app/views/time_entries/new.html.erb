@@ -1,0 +1,20 @@
+<h1>New Time Entry</h1>
+<% form_for @time_entry do |f| -%>
+	<p>
+	<%= f.label :date %>
+	<%= date_select "time_entry", "date", { :order => [ :day, :month, :year ] } %>
+	</p>
+	<p>
+		<%= f.label :activity %>
+		<%= select "time_entry", "activity_id", @activity_names_and_ids %>
+	</p>
+	<p>
+	<%= f.label :hours %>
+	<%= f.text_field :hours, :size => 6 %>
+	<%= f.label :notes %>
+	<%= f.text_field :notes, :size => 60 %>
+	</p>
+	<p>
+		<%= f.submit "Submit" %>
+	</p>
+<% end -%>
