@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+pacman:
+  name: Pacman
+  customer: telenor
+
+snuskete:
+  name: Ny Cupido portal
+  customer: cupido

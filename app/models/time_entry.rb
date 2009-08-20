@@ -10,9 +10,6 @@ class TimeEntry < ActiveRecord::Base
   validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
   #validates_format_of :hours, :with => /^[\d|.|,]*$/
 
-  # This also makes updating the time entry to locked impossible
-  #validate_on_update :must_not_be_locked
-
   named_scope :on_day, lambda { |day|
     {  :conditions => ['date = ?', day ] }
   }
