@@ -8,3 +8,8 @@ timeflux_administration:
     description: Administration of TimeFlux in production
     default_activity: true
     tags: conduct, timeflux
+
+holiday:
+    name: Vacation
+    description: Normal vacation
+    default_activity: true

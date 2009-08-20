@@ -2,6 +2,7 @@
 <p class="error"><%= flash[:error] %></p>
 
 <h1>Holidays</h1>
+<%= render :partial => 'sub_menu' -%>
 
 <table>
   <tr>
@@ -15,13 +16,15 @@
     <td><%=h holiday.show_date %></td>
     <td><%=h holiday.working_hours %></td>
     <td><%=h holiday.note %></td>
-    
-    <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_holiday_path(holiday) %>
-        <%= link_to image_tag("delete.png", :title => "Delete"), holiday, :confirm => 'Really delete holiday?', :method => :delete %></td>
+    <% if @current_user.admin -%>
+      <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => :edit, :id => holiday %>
+          <%= link_to image_tag("delete.png", :title => "Delete"), :action => :destroy, :confirm => 'Really delete holiday?', :method => :delete, :id => holiday %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
 
+<% if @current_user.admin -%>
 <br />
-
-<%= link_to 'New holiday', new_holiday_path %>
+<%= link_to 'New holiday', :action => :create %>
+<% end %>

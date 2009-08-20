@@ -3,19 +3,24 @@
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 <p>
-	<h2>Week: <%= @date.cweek %></h2>
+	<h2>Week: <%= @date.cweek %>, <%= @date.month %></h2>
 </p>
 <p>  
 	<% form_tag('/time_entries/update_multiple') do -%>
 		<%= hidden_field_tag "date", @date %>
 		<%= hidden_field_tag "activity_id", activity.id %>
-		<table> 
+		<table>
+                        <% previous_date = nil %>
 			<% @time_entries.sort.each do |time_entry|  -%>
 				<% fields_for "time_entry[]", time_entry, :builder => TimeEntriesFormBuilder do |f| -%>
 					<%= f.hidden_field :date %>
 					<tr>
 					<td>
-						<%= date_label_for time_entry %>
+                                                <% unless previous_date == time_entry.date %>
+                                                  <%= date_label_for time_entry %>
+                                                <% end %>
+                                                <% previous_date = time_entry.date -%>
+						
 					</td>
 					<td>
 						<%= f.label :hours %>
@@ -28,15 +33,18 @@
                                         
 					<td>
 
-                                          <% if time_entry.locked %>
-                                            <% unless time_entry.counterpost %>
-                                              <%= link_to image_tag("attach.png", :title => "Add correction"), :action => "counterpost", :id => time_entry %>
-                                            <% end %>
-                                            <%#= image_tag("lock.png", :title => "Locked") %>
-                                          <% end %>
-                                          <% if time_entry.counterpost %>
-                                            <%= link_to image_tag("delete.png", :title => "Delete"), time_entry_path(time_entry), :date => @date, :method => :delete, :confirm => 'Really remove counterpost?' %>
-                                          <% end %>
+                                        <% if time_entry.locked && ! time_entry.counterpost%>
+                                            <%= link_to image_tag("attach.png", :title => "Add correction"), :action => "counterpost", :id => time_entry %>
+                                        <% end %>
+
+                                        <% if ! time_entry.counterpost && ! time_entry.locked %>
+                                          <%= image_tag("add.png", :title => "Add activity line") %>
+                                        <% end %>
+
+                                        <%##TODO do not delete the last entry %>
+                                        <% unless time_entry.locked %>
+                                          <%= link_to image_tag("delete.png", :title => "Delete"), time_entry_path(time_entry), :date => @date, :method => :delete, :confirm => 'Really remove counterpost?' %>
+                                        <% end %>
                                         </td>
 					</tr>
 				<% end -%>

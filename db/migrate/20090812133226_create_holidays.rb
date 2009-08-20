@@ -2,8 +2,8 @@ class CreateHolidays < ActiveRecord::Migration
   def self.up
     create_table :holidays do |t|
       t.date :date
-      t.boolean :repeat
       t.string :note
+      t.boolean :repeat
       t.float :working_hours
       t.timestamps
     end

@@ -20,9 +20,10 @@
 					<% if @current_user.admin -%>
 						<span class="menu_item"><%= link_to "Reports", reports_url, :class => "menu_link" %></span>
 						<span class="menu_item"><%= link_to "Activities", activities_url, :class => "menu_link" %></span>
-                                                <span class="menu_item"><%= link_to "Holidays", holidays_url, :class => "menu_link" %></span>
+                                                
 						<span class="menu_item"><%= link_to "Users", users_url, :class => "menu_link" %></span> 
 					<% end -%>
+                                        <span class="menu_item"><%= link_to "Holidays", {:controller => :holidays}, :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Logout", {:controller => "user_sessions", :action => "destroy"}, :method => :delete, :class => "menu_link" %></span>
 			    <% else -%>
 					<span class="menu_item"><%= link_to "Login", new_user_session_url, :class => "menu_link" %></span>

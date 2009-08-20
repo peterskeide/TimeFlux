@@ -1,8 +1,8 @@
 class Holiday < ActiveRecord::Base
 
   validates_uniqueness_of :date
-  validates_numericality_of :working_hours, :greater_than_or_equal_to => 0, :less_than_or_equal_to => 24.0
   validates_presence_of :note
+  validates_numericality_of :working_hours, :greater_than_or_equal_to => 0, :less_than_or_equal_to => 24.0
 
   def <=>(other)
     date.yday <=> other.date.yday
@@ -10,9 +10,9 @@ class Holiday < ActiveRecord::Base
 
   def show_date
     if repeat
-      "#{date.mday} #{Holiday.months[date.month - 1][0]}"
+      "#{date.mday} #{Date::MONTHNAMES[date.month]}"
     else
-      "#{date.mday} #{Holiday.months[date.month - 1][0]}, #{date.year}"
+      "#{date.mday} #{Date::MONTHNAMES[date.month]}, #{date.year}"
     end
   end
 
@@ -25,7 +25,7 @@ class Holiday < ActiveRecord::Base
   def self.on_day(date)
     holiday = Holiday.find(:all, :conditions => { :date => date})
     if holiday.empty?
-      holiday = Holiday.find(:all, :conditions => { :date => Date.civil(1992, date.month, date.mday) }) 
+      holiday = Holiday.find(:all, :conditions => { :date => Date.civil(1992, date.month, date.mday) })
     end
     return holiday
   end

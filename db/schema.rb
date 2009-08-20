@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(:version => 20090812133226) do
 
   create_table "holidays", :force => true do |t|
     t.date     "date"
-    t.boolean  "repeat"
     t.string   "note"
+    t.boolean  "repeat"
     t.float    "working_hours"
     t.datetime "created_at"
     t.datetime "updated_at"
