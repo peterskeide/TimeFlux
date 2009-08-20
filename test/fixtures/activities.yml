@@ -1,5 +1,6 @@
 timeflux_development:
     name: TimeFlux Development
+    shared: true
     description: Implement Open Source time management and billing application
     tags: conduct, timeflux
 
@@ -9,7 +10,8 @@ timeflux_administration:
     default_activity: true
     tags: conduct, timeflux
 
-holiday:
+vacation:
     name: Vacation
+    shared: true
     description: Normal vacation
     default_activity: true

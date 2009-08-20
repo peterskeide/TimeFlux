@@ -48,8 +48,8 @@ class HolidaysController < ApplicationController
 
   def vacation
     setup_calender
-    if params[:month]
-      @day = Date.parse(params[:month])
+    if params[:date]
+      @day = Date.parse(params[:date])
     end
     @last_in_month = (@day >> 1) -1
     @user = current_user_session.user

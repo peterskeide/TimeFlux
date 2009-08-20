@@ -47,5 +47,20 @@ class HolidaysControllerTest < ActionController::TestCase
       end
       should_redirect_to("Index page") { "/holidays" }
     end
+
+    context "get vacation" do
+      setup{ get :vacation }
+      should_render_template :vacation
+    end
+
+    context "set vacation" do
+      setup { post :set_vacation, :month => "2009-08-1", :user_id =>  users(:bob).id,
+        :date => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }
+      should_redirect_to("vacation page page") { "/holidays/vacation" }
+      should "create a holiday entry on the specified date" do
+        entry = TimeEntry.on_day(Date.civil(2009,8,18))
+        assert_equal entry[0].activity.name, activities(:vacation).name
+      end
+    end
   end
 end
