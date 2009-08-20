@@ -1,0 +1,12 @@
+<% remote_form_for @time_entry do |f| %>
+	<%= @time_entry.activity.name %>,
+	<%= hidden_field_tag :user_id, params[:user_id] %>
+	<%= f.label :hours, "Hours" %>
+	<%= f.text_field :hours, :size => 1 %>
+	<%= f.label :notes, "Notes" %>
+	<%= f.text_field :notes, :size => 40 %>
+	<%= f.submit "Update", :disable_with => 'Updating...' %>
+	<%= button_to_function "Cancel" do |page|
+		page.replace_html "show_#{@time_entry.id}", :partial => "time_entry", :object => @time_entry
+	end	%>
+<% end -%>

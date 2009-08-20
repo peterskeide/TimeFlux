@@ -7,5 +7,17 @@
 </p>
 
 <p>
-	<%= link_to "New entry", new_user_time_entry_path(@current_user) %>
+	<% UserWorkWeek::DAYNAMES.each_with_index do |day, index| %>
+		<div id="<%= day %>">
+			<p>
+				<b><%= "#{day} (#{@date.+(index)})" %></b> Total: <span id='<%= "#{day}_total" %>'><%= @week.day_total(index) %></span>
+				   <%= link_to_remote("New", :update => "#{day}", :position => :bottom, :with => "'date=#{@date.+(index)}&day=#{day}'", :url => { :action => :new }) %>   	    	
+			</p>
+			<p>  
+				<% @week.entries_for_day(index).each do |te| %>
+					<%= render :partial => "time_entry", :object => te %>
+				<% end -%>
+			</p>
+		</div>
+	<% end -%>
 </p>

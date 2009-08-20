@@ -44,6 +44,12 @@ class User < ActiveRecord::Base
   def <=>(other)
     lastname <=> other.lastname
   end
+  
+  # Returns a list of shared activities +
+  # the activities assigned to the user
+  def current_activities
+    self.activities + Activity.active(true).default(true)
+  end
 
   #def to_s
   #  "#{self.fullname} (id=#{self.object_id})"

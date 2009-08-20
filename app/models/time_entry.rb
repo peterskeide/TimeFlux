@@ -7,7 +7,9 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :user
   belongs_to :activity
   
-  validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
+  #validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
+  validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
+  
   #validates_format_of :hours, :with => /^[\d|.|,]*$/
 
   # This also makes updating the time entry to locked impossible
@@ -71,6 +73,12 @@ class TimeEntry < ActiveRecord::Base
 
   def hours_to_s
     if self.hours > 0 then self.hours.to_s else '-' end
+  end
+  
+  def self.sum_hours_for_user_and_date(user_id, date = Date.today)
+    TimeEntry.sum("hours", :conditions => 
+      [ "user_id = :user_id AND date = :date", 
+      { :user_id => user_id, :date => date } ])
   end
 
   private
