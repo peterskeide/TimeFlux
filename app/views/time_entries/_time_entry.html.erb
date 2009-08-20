@@ -1,4 +1,5 @@
 <div id='<%= "show_#{time_entry.id}" %>'>   		
 <%= time_entry.activity.name %>, Hours: <%= time_entry.hours %>, Notes: <%= time_entry.notes %> 
-<%= link_to_remote("Edit", :update => "show_#{time_entry.id}", :url => { :action => :edit, :id => time_entry.id }, :method => :get) %> 
+<%= link_to_remote("Edit", :update => "show_#{time_entry.id}", :url => { :action => :edit, :id => time_entry.id }, :method => :get) %>
+<%= link_to_remote("Delete", :url => { :action => :destroy, :id => time_entry.id }, :method => :delete) %> 
 </div>

@@ -92,6 +92,20 @@ class TimeEntriesController < ApplicationController
   end
   
   def destroy
+    @time_entry = TimeEntry.find(params[:id])
+    @time_entry.destroy
+    respond_to do |format|
+      format.html {
+        # TODO: standard html handling
+      }
+      format.js {
+        render :update do |page|
+          page.remove "show_#{@time_entry.id}"
+          day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
+          page.replace_html "#{day}_total", TimeEntry.sum_hours_for_user_and_date(@time_entry.user.id, @time_entry.date)
+        end
+      }
+    end
   end    
          
 end
