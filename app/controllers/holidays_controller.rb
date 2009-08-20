@@ -78,7 +78,7 @@ class HolidaysController < ApplicationController
         end
       end
     else
-      raise "No permission to perform this task"
+      flash[:error] = "No permission to perform this task"
     end
 
     redirect_to :action => :vacation

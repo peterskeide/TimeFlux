@@ -75,11 +75,5 @@ class TimeEntry < ActiveRecord::Base
 
   private
 
-  # Not in use
-  def must_not_be_locked
-    if changed?
-      errors.add_to_base("Updating locked time entries is not possible") if locked
-    end
-  end
-  
+
 end
