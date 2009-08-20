@@ -60,16 +60,15 @@ class ReportsControllerTest < ActionController::TestCase
     ['locked','billed'].each do |mark|
       context "marking hours as #{mark}" do
         setup do
-          @time_entry = tags(:timeflux).activities.collect { |a| a.time_entries.on_day( Date.new(2009,7,1) )}.flatten[0]
+          @time_entry = activities(:timeflux_development).time_entries.on_day( Date.new(2009,7,4) )[0]
           @billed_before = @time_entry.__send__(mark)
-
-          post :mark_time_entries, :mark_as => mark,:month=>7, :year=>2009, :tag=>tags(:timeflux).id, :method => 'post'
+          post :mark_time_entries, :mark_as => mark,:month=>7, :year=>2009, :method => 'post'
         end
         should 'have billed=false initially' do
           assert ! @billed_before
         end
 
-        should 'change billed to true' do
+        should "change #{mark} to true" do
           @time_entry.reload
           assert @time_entry.__send__(mark)
         end

@@ -42,6 +42,8 @@ class ApplicationController < ActionController::Base
     if params[:calender]
       puts "Setting day to #{params[:calender]["date(1i)"]}, #{params[:calender]["date(2i)"]}, 1"
       @day ||= Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i)
+    elsif params[:month]
+      @day ||= Date.new(params[:year].to_i, params[:month].to_i, 1)
     end
     @day ||= Date.today.at_beginning_of_month
 
