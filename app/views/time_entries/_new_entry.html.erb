@@ -1,5 +1,5 @@
 <div id="new_entry_form">
-	<% remote_form_for @time_entry do |f| -%>
+	<% remote_form_for [@user, @time_entry] do |f| -%>
 		<%= f.hidden_field :user_id %>
 		<%= f.hidden_field :date %>
 		<%= f.label :activity %>
@@ -9,6 +9,9 @@
 		<%= f.label :notes %>
 		<%= f.text_field :notes, :size => 20 %>
 		<%= f.submit "Submit" %>
+		<%= button_to_function "Cancel" do |page|
+			page.remove "new_entry_form"
+		end	%>
 	<% end -%>
 	<div id="error_messages"></div>
 </div>

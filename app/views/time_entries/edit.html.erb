@@ -1,6 +1,5 @@
-<h1>New Time Entry</h1>
+<h1>Edit Time Entry</h1>
 <% form_for [@user, @time_entry] do |f| -%>
-	<%= f.hidden_field :date %>
 	<p>
 		<%= f.label :activity %>
 		<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>

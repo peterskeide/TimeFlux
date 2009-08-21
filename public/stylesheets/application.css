@@ -67,6 +67,9 @@ a img {
         border: none;
 }
 
+.show_time_entry {
+	padding-left: 1em;
+}
 
 .menu_item {
 	float: left;
@@ -74,6 +77,14 @@ a img {
 	padding: 10px;
 	border-right: 1px solid #ffffff;
 	text-align: center;
+}
+
+.delete_form {
+	display: inline;
+}
+
+.delete_form div {
+	display: inline;
 }
 
 .error {
@@ -164,6 +175,10 @@ td.week_entries_hours {
 #conduct_logo {
 	border: 0;
 	vertical-align: middle;	
+}
+
+#new_entry_form {
+	padding-left: 1em;
 }
 
 /* sub drop down menu */
