@@ -61,18 +61,19 @@ class ReportsController < ApplicationController
 
   def hours
     setup_calender
-    activities = setup_hours_form
+    setup_hours_form
     user = User.find(params[:user]) if params[:user] && params[:user] != ""
 
-    time_entries = TimeEntry.search( @from_day, @to_day, activities, user, params[:billed] )
+    time_entries = TimeEntry.search( @from_day, @to_day, @activities, user, params[:billed] )
 
     report_data = []
     time_entries.each do |t|
-      report_data << [ t.activity.name, t.date, t.hours, t.user.fullname, t.locked, t.billed, t.counterpost, t.notes ] if t.hours > 0
+      customer = t.activity.project ? "#{t.activity.project.customer.name}, #{t.activity.project.name}" : "none"
+      report_data << [ customer, t.activity.name, t.date, t.hours, t.user.fullname, t.notes ] if t.hours > 0
     end
 
     table = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Activity', 'Date', 'Hours', 'Consultant', 'Locked', 'Billed', 'Counterpost', 'Notes'])
+      :column_names => ['Customer', 'Activity', 'Date', 'Hours', 'Consultant', 'Notes'])
 
     if params[:sort_by] && params[:sort_by] != ""
       table.sort_rows_by!( params[:sort_by].split(' - ') )
@@ -91,9 +92,9 @@ class ReportsController < ApplicationController
 
   def summary
     setup_calender
-    activities = setup_hours_form
+    setup_hours_form
 
-    time_entries = TimeEntry.search( @from_day, @to_day, activities )
+    time_entries = TimeEntry.search( @from_day, @to_day, @activities )
 
     data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
       [activity.name, time_entries.sum(&:hours)]
@@ -102,7 +103,7 @@ class ReportsController < ApplicationController
     table = Ruport::Data::Table.new( :data => data_set,
       :column_names => ['Activity', 'hours'])
 
-    respond_with_formatter table, TestController, activities
+    respond_with_formatter table, TestController, @activities
   end
 
   def mark_time_entries
@@ -120,11 +121,11 @@ class ReportsController < ApplicationController
     redirect_to( params.merge( {:action => 'hours'}) )
   end
 
-  def update_hours_form
+  def update_hours_advanced_form
     if request.xhr?
       setup_calender
       setup_hours_form
-      render :partial => 'hours_form', :locals => { :params => params, :tag_type => @tag_type, :years => @years, :months => @months }
+      render :partial => 'hours_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
     end
   end
 
@@ -135,19 +136,21 @@ class ReportsController < ApplicationController
     
     @from_day = @day
     @to_day = (@day >> 1) -1
-    case params[:days]
-    when '1..15' then  @to_day = @day + 14
-    when '16..31' then @from_day = @day + 15
-    end
 
     if params[:tag_type_id] && params[:tag_type_id] != ""
       @tag_type = TagType.find(params[:tag_type_id])
-      return @tag_type.activities
+      @activities = @tag_type.activities
+    elsif params[:tag] && params[:tag] != ""
+      @activities = Tag.find(params[:tag]).activities
+    else
+      @activities = Activity.all
     end
 
-    if params[:tag] && params[:tag] != ""
-      return Tag.find(params[:tag]).activities
+    if params[:customer_id] && params[:customer_id] != ""
+      @customer = Customer.find(params[:customer_id])
+      @activities.reject! {|i|  i.customer != @customer }
     end
+
   end
 
 end
