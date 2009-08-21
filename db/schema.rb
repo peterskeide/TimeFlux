@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(:version => 20090820113950) do
   create_table "activities", :force => true do |t|
     t.string   "name",                                :null => false
     t.string   "description"
+    t.integer  "project_id"
     t.boolean  "active",           :default => true
     t.boolean  "default_activity", :default => false
     t.boolean  "shared",           :default => false

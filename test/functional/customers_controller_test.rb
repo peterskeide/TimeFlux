@@ -9,7 +9,7 @@ class CustomersControllerTest < ActionController::TestCase
     context " get index" do
       setup { get :index }
       should_respond_with :success
-      #assert_not_nil assigns(:customers)
+      should_assign_to :customers
     end
 
     context "get new" do
@@ -17,12 +17,12 @@ class CustomersControllerTest < ActionController::TestCase
       should_respond_with :success
     end
 
-    context "create customer" do
-#      assert_difference('Customer.count') do
-#        post :create, :customer => { :name => "Norsk rikskringkasting" }
-#      end
-#
-#      assert_redirected_to customer_path(assigns(:customer))
+    context "call to create" do
+      should "create customer" do
+        assert_difference('Customer.count', 1) do
+          post :create, :customer => { :name => "Norsk rikskringkasting" }
+        end    
+      end
     end
 
     context "show customer" do
@@ -35,18 +35,17 @@ class CustomersControllerTest < ActionController::TestCase
       should_respond_with :success
     end
 
-#    context "update customer" do
-#      put :update, :id => customers(:cupido).id, :name => "New fancy name goes here!"
-#      assert_redirected_to customer_path(assigns(:customer))
-#    end
-#
-#    context "destroy customer" do
-##      assert_difference('Customer.count', -1) do
-##        delete :destroy, :id => customers(:nsb).to_param
-##      end
-##
-##      assert_redirected_to customers_path
-#    end
-
+    context "update customer" do
+      setup { put :update, :id => customers(:cupido).id, :name => "New fancy name goes here!" }
+      should_redirect_to("show") { customer_url(customers(:cupido)) }
+    end
+    
+    context "call to destroy" do
+      should "remove customer" do
+        assert_difference('Customer.count', -1) do
+          delete :destroy, :id => customers(:nsb).id
+        end
+      end
+    end
   end
 end

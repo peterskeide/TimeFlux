@@ -4,6 +4,12 @@
   <%= @activity.description %>
 </p>
 
+
+<p>
+   <b>Project:</b>
+     <%= @activity.project ? @activity.project.name : 'none' %>
+</p>
+
 <p>
   <b>Public:</b>
   <%= @activity.shared %>

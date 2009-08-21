@@ -7,9 +7,9 @@ class ProjectsControllerTest < ActionController::TestCase
 
     setup { login_as(:bob) }
 
-    context "should get index" do
+    context "get to index" do
       setup { get :index }
-      should "yeah" do
+      should "render index" do
       assert_response :success
       assert_not_nil assigns(:projects)
       end
@@ -20,12 +20,12 @@ class ProjectsControllerTest < ActionController::TestCase
       should_respond_with :success
     end
 
-    context "should create project" do
-#      assert_difference('Project.count') do
-#        post :create, :project => { }
-#      end
-#
-#      assert_redirected_to project_path(assigns(:project))
+    context "call to create" do
+      should "create project" do
+        assert_difference('Project.count', 1) do
+          post :create, :project => { :name => "Kaffedrikkerprosjektet", :customer => customers(:telenor) }
+        end
+      end
     end
 
     context "should show project" do
@@ -40,15 +40,15 @@ class ProjectsControllerTest < ActionController::TestCase
 
     context "should update project" do
       setup { put :update, :id => projects(:pacman).to_param, :project => { } }
-      #assert_redirected_to project_path(assigns(:project))
+      should_redirect_to(":index") { projects_url }
     end
 
-    context "should destroy project" do
-#      assert_difference('Project.count', -1) do
-#        delete :destroy, :id => projects(:one).to_param
-#      end
-#
-#      assert_redirected_to projects_path
+    context "call to destroy" do
+      should "remove project" do
+        assert_difference('Project.count', -1) do
+          delete :destroy, :id => projects(:pacman).id
+        end
+      end
     end
 
   end

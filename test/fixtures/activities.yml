@@ -10,6 +10,11 @@ timeflux_administration:
     default_activity: true
     tags: conduct, timeflux
 
+pacman_development:
+    project: pacman
+    name: Pacman development
+    description: Development for the Pacman project
+
 vacation:
     name: Vacation
     shared: true
