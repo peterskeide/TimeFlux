@@ -11,6 +11,7 @@ class TimeEntriesController < ApplicationController
     if @current_user.admin
       redirect_to user_time_entries_url(:user_id => params[:new_user_id])
     else
+      flash[:error] = "Mind your own business"
       redirect_to user_time_entries_url(@current_user)
     end
   end
@@ -70,7 +71,7 @@ class TimeEntriesController < ApplicationController
     if @time_entry.update_attributes(params[:time_entry])
       respond_to do |format|
         format.html {
-          flash[:notice] = "Time entry updated"
+          flash[:notice] = "Time Entry updated"
           redirect_to user_time_entries_url(@user, :date => @time_entry.date.beginning_of_week)
         }
         format.js {
@@ -82,6 +83,7 @@ class TimeEntriesController < ApplicationController
         }
       end     
     else
+      @activities = @user.current_activities
       respond_to do |format|
         format.html {
           flash[:error] = "Unable to update time entry"
@@ -96,12 +98,13 @@ class TimeEntriesController < ApplicationController
     end
   end
   
+  # TODO: error handling  
   def destroy
     @time_entry = @user.time_entries.find(params[:id])
     @time_entry.destroy
     respond_to do |format|
       format.html {
-        flash[:notice] = "Time entry deleted"
+        flash[:notice] = "Time Entry deleted"
         redirect_to user_time_entries_url(@user, :date => @time_entry.date.beginning_of_week)
       }
       format.js {

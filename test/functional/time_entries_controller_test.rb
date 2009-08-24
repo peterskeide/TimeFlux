@@ -16,7 +16,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :date, :activities, :time_entries, :activity_options
+      should_assign_to :date, :week, :user
       should_render_template :index
                 
     end
@@ -27,7 +27,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :activities, :time_entries, :activity_options
+      should_assign_to :week, :user
       should_render_template :index
       
       should "assign date from previous week" do
@@ -43,7 +43,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :activities, :time_entries, :activity_options
+      should_assign_to :week, :user
       should_render_template :index
       
       should "assign date from next week" do
@@ -52,227 +52,308 @@ class TimeEntriesControllerTest < ActionController::TestCase
       end
       
     end
-    
-    context "POST to :create_multiple" do
+           
+    context "GET to :new without javascript" do
       
-      setup { post :create_multiple, :user_id => users(:bob).id, :date => @date.to_s, :activity => {:activity_id => activities(:timeflux_development).id} }
-      
-      should_render_template :edit_multiple
-      should_not_set_the_flash
-      should_assign_to :date, :time_entries
-      should_change "TimeEntry.count", :by => 7
-      
-      should "create 7 time entries for given activity and week" do
-        time_entries = assigns(:time_entries)
-        time_entries.each { |te| assert_equal(26, te.date.cweek) }
-        activity_id = activities(:timeflux_development).id
-        time_entries.each { |te| assert_equal(activity_id, te.activity.id) }       
-      end
-            
-    end
-    
-    context "POST to :edit_multiple" do
-      
-      setup { post :edit_multiple, :user_id => users(:bob).id, :ids => [
-        time_entries(:bob_timeflux_development_26_monday).id, 
-        time_entries(:bob_timeflux_development_26_tuesday).id, 
-        time_entries(:bob_timeflux_development_26_wednesday).id, 
-        time_entries(:bob_timeflux_development_26_thursday).id, 
-        time_entries(:bob_timeflux_development_26_friday).id, 
-        time_entries(:bob_timeflux_development_26_saturday).id, 
-        time_entries(:bob_timeflux_development_26_sunday).id
-        ], :date => @date.to_s }
+      setup { get :new, :user_id => users(:bob).id, :date => @date.to_s, :day => "Monday" }
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :date, :time_entries
-      should_render_template :edit_multiple
-      
-      should "find 7 user time entries for given activity and week" do
-        time_entries = assigns(:time_entries)
-        assert_equal(7, time_entries.size)
-        time_entries.each { |te| assert_equal(26, te.date.cweek) }
-        activity_id = activities(:timeflux_development).id
-        time_entries.each { |te| assert_equal(activity_id, te.activity.id) }       
-      end
-            
+      should_assign_to :time_entry, :activities, :user
+      should_render_template :new
+           
     end
     
-    context "successful PUT to :update_multiple" do
+    context "GET to :new with javascript" do
       
-      setup do        
-        put :update_multiple, {:user_id => users(:bob).id, "date"=>"2009-06-22", 
-          "time_entry"=>{
-          time_entries(:bob_timeflux_development_26_monday).id    =>{"date"=>"2009-06-22", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_26_tuesday).id   =>{"date"=>"2009-06-23", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_26_wednesday).id =>{"date"=>"2009-06-24", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_26_thursday).id  =>{"date"=>"2009-06-25", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_26_friday).id    =>{"date"=>"2009-06-26", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_26_saturday).id  =>{"date"=>"2009-06-27", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_26_sunday).id    =>{"date"=>"2009-06-28", "notes"=>"Foobar", "hours"=>"5"}}}       
-      end
-                  
-      should_respond_with :redirect
-      should_set_the_flash_to("Time entries successfully updated")
-      should_redirect_to("Selected weeks time entries") { user_time_entries_url(:user_id => users(:bob).id, :date => @date) }
+      setup { xhr :get, :new, :user_id => users(:bob).id, :date => @date.to_s, :day => "Monday" }
+      
+      should_respond_with :success
+      should_not_set_the_flash
+      should_assign_to :time_entry, :activities, :user
+      should_render_template :_new_entry
+           
+    end
     
-      # All time entry fixtures should have 7.5 hours and no notes before update
-      should "update hours and notes for changed timed entries" do
-        activity_id = activities(:timeflux_development).id 
-        time_entries = users(:bob).time_entries.for_activity(activity_id).between(@date, @date.+(6))
-        time_entries.each do |te|
-          assert_equal(5, te.hours)
-          assert_equal("Foobar", te.notes)
+    context "GET to :edit without javascript" do
+      
+      setup { get :edit, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id }
+      
+      should_respond_with :success
+      should_not_set_the_flash
+      should_assign_to :time_entry, :activities, :user
+      should_render_template :edit
+      
+    end
+    
+    context "GET to :edit with javascript" do
+      
+      setup { xhr :get, :edit, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id }
+      
+      should_respond_with :success
+      should_not_set_the_flash
+      should_assign_to :time_entry, :user
+      should_render_template :_edit_form
+      
+    end
+        
+    context "successful POST to :create without javascript" do
+      
+      setup { 
+        post :create, :user_id => users(:bob).id, 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 3.0 } 
+      }
+      
+      should_assign_to :user
+      should_respond_with :redirect
+      should_set_the_flash_to "Time Entry saved"
+      should_redirect_to("index") { user_time_entries_path(:user_id => users(:bob).id, :date => @date.to_s) }
+      should_change "TimeEntry.count", :by => 1
+      
+    end
+    
+    context "unsuccessful POST to :create without javascript" do
+      
+      setup {
+        # Hours cannot be 0. This will trigger a validation error. 
+        post :create, :user_id => users(:bob).id, 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 0.0 } 
+      }
+       
+      should_assign_to :user
+      should_render_template :new
+      should_set_the_flash_to "Unable to create time entry"
+      should_not_change "TimeEntry.count"
+      
+    end
+    
+    context "successful POST to :create with javascript" do
+      
+      setup { 
+        xhr :post, :create, :user_id => users(:bob).id, 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 3.0 } 
+      }
+      
+      should_assign_to :user
+      should_change "TimeEntry.count", :by => 1      
+      should_respond_with :success
+      
+      should "remove new_entry form" do
+        assert_select_rjs :remove, "new_entry_form"
+      end
+      
+      should "display the new time entry" do
+        assert_select_rjs :insert_html, :bottom, "Monday_time_entries" do
+          assert_select ".show_time_entry", 1
         end
       end
       
-     end
-      
-    context "unsuccessful PUT to :update_multiple" do
-      
-      setup do
-        @time_entry = TimeEntry.find_by_id(time_entries(:bob_timeflux_development_24_monday).id)
-        @time_entry.stubs(:update_attributes!).with(any_parameters).returns(false)
-        TimeEntry.stubs(:find_by_id).with(any_parameters).raises(StandardError)
-        put :update_multiple, {:user_id => users(:bob).id, "date"=>"2009-06-08", 
-          "time_entry"=>{
-          time_entries(:bob_timeflux_development_24_monday).id => {"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}}}
+      should "update the day total hours field" do 
+        assert_select_rjs :replace_html, "Monday_total"
       end
-        
-      should_assign_to :date, :time_entries
-      should_render_template :edit_multiple
       
-      should "set an error message in flash" do
-        assert_not_nil flash[:error]
-      end 
-                  
     end
     
-    context "PUT to :update_multiple for locked time entries" do
+    context "unsuccessful POST to :create with javascript" do
       
-      setup do
-        put :update_multiple, {:user_id => users(:bob).id, "date"=>"2009-06-08", 
-          "time_entry"=>{
-          time_entries(:bob_timeflux_development_24_monday).id    =>{"date"=>"2009-06-08", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_24_tuesday).id   =>{"date"=>"2009-06-09", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_24_wednesday).id =>{"date"=>"2009-06-10", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_24_thursday).id  =>{"date"=>"2009-06-11", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_24_friday).id    =>{"date"=>"2009-06-12", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_24_saturday).id  =>{"date"=>"2009-06-13", "notes"=>"Foobar", "hours"=>"5"}, 
-          time_entries(:bob_timeflux_development_24_sunday).id    =>{"date"=>"2009-06-14", "notes"=>"Foobar", "hours"=>"5"}}}
-      end
-        
-      #should_assign_to :date, :time_entries
-      #should_render_template :edit_multiple
+      setup {
+        xhr :post, :create, :user_id => users(:bob).id, 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 0.0 } 
+      }
       
-      should "not save updates to locked entries" do
-        date = Date.new(2009, 6, 8)
-        time_entries = users(:bob).time_entries.for_activity(activities(:timeflux_development).id).between(date, date.+(6))
-        time_entries.each do |te| 
-          assert_equal(7.5, te.hours)
-          assert_nil(te.notes)
+      should_assign_to :time_entry, :activities, :user
+      should_not_change "TimeEntry.count"
+      
+      # TODO: errors must be linked to the actual edit form triggering the error (can be multiple edit forms open simultaneously)
+      should "display error messages" do
+        assert_select_rjs :replace_html, "error_messages" do
+          assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
       end
-                  
+      
+    end
+        
+    # Test update with and without javascript
+    
+    context "successful PUT to :update without javascript" do
+
+      setup { 
+        put :update, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id, 
+        :time_entry => { :notes => "Foo", :hours => 3.0 } 
+      }
+       
+      should_assign_to :user
+      should_respond_with :redirect
+      should_set_the_flash_to "Time Entry updated"
+      should_redirect_to("index") { user_time_entries_path(:user_id => users(:bob).id, :date => @date.to_s) }
+      
+      should "update hours field of the selected time entry" do
+        assert_equal 3.0, TimeEntry.find(time_entries(:bob_timeflux_development_26_monday).id).hours
+      end
+
     end
     
-    context "POST to :destroy_multiple" do
+    context "unsuccessful PUT to :update without javascript" do
       
-      setup do
-        @time_entries_before_delete = TimeEntry.count 
-        post :destroy_multiple, {:user_id => users(:bob).id, :ids => [
-          time_entries(:bob_timeflux_development_26_monday).id, 
-          time_entries(:bob_timeflux_development_26_tuesday).id, 
-          time_entries(:bob_timeflux_development_26_wednesday).id, 
-          time_entries(:bob_timeflux_development_26_thursday).id, 
-          time_entries(:bob_timeflux_development_26_friday).id, 
-          time_entries(:bob_timeflux_development_26_saturday).id, 
-          time_entries(:bob_timeflux_development_26_sunday).id
-          ], :date => @date.to_s } 
+      setup {
+        put :update, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id, 
+        :time_entry => { :notes =>"Foo", :hours => 0.0 } 
+      }
+      
+      should_assign_to :time_entry, :user
+      should_render_template :edit
+      should_set_the_flash_to "Unable to update time entry"
+      
+    end
+    
+    context "successful PUT to :update with javascript" do
+      
+      setup { 
+        xhr :put, :update, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id, 
+        :time_entry => { :notes => "Foo", :hours => 3.0 } 
+      }
+      
+      should_respond_with :success
+      should_assign_to :time_entry, :user
+      
+      should "replace the edit form with a partial for displaying the udated time entry" do
+        assert_select_rjs :replace, "show_#{time_entries(:bob_timeflux_development_26_monday).id}"
       end
-                 
+      
+      should "update the day total hours field" do
+        assert_select_rjs :replace_html, "Monday_total"
+      end
+      
+    end
+    
+    context "unsuccessful PUT to :update with javascript" do
+      
+      setup { 
+        xhr :put, :update, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id, 
+        :time_entry => { :notes => "Foo", :hours => 0.0 } 
+      }
+      
+      should_assign_to :time_entry, :activities, :user
+      
+      # TODO: errors must be linked to the actual edit form triggering the error (can be multiple edit forms open simultaneously)
+      should "display error messages" do
+        assert_select_rjs :replace_html, "error_messages" do
+          assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
+        end
+      end
+
+      
+    end
+    
+    # Test destroy with and without javascript
+    
+    context "DELETE to :confirm_destroy (no javascript)" do
+      
+      setup { delete :confirm_destroy, :user_id => users(:bob).id, :date => @date.to_s, :id => time_entries(:bob_timeflux_development_26_monday).id }
+      
+      should_assign_to :time_entry, :date, :user
+      should_render_template :confirm_destroy
+      should_respond_with :success
+      
+    end
+    
+    context "DELETE to :destroy without javascript" do
+      
+      setup { delete :destroy, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id }
+      
       should_respond_with :redirect
-      should_redirect_to("Selected weeks time entries") { user_time_entries_url(:user_id => users(:bob).id, :date => @date) }
-      should_change "TimeEntry.count", :by => -7
+      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bob).id, :date => time_entries(:bob_timeflux_development_26_monday).date.to_s) }
+      should_change "TimeEntry.count", :by => -1
+      should_set_the_flash_to "Time Entry deleted"
       
     end
-
-    context "displaying form for a counterpost" do
-      setup do
-        post :counterpost, :id => time_entries(:bob_timeflux_development_24_monday).id
+    
+    context "DELETE to :destroy with javascript" do
+      
+      setup { xhr :delete, :destroy, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id }
+      
+      should_respond_with :success
+      should_change "TimeEntry.count", :by => -1
+      
+      should "remove the deleted time entry from the page" do
+        assert_select_rjs :remove, "show_#{time_entries(:bob_timeflux_development_26_monday).id}"
       end
-      should_render_template :counterpost
+      
+      should "update the day total hours field" do
+        assert_select_rjs :replace_html, "Monday_total"
+      end
+      
     end
-
-    context "POST to counterpost" do
-      setup do
-        post :create, :time_entry => { :date => "2009-08-16", :activity_id => activities(:timeflux_development).id, :notes =>"pluss 1", :hours =>"1.0" },
-          :original_time_entry => time_entries(:bob_timeflux_development_24_monday).id
-      end
+    
+    context "POST to :change_user for administrator" do
+      
+      setup { post :change_user, :user_id => users(:bob).id, :new_user_id => users(:bill).id }
+      
       should_respond_with :redirect
-      should "add a counterpost entry" do
-        assert TimeEntry.find_by_counterpost(true).notes == "pluss 1"
-      end
+      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bill).id) }
       
     end
-
-    context "POST to detroy" do
-      setup do
-        @t = TimeEntry.create :date => "2009-08-16", :activity_id => activities(:timeflux_development).id, :notes =>"pluss 1", :hours =>"1.0", :counterpost => true
-        post :destroy, :id => @t.id
-      end
-      should "remove the counterpost" do
-        assert_nil TimeEntry.find_by_counterpost(true)
-      end
+    
+    context "POST to :change_user for regular user" do
+      
+      setup {
+        login_as :bill 
+        post :change_user, :user_id => users(:bill).id, :new_user_id => users(:bob).id 
+        }
+      
+      should_set_the_flash_to "Mind your own business"
+      should_respond_with :redirect
+      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bill).id) }
+      
     end
-
+    
   end
   
   context "User not logged in: " do
     
     context "GET to :index" do            
       setup { get :index }            
-      should_redirect_to("Login page") { "/user_sessions/new" }          
+      should_redirect_to("Login page") { new_user_session_url }          
     end
     
     context "GET to :previous (Previous Week link)" do      
       setup { get :previous }      
-      should_redirect_to("Login page") { "/user_sessions/new" }           
+      should_redirect_to("Login page") { new_user_session_url }           
     end
     
     context "GET to :next (Next Week link)" do      
       setup { get :next }      
-      should_redirect_to("Login page") { "/user_sessions/new" }           
+      should_redirect_to("Login page") { new_user_session_url }           
     end
     
     context "GET to :new" do      
       setup { get :new }      
-      should_redirect_to("Login page") { "/user_sessions/new" }           
+      should_redirect_to("Login page") { new_user_session_url }           
     end
     
     context "GET to :edit" do      
       setup { get :edit }      
-      should_redirect_to("Login page") { "/user_sessions/new" }                  
+      should_redirect_to("Login page") { new_user_session_url }                  
     end
     
     context "successful POST to :update" do      
       setup { put :update }              
-      should_redirect_to("Login page") { "/user_sessions/new" }      
+      should_redirect_to("Login page") { new_user_session_url }      
      end
       
     context "unsuccessful POST to :update" do      
       setup { put :update }      
-      should_redirect_to("Login page") { "/user_sessions/new" }                          
+      should_redirect_to("Login page") { new_user_session_url }                          
     end
     
     context "POST to :update for locked time entries" do      
       setup { put :update }      
-      should_redirect_to("Login page") { "/user_sessions/new" }                  
+      should_redirect_to("Login page") { new_user_session_url }                  
     end
     
     context "DELETE to :destroy" do      
       setup { delete :destroy }      
-      should_redirect_to("Login page") { "/user_sessions/new" }      
+      should_redirect_to("Login page") { new_user_session_url }      
     end
     
   end 
