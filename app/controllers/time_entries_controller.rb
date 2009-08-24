@@ -38,7 +38,7 @@ class TimeEntriesController < ApplicationController
             page.remove "new_entry_form"
             day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
             page.insert_html :bottom, "#{day}_time_entries", :partial => "time_entry", :object => @time_entry
-            page.replace_html "#{day}_total", TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)
+            page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
           end
         }
       end
@@ -78,7 +78,7 @@ class TimeEntriesController < ApplicationController
           render :update do |page|
             page.replace "show_#{params[:id]}", :partial => "time_entry", :object => @time_entry
             day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
-            page.replace_html "#{day}_total", TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)
+            page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
           end 
         }
       end     
@@ -111,7 +111,7 @@ class TimeEntriesController < ApplicationController
         render :update do |page|
           page.remove "show_#{@time_entry.id}"
           day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
-          page.replace_html "#{day}_total", TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)
+          page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
         end
       }
     end

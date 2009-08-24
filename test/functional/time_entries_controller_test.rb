@@ -149,7 +149,9 @@ class TimeEntriesControllerTest < ActionController::TestCase
       end
       
       should "update the day total hours field" do 
-        assert_select_rjs :replace_html, "Monday_total"
+        assert_select_rjs :replace_html, "Monday_total" do
+          assert_select "b", "10.5"
+        end
       end
       
     end
@@ -220,8 +222,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
         assert_select_rjs :replace, "show_#{time_entries(:bob_timeflux_development_26_monday).id}"
       end
       
-      should "update the day total hours field" do
-        assert_select_rjs :replace_html, "Monday_total"
+      should "update the day total hours field" do 
+        assert_select_rjs :replace_html, "Monday_total" do
+          assert_select "b", "3.0"
+        end
       end
       
     end
@@ -279,8 +283,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
         assert_select_rjs :remove, "show_#{time_entries(:bob_timeflux_development_26_monday).id}"
       end
       
-      should "update the day total hours field" do
-        assert_select_rjs :replace_html, "Monday_total"
+      should "update the day total hours field" do 
+        assert_select_rjs :replace_html, "Monday_total" do
+          assert_select "b", "0.0"
+        end
       end
       
     end
