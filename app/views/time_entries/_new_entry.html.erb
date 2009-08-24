@@ -1,11 +1,10 @@
 <div id="new_entry_form">
 	<% remote_form_for [@user, @time_entry] do |f| -%>
-		<%= f.hidden_field :user_id %>
 		<%= f.hidden_field :date %>
 		<%= f.label :activity %>
 		<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>
 		<%= f.label :hours %>
-		<%= f.text_field :hours, :size => 6 %>
+		<%= f.text_field :hours, :size => 4 %>
 		<%= f.label :notes %>
 		<%= f.text_field :notes, :size => 20 %>
 		<%= f.submit "Submit" %>

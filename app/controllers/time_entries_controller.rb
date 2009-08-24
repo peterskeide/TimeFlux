@@ -7,8 +7,16 @@ class TimeEntriesController < ApplicationController
     @week = UserWorkWeek.new(@user.id, @date)
   end
   
+  def change_user
+    if @current_user.admin
+      redirect_to user_time_entries_url(:user_id => params[:new_user_id])
+    else
+      redirect_to user_time_entries_url(@current_user)
+    end
+  end
+  
   def new
-    @time_entry = @user.time_entries.build(:date => params[:date]) 
+    @time_entry = TimeEntry.new(:date => params[:date]) 
     @activities = @user.current_activities
     respond_to do |format|
       format.html {}
@@ -80,7 +88,9 @@ class TimeEntriesController < ApplicationController
           render :action => "edit"          
         }
         format.js {
-          # TODO handle failed update of time entry via javascript
+          render :update do |page|
+            page.replace_html :error_messages, "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
+          end
         }
       end
     end

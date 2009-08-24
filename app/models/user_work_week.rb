@@ -7,7 +7,7 @@ class UserWorkWeek
   end
   
   def entries_for_day(day_index)
-    TimeEntry.find_all_by_user_id_and_date(@user_id, @week_start_date.+(day_index)).sort { |e1, e2| e1.activity.name <=> e2.activity.name }
+    TimeEntry.find_all_by_user_id_and_date(@user_id, @week_start_date.+(day_index))
   end
   
   def day_total(day_index)
