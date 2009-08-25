@@ -72,6 +72,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_not_set_the_flash
       should_assign_to :time_entry, :activities, :user
       should_render_template :_new_entry
+      
+      should "disable all new time entry links" do
+        # Fix this test
+      end
            
     end
     
@@ -94,7 +98,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_not_set_the_flash
       should_assign_to :time_entry, :user
       should_render_template :_edit_form
-      
+     
     end
         
     context "successful POST to :create without javascript" do
@@ -144,7 +148,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should "display the new time entry" do
         assert_select_rjs :insert_html, :bottom, "Monday_time_entries" do
-          assert_select ".show_time_entry", 1
+          assert_select ".time_entry", 1
         end
       end
       
@@ -166,17 +170,14 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :time_entry, :activities, :user
       should_not_change "TimeEntry.count"
       
-      # TODO: errors must be linked to the actual edit form triggering the error (can be multiple edit forms open simultaneously)
       should "display error messages" do
-        assert_select_rjs :replace_html, "error_messages" do
+        assert_select_rjs :replace_html, "new_time_entry_error_messages" do
           assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
       end
       
     end
-        
-    # Test update with and without javascript
-    
+            
     context "successful PUT to :update without javascript" do
 
       setup { 
@@ -232,25 +233,22 @@ class TimeEntriesControllerTest < ActionController::TestCase
     
     context "unsuccessful PUT to :update with javascript" do
       
-      setup { 
-        xhr :put, :update, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id, 
+      setup {
+        @id = time_entries(:bob_timeflux_development_26_monday).id 
+        xhr :put, :update, :user_id => users(:bob).id, :id => @id, 
         :time_entry => { :notes => "Foo", :hours => 0.0 } 
       }
       
       should_assign_to :time_entry, :activities, :user
       
-      # TODO: errors must be linked to the actual edit form triggering the error (can be multiple edit forms open simultaneously)
       should "display error messages" do
-        assert_select_rjs :replace_html, "error_messages" do
+        assert_select_rjs :replace_html, "#{@id}_error_messages" do
           assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
       end
-
-      
+    
     end
-    
-    # Test destroy with and without javascript
-    
+        
     context "DELETE to :confirm_destroy (no javascript)" do
       
       setup { delete :confirm_destroy, :user_id => users(:bob).id, :date => @date.to_s, :id => time_entries(:bob_timeflux_development_26_monday).id }
@@ -293,10 +291,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
     
     context "POST to :change_user for administrator" do
       
-      setup { post :change_user, :user_id => users(:bob).id, :new_user_id => users(:bill).id }
+      setup { post :change_user, :user_id => users(:bob).id, :new_user_id => users(:bill).id, :date => @date.to_s }
       
       should_respond_with :redirect
-      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bill).id) }
+      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bill).id, :date => @date.to_s) }
       
     end
     
@@ -304,12 +302,12 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       setup {
         login_as :bill 
-        post :change_user, :user_id => users(:bill).id, :new_user_id => users(:bob).id 
+        post :change_user, :user_id => users(:bill).id, :new_user_id => users(:bob).id, :date => @date.to_s 
         }
       
       should_set_the_flash_to "Mind your own business"
       should_respond_with :redirect
-      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bill).id) }
+      should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bill).id, :date => @date.to_s) }
       
     end
     

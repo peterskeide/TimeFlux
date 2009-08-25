@@ -1,6 +1,10 @@
 class TimeEntriesController < ApplicationController
     
   before_filter :check_authentication, :find_user
+  
+  # TODO: support input field for selecting a week
+  # TODO: errors must be linked to the actual forms triggering the error (can be multiple forms open simultaneously) 
+  # TODO: support for corrections of locked/billed time entries
     
   def index 
     @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date])
@@ -9,10 +13,10 @@ class TimeEntriesController < ApplicationController
   
   def change_user
     if @current_user.admin
-      redirect_to user_time_entries_url(:user_id => params[:new_user_id])
+      redirect_to user_time_entries_url(:user_id => params[:new_user_id], :date => params[:date])
     else
       flash[:error] = "Mind your own business"
-      redirect_to user_time_entries_url(@current_user)
+      redirect_to user_time_entries_url(@current_user, :date => params[:date])
     end
   end
   
@@ -21,7 +25,12 @@ class TimeEntriesController < ApplicationController
     @activities = @user.current_activities
     respond_to do |format|
       format.html {}
-      format.js { render :partial => "new_entry" }
+      format.js {
+        render :update do |page|
+          page.select(".new_time_entry_link").each { |element| element.hide }          
+          page.insert_html :bottom, "#{@time_entry.weekday}", :partial => "new_entry"
+        end 
+        }
     end
   end
   
@@ -35,8 +44,9 @@ class TimeEntriesController < ApplicationController
         }
         format.js {
           render :update do |page|
+            page.select(".new_time_entry_link").each { |element| element.show }
             page.remove "new_entry_form"
-            day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
+            day = @time_entry.weekday
             page.insert_html :bottom, "#{day}_time_entries", :partial => "time_entry", :object => @time_entry
             page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
           end
@@ -51,7 +61,7 @@ class TimeEntriesController < ApplicationController
         }
         format.js {
           render :update do |page|
-            page.replace_html :error_messages, "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
+            page.replace_html "new_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
           end
         }
       end           
@@ -77,8 +87,7 @@ class TimeEntriesController < ApplicationController
         format.js {
           render :update do |page|
             page.replace "show_#{params[:id]}", :partial => "time_entry", :object => @time_entry
-            day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
-            page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
+            page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
           end 
         }
       end     
@@ -91,14 +100,13 @@ class TimeEntriesController < ApplicationController
         }
         format.js {
           render :update do |page|
-            page.replace_html :error_messages, "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
+            page.replace_html "#{@time_entry.id}_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
           end
         }
       end
     end
   end
   
-  # TODO: error handling  
   def destroy
     @time_entry = @user.time_entries.find(params[:id])
     @time_entry.destroy
@@ -110,8 +118,7 @@ class TimeEntriesController < ApplicationController
       format.js {
         render :update do |page|
           page.remove "show_#{@time_entry.id}"
-          day = UserWorkWeek::DAYNAMES[@time_entry.date.cwday - 1]
-          page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
+          page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
         end
       }
     end

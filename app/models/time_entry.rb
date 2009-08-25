@@ -35,6 +35,10 @@ class TimeEntry < ActiveRecord::Base
     {  :conditions =>  ["activity_id IN (?)", activity_ids ] }
   }
   
+  def weekday
+    Date::DAYNAMES[date.wday]
+  end
+  
   def self.search(from_date, to_date, activities=nil, user=nil, billed=nil)
     search = ["TimeEntry"]
     search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?

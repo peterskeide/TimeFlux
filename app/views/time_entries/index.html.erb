@@ -9,19 +9,27 @@
 <p>
 	<% UserWorkWeek::DAYNAMES.each_with_index do |day, index| %>
 		<div id="<%= day %>">
-			<p>
-				<b><%= "#{day} (#{@date.+(index)})" %></b> Total: <span id='<%= "#{day}_total" %>'><b><%= @week.day_total(index) %></b></span>
-				   <%= link_to_remote("New", { :update => "#{day}", :position => :bottom,  
-					  :url => { :action => :new, :user_id => @user.id, :date => @date.+(index), :day => day }, :method => :get }, 
-					  :href => new_user_time_entry_path(@user, :date => @date.+(index))) %>   	    	
-			</p>
+			
+			<div id='<%= "#{day}_header" %>'>
+				<b><%= "#{day} (#{@date.+(index)})" %></b>
+				<label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>  
+				<span id='<%= "#{day}_total" %>'>
+					<b><%= @week.day_total(index) %></b>
+				 </span> 
+				<%= link_to_remote("New", { :url => { :action => :new, :user_id => @user.id, :date => @date.+(index), :day => day }, :method => :get }, 
+				:href => new_user_time_entry_path(@user, :date => @date.+(index)), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %> 
+			</div>
+			
 			<p> 
 				<div id='<%= "#{day}_time_entries" %>'> 
 					<% @week.entries_for_day(index).each do |te| %>
-						<%= render :partial => "time_entry", :object => te %>
+						<div id='<%= "show_#{te.id}" %>' class="time_entry">						
+							<%= render :partial => "time_entry", :object => te %>
+						</div>
 					<% end -%>
 				</div>
 			</p>
+			<br />
 		</div>
 	<% end -%>
 </p>
@@ -29,6 +37,7 @@
 	<% if @current_user.admin -%>
 		<% form_tag "/time_entries/change_user" do %>
 			<%= hidden_field_tag :user_id, @user.id %>
+			<%= hidden_field_tag :date, @date %>
 			<%= select_tag "new_user_id", options_from_collection_for_select(User.all, :id, :fullname) %>
 			<%= submit_tag "View for selected user" %>
 		<% end -%>

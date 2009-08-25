@@ -9,8 +9,9 @@
 		<%= f.text_field :notes, :size => 20 %>
 		<%= f.submit "Submit" %>
 		<%= button_to_function "Cancel" do |page|
+			page.select(".new_time_entry_link").each { |element| element.show }
 			page.remove "new_entry_form"
 		end	%>
 	<% end -%>
-	<div id="error_messages"></div>
+	<div id="new_time_entry_error_messages"></div>
 </div>
