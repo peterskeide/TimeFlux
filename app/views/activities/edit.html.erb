@@ -15,7 +15,7 @@
 
    <p>
      <%= f.label :project %><br />
-     <%= f.collection_select(:project_id, Project.all, :id, :name) %>
+     <%= f.collection_select(:project_id, Project.all, :id, :name, {:include_blank => "None"}) %>
    </p>
 
    <p>

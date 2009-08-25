@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   before_filter :check_admin
 
   def index
-    @projects = Project.all
+    @projects = Project.paginate :page => params[:page] || 1, :per_page => 15, :order => 'name'
   end
 
   def show

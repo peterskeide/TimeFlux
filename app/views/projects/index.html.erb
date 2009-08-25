@@ -11,6 +11,7 @@
     <th>Customer</th>
   </tr>
 
+<%= will_paginate @projects %>
 <% @projects.each do |project| %>
   <tr>
     <td><%=h project.name %></td>

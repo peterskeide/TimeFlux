@@ -35,7 +35,6 @@ class TimeEntry < ActiveRecord::Base
     search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
     search << "for_user(#{user.id})" unless user.blank?
     search << "billed(#{billed})" unless billed.blank?
-    #search << "paginate(:page => #{page}, :per_page => 10, :order => 'activities.name')"
     query = search.join(".")
 
     logger.debug("Time entry Search Query: #{query}")

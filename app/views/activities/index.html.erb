@@ -5,7 +5,7 @@
 <p class="notice"><%= flash[:notice] %></p>
 
 <div id="activities_filter">
-  <%=  render :partial => 'form', :locals => { :tags => @tags, :params => params } %>
+  <%=  render :partial => 'form', :locals => { :tags => @tags, :params => params, :customer => @customer } %>
 </div>
 
 

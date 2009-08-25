@@ -13,7 +13,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "on GET report index" do
       setup { get :index }
-      should_redirect_to("Hours report") { "/reports/hours" }
+      should_redirect_to("Billing report") { "/reports/billing" }
     end
 
     context "accessing reports," do
@@ -22,8 +22,8 @@ class ReportsControllerTest < ActionController::TestCase
         [:user, {} ],
         [:summary, {} ],
         [:activity, {} ],
-        [:hours, {:month=>7, :year=>2009, :billed => false} ],
-        [:hours, {:month=>7, :year=>2009, :grouping => 'Activity', :tag_type_id => @tag_type_id} ]
+        [:billing, {:month=>7, :year=>2009, :billed => false} ],
+        [:billing, {:month=>7, :year=>2009, :grouping => 'Activity', :tag_type_id => @tag_type_id} ]
       ]
       reports.each do |report, params|
 

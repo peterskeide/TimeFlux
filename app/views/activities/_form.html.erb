@@ -1,6 +1,6 @@
 
 <% form_tag activities_path, :method => :get, :id => 'filter_form' do %>
-<table>
+  <table>
     <tr>
       <td><%= label_tag "default" %></td>
       <td><%= select_tag "default", options_for_select(boolean_options, params[:default]) %></td>
@@ -9,19 +9,35 @@
       <td><%= label_tag "active" %></td>
       <td><%= select_tag "active", options_for_select(boolean_options, params[:active]) %></td>
     </tr>
+    <tr> <td></td></tr>
+
     <tr>
       <td><%= label_tag "tag_type_id","Category"%></td>
       <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
     </tr>
-
     <tr>
-<% if tags.empty?%>
-      <td><%= label_tag "tag_id","Tag", :class => 'disabled' %></td>
-      <td><%= select_tag "tag_id", empty_option("-----------"), {:disabled => true} %></td>
-<% else %>
-      <td><%= label_tag "tag_id","Tag"%></td>
-      <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(tags, :id, :name, params[:tag_id].to_i ) %></td>
-<% end %>
+      <% if tags.empty?%>
+        <td><%= label_tag "tag_id","Tag", :class => 'disabled' %></td>
+        <td><%= select_tag "tag_id", empty_option("-----------"), {:disabled => true} %></td>
+      <% else %>
+        <td><%= label_tag "tag_id","Tag"%></td>
+        <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(tags, :id, :name, params[:tag_id].to_i ) %></td>
+      <% end %>
+    </tr>
+    <tr> <td></td></tr>
+    
+    <tr>
+      <td><%= label_tag "customer_id"%></td>
+      <td><%= select_tag "customer_id", empty_option("All") + options_from_collection_for_select( Customer.all, 'id', 'name', params[:customer_id].to_i  ) %></td>
+    </tr>
+    <tr>
+      <% if customer %>
+        <td><%= label_tag "project_id",'Project'%></td>
+        <td><%= select_tag "project_id", empty_option("All") + options_from_collection_for_select(customer.projects, :id, :name, params[:project_id].to_i) %></td>
+      <% else %>
+        <td><%= label_tag "project_id",'Project', :class => 'disabled' %></td>
+        <td><%= select_tag "project_id", empty_option("-----------"), {:disabled => true} %></td>
+      <% end %>
     </tr>
 
     <tr><td></td></tr>
@@ -29,7 +45,7 @@
   </table>
 <% end -%>
 
-    <%= observe_form 'filter_form',
-      :url => {:action => 'update_form'},
-      :update => 'activities_filter'
-       %>
+<%= observe_form 'filter_form',
+  :url => {:action => 'update_form'},
+  :update => 'activities_filter'
+%>

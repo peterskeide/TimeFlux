@@ -1,0 +1,22 @@
+<%= render_table table -%>
+
+<% if ! is_empty? table %>
+  <br/>
+
+  <table><tr><td>
+  <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+    <%= render_hidden_hours_tags(params) %>
+    <%= hidden_field_tag 'mark_as',  'locked' %>
+    <%= submit_tag 'Mark as locked' %>
+  <% end %>
+
+  </td><td><% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+    <%= render_hidden_hours_tags(params) %>
+    <%= hidden_field_tag 'mark_as',  'billed' %>
+    <%= submit_tag 'Mark as billed' %>
+  <% end %>
+  </td></tr></table>
+
+<%= render :partial => 'download', :locals => { :params => params, :action => 'billing' } -%>
+
+<% end %>

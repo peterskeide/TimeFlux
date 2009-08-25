@@ -70,12 +70,10 @@ class ApplicationController < ActionController::Base
           { :type => "	application/pdf", :disposition  => "inline", :filename => "#{title}.pdf" } )
       end
       format.csv do
-        #remove_billed_column!(table)
         send_data formatter.render_csv(:data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.csv" }
       end
       format.text do
-        #remove_billed_column!(table)
         send_data formatter.render(:text, :data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.txt" }
       end

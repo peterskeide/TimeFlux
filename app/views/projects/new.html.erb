@@ -9,7 +9,7 @@
   </p>
   <p>
     <%= f.label :customer_id %><br />
-    <%= f.text_field :customer_id %>
+    <%=  collection_select(:project, :customer_id, Customer.all, :id, :name) %>
   </p>
   <p>
     <%= f.submit 'Create' %>

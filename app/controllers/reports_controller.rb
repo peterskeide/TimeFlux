@@ -6,13 +6,13 @@ class ReportsController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    redirect_to(:action => 'hours')
+    redirect_to(:action => 'billing')
     #  @reports = self.__send__(:action_methods).delete("index").sort
   end
 
-    # Currently not in use
+  # Currently not in use
   def activity
-     if params[:active] then
+    if params[:active] then
       activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
     else
       activities = Activity.find(:all)
@@ -39,13 +39,13 @@ class ReportsController < ApplicationController
     1..8.times { |i| @weeks << start - (i * 7) }
 
     user_data = @users.collect do |user|
-       [user.fullname] + @weeks.collect do |day|
+      [user.fullname] + @weeks.collect do |day|
         TimeEntry.for_user(user).between(day, (day + 6)).sum(:hours)
       end
     end
 
     @expected = @weeks.collect do |day|
-       Holiday.expected_between( day, (day + 5) ) 
+      Holiday.expected_between( day, (day + 5) )
     end
     user_data << ["Expected"] + @expected
 
@@ -59,35 +59,12 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, "User report"
   end
 
-  def hours
+  def billing
     setup_calender
     setup_hours_form
-    user = User.find(params[:user]) if params[:user] && params[:user] != ""
-
-    time_entries = TimeEntry.search( @from_day, @to_day, @activities, user, params[:billed] )
-
-    report_data = []
-    time_entries.each do |t|
-      customer = t.activity.project ? "#{t.activity.project.customer.name}, #{t.activity.project.name}" : "none"
-      report_data << [ customer, t.activity.name, t.date, t.hours, t.user.fullname, t.notes ] if t.hours > 0
-    end
-
-    table = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Customer', 'Activity', 'Date', 'Hours', 'Consultant', 'Notes'])
-
-    if params[:sort_by] && params[:sort_by] != ""
-      table.sort_rows_by!( params[:sort_by].split(' - ') )
-    end
-    
-    if params[:grouping] && params[:grouping] != ""
-      table = Grouping(table,:by => params[:grouping])
-    end
-
-    if params[:page_break]
-      page_break = true
-    end
-
-    respond_with_formatter table, TestController, "Hour report", pdf_options = {:page_break => page_break}
+    create_billing_report
+    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
+      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
   end
 
   def summary
@@ -98,7 +75,7 @@ class ReportsController < ApplicationController
 
     data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
       [activity.name, time_entries.sum(&:hours)]
-     end
+    end
 
     table = Ruport::Data::Table.new( :data => data_set,
       :column_names => ['Activity', 'hours'])
@@ -121,36 +98,88 @@ class ReportsController < ApplicationController
     redirect_to( params.merge( {:action => 'hours'}) )
   end
 
-  def update_hours_advanced_form
+  def update_billing_advanced_form
     if request.xhr?
       setup_calender
       setup_hours_form
-      render :partial => 'hours_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
+      render :partial => 'billing_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
     end
   end
 
-  private 
+  def update_billing_content
+    if request.xhr?
+      setup_calender
+      setup_hours_form
+      create_billing_report
+      render :partial => 'billing_content', :locals => { :table => @billing_report}
+    end
+  end
+
+  private
+
+  def apply_formatting(table)
+    if params[:sort_by]
+      table.sort_rows_by!( params[:sort_by].split(' - ') )
+    end
+
+    table.remove_column('Notes') if params[:remove_comments]
+
+    if params[:grouping] && params[:grouping] != ""
+      return Grouping(table,:by => params[:grouping])
+    end
+    return table
+  end
 
   def setup_hours_form
     params[:month] ||= @day.month
     
-    @from_day = @day
-    @to_day = (@day >> 1) -1
+    if params[:from_day]
+      @from_day = set_date(params[:from_year].to_i, params[:from_month].to_i, params[:from_day].to_i)
+      @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
+    else
+      @from_day = @day
+      @to_day = (@day >> 1) -1
+    end
 
     if params[:tag_type_id] && params[:tag_type_id] != ""
-      @tag_type = TagType.find(params[:tag_type_id])
-      @activities = @tag_type.activities
+      @tag_type = Activity.for_tag_type( TagType.find(params[:tag_type_id]) )
     elsif params[:tag] && params[:tag] != ""
-      @activities = Tag.find(params[:tag]).activities
-    else
-      @activities = Activity.all
+      @tag = Tag.find(params[:tag])
     end
 
     if params[:customer_id] && params[:customer_id] != ""
       @customer = Customer.find(params[:customer_id])
-      @activities.reject! {|i|  i.customer != @customer }
     end
 
+    if params[:project_id] && params[:project_id] != ""
+      @project = Project.find(params[:project_id].to_i)
+    end
+  
+  end
+  
+  def set_date(year, month, day)
+    max_day = Date.civil(year,month,1).at_end_of_month.mday
+    Date.new(year,month, day > max_day ? max_day : day)
+  end
+
+  def create_billing_report
+    activities = Activity.find_by_filter(params[:tag_type_id], params[:tag_id], params[:customer_id], params[:project_id])
+
+    report_data = []
+    unless  activities.empty?
+      user = User.find(params[:user]) if params[:user] && params[:user] != ""
+
+      time_entries = TimeEntry.search( @from_day, @to_day, activities, user, params[:billed] )
+      time_entries.each do |t|
+        report_data << [ t.date, t.activity.name, t.hours, t.user.fullname, t.notes ] if t.hours > 0
+      end
+    end
+
+    @billing_report = Ruport::Data::Table.new( :data => report_data,
+      :column_names => ['Date', 'Activity', 'Hours', 'Consultant', 'Notes'])
+
+    @date_range = "Between #{@from_day} and #{@to_day}"
+    @page_break = params[:page_break] ? true : false
   end
 
 end

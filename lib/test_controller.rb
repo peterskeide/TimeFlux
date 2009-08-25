@@ -52,15 +52,20 @@ class TestController < Ruport::Controller
     end
 
     def draw_hours_header(pdf)
-      pdf.text options.title, :font_size => 26, :leading => 40, :justification => :center
-      pdf.text '__________', :font_size => 12, :justification => :center
-      #pdf.text "Timeflux Report", :font_size => 10, :justification => :center
-      pdf.image "public/images/timeflux_logo.jpg", :justification => :center, :resize => 0.3
+      pdf.move_pointer(10)
+      pdf.image "public/images/timeflux_logo.jpg", :justification => :right, :resize => 0.3
+      pdf.move_pointer(-80)
+      pdf.text "Fakturagrunnlag", :font_size => 26, :leading => 40, :justification => :center
+      #pdf.text '__________', :font_size => 12, :justification => :center
+      pdf.move_pointer(40)
+      pdf.text options.customer, :font_size => 10 if options.customer
+      pdf.text options.project, :font_size => 10 if options.project
+      pdf.text options.date_range, :font_size => 10 if options.date_range
       pdf.move_pointer(50)
     end
 
     def draw_hours_table(data)
-      draw_table data, :position => :left, :orientation => :right, :show_lines => :none, :split_rows => true, :width => 500
+      draw_table data, :position => :left, :orientation => :right, :show_lines => :none, :shade_rows => :none, :split_rows => true, :width => 500
     end
 
     def draw_hours_summary(group, pdf)
