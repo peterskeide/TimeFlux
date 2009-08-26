@@ -4,7 +4,7 @@
 <p class="error"><%= flash[:error] %></p>
 
 <%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
-
+<br/>
 <% form_tag tags_path, :method => :get, :id => 'category_filter' do %>
 <table>
     <tr>
@@ -20,7 +20,6 @@
       :update => 'tags',
       :with => 'tag_type'
        %>
-
 <hr/>
 
 <div id="tags">

@@ -1,6 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
 
-
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -34,18 +33,18 @@ ActionController::Routing::Routes.draw do |map|
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "user_sessions", :action => "new"
-  #map.activities "Activities", :controller => "activities"
-  #map.tag_types "tag_types", :controller => "tag_types"
+  map.resources :projects
+  map.resources :customers
   map.resources :tags, :user_sessions, :time_entries, :users, :activities, :tag_types, :holidays
   map.resources :users do |user|
     user.resources :time_entries, :member => { :confirm_destroy => :delete }
   end
   map.reports "reports", :controller => "reports"
-  #map.users "Users", :controller => "users"
 
   map.month "month", :controller => "month"
   map.month_list "month/:action.:format", :controller => "month"
 
+  map.reports "reports/:action.:format", :controller => "reports"
 
   # See how all your routes lay out with "rake routes"
 

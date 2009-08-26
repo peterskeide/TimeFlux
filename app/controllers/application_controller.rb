@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   
   helper_method :current_user_session, :current_user
-  
+
   private
   
   def current_user_session
@@ -36,10 +36,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   #Used in month and report controller
   def setup_calender
-    @day = first_in_month(params[:year], params[:month])
+
+    if params[:calender]
+      puts "Setting day to #{params[:calender]["date(1i)"]}, #{params[:calender]["date(2i)"]}, 1"
+      @day ||= Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i)
+    elsif params[:month]
+      @day ||= Date.new(params[:year].to_i, params[:month].to_i, 1)
+    end
+    @day ||= Date.today.at_beginning_of_month
 
     @years = (2007..Date.today.year).to_a.reverse
     @months = []
@@ -47,15 +53,8 @@ class ApplicationController < ActionController::Base
     @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
   end
 
-   #Used in month and report controller
-  def first_in_month(year, month)
-    year ||= Date.today.year
-    month ||= Date.today.month
-    return Date.new(year.to_i, month.to_i, 1)
-  end
-
   #Used in month and report controller
-  def respond_with_formatter(table, formatter, title="report")
+  def respond_with_formatter(table, formatter, title="report", pdf_options={})
 
     conv = ReportConverter
 
@@ -66,32 +65,31 @@ class ApplicationController < ActionController::Base
       end
 
       format.pdf do
-        remove_billed_column!(table)
-        send_data formatter.render_pdf(:data => conv.convert(table), :title => conv.convert_string(title)),
-          { :type => "	application/pdf", :disposition  => "inline", :filename => "#{title}.pdf" }
+        remove_sensitive_columns!(table)
+        send_data( formatter.render_pdf( {:data => conv.convert(table), :title => conv.convert_string(title)}.merge pdf_options ),
+          { :type => "	application/pdf", :disposition  => "inline", :filename => "#{title}.pdf" } )
       end
       format.csv do
-        remove_billed_column!(table)
         send_data formatter.render_csv(:data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.csv" }
       end
       format.text do
-        remove_billed_column!(table)
         send_data formatter.render(:text, :data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.txt" }
       end
     end
   end
 
-  def remove_billed_column!(table)
+  def remove_sensitive_columns!(table)
     if table.is_a? Ruport::Data::Grouping
       table.each do |name,group|
+        group.remove_column('Locked')
         group.remove_column('Billed')
       end
     elsif table.is_a? Ruport::Data::Table
+      table.remove_column('Locked')
       table.remove_column('Billed')
     end
-
   end
   
 end

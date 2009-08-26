@@ -3,6 +3,7 @@ class CreateActivitiesTable < ActiveRecord::Migration
     create_table :activities do |t|
       t.string :name,              :null => false
       t.string :description
+      t.references :project
       t.boolean :active,           :default => true
       t.boolean :default_activity, :default => false
       t.boolean :shared,           :default => false

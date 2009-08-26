@@ -1,0 +1,12 @@
+<h1><%= @customer.name %></h1>
+
+
+<h3>Projects</h3>
+<ul>
+<% @customer.projects.each do |project| %>
+  <li><%=  link_to project.name, project_path(project) %></li>
+<% end %>
+</ul>
+
+<br/>
+<%= link_to 'Back', customers_path %>

@@ -5,8 +5,11 @@ class ActivitiesController < ApplicationController
   
   def index
     @tags = params[:tag_type_id].blank? ? [] : Tag.find_all_by_tag_type_id(params[:tag_type_id])
+    @customer = Customer.find(params[:customer_id])    if params[:customer_id] && params[:customer_id] != ""
+
     page = params[:page] || 1
-    @activities = Activity.search(params[:active], params[:default], params[:tag_id], params[:tag_type_id], page)
+    @activities = Activity.search(params[:active], params[:default], params[:tag_id], params[:tag_type_id],
+      params[:customer_id], params[:project_id], page)
   end
  
   def new
@@ -51,14 +54,15 @@ class ActivitiesController < ApplicationController
     end     
   end
   
-  def update_tag
-    tags = params[:tag_type_id] && params[:tag_type_id] != "" ? TagType.find(params[:tag_type_id]).tags : []
-    render :partial => 'tag', :locals => { :tags => tags, :tag_id => '0' }
-  end
+#  def update_tag
+#    tags = params[:tag_type_id] && params[:tag_type_id] != "" ? TagType.find(params[:tag_type_id]).tags : []
+#    render :partial => 'tag', :locals => { :tags => tags, :tag_id => '0' }
+#  end
 
   def update_form
     tags = params[:tag_type_id] && params[:tag_type_id] != "" ? TagType.find(params[:tag_type_id]).tags : []
-    render :partial => 'form', :locals => { :tags => tags, :params => params }
+    customer = Customer.find(params[:customer_id]) if params[:customer_id] && params[:customer_id] != ""
+    render :partial => 'form', :locals => { :tags => tags, :customer => customer, :params => params }
   end
 
   def update_activities

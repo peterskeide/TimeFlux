@@ -11,7 +11,7 @@
     <th>Actions</th>
   </tr>
 
-  <%= will_paginate @users %>
+<%= will_paginate @users %>
 <% for user in @users %>
   <tr>
     <td><%=h user.fullname %></td>

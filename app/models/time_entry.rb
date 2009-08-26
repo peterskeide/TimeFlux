@@ -12,9 +12,6 @@ class TimeEntry < ActiveRecord::Base
   
   #validates_format_of :hours, :with => /^[\d|.|,]*$/
 
-  # This also makes updating the time entry to locked impossible
-  #validate_on_update :must_not_be_locked
-
   named_scope :on_day, lambda { |day|
     {  :conditions => ['date = ?', day ] }
   }
@@ -44,7 +41,6 @@ class TimeEntry < ActiveRecord::Base
     search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
     search << "for_user(#{user.id})" unless user.blank?
     search << "billed(#{billed})" unless billed.blank?
-    #search << "paginate(:page => #{page}, :per_page => 10, :order => 'activities.name')"
     query = search.join(".")
 
     logger.debug("Time entry Search Query: #{query}")
@@ -87,11 +83,5 @@ class TimeEntry < ActiveRecord::Base
 
   private
 
-  # Not in use
-  def must_not_be_locked
-    if changed?
-      errors.add_to_base("Updating locked time entries is not possible") if locked
-    end
-  end
-  
+
 end

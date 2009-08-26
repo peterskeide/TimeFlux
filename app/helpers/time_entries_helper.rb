@@ -3,7 +3,7 @@ module TimeEntriesHelper
   Weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  
   
   def date_label_for(object)
-    "#{object.date} (#{Weekdays[object.date.wday - 1]})"
+    "#{Weekdays[object.date.wday - 1]} #{object.date.mday}"
   end
   
   def ids_from(models)

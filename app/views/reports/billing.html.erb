@@ -1,0 +1,25 @@
+<h1>Billing Report</h1>
+
+<%= render :partial => 'sub_menu' -%>
+
+<p class="error"><%= flash[:error] %></p>
+<p class="notice"><%= flash[:notice] %></p>
+
+<hr/>
+
+<div id="billing_filter">
+  <% unless params[:type] == "advanced" %>
+    <%= render :partial => 'billing_form', :locals => { :params => params, :years => @years, :months => @months } -%>
+    <%= observe_form 'billing_form',
+      :url => {:action => 'update_billing_content'},
+      :update => 'billing_content' %>
+  <% else %>
+    <%= render :partial => 'billing_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months } -%>
+  <% end %>
+</div>
+
+<hr/>
+
+<div id="billing_content">
+  <%= render :partial => 'billing_content', :locals => { :table => @table} %>
+</div>
