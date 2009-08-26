@@ -42,12 +42,13 @@ ActionController::Routing::Routes.draw do |map|
   #map.tag_types "tag_types", :controller => "tag_types"
   map.resources :tags, :user_sessions, :time_entries, :users, :activities, :tag_types
   map.resources :time_entries, :only => :index, :collection => {:edit_multiple => :post, :destroy_multiple => :post, :update_multiple => :put, :create_multiple => :post, :grid_edit => :post}
-  map.reports "reports", :controller => "reports"
+  #map.reports "reports", :controller => "reports"
   #map.users "Users", :controller => "users"
 
   map.month "month", :controller => "month"
   map.month_list "month/:action.:format", :controller => "month"
 
+  map.reports "reports/:action.:format", :controller => "reports"
 
   # See how all your routes lay out with "rake routes"
 

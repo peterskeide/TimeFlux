@@ -57,11 +57,22 @@ class HolidaysControllerTest < ActionController::TestCase
       setup { post :set_vacation, :month => "2009-08-1", :user_id =>  users(:bob).id,
         :date => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }
       should_redirect_to("vacation page page") { "/holidays/vacation" }
-      should "create a holiday entry on the specified date" do
+      should "create vacation time_entries on the checked dates" do
         entry = TimeEntry.on_day(Date.civil(2009,8,18))
         assert_equal entry[0].activity.name, activities(:vacation).name
       end
     end
+    
+    context "remove vacation" do
+      setup do
+        TimeEntry.create(:user => users(:bob), :hours => 4, :date => Date.parse("2009-08-3"), :activity => activities(:vacation))
+        post :set_vacation, :month => "2009-08-1", :user_id =>  users(:bob).id, :date => { }
+      end
+      should_redirect_to("vacation page page") { "/holidays/vacation" }
+      should "remove unchecked vacation dates" do
+        assert TimeEntry.on_day(Date.civil(2009,8,3)).empty?
+      end
+    end  
   end
 
   context "Logged in as user Bill, trying to update bob´s vacations" do

@@ -63,9 +63,12 @@ class ReportsController < ApplicationController
     setup_calender
     setup_hours_form
     create_billing_report
-    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
-      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
+
+    ### This report is prawned, uncomment to use ruport (txt, csv support).
+#    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
+#      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
   end
+
 
   def summary
     setup_calender
@@ -169,8 +172,8 @@ class ReportsController < ApplicationController
     unless  activities.empty?
       user = User.find(params[:user]) if params[:user] && params[:user] != ""
 
-      time_entries = TimeEntry.search( @from_day, @to_day, activities, user, params[:billed] )
-      time_entries.each do |t|
+      @time_entries = TimeEntry.search( @from_day, @to_day, activities, user, params[:billed] )
+      @time_entries.each do |t|
         report_data << [ t.date, t.activity.name, t.hours, t.user.fullname, t.notes ] if t.hours > 0
       end
     end
