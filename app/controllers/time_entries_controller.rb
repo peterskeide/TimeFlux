@@ -2,12 +2,10 @@ class TimeEntriesController < ApplicationController
     
   before_filter :check_authentication, :find_user
   
-  # TODO: support input field for selecting a week
-  # TODO: errors must be linked to the actual forms triggering the error (can be multiple forms open simultaneously) 
   # TODO: support for corrections of locked/billed time entries
     
   def index 
-    @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date])
+    @date = params[:date].blank? ? Date.today.beginning_of_week : parse_date
     @week = UserWorkWeek.new(@user.id, @date)
   end
   
@@ -27,7 +25,7 @@ class TimeEntriesController < ApplicationController
       format.html {}
       format.js {
         render :update do |page|
-          page.select(".new_time_entry_link").each { |element| element.hide }          
+          page.select(".new_time_entry_link").each { |element| element.hide }
           page.insert_html :bottom, "#{@time_entry.weekday}", :partial => "new_entry"
         end 
         }
@@ -133,6 +131,14 @@ class TimeEntriesController < ApplicationController
   
   def find_user
     @user = User.find(params[:user_id])
+  end
+  
+  def parse_date
+    if params[:date].is_a? Hash
+      return Date.parse("#{params[:date][:year]}-#{params[:date][:month]}-#{params[:date][:day]}").beginning_of_week
+    else
+      return Date.parse(params[:date])
+    end
   end    
          
 end

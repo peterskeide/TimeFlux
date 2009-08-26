@@ -1,4 +1,5 @@
-require 'test_helper'
+#require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class TimeEntriesControllerTest < ActionController::TestCase
         
@@ -73,8 +74,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :time_entry, :activities, :user
       should_render_template :_new_entry
       
-      should "disable all new time entry links" do
-        # Fix this test
+      should "hide all new time entry links" do
+        assert_javascript_function_call(".new_time_entry_link", "hide")
       end
            
     end
@@ -156,6 +157,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
         assert_select_rjs :replace_html, "Monday_total" do
           assert_select "b", "10.5"
         end
+      end
+      
+      should "show all new time entry links" do
+        assert_javascript_function_call(".new_time_entry_link", "show")
       end
       
     end

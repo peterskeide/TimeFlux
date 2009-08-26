@@ -1,17 +1,19 @@
 <div id="new_entry_form">
-	<% remote_form_for [@user, @time_entry] do |f| -%>
-		<%= f.hidden_field :date %>
-		<%= f.label :activity %>
-		<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>
-		<%= f.label :hours %>
-		<%= f.text_field :hours, :size => 4 %>
-		<%= f.label :notes %>
-		<%= f.text_field :notes, :size => 20 %>
-		<%= f.submit "Submit" %>
-		<%= button_to_function "Cancel" do |page|
-			page.select(".new_time_entry_link").each { |element| element.show }
-			page.remove "new_entry_form"
-		end	%>
-	<% end -%>
-	<div id="new_time_entry_error_messages"></div>
+	<p>
+		<% remote_form_for [@user, @time_entry] do |f| -%>
+			<%= f.hidden_field :date %>
+			<%= f.label :activity %>
+			<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>
+			<%= f.label :hours %>
+			<%= f.text_field :hours, :size => 4 %>
+			<%= f.label :notes %>
+			<%= f.text_field :notes, :size => 20 %>
+			<%= f.submit "Submit" %>
+			<%= button_to_function "Cancel" do |page|
+				page.select(".new_time_entry_link").each { |element| element.show }
+				page.remove "new_entry_form"
+			end	%>
+		<% end -%>
+		<div id="new_time_entry_error_messages"></div>
+	</p>
 </div>

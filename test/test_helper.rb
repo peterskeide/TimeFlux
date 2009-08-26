@@ -46,4 +46,10 @@ class ActiveSupport::TestCase
     assert(!condition)
   end
   
+  # A bit hackish, but arguably better than not having tests for these cases
+  def assert_javascript_function_call(css_selector, function)
+    exp = "$$(\"#{css_selector}\").each(function(value, index) {\nvalue.#{function}();\n});"
+    assert(@response.body.match(Regexp.escape(exp)))
+  end
+  
 end

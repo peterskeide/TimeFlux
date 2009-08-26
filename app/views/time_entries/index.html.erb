@@ -4,8 +4,12 @@
 <p>
 	<%= link_to "Previous week", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.-(7)) %>
 	<%= link_to "Next week", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.+(7)) %>
+	<% form_tag user_time_entries_path(@user), :method => :get do %>
+		<%= select_date @date, :order => [:day, :month, :year] %>
+		<%= submit_tag "View" %>
+	<% end -%>
 </p>
-
+<hr />
 <p>
 	<% UserWorkWeek::DAYNAMES.each_with_index do |day, index| %>
 		<div id="<%= day %>">
@@ -31,6 +35,7 @@
 		</div>
 	<% end -%>
 </p>
+<hr />
 <p>
 	<% if @current_user.admin -%>
 		<% form_tag "/time_entries/change_user" do %>
