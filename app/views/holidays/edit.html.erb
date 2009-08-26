@@ -1,6 +1,6 @@
 <h1><%= @holiday.id ? 'Editing' : 'Create' %> holiday</h1>
 
-<% form_for(@holiday) do |f| %>
+<% form_for(@holiday, :url => { :action => "create" }) do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :date %><br />
@@ -33,4 +33,4 @@ function enable_disable_year() {
 enable_disable_year();
 </script>
 
-<%= link_to 'Back', holidays_path %>
+<%= link_to 'Back', :action => :index %>

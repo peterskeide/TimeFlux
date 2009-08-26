@@ -11,11 +11,11 @@
         <%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(a) %>
         <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete, :confirm => 'Really remove category?' %>
       </span>
-      <b><%= link_to a.name, edit_activity_path(a) %></b>
+      <b><%= link_to a.customer_project_name, edit_activity_path(a) %></b>
 
       <span class="status_icons">
         <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
-        <%= if a.shared then image_tag("lock_unlock.png", :title => "Shared", :alt => "shared") end %>
+        <%= if a.shared then image_tag("lock_unlock.png", :title => "Public", :alt => "public") end %>
         <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
 
       </span>

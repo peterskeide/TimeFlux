@@ -10,6 +10,11 @@
     <%= f.label :description %><br />
     <%= f.text_field :description %>
   </p>
+
+   <p>
+     <%= f.label :project %><br />
+     <%= f.collection_select(:project_id, Project.all, :id, :name) %>
+   </p>
   <p>
     <%= f.check_box :active %>
     <%= f.label :active %>
@@ -20,7 +25,7 @@
   </p>
   <p>
     <%= f.check_box :shared %>
-    <%= f.label :shared %><br />
+    <%= f.label :shared, "Public" %><br />
   </p>
   <p>
     <%= f.label :tags %><br/>

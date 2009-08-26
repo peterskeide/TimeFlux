@@ -24,8 +24,6 @@ class UsersController < ApplicationController
       flash[:notice] = "New user was created"
       redirect_to(:action => 'show', :id => @user.id) 
     else
-      flash[:notice] = 'Could not create user.'
-      @user = User.new(params[:user])
       render :action => "new"
     end
   end

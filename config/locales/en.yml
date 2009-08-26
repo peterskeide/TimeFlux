@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+
+# Uncomment to make authlogic produce an error :-)
+#no:
+#  hello: "Hei"

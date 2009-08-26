@@ -1,5 +1,6 @@
 timeflux_development:
     name: TimeFlux Development
+    shared: true
     description: Implement Open Source time management and billing application
     tags: conduct, timeflux
 
@@ -8,3 +9,14 @@ timeflux_administration:
     description: Administration of TimeFlux in production
     default_activity: true
     tags: conduct, timeflux
+
+pacman_development:
+    project: pacman
+    name: Pacman development
+    description: Development for the Pacman project
+
+vacation:
+    name: Vacation
+    shared: true
+    description: Normal vacation
+    default_activity: true

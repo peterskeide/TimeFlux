@@ -32,7 +32,6 @@ class UsersControllerTest < ActionController::TestCase
       context "a POST to :create supplying an existing username" do
         setup { post :create, :user => {:firstname => 'Ronald', :lastname => 'McDonald', :password => "something", :password_confirmation => "something", :login => users(:bob).login } }
         should_render_template :new
-        should_set_the_flash_to(/Could not create/i)
       end
 
       context "a GET to :edit" do

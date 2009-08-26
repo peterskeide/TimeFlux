@@ -1,0 +1,10 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+telenor:
+  name: Telenor
+
+nsb:
+  name: NSB
+
+cupido:
+  name: Cupido
