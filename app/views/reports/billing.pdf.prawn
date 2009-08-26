@@ -1,8 +1,3 @@
-#pdf.info = {
-#    :Title => "My title", :Author => "John Doe", :Subject => "My Subject",
-#    :Keywords => "test metadata ruby pdf dry", :Creator => "ACME Soft App",
-#    :Producer => "Prawn", :CreationDate => Time.now, :Grok => "Test Property"
-#  }
 
 
 pdf.header pdf.margin_box.top_left do
