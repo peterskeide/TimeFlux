@@ -1,7 +1,9 @@
-<%= time_entry.activity.name %>, Hours: <%= time_entry.hours %>, Notes: <%= time_entry.notes %> 
-<%= link_to_remote(image_tag("pencil.png"), { :update => "show_#{time_entry.id}", :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
-	:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %>
-<% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
-	:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "delete_form" }  do %>
-	<%= image_submit_tag "delete.png" %>
+<div id='<%= "show_#{time_entry.id}" %>' class="time_entry">						
+	<%= time_entry.activity.name %>, Hours: <%= time_entry.hours %>, Notes: <%= time_entry.notes %> 
+	<%= link_to_remote(image_tag("pencil.png"), { :update => "show_#{time_entry.id}", :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
+		:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %>
+	<% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
+		:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "delete_form" }  do %>
+		<%= image_submit_tag "delete.png" %>
 <% end -%>
+</div>
