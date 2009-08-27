@@ -65,7 +65,7 @@ class ReportsControllerTest < ActionController::TestCase
     reports.each do |report|
       context "on GET to :#{report}" do
         setup { get report }
-        should_redirect_to("Time Entries") { "/time_entries" }
+        should_redirect_to("Time Entries for Bill") { user_time_entries_url(:user_id => users(:bill).id) }
       end
     end
   end
@@ -75,7 +75,7 @@ class ReportsControllerTest < ActionController::TestCase
     reports.each do |report|
       context "on GET to :#{report}" do
         setup { get report }
-        should_redirect_to("Login page") { "/user_sessions/new" }
+        should_redirect_to("Login page") { new_user_session_url }
       end
     end    
   end

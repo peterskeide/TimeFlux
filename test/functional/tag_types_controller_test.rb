@@ -67,7 +67,7 @@ class TagTypesControllerTest < ActionController::TestCase
 
   context 'Logged in as bill on GET to :index' do
     setup { login_as(:bill); get :index }
-    should_redirect_to("Time Entries") { "/time_entries" }
+    should_redirect_to("Time Entries") { user_time_entries_url(:user_id => users(:bill).id)}
   end
 
   context "Not logged in on GET to :index" do

@@ -1,10 +1,14 @@
 require 'test_helper'
 
 class HourTypeTest < ActiveSupport::TestCase
- 
-  should "allow only one default activity" do 
+    
+  should_validate_presence_of :name
+  
+  should "reset the existing default hour type if a new hour type is flagged as default" do
     hour_type = HourType.new(:name => "Foo", :default_hour_type => true)
-    assert_false hour_type.save
+    hour_type.save
+    old_default = HourType.find(hour_types(:normaltid).id)
+    assert_false(old_default.default_hour_type)
   end
   
 end

@@ -1,4 +1,3 @@
-#require 'test_helper'
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TimeEntriesControllerTest < ActionController::TestCase
@@ -106,7 +105,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       setup { 
         post :create, :user_id => users(:bob).id, 
-        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 3.0 } 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 3.0, :hour_type_id => hour_types(:normaltid).id } 
       }
       
       should_assign_to :user
@@ -122,7 +121,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       setup {
         # Hours cannot be 0. This will trigger a validation error. 
         post :create, :user_id => users(:bob).id, 
-        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 0.0 } 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 0.0, :hour_type_id => hour_types(:normaltid).id } 
       }
        
       should_assign_to :user
@@ -136,7 +135,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       setup { 
         xhr :post, :create, :user_id => users(:bob).id, 
-        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 3.0 } 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 3.0, :hour_type_id => hour_types(:normaltid).id } 
       }
       
       should_assign_to :user
@@ -169,7 +168,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       setup {
         xhr :post, :create, :user_id => users(:bob).id, 
-        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 0.0 } 
+        :time_entry => { :date => @date.to_s, :activity_id => activities(:timeflux_development).id, :notes =>"Foo", :hours => 0.0, :hour_type_id => hour_types(:normaltid).id } 
       }
       
       should_assign_to :time_entry, :activities, :user

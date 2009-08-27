@@ -1,7 +1,9 @@
+<%= render :partial => "admin/menu" %>
+
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 
-<h1>Listing users</h1>
+<h1>Users</h1>
 
 <table>
   <tr>
@@ -19,7 +21,7 @@
     <td><%=h user.operative_status %></td>
     <td>
       <%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %>
-      <%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => user %>
+      <%= link_to image_tag("pencil.png", :title => "Edit"), edit_user_path(user) %>
       <%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => 'Really remove user?' %>
     </td>
   </tr>

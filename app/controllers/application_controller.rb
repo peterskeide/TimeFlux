@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   def check_admin
     unless current_user.admin
       flash[:notice] = "That page is for admins only"
-       redirect_to time_entries_url
+       redirect_to user_time_entries_url(current_user)
        return false
     end
   end

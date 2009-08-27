@@ -1,0 +1,14 @@
+<% form_for @hour_type do |f| %>
+	<%= f.label :name %>
+	<%= f.text_field :name %>
+	<br />
+	<%= f.label :default_hour_type %>
+	<%= f.check_box :default_hour_type %>
+	<p>
+		<%= f.submit "Save" %>
+	</p>
+	<p>
+		<%= f.error_messages %>
+	</p>
+<% end -%>
+<%= link_to "Back", hour_types_path %>

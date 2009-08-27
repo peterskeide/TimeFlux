@@ -1,0 +1,30 @@
+<%= render :partial => "admin/menu" %>
+
+<h1>Hour Types</h1>
+
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+
+<table>
+
+	<tr>
+		<th>Name</th>
+		<th>Default</th>
+		<th>Edit</th>
+		<th>Delete</th>
+	</tr>
+			
+	<% for hour_type in @hour_types do -%>
+		<tr>
+			<td><%= hour_type.name %></td>
+			<td><%= hour_type.default_hour_type %></td>
+			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_hour_type_path(hour_type) %></td>
+		    <td><%= link_to image_tag("delete.png", :title => "Delete"), hour_type_path(hour_type), :method => :delete, :confirm => 'Really remove hour type?' %></td>   		
+		</tr>
+	<% end -%>
+	
+</table>
+
+<p>
+	<%= link_to "New Hour Type", new_hour_type_path %>
+</p>
