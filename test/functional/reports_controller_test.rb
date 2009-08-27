@@ -17,11 +17,14 @@ class ReportsControllerTest < ActionController::TestCase
     end
 
     context "accessing reports," do
- 
+
+      setup { @pacman = projects(:pacman)}
+      
       reports = [
         [:user, {}, %w{ html pdf csv text} ],
         [:summary, {}, %w{ html pdf csv text} ],
-        [:billing, {}, %w{ html} ] #TODO pdf test fails??
+        [:search, {}, %w{ html pdf csv text} ],
+        [:billing, { :project => @pacman}, %w{ html } ] #TODO prawn doesn´t like being tested?
       ]
       reports.each do |report, params, formats|
         context "on GET to :#{report} with params #{params}" do

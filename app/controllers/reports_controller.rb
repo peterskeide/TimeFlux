@@ -10,22 +10,6 @@ class ReportsController < ApplicationController
     #  @reports = self.__send__(:action_methods).delete("index").sort
   end
 
-  # Currently not in use
-  def activity
-    if params[:active] then
-      activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
-    else
-      activities = Activity.find(:all)
-    end
-
-    activity_data = activities.sort.collect { |a|
-      [a.name, a.tags.join(', '), a.active]
-    }
-    @table = Ruport::Data::Table.new( :data => activity_data,
-      :column_names => ['Activity name', 'Tags', 'Active'] )
-    respond_with_formatter@table, TestController, "Activity report"
-  end
-
   def user
     setup_calender
     if params[:status] then
@@ -64,9 +48,9 @@ class ReportsController < ApplicationController
     setup_hours_form
     create_search_report
 
-    ### This report is prawned, uncomment to use ruport (txt, csv support).
-#    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
-#      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
+    ### This report is also prawned, uncomment to use ruport (txt, csv support).
+    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
+      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
   end
 
   def billing
