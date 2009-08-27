@@ -1,7 +1,11 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+normaltid:
+  name: Normaltid
+  default_hour_type: true
 
-one:
-  name: MyString
-
-two:
-  name: MyString
+overtid_50:
+  name: Overtid 50%
+  default_hour_type: false
+  
+overtid_100:
+  name: Overtid 100%
+  default_hour_type: false

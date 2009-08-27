@@ -6,6 +6,7 @@ class TimeEntry < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :activity
+  belongs_to :hour_type
   
   #validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0

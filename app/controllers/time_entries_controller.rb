@@ -1,9 +1,7 @@
 class TimeEntriesController < ApplicationController
     
   before_filter :check_authentication, :find_user
-  
-  # TODO: support for corrections of locked/billed time entries
-    
+      
   def index 
     @date = params[:date].blank? ? Date.today.beginning_of_week : parse_date
     @week = UserWorkWeek.new(@user.id, @date)
@@ -19,7 +17,7 @@ class TimeEntriesController < ApplicationController
   end
   
   def new
-    @time_entry = TimeEntry.new(:date => params[:date]) 
+    @time_entry = TimeEntry.new(:date => params[:date])
     @activities = @user.current_activities
     respond_to do |format|
       format.html {}
@@ -68,8 +66,9 @@ class TimeEntriesController < ApplicationController
   
   def edit
     @time_entry = @user.time_entries.find(params[:id])
+    @activities = @user.current_activities
     respond_to do |format|
-      format.html { @activities = @user.current_activities }
+      format.html { }
       format.js { render :partial => "edit_form" }
     end
   end

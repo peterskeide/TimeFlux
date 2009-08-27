@@ -2,7 +2,6 @@ require 'test_helper'
 
 class TimeEntryTest < ActiveSupport::TestCase
 
-
   should "not be able to delete locked entries" do
     entry = TimeEntry.find_by_locked( true )
     entry.destroy

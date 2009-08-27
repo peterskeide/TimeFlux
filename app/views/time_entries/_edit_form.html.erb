@@ -1,10 +1,13 @@
 <% remote_form_for [@user, @time_entry] do |f| %>
-	<%= @time_entry.activity.name %>,
 	<%= hidden_field_tag :user_id, params[:user_id] %>
+	<%= f.label :activity %>
+	<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>
+	<%= f.label :hour_type %>
+	<%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %>
 	<%= f.label :hours, "Hours" %>
 	<%= f.text_field :hours, :size => 4 %>
 	<%= f.label :notes, "Notes" %>
-	<%= f.text_field :notes, :size => 40 %>
+	<%= f.text_field :notes, :size => 20 %>
 	<%= f.submit "Update", :disable_with => 'Updating...' %>
 	<%= button_to_function "Cancel" do |page|
 		page.replace "show_#{@time_entry.id}", :partial => "time_entry", :object => @time_entry

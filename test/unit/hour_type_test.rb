@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class HourTypeTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+ 
+  should "allow only one default activity" do 
+    hour_type = HourType.new(:name => "Foo", :default_hour_type => true)
+    assert_false hour_type.save
   end
+  
 end

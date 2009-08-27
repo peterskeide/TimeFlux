@@ -97,7 +97,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :time_entry, :user
+      should_assign_to :time_entry, :user, :activities
       should_render_template :_edit_form
      
     end

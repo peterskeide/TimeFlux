@@ -9,6 +9,7 @@ class CreateTimeEntriesTable < ActiveRecord::Migration
       t.date :date, :null => false
       t.references :activity
       t.references :user
+      t.references :hour_type
       t.timestamps
     end
   end

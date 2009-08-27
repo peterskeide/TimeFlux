@@ -4,6 +4,8 @@
 			<%= f.hidden_field :date %>
 			<%= f.label :activity %>
 			<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>
+			<%= f.label :hour_type %>
+			<%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %>
 			<%= f.label :hours %>
 			<%= f.text_field :hours, :size => 4 %>
 			<%= f.label :notes %>

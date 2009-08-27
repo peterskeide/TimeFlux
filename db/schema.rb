@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090820113950) do
+ActiveRecord::Schema.define(:version => 20090826120614) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                                :null => false
@@ -51,6 +51,13 @@ ActiveRecord::Schema.define(:version => 20090820113950) do
     t.datetime "updated_at"
   end
 
+  create_table "hour_types", :force => true do |t|
+    t.string   "name"
+    t.boolean  "default_hour_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.integer  "customer_id"
@@ -75,14 +82,15 @@ ActiveRecord::Schema.define(:version => 20090820113950) do
   end
 
   create_table "time_entries", :force => true do |t|
-    t.float    "hours",       :default => 0.0
-    t.boolean  "billed",      :default => false
-    t.boolean  "locked",      :default => false
-    t.boolean  "counterpost", :default => false
+    t.float    "hours",        :default => 0.0
+    t.boolean  "billed",       :default => false
+    t.boolean  "locked",       :default => false
+    t.boolean  "counterpost",  :default => false
     t.string   "notes"
-    t.date     "date",                           :null => false
+    t.date     "date",                            :null => false
     t.integer  "activity_id"
     t.integer  "user_id"
+    t.integer  "hour_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

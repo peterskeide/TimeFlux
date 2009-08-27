@@ -13,6 +13,7 @@ week = date.cweek
     date: <%= date.+(i) %>
     user: <%= user %>
     activity: <%= activity %>
+    hour_type: normaltid
 <% end %>
 
 <% 
@@ -24,6 +25,7 @@ week = date.cweek
     date: <%= date.+(i) %>
     user: <%= user %>
     activity: <%= activity %>
+    hour_type: normaltid
 <% end %>
 
 <% 
@@ -35,6 +37,7 @@ week = date.cweek
     date: <%= date.+(i) %>
     user: <%= user %>
     activity: <%= activity %>
+    hour_type: normaltid
 <% end %>
 
 <%
@@ -47,5 +50,6 @@ week = date.cweek
     date: <%= date.+(i) %>
     user: <%= user %>
     activity: <%= activity %>
+    hour_type: normaltid
     locked: true
 <% end %>
