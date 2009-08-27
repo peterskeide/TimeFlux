@@ -10,7 +10,9 @@
     <th>Name</th>
     <th>Login</th>
     <th>Status</th>
-    <th>Actions</th>
+    <th>Show</th>
+	<th>Edit</th>
+	<th>Delete</th>
   </tr>
 
 <%= will_paginate @users %>
@@ -19,11 +21,9 @@
     <td><%=h user.fullname %></td>
     <td><%=h user.login %></td>
     <td><%=h user.operative_status %></td>
-    <td>
-      <%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %>
-      <%= link_to image_tag("pencil.png", :title => "Edit"), edit_user_path(user) %>
-      <%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => 'Really remove user?' %>
-    </td>
+    <td><%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %></td>
+    <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_user_path(user) %></td>
+    <td><%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => 'Really remove user?' %></td>    
   </tr>
 <% end %>
 </table>
@@ -31,6 +31,6 @@
 <br />
 <%= will_paginate @users %>
 
-<br />
-
-<%= link_to 'New user', new_user_path %>
+<p>
+	<%= link_to 'New user', new_user_path %>
+</p>

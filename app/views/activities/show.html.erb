@@ -4,7 +4,6 @@
   <%= @activity.description %>
 </p>
 
-
 <p>
    <b>Project:</b>
      <%= @activity.project ? @activity.project.name : 'none' %>
@@ -21,12 +20,5 @@
 </p>
 
 <p>
-   <b>Tags:</b> <% @activity.tags.each do |tag| %>
-      <%= image_tag "led-icons/#{tag.tag_type.icon}.png", :title => tag.tag_type.name -%><%= tag.name -%>,
-    <% end %>
-</p>
-
-<p>
-  <b>Assignments:</b>
-  <%= @activity.users.collect(&:fullname).join(", ") %>
+<%= link_to "Activity list", activities_url %>
 </p>

@@ -1,85 +1,50 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class ActivitiesControllerTest < ActionController::TestCase
 
-  context "User logged in: " do
+  context "When logged in as Bob" do
 
     setup { login_as(:bob) }
     
-    context "GET to :index without search criteria" do
+    context "GET to :index" do
 
       setup { get :index }
 
       should_respond_with :success
-      should_assign_to :tags, :activities
-      
-      should "assign empty tags array" do
-        assert assigns(:tags).empty?
-      end
+      should_assign_to :activities
+      should_render_template :index
 
     end
   
-    context "GET to :index with search criteria" do
-      
-      should "find all default activities if 'default' criteria is true" do
-        get :index, :default => "true"
-        assert_select "div.activity_header"
-        activities = assigns(:activities)
-        activities.each { |a| assert a.default_activity }
-      end
-      
-      should "find all non-default activities if 'default' criteria is false" do
-        get :index, :default => "false"
-        assert_select "div.activity_header"
-        activities = assigns(:activities)
-        activities.each { |a| assert_false a.default_activity }
-      end
-            
-      should "find all active activities if 'active' criteria is true" do
-        get :index, :active => "true"
-        assert_select "div.activity_header"
-        activities = assigns(:activities)
-        activities.each { |a| assert a.active }
-      end
-      
-      should "find all inactive activities if 'active' criteria is false" do
-        get :index, :active => "false"
-        activities = assigns(:activities)
-        activities.each { |a| assert_false a.active }
-      end
-      
-      should "find all activities if all search criteria are empty" do
-        get :index, :active => "", :default => "", :tag_id => "", :tag_type_id => ""
-        activities = assigns(:activities)
-        assert_equal(Activity.count, activities.size)
-      end
-      
-      should "find all activities for a TagType with the given tag_type_id" do
-        tag_type = tag_types(:project)
-        get :index, :tag_type_id => tag_type.id
-        activities = assigns(:activities)
-        assert_same_elements tag_type.activities, activities
-      end
-      
-      should "find all activities for a Tag with the given tag_id" do
-        tag = tags(:timeflux)
-        get :index, :tag_id => tag.id
-        activities = assigns(:activities)
-        assert_same_elements tag.activities, activities
-      end
-
-    end 
- 
     context "GET to :new" do
       
       setup { get :new }
       
       should_respond_with :success
       should_assign_to :activity
+      should_render_template :new
       
     end
     
-    context "GET to :edit" do
+    context "GET to :show for an existing activity" do
+      
+      setup { get :show, :id => activities(:timeflux_development).id }
+      
+      should_assign_to :activity
+      should_render_template :show
+      
+    end
+    
+    context "GET to :show for a non existing activity" do
+      
+      setup { get :show, :id => 4000 }
+      
+      should_set_the_flash_to "The requested resource does not exist"
+      should_redirect_to("Activities index") { activities_url }
+      
+    end
+    
+    context "GET to :edit for an existing activity" do
       
       setup do
         @id = activities(:timeflux_development).id 
@@ -87,6 +52,7 @@ class ActivitiesControllerTest < ActionController::TestCase
       end
       
       should_respond_with :success
+      should_render_template :edit
       
       should "find activity 'TimeFlux Development'" do
          assert_equal(@id, assigns(:activity).id)
@@ -94,18 +60,30 @@ class ActivitiesControllerTest < ActionController::TestCase
       
     end
     
-    context "successful POST to :create" do
+    context "GET to :edit for a non existant activity" do
+      
+      setup do
+        get :edit, :id => 4000
+      end
+      
+      should_set_the_flash_to "The requested resource does not exist"
+      should_redirect_to("Activities index") { activities_url }
+      
+    end
+    
+    context "a successful POST to :create" do
       
       setup do
         post :create, "activity"=>{"name"=>"Foobar", "default_activity"=>"0", "description"=>"Put the foo in the bar", "active"=>"1", "tag_ids" => "#{tags(:timeflux).id}"}
       end
        
       should_change "Activity.count", :by => 1            
-      should_redirect_to(":index") { activities_url }
+      should_redirect_to("Activities index") { activities_url }
+      should_set_the_flash_to "Activity created"
             
     end
     
-    context "unsuccessful POST to :create" do
+    context "an unsuccessful POST to :create" do
       
       setup do
         @original_activity_count = Activity.count
@@ -114,45 +92,61 @@ class ActivitiesControllerTest < ActionController::TestCase
       
       should_assign_to :activity      
       should_render_template :new
-      should_not_change "Activity.count"      
+      should_not_change "Activity.count"
+      should_set_the_flash_to "Unable to create activity"      
       
     end
     
-    context "PUT to :update" do
+    context "a successful PUT to :update for an existing activity" do
     
       setup do
         @activity = Activity.find_by_id(activities(:timeflux_development).id)
+        put :update, "id"=>@activity.id,
+        "activity"=>{"name"=>"TimeFlux Admin", "default_activity"=>"1", "description"=>"Administration of TimeFlux in production", "active"=>"0"}
       end
-    
-      context "successful path" do
       
-        setup do
-          put :update, "id"=>@activity.id,
-          "activity"=>{"name"=>"TimeFlux Admin", "default_activity"=>"1", "description"=>"Administration of TimeFlux in production", "active"=>"0"}        
-        end
+      should_set_the_flash_to "Activity updated"
+      should_redirect_to("Activities index") { activities_url }
       
-        should_assign_to :activity
-        should_set_the_flash_to 'Activity was successfully updated.'      
-        should_redirect_to(":index") { activities_url }
-      
+      should "update the changed attributes of the activity" do
+        @activity.reload
+        assert_equal("TimeFlux Admin", @activity.name)
       end
-    
-      context "unsuccessful path" do
-      
-        setup do
-          put :update, "id"=>@activity.id,
-          "activity"=>{"name"=>"", "default_activity"=>"1", "description"=>"Administration of TimeFlux in production", "active"=>"0"}        
-        end
-      
-        should_assign_to :activity
-        should_render_template :edit
-        should_not_change "@activity.name"
-      
-      end
-    
+        
     end
     
-    context "successful DELETE to :destroy" do
+    context "an unsuccessful PUT to :update for an existing activity" do
+    
+      setup do
+        @activity = Activity.find_by_id(activities(:timeflux_development).id)
+        put :update, "id"=>@activity.id,
+        "activity"=>{"name"=>"", "default_activity"=>"1", "description"=>"Administration of TimeFlux in production", "active"=>"0"}
+      end
+      
+      should_set_the_flash_to "Unable to update activity"
+      should_render_template :edit
+      should_assign_to :activity
+      
+      should "not update the changed attributes of the activity" do
+        @activity.reload
+        assert_equal("TimeFlux Development", @activity.name)
+      end
+        
+    end
+    
+    context "PUT to :update for an activity that does not exist" do
+    
+      setup do
+        put :update, "id"=>4000,
+        "activity"=>{"name"=>"TimeFlux Admin", "default_activity"=>"1", "description"=>"Administration of TimeFlux in production", "active"=>"0"}
+      end
+      
+      should_set_the_flash_to "The requested resource does not exist"
+      should_redirect_to("Activities index") { activities_url }
+        
+    end
+    
+    context "DELETE to :destroy for an activity with no time entries" do
       
       setup do
         @id = activities(:timeflux_administration).id
@@ -160,40 +154,24 @@ class ActivitiesControllerTest < ActionController::TestCase
       end
       
       should_change "Activity.count", :by => -1
-      should_set_the_flash_to "Activity successfully removed"      
-      should_redirect_to(":index") { activities_url }
+      should_set_the_flash_to "Activity deleted"      
+      should_redirect_to("Activities index") { activities_url }
            
     end
         
-    context "unsuccessful DELETE to :destroy for activity with no time entries" do
+    context "DELETE to :destroy for an activity with time entries" do
            
-      setup do
-        @id = activities(:timeflux_administration).id.to_s
-        activity = Activity.find_by_id @id
-        activity.stubs(:destroy).returns(false)
-        Activity.expects(:find_by_id).at_least_once.with(equals(@id)).returns(activity)
-        delete :destroy, "id"=>@id
-      end
-      
-      should_not_change "Activity.count"      
-      should_render_template :edit
-      should_assign_to :activity
-      
-    end
-    
-    context "unsuccessful DELETE to :destroy for activity with time entries" do
-      
       setup do
         @id = activities(:timeflux_development).id.to_s
         delete :destroy, "id"=>@id
       end
       
       should_not_change "Activity.count"           
-      should_render_template :edit
-      should_assign_to :activity
+      should_set_the_flash_to "Activities with time entries cannot be removed"      
+      should_redirect_to("Activities index") { activities_url }
       
     end
-            
+                
   end
 
   context "User logged out: " do

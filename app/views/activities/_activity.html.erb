@@ -1,0 +1,37 @@
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+
+<% form_for @activity do |f| -%>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+   <p>
+     <%= f.label :project %><br />
+     <%= f.collection_select(:project_id, Project.all, :id, :name) %>
+   </p>
+  <p>
+    <%= f.check_box :active %>
+    <%= f.label :active %>
+  </p>
+  <p>
+    <%= f.check_box :default_activity %>
+    <%= f.label :default_activity %>
+  </p>
+  <p>
+    <%= f.check_box :shared %>
+    <%= f.label :shared %><br />
+  </p>
+  <p>
+    <%= f.submit "Save" %>
+  </p>
+  <p>
+  	  <%= f.error_messages %>
+  </p>
+<% end %>
+
+<%= link_to "Activity list", activities_url %>

@@ -1,16 +1,33 @@
 <%= render :partial => "admin/menu" %>
 
+<h1>Activities</h1>
+
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<div id="activities_filter">
-  <%=  render :partial => 'form', :locals => { :tags => @tags, :params => params, :customer => @customer } %>
-</div>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Active</th>
+		<th>Default</th>
+		<th>Shared</th>
+		<th>Show</th>
+		<th>Edit</th>
+		<th>Delete</th>
+	</tr>
+	<% for activity in @activities do -%>
+		<tr>
+			<td><%= activity.name %></td>
+			<td><%= activity.active %></td>
+			<td><%= activity.default_activity %></td>
+			<td><%= activity.shared %></td>
+			<td><%= link_to image_tag("magnifier.png", :title => "Show"), activity_path(activity) %></td>
+			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
+		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>
+		</tr>
+	<% end -%>
+</table>
 
-
-<div id="activities">
-  <%=  render :partial => 'activities', :locals => { :activities => @activities } %>
-</div>
-
-  <hr/>
-<%= link_to "New Activity", new_activity_path %>
+<p>
+	<%= link_to "New Activity", new_activity_path %>
+</p>

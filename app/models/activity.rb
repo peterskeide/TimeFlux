@@ -82,7 +82,7 @@ class Activity < ActiveRecord::Base
 
   def verify_no_time_entries
     unless time_entries.empty?
-      errors.add("#{name} has registered hours - could not be removed")
+      errors.add("Activities with time entries cannot be removed")
       return false
     end 
   end
