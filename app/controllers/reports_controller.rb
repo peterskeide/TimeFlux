@@ -1,3 +1,4 @@
+
 require 'ruport'
 
 class ReportsController < ApplicationController
@@ -6,6 +7,23 @@ class ReportsController < ApplicationController
 
   def index
     redirect_to(:action => 'billing')
+    #  @reports = self.__send__(:action_methods).delete("index").sort
+  end
+
+  # Currently not in use
+  def activity
+    if params[:active] then
+      activities = Activity.find(:all, :conditions => { :active => params[:active] == 'true'} )
+    else
+      activities = Activity.find(:all)
+    end
+
+    activity_data = activities.sort.collect { |a|
+      [a.name, a.tags.join(', '), a.active]
+    }
+    @table = Ruport::Data::Table.new( :data => activity_data,
+      :column_names => ['Activity name', 'Tags', 'Active'] )
+    respond_with_formatter@table, TestController, "Activity report"
   end
 
   def user
@@ -41,14 +59,36 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, "User report"
   end
 
-  def billing
+  def search
     setup_calender
     setup_hours_form
-    create_billing_report
+    create_search_report
 
     ### This report is prawned, uncomment to use ruport (txt, csv support).
 #    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
 #      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
+  end
+
+  def billing
+    setup_calender
+    @from_day = @day
+    @to_day = (@day >> 1) -1
+
+    if params[:project]
+      project_keys = params[:project].keys
+      @projects = project_keys.map{|key| Project.find(key.to_i)}
+      @projects.reject { |p| TimeEntry.for_project(p).between(@from_day, @to_day).sum(:hours) == 0 }
+    else
+      @projects = []
+    end
+
+    @time_entries = TimeEntry.search( @from_day, @to_day )
+  end
+
+  def details
+    @user = User.find(params[:user])
+    @project = Project.find(params[:project])
+    @day = Date.parse(params[:day])
   end
 
 
@@ -83,20 +123,20 @@ class ReportsController < ApplicationController
     redirect_to( params.merge( {:action => 'hours'}) )
   end
 
-  def update_billing_advanced_form
+  def update_search_advanced_form
     if request.xhr?
       setup_calender
       setup_hours_form
-      render :partial => 'billing_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
+      render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
     end
   end
 
-  def update_billing_content
+  def update_search_content
     if request.xhr?
       setup_calender
       setup_hours_form
-      create_billing_report
-      render :partial => 'billing_content', :locals => { :table => @billing_report}
+      create_search_report
+      render :partial => 'search_content', :locals => { :table => @billing_report}
     end
   end
 
@@ -147,7 +187,7 @@ class ReportsController < ApplicationController
     Date.new(year,month, day > max_day ? max_day : day)
   end
 
-  def create_billing_report
+  def create_search_report
     activities = Activity.find_by_filter(params[:tag_type_id], params[:tag_id], params[:customer_id], params[:project_id])
 
     report_data = []

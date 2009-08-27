@@ -31,6 +31,10 @@ class TimeEntry < ActiveRecord::Base
   named_scope :for_activity, lambda { |*activity_ids|
     {  :conditions =>  ["activity_id IN (?)", activity_ids ] }
   }
+
+  named_scope :for_project, lambda { |project_id|
+    { :include => :activity, :conditions => ["activities.project_id = ?", project_id] }
+  }
   
   def weekday
     Date::DAYNAMES[date.wday]

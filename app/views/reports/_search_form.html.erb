@@ -1,6 +1,6 @@
 
 
-<% form_tag 'billing', :method => 'get', :id => 'billing_form' do %>
+<% form_tag 'search', :method => 'get', :id => 'search_form' do %>
   <div>
     <table>
       <tr>
@@ -15,7 +15,7 @@
      <%= hidden_field_tag 'page_break',  "1" %>
       <td><noscript><%= submit_tag "View" %></noscript></td>
       
-      <td><%= link_to "Advanced options", params.merge({:action => "billing", :type => "advanced"}) %></td></tr>
+      <td><%= link_to "Advanced options", params.merge({:action => "search", :type => "advanced"}) %></td></tr>
 
 
 

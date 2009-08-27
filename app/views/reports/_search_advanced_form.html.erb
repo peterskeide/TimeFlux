@@ -1,7 +1,7 @@
 
 
-<% form_tag 'billing', :method => 'get', :id => 'billing_form' do %>
-  <div id="billing_form">
+<% form_tag 'search', :method => 'get', :id => 'search_form' do %>
+  <div id="search_form">
     <table style="width:100%;vertical-align:top;">
       <tr>
         <th>Period</th><th>Options</th><th>Formatting</th>
@@ -107,12 +107,12 @@
     <%= hidden_field_tag 'type', "advanced" %>
     <span style="display:inline-block; width:50px;"></span>
     <%= submit_tag "Apply Filter" %>
-    <%= link_to "Simple form", params.merge({:action => "billing", :type => "simple"}) %>
+    <%= link_to "Simple form", params.merge({:action => "search", :type => "simple"}) %>
     
   </div>
 <% end -%>
 
 
-<%= observe_form 'billing_form',
-  :url => {:action => 'update_billing_advanced_form'},
-  :update => 'billing_filter' %>
+<%= observe_form 'search_form',
+  :url => {:action => 'update_search_advanced_form'},
+  :update => 'search_filter' %>
