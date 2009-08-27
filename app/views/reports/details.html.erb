@@ -3,11 +3,12 @@
 
 <%= render :partial => 'sub_menu' -%>
 
-<p>
-  User <b><%= @user.fullname %> </b><br/>
-  Project <b><%= @project.name %></b>
-</p>
-
+<table>
+  <tr><td>User     </td><td><b><%= @user.fullname %> </b></td></tr>
+  <tr><td>Project  </td><td><b><%= @project.name %></b></td></tr>
+  <tr><td>Customer </td><td><b><%= @project.customer.name %></b></td></tr>
+</table>
+<br/>
 <% time_entries = TimeEntry.for_user(@user).for_project(@project).between(@day, @day.at_end_of_month) %>
 
 <table>

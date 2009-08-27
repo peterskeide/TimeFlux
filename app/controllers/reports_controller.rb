@@ -55,6 +55,10 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
+  end
+
+  def billing_report
+    setup_calender
     @from_day = @day
     @to_day = (@day >> 1) -1
 
@@ -66,7 +70,6 @@ class ReportsController < ApplicationController
       @projects = []
     end
 
-    @time_entries = TimeEntry.search( @from_day, @to_day )
   end
 
   def details
