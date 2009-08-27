@@ -60,9 +60,9 @@
       <% end %>
     </table>
     <br/>
+    <%= hidden_field_tag 'year',  params[:year] %>
+    <%= hidden_field_tag 'month',  params[:month] %>
     <%= hidden_field_tag 'format',  "pdf" %>
     <%= submit_tag "Generate report (PDF)" %>
   <% end -%>
 </div>
-
-<%= render :partial => 'download', :locals => { :params => params, :action => 'billing' } -%>
