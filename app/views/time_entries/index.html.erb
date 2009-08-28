@@ -19,7 +19,7 @@
 					<label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>  
 					<span id='<%= "#{day}_total" %>'>
 						<b><%= @week.day_total(index) %></b>
-					 </span> 
+					 </span>
 					<%= link_to_remote("New", { :url => { :action => :new, :user_id => @user.id, :date => @date.+(index), :day => day }, :method => :get }, 
 					:href => new_user_time_entry_path(@user, :date => @date.+(index)), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %> 
 				</div>

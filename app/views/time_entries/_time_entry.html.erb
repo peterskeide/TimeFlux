@@ -1,5 +1,7 @@
 <div id='<%= "show_#{time_entry.id}" %>' class="time_entry">						
-	Activity: <%= time_entry.activity.name %>, Hour type: <%= time_entry.hour_type.name %>, Hours: <%= time_entry.hours %>, Notes: <%= time_entry.notes %> 
+	<%= link_to time_entry.activity.name, activity_path(time_entry.activity) %> 
+	<%= time_entry.hours > 1.0 ? "#{time_entry.hours} hours" : "#{time_entry.hours} hour" %> (<%= time_entry.hour_type.name %>). 
+	<i><%= time_entry.notes %></i>
 	<%= link_to_remote(image_tag("pencil.png"), { :update => "show_#{time_entry.id}", :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
 		:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %>
 	<% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
