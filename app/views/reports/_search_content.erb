@@ -6,11 +6,20 @@
     <h3><%= group.respond_to?('name') ? group.name : group.to_s %></h3>
     <table>
       <tr>
-        <th>Date</th><th>Hours</th><th>Type</th><th>Notes</th>
+        <% columns = %w{Date User Activity Hours Type Notes};
+           columns.delete(@group_by.to_s.capitalize) %>
+        <% columns.each do |column| %>
+          <th><%= column %></th>
+        <% end %>
       </tr>
       <%te.each do |entry| %>
         <tr>
-          <td><%= entry.date -%></td><td><%= entry.hours -%></td><td><%= "Normaltid" -%></td><td><%= entry.notes -%></td>
+          <% unless @group_by == :date %><td><%= entry.date -%></td><% end %>
+          <% unless @group_by == :user %><td><%= entry.user.name -%></td><% end %>
+          <% unless @group_by == :activity %><td><%= entry.activity.name -%></td><% end %>
+          <td><%= entry.hours -%></td>
+          <td><%= "Normaltid" -%></td>
+          <td><%= entry.notes -%></td>
         </tr>
       <% end %>
     </table>

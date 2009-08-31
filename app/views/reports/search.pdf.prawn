@@ -30,8 +30,8 @@ if @time_entries.empty?
   pdf.text "No hours registered."
 else
   
-  user_entries = @time_entries.group_by(&:user)
-  user_entries.each do |user, te|
+  user_entries = @time_entries.group_by(&@group_by)
+  user_entries.each do |group, te|
 
     entry_data = te.map do |t|
     [
@@ -44,7 +44,7 @@ else
   #pdf.bounding_box [0,600], :width => pdf.margin_box.width, :height => 550 do
     pdf.move_down(30)
     pdf.font "Helvetica", :style => :bold do
-      pdf.text user.name
+      pdf.text group.respond_to?('name') ? group.name : group.to_s
     end
     pdf.move_down(5)
     #pdf.stroke_horizontal_rule

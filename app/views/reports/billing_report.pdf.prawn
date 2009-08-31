@@ -41,13 +41,15 @@ end
     ]
     end
 
-  #pdf.bounding_box [0,600], :width => pdf.margin_box.width, :height => 550 do
+    if pdf.cursor < 150
+      pdf.start_new_page unless entry_data.size < 5
+    end
+
     pdf.move_down(30)
     pdf.font "Helvetica", :style => :bold do
       pdf.text user.fullname
     end
     pdf.move_down(5)
-    #pdf.stroke_horizontal_rule
 
     pdf.table entry_data,
       :row_colors => ["FFFFFF","f0f0f0"],
@@ -63,6 +65,5 @@ end
     pdf.move_down(10)
     pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
   end
-
 
 end
