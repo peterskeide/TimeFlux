@@ -23,11 +23,12 @@
 <hr/>
 
 <div id="billing_content">
-  <% form_tag 'billing_report', :method => 'get', :id => 'billing_workflow' do %>
+  <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
     <table>
       <% Customer.all.each do |customer| %>
+        <tr><td></td></tr>
         <tr>
-          <td> <b><%= customer.name %></b></td>
+          <td> <b><%= customer.name %>:</b></td>
         </tr>
         <% customer.projects.each do |project| %>
           <% total= TimeEntry.billed(false).between(@day,@day.at_end_of_month).for_project(project).sum(:hours) %>
@@ -37,7 +38,7 @@
             </tr>
           <% else %>
             <tr>
-              <td><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
+              <th colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></th>
             </tr>
 
             <% User.all.each do |user| %>
@@ -64,9 +65,8 @@
     <%= hidden_field_tag 'year',  params[:year] %>
     <%= hidden_field_tag 'month',  params[:month] %>
     <%= hidden_field_tag 'format',  "pdf" %>
-    <%= submit_tag "Lock data", :name => 'lock' %>
     <%= submit_tag "Report (PDF)", :name => 'report' %>
-    <%= submit_tag "Report + Mark as billed", :name => 'bill' %>
+    <%= submit_tag "Mark as billed", :name => 'bill' %>
   <% end -%>
 
 </td></tr></table>

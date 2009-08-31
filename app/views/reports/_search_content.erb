@@ -1,22 +1,42 @@
-<%= render_table table -%>
+<%#= render_table table -%>
+<% if @time_entries != nil %>
 
-<% if ! is_empty? table %>
+<table>
+    <tr>
+    <th>Date</th><th>Hours</th><th>Type</th><th>Notes</th>
+  </tr>
+<%@time_entries.each do |entry| %>
+  <tr>
+    <td><%= entry.date -%></td><td><%= entry.hours -%></td><td><%= "Normaltid" -%></td><td><%= entry.notes -%></td>
+  </tr>
+<% end %>
+</table>
+
+
   <br/>
 
-  <table><tr><td>
+  <table><tr>
+
+  <td><%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => 'search'})%>  </td>
+  <td>
   <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
     <%= render_hidden_hours_tags(params) %>
-    <%= hidden_field_tag 'mark_as',  'locked' %>
-    <%= submit_tag 'Mark as locked' %>
-  <% end %>
-
-  </td><td><% form_tag :action => 'mark_time_entries', :method => 'post' do %>
-    <%= render_hidden_hours_tags(params) %>
     <%= hidden_field_tag 'mark_as',  'billed' %>
+    <%= hidden_field_tag 'value',  'true' %>
     <%= submit_tag 'Mark as billed' %>
   <% end %>
+
+
+  </td><td>
+  <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+    <%= render_hidden_hours_tags(params) %>
+    <%= hidden_field_tag 'mark_as',  'billed' %>
+    <%= hidden_field_tag 'value',  'false' %>
+    <%= submit_tag 'Change to unbilled', :confirm => 'Really mark selected entries as unbilled?' %>
+  <% end %>
+
   </td></tr></table>
-
-<%= render :partial => 'download', :locals => { :params => params, :action => 'search' } -%>
-
+<% else %>
+  <p>No hits to display</p>
 <% end %>
+

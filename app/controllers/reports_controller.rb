@@ -43,21 +43,11 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, "User report"
   end
 
-  def search
-    setup_calender
-    setup_hours_form
-    create_search_report
-
-    ### This report is also prawned, uncomment to use ruport (txt, csv support).
-    respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
-      {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
-  end
-
   def billing
     setup_calender
   end
 
-  def billing_report
+  def billing_action
     setup_calender
     @from_day = @day
     @to_day = (@day >> 1) -1
@@ -68,6 +58,16 @@ class ReportsController < ApplicationController
       @projects.reject { |p| TimeEntry.for_project(p).between(@from_day, @to_day).sum(:hours) == 0 }
     else
       @projects = []
+    end
+
+    if params[:report]
+      #prawnto :inline=>true, :file_name => "file.pdf"   #TODO: prawnto and rename view?
+      render :billing_report, :layout=>false
+    else
+      @projects.each do |p|
+        TimeEntry.mark_as_billed( TimeEntry.for_project(p).between(@from_day, @to_day) , true)
+      end
+      redirect_to params.merge( :action => 'billing', :format => 'html' )
     end
 
   end
@@ -95,19 +95,44 @@ class ReportsController < ApplicationController
     respond_with_formatter table, TestController, @activities
   end
 
+  def search
+    setup_calender
+    setup_hours_form
+    create_search_report
+
+    @parameters = []
+    @parameters << ["Periode","#{@from_day} to #{@to_day}"]
+    @parameters << ["Bruker",@user.fullname] if @user
+    @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] != ""
+    @parameters << ["Kunde",@customer.name] if @customer
+    @parameters << ["Prosjekt",@project.name]  if @project
+    @parameters << ["Kategori",@tag_type.name] if @tag_type
+    @parameters << ["Tag",@tag.name]      if @tag
+
+    @table = @billing_report
+    @title = "Search report"
+
+
+    #### This report is also prawned, uncomment to use ruport (txt, csv support).
+    #respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
+    #  {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
+  end
+
   def mark_time_entries
     if params[:method] == 'post'
       setup_calender
-      activities = setup_hours_form
-      user = User.find(params[:user]) if params[:user] && params[:user] != ""
-      time_entries = TimeEntry.search(@from_day, @to_day, activities, user, params[:billed])
+      setup_hours_form
+      create_search_report
+
+      value = (params[:value] && params[:value] == "true") ? true : false
+
       if params[:mark_as] == 'billed'
-        TimeEntry.mark_as_billed(time_entries)
+        TimeEntry.mark_as_billed(@time_entries, value)
       elsif params[:mark_as] == 'locked'
-        TimeEntry.mark_as_locked(time_entries)
+        TimeEntry.mark_as_locked(@time_entries, value)
       end
     end
-    redirect_to( params.merge( {:action => 'hours'}) )
+    redirect_to( params.merge( {:action => 'search'}) )
   end
 
   def update_search_advanced_form
@@ -153,20 +178,12 @@ class ReportsController < ApplicationController
       @to_day = (@day >> 1) -1
     end
 
-    if params[:tag_type_id] && params[:tag_type_id] != ""
-      @tag_type = Activity.for_tag_type( TagType.find(params[:tag_type_id]) )
-    elsif params[:tag] && params[:tag] != ""
-      @tag = Tag.find(params[:tag])
-    end
+    @customer = param_instance(:customer)
+    @project = param_instance(:project)    
+    @tag_type = param_instance(:tag_type)
+    @tag = param_instance(:tag)
+    @user = param_instance(:user)
 
-    if params[:customer_id] && params[:customer_id] != ""
-      @customer = Customer.find(params[:customer_id])
-    end
-
-    if params[:project_id] && params[:project_id] != ""
-      @project = Project.find(params[:project_id].to_i)
-    end
-  
   end
   
   def set_date(year, month, day)
@@ -175,13 +192,12 @@ class ReportsController < ApplicationController
   end
 
   def create_search_report
-    activities = Activity.find_by_filter(params[:tag_type_id], params[:tag_id], params[:customer_id], params[:project_id])
+    activities = Activity.find_by_filter(params[:tag_type], params[:tag], params[:customer], params[:project])
 
     report_data = []
     unless  activities.empty?
-      user = User.find(params[:user]) if params[:user] && params[:user] != ""
 
-      @time_entries = TimeEntry.search( @from_day, @to_day, activities, user, params[:billed] )
+      @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
       @time_entries.each do |t|
         report_data << [ t.date, t.activity.name, t.hours, t.user.fullname, t.notes ] if t.hours > 0
       end
@@ -194,4 +210,7 @@ class ReportsController < ApplicationController
     @page_break = params[:page_break] ? true : false
   end
 
+  def param_instance(symbol)
+    Kernel.const_get(symbol.to_s.camelcase).find(params[symbol])  if params[symbol] && params[symbol] != ""
+  end
 end

@@ -8,7 +8,7 @@
 
         <td><%= select_tag "month", options_from_collection_for_select( months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
 
-        <td><%= select_tag "customer_id",  empty_option("All") + options_from_collection_for_select( Customer.all, :id, :name, @customer.try("id") ) %></td>
+        <td><%= select_tag "customer",  empty_option("All") + options_from_collection_for_select( Customer.all, :id, :name, @customer.try("id") ) %></td>
 
      <%= hidden_field_tag 'grouping',  "Consultant" %>
      <%= hidden_field_tag 'sort_by',  "Date" %>
