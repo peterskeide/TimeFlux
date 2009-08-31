@@ -103,11 +103,11 @@ class ReportsController < ApplicationController
     @parameters = []
     @parameters << ["Periode","#{@from_day} to #{@to_day}"]
     @parameters << ["Bruker",@user.fullname] if @user
-    @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] != ""
+    @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
     @parameters << ["Kunde",@customer.name] if @customer
     @parameters << ["Prosjekt",@project.name]  if @project
     @parameters << ["Kategori",@tag_type.name] if @tag_type
-    @parameters << ["Tag",@tag.name]      if @tag
+    @parameters << ["Tag",@tag.name] if @tag
 
     @table = @billing_report
     @title = "Search report"
@@ -167,6 +167,23 @@ class ReportsController < ApplicationController
     return table
   end
 
+
+  def setup_calender
+    if params[:calender]
+      year = params[:calender]["date(1i)"].to_i
+      month = params[:calender]["date(2i)"].to_i
+    else
+      year = params[:year].to_i if params[:year] && params[:year] != ""
+      month = params[:month].to_i if params[:month] && params[:month] != ""
+    end
+    @day = Date.new(year ? year : Date.today.year, month ? month : Date.today.month, 1)
+
+    @years = (2007..Date.today.year).to_a.reverse
+    @months = []
+    @month_names = %w{ January Febrary March April May June July August September October November December}
+    @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
+  end
+
   def setup_hours_form
     params[:month] ||= @day.month
     
@@ -208,6 +225,8 @@ class ReportsController < ApplicationController
 
     @date_range = "Between #{@from_day} and #{@to_day}"
     @page_break = params[:page_break] ? true : false
+    @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
+    @group_by ||= :user
   end
 
   def param_instance(symbol)

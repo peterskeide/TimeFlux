@@ -84,16 +84,8 @@
           <td><table>
 
             <tr>
-              <td><%= label_tag "grouping","Group by" %></td>
-              <td><%= select_tag "grouping", empty_option("No grouping") + options_for_select(['Consultant','Activity','Date'], params[:grouping]) %></td>
-            </tr>
-            <tr>
-              <td><%= label_tag "sort by" %></td>
-              <td><%= select_tag "sort_by", options_for_select(['Date','Consultant - Date','Activity - Date'], params[:sort_by]) %></td>
-            </tr>
-            <tr>
-              <td><%= label_tag "page_break","Pagebreak in PDF" %></td>
-              <td><%= check_box_tag "page_break", 1, params[:page_break] %></td>
+              <td><%= label_tag "group_by","Group by" %></td>
+              <td><%= select_tag "group_by", options_for_select( [['Consultant','user'],['Activity','activity'],['Date','date']], params[:group_by]) %></td>
             </tr>
             <tr>
               <td><%= label_tag "remove_comments","Remove comments" %></td>
@@ -107,7 +99,7 @@
     <%= hidden_field_tag 'type', "advanced" %>
     <span style="display:inline-block; width:50px;"></span>
     <%= submit_tag "Apply Filter" %>
-    <%= link_to "Simple form", params.merge({:action => "search", :type => "simple"}) %>
+    <%= link_to "Simple form", :action => "search" %>
     
   </div>
 <% end -%>

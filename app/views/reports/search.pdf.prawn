@@ -25,26 +25,44 @@ pdf.font "Helvetica" do
   pdf.move_down(11)
 end
 
-entries = @time_entries.map do |t|
-  [
-    t.date,
-    t.hours,
-    "Normaltid",
-    t.notes
-  ]
+if @time_entries.empty?
+  pdf.move_down(40)
+  pdf.text "No hours registered."
+else
+  
+  user_entries = @time_entries.group_by(&:user)
+  user_entries.each do |user, te|
+
+    entry_data = te.map do |t|
+    [
+      t.date,
+      t.hours,
+      t.notes
+    ]
+    end
+
+  #pdf.bounding_box [0,600], :width => pdf.margin_box.width, :height => 550 do
+    pdf.move_down(30)
+    pdf.font "Helvetica", :style => :bold do
+      pdf.text user.name
+    end
+    pdf.move_down(5)
+    #pdf.stroke_horizontal_rule
+
+    pdf.table entry_data,
+      :row_colors => ["FFFFFF","f0f0f0"],
+      :headers => ['Dato', 'Timer', 'Kommentar' ],
+      :align => { 0 => :left, 1 => :center},
+      :column_widths => {0 => 70, 1 => 40},
+      :width      => pdf.margin_box.width,
+      :border_style => :underline_header,
+      :font_size => 10,
+      :padding => 2
+
+    pdf.stroke_horizontal_rule
+    pdf.move_down(10)
+    pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
+  end
+
 end
-
-pdf.table entries,
-  :row_colors => ["FFFFFF","f0f0f0"],
-  :headers => ['Dato','Timer', 'Type', 'Kommentar' ],
-  :align => { 0 => :left, 1 => :center},
-  :column_widths => {0 => 70, 1 => 40, 2 => 70},
-  :width      => pdf.margin_box.width,
-  :border_style => :underline_header,
-  :font_size => 10,
-  :padding => 2
-
-pdf.stroke_horizontal_rule
-pdf.move_down(10)
-pdf.text "Total hours: #{@time_entries.sum(:hours)}", :align => :right
 

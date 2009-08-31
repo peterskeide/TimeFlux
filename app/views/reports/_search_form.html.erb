@@ -15,9 +15,7 @@
      <%= hidden_field_tag 'page_break',  "1" %>
       <td><noscript><%= submit_tag "View" %></noscript></td>
       
-      <td><%= link_to "Advanced options", params.merge({:action => "search", :type => "advanced"}) %></td></tr>
-
-
+      <td><%= link_to "Advanced options", :action => "search", :type => "advanced" %></td></tr>
 
     </table>
   </div>

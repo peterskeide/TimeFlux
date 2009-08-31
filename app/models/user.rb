@@ -31,6 +31,10 @@ class User < ActiveRecord::Base
     "#{self.firstname} #{self.lastname}"
   end
 
+  def name
+    self.fullname
+  end
+
   def self.status_values
     %w(active retired m.i.a.)
   end
