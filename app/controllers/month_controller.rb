@@ -106,6 +106,21 @@ class MonthController < ApplicationController
                      :order => [:name] )
   end
 
+  def setup_calender
+
+    if params[:calender]
+      @day = Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i)
+    else
+      relevant_date = Date.today - 7
+      @day = relevant_date.at_beginning_of_month
+    end
+
+    @years = (2007..Date.today.year).to_a.reverse
+    @months = []
+    @month_names = %w{ January Febrary March April May June July August September October November December}
+    @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
+  end
+
   def setup_month_view
     
     @last_in_month = (@day >> 1) -1

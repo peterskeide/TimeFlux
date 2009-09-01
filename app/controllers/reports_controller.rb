@@ -176,7 +176,8 @@ class ReportsController < ApplicationController
       year = params[:year].to_i if params[:year] && params[:year] != ""
       month = params[:month].to_i if params[:month] && params[:month] != ""
     end
-    @day = Date.new(year ? year : Date.today.year, month ? month : Date.today.month, 1)
+    relevant_date = Date.today - 7
+    @day = Date.new(year ? year : relevant_date.year, month ? month : relevant_date.month, 1)
 
     @years = (2007..Date.today.year).to_a.reverse
     @months = []

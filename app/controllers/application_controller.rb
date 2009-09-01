@@ -36,22 +36,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #Used in month and report controller
-  def setup_calender
 
-    if params[:calender]
-      puts "Setting day to #{params[:calender]["date(1i)"]}, #{params[:calender]["date(2i)"]}, 1"
-      @day = Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i)
-    elsif params[:month] && params[:month] != ""
-      @day = Date.new(params[:year].to_i, params[:month].to_i, 1)
-    end
-    @day ||= Date.today.at_beginning_of_month
-
-    @years = (2007..Date.today.year).to_a.reverse
-    @months = []
-    @month_names = %w{ January Febrary March April May June July August September October November December}
-    @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
-  end
 
   #Used in month and report controller
   def respond_with_formatter(table, formatter, title="report", pdf_options={})
