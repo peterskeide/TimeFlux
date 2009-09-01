@@ -6,7 +6,7 @@
 	<td width="5%"><%= link_to_remote(image_tag("pencil.png"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
 		:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %></td>
 	<td width="5%"><% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
-		:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "delete_form" }  do %>
+		:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "inline_form" }  do %>
 		<%= image_submit_tag "delete.png" %>
 		<% end -%></td>
 </tr>

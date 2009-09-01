@@ -1,14 +1,17 @@
 <h1>Entries for week <%= @date.cweek %> (<%= User.find(params[:user_id]).fullname %>)</h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
-<p>
+<span>
 	<%= link_to "Previous week", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.-(7)) %>
+	|
 	<%= link_to "Next week", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.+(7)) %>
-	<% form_tag user_time_entries_path(@user), :method => :get do %>
+	|
+	<% form_tag user_time_entries_path(@user), :method => :get, :class => "inline_form" do -%>
 		<%= select_date @date, :order => [:day, :month, :year] %>
 		<%= submit_tag "View" %>
 	<% end -%>
-</p>
+</span>
+<br /><br />
 <hr />
 <p>
 	<% 7.times do |index| %>

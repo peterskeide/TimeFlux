@@ -84,11 +84,11 @@ a img {
 	text-align: center;
 }
 
-.delete_form {
+.inline_form {
 	display: inline;
 }
 
-.delete_form div {
+.inline_form div {
 	display: inline;
 }
 
