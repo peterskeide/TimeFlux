@@ -81,7 +81,7 @@ class HolidaysController < ApplicationController
       flash[:error] = "No permission to perform this task"
     end
 
-    redirect_to :action => :vacation
+    redirect_to :action => :vacation, :date => month
   end
 
 end

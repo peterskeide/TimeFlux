@@ -29,7 +29,7 @@ class ReportsController < ApplicationController
     end
 
     @expected = @weeks.collect do |day|
-      Holiday.expected_between( day, (day + 5) )
+      Holiday.expected_hours_between( day, (day + 5) )
     end
     user_data << ["Expected"] + @expected
 
@@ -70,6 +70,19 @@ class ReportsController < ApplicationController
       redirect_to params.merge( :action => 'billing', :format => 'html' )
     end
 
+  end
+
+  def update_billing_content
+    if request.xhr?
+      setup_calender
+      render :partial => 'billing_content', :locals => { :day => @day}
+    end
+  end
+
+  def calender
+    @user = User.find(params[:user])
+    @day = Date.parse(params[:day])
+    @activity_summary = create_activity_summary(@day, @user)
   end
 
   def details
@@ -165,24 +178,6 @@ class ReportsController < ApplicationController
       return Grouping(table,:by => params[:grouping])
     end
     return table
-  end
-
-
-  def setup_calender
-    if params[:calender]
-      year = params[:calender]["date(1i)"].to_i
-      month = params[:calender]["date(2i)"].to_i
-    else
-      year = params[:year].to_i if params[:year] && params[:year] != ""
-      month = params[:month].to_i if params[:month] && params[:month] != ""
-    end
-    relevant_date = Date.today - 7
-    @day = Date.new(year ? year : relevant_date.year, month ? month : relevant_date.month, 1)
-
-    @years = (2007..Date.today.year).to_a.reverse
-    @months = []
-    @month_names = %w{ January Febrary March April May June July August September October November December}
-    @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
   end
 
   def setup_hours_form

@@ -4,4 +4,25 @@
   Customer: <%= @project.customer.name %>
 </p>
 
+<hr/>
+
+  Activities:
+  <ul>
+  <% @project.activities.each do |activity|  %>
+    <li><%= activity.name %></li>
+  <% end %>
+</ul>
+
+
+  <hr/>
+  <p>
+    <% form_tag 'add_activity', :id => 'add_activity_form' do %>
+      <%= select_tag "activity", options_for_select(%w{Utvikling Rådgivning Testing Møtevirksomhet Reiser}, nil) %>
+    <%= submit_tag "Add activity" %>
+    <% end %>
+  </p>
+
+
+
+
 <%= link_to 'Back', projects_path %>

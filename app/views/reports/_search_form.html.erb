@@ -10,9 +10,7 @@
 
         <td><%= select_tag "customer",  empty_option("All") + options_from_collection_for_select( Customer.all, :id, :name, @customer.try("id") ) %></td>
 
-     <%= hidden_field_tag 'grouping',  "Consultant" %>
-     <%= hidden_field_tag 'sort_by',  "Date" %>
-     <%= hidden_field_tag 'page_break',  "1" %>
+      <%= hidden_field_tag 'group_by',  "user" %>
       <td><noscript><%= submit_tag "View" %></noscript></td>
       
       <td><%= link_to "Advanced options", :action => "search", :type => "advanced" %></td></tr>

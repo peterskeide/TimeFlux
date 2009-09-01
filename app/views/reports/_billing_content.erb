@@ -1,0 +1,53 @@
+<% expected_days = Holiday.expected_days_between(day,day.at_end_of_month) %>
+<% expected_hours = Holiday.expected_hours_between(day,day.at_end_of_month) %>
+
+  <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
+    <table>
+      <% Customer.all.each do |customer| %>
+        <tr><td></td></tr>
+        <tr>
+          <td> <b><%= customer.name %>:</b></td>
+        </tr>
+        <% customer.projects.each do |project| %>
+          <% total= TimeEntry.billed(false).between(day,day.at_end_of_month).for_project(project).sum(:hours) %>
+          <% if total == 0 %>
+            <tr>
+              <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
+            </tr>
+          <% else %>
+            <tr>
+              <th colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></th>
+            </tr>
+
+            <% User.all.each do |user| %>
+              <% hours = TimeEntry.billed(false).between(day,day.at_end_of_month).for_project(project).for_user(user).sum(:hours) %>
+              <% if hours > 0 %>
+                <tr>
+                  <td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="<%= user.status_for_month(day, expected_days, expected_hours)%>">
+                      <%= link_to user.name, :action => 'calender', :user => user, :day => day%></span>
+                  </td>
+                  <td> normaltid</td>
+                  <td><%= hours %> t </td>
+                  <td><%= link_to "Details", :action => 'details', :project => project, :user => user, :day => day %></td>
+                </tr>
+              <% end %>
+
+            <% end %>
+            <tr>
+              <td></td><td><b>total</b></td><td><b><%= total %> t</b></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </table>
+
+    <br/>
+    <hr/>
+    <%= hidden_field_tag 'year',  params[:year] %>
+    <%= hidden_field_tag 'month',  params[:month] %>
+    <%= hidden_field_tag 'format',  "pdf" %>
+    <%= submit_tag "Report (PDF)", :name => 'report' %>
+    <%= submit_tag "Mark as billed", :name => 'bill' %>
+  <% end -%>

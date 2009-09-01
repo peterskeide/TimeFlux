@@ -6,7 +6,7 @@
     <h3><%= group.respond_to?('name') ? group.name : group.to_s %></h3>
     <table>
       <tr>
-        <% columns = %w{Date User Activity Hours Type Notes};
+        <% columns = %w{Date User Activity Type Billed Hours Notes};
            columns.delete(@group_by.to_s.capitalize) %>
         <% columns.each do |column| %>
           <th><%= column %></th>
@@ -17,8 +17,9 @@
           <% unless @group_by == :date %><td><%= entry.date -%></td><% end %>
           <% unless @group_by == :user %><td><%= entry.user.name -%></td><% end %>
           <% unless @group_by == :activity %><td><%= entry.activity.name -%></td><% end %>
-          <td><%= entry.hours -%></td>
           <td><%= "Normaltid" -%></td>
+          <td><%= entry.billed -%></td>
+          <td><%= entry.hours -%></td>
           <td><%= entry.notes -%></td>
         </tr>
       <% end %>

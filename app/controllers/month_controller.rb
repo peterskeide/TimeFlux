@@ -9,14 +9,15 @@ class MonthController < ApplicationController
 
   def month
     setup_calender
-    setup_month_view
+    @user=current_user_session.user
+    @activities_summary = create_activity_summary(@day, @user)
   end
 
 
   def listing
     setup_calender
-    setup_month_view
-    create_listing
+    @user=current_user_session.user
+    @table = create_listing(@day)
     respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
   end
 
@@ -42,30 +43,29 @@ class MonthController < ApplicationController
 
   def update_listing
     @day = Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i,1)
-    setup_month_view
-    create_listing
-    render :partial => 'listing_content', :locals => { :table => @table, :params => params }
+    @user = current_user_session.user
+    render :partial => 'listing_content', :locals => { :table => create_listing(@day,@user), :params => params }
   end
 
   def calender
     setup_calender
-    setup_month_view
+    @user=current_user_session.user
+    @activities_summary = create_activity_summary(@day,@user)
   end
 
   def update_calender
 
     day = Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i,1)
-    last_in_month = (day >> 1) -1
-    user = current_user_session.user
+    @user = current_user_session.user
     activities = []
-    user.time_entries.between(day,last_in_month).each do |t|
+    @user.time_entries.between(day,day.at_end_of_month).each do |t|
       activities << t.activity unless activities.include? t.activity
     end
     activities_summary = activities.collect do |activity|
       { :name => activity.name,
-        :hours => activity.time_entries.for_user(user).between(day,last_in_month).sum(:hours) }
+        :hours => activity.time_entries.for_user(@user).between(day,day.at_end_of_month).sum(:hours) }
     end
-    render :partial => 'calender_content', :locals => { :day => day, :user => user, :activities_summary => activities_summary }
+    render :partial => 'calender_content', :locals => { :day => day, :user => @user, :activities_summary => activities_summary }
   end
 
   private
@@ -87,9 +87,9 @@ class MonthController < ApplicationController
   end
 
 
-  def create_listing
+  def create_listing(day, user=current_user_session.user)
         time_data = []
-    @user.time_entries.between(@day,(@day >> 1) -1).sort.each do |t|
+    user.time_entries.between(day,(day >> 1) -1).sort.each do |t|
       time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
     end
 
@@ -97,42 +97,9 @@ class MonthController < ApplicationController
       :column_names => ["Activity name","Hours","Date","Notes"] )
     table.sort_rows_by!(["Date"])
 
-    activities_data = @activities_summary.collect { |a| [a[:name],a[:hours]] }
-    activities_data << ['Sum',@activities_summary.collect { |i| i[:hours] }.sum]
-
-    @table = Grouping(table,:by => "Activity name", :order => :name)
-
-    @summary = @table.summary(:name, :hours => lambda { |g| g.sigma(:Hours) },
-                     :order => [:name] )
+    return Grouping(table,:by => "Activity name", :order => :name)
   end
 
-  def setup_calender
 
-    if params[:calender]
-      @day = Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i)
-    else
-      relevant_date = Date.today - 7
-      @day = relevant_date.at_beginning_of_month
-    end
-
-    @years = (2007..Date.today.year).to_a.reverse
-    @months = []
-    @month_names = %w{ January Febrary March April May June July August September October November December}
-    @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
-  end
-
-  def setup_month_view
-    
-    @last_in_month = (@day >> 1) -1
-    @user = current_user_session.user
-    @activities = []
-    @user.time_entries.between(@day,@last_in_month).each do |t|
-      @activities << t.activity unless @activities.include? t.activity
-    end
-    @activities_summary = @activities.collect do |activity|
-      { :name => activity.name,
-        :hours => activity.time_entries.for_user(@user).between(@day,@last_in_month).sum(:hours) }
-    end
-  end
 
 end
