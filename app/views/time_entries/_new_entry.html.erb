@@ -18,7 +18,7 @@
 				<td><%= f.submit "Submit" %></td>
 				<td><%= button_to_function "Cancel" do |page|
 					page.select(".new_time_entry_link").each { |element| element.show }
-					page.remove "new_time_entry"
+					page.replace_html "#{@time_entry.weekday}_time_entry_form", ""
 				end	%></td>
 		 	</tr>
 			<tr>
