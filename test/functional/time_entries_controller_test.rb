@@ -16,7 +16,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :date, :week, :user
+      should_assign_to :date, :user
       should_render_template :index
                 
     end
@@ -27,7 +27,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :week, :user
+      should_assign_to :user
       should_render_template :index
       
       should "assign date from previous week" do
@@ -43,7 +43,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :success
       should_not_set_the_flash
-      should_assign_to :week, :user
+      should_assign_to :user
       should_render_template :index
       
       should "assign date from next week" do
@@ -97,7 +97,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :time_entry, :user, :activities
-      should_render_template :_edit_form
+      should_render_template :_new_entry
      
     end
         
@@ -142,14 +142,12 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_change "TimeEntry.count", :by => 1      
       should_respond_with :success
       
-      should "remove new_entry form" do
-        assert_select_rjs :remove, "new_entry_form"
+      should "hide form for new time entry" do
+        assert_select_rjs :remove, "new_time_entry"
       end
       
-      should "display the new time entry" do
-        assert_select_rjs :insert_html, :bottom, "Monday_time_entries" do
-          assert_select ".time_entry", 1
-        end
+      should "refresh time entries for the relevant day" do
+        assert_select_rjs :replace_html, "Monday_time_entries_container"
       end
       
       should "update the day total hours field" do 
@@ -281,8 +279,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_change "TimeEntry.count", :by => -1
       
-      should "remove the deleted time entry from the page" do
-        assert_select_rjs :remove, "show_#{time_entries(:bob_timeflux_development_26_monday).id}"
+      should "refresh time entries for the relevant day" do
+        assert_select_rjs :replace_html, "Monday_time_entries_container"
       end
       
       should "update the day total hours field" do 

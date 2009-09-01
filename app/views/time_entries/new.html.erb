@@ -3,7 +3,7 @@
 	<%= f.hidden_field :date %>
 	<p>
 		<%= f.label :activity %>
-		<%= collection_select(:time_entry, :activity_id, @activities, :id, :name) %>
+		<%= collection_select(:time_entry, :activity_id, @activities, :id, :customer_project_name) %>
 	</p>
 	<p>
     <%= f.label :hour_type %>

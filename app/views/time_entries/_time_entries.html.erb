@@ -1,0 +1,15 @@
+<% unless time_entries.empty? %>
+	<table width="100%" id='<%= "#{day}_time_entries" %>'>
+		<tr>
+			<th>Activity</th>
+			<th>Hour Type</th>
+			<th>Hours</th>
+			<th>Notes</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr> 
+		<% time_entries.each do |te| %>
+			<%= render :partial => "time_entry", :object => te %>
+		<% end -%>
+	</table>
+<% end -%>

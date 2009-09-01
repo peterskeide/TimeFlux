@@ -11,26 +11,24 @@
 </p>
 <hr />
 <p>
-	<% UserWorkWeek::DAYNAMES.each_with_index do |day, index| %>
+	<% 7.times do |index| %>
+		<% day = TimeEntriesController::WEEKDAYS[index] %>
 		<div id="<%= day %>">
 			<p>
 				<div id='<%= "#{day}_header" %>'>
 					<b><%= "#{day} (#{@date.+(index)})" %></b>
 					<label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>  
 					<span id='<%= "#{day}_total" %>'>
-						<b><%= @week.day_total(index) %></b>
+						<b><%= TimeEntry.sum_hours_for_user_and_date(@user.id, @date.+(index)) %></b>
 					 </span>
 					<%= link_to_remote("New", { :url => { :action => :new, :user_id => @user.id, :date => @date.+(index), :day => day }, :method => :get }, 
 					:href => new_user_time_entry_path(@user, :date => @date.+(index)), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %> 
 				</div>
-			
-				<p> 
-					<div id='<%= "#{day}_time_entries" %>'> 
-						<% @week.entries_for_day(index).each do |te| %>
-							<%= render :partial => "time_entry", :object => te %>
-						<% end -%>
-					</div>
-				</p> 
+			    <br />
+			<div id='<%= "#{day}_time_entry_form"%>'></div>
+			<div id='<%= "#{day}_time_entries_container"%>'>
+ 				<%= render :partial => "time_entries", :locals => { :time_entries => TimeEntry.find_all_by_user_id_and_date(@user.id, @date.+(index)), :day => day } %>
+			</div>
 			</p>
 		</div>
 	<% end -%>

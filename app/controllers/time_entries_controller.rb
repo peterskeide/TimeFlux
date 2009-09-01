@@ -1,10 +1,11 @@
 class TimeEntriesController < ApplicationController
     
   before_filter :check_authentication, :find_user
-      
+  
+  WEEKDAYS = %w{ Monday Tuesday Wednesday Thursday Friday Saturday Sunday }
+       
   def index 
     @date = params[:date].blank? ? Date.today.beginning_of_week : parse_date
-    @week = UserWorkWeek.new(@user.id, @date)
   end
   
   def change_user
@@ -24,7 +25,7 @@ class TimeEntriesController < ApplicationController
       format.js {
         render :update do |page|
           page.select(".new_time_entry_link").each { |element| element.hide }
-          page.insert_html :bottom, "#{@time_entry.weekday}", :partial => "new_entry"
+          page.replace_html "#{@time_entry.weekday}_time_entry_form", :partial => "new_entry"
         end 
         }
     end
@@ -41,9 +42,10 @@ class TimeEntriesController < ApplicationController
         format.js {
           render :update do |page|
             page.select(".new_time_entry_link").each { |element| element.show }
-            page.remove "new_entry_form"
+            page.remove "new_time_entry"
             day = @time_entry.weekday
-            page.insert_html :bottom, "#{day}_time_entries", :partial => "time_entry", :object => @time_entry
+            time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
+            page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
             page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
           end
         }
@@ -69,7 +71,11 @@ class TimeEntriesController < ApplicationController
     @activities = @user.current_activities
     respond_to do |format|
       format.html { }
-      format.js { render :partial => "edit_form" }
+      format.js { 
+        render :update do |page|
+          page.replace_html "#{@time_entry.weekday}_time_entry_form", :partial => "new_entry"
+        end 
+      }
     end
   end
   
@@ -85,6 +91,7 @@ class TimeEntriesController < ApplicationController
           render :update do |page|
             page.replace "show_#{params[:id]}", :partial => "time_entry", :object => @time_entry
             page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
+            page.replace_html "#{@time_entry.weekday}_time_entry_form", ""
           end 
         }
       end     
@@ -114,7 +121,9 @@ class TimeEntriesController < ApplicationController
       }
       format.js {
         render :update do |page|
-          page.remove "show_#{@time_entry.id}"
+          day = @time_entry.weekday
+          time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
+          page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
           page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
         end
       }
