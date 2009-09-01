@@ -7,9 +7,13 @@
 			<th>Notes</th>
 			<th>Edit</th>
 			<th>Delete</th>
-		</tr> 
+		</tr>
 		<% time_entries.each do |te| %>
-			<%= render :partial => "time_entry", :object => te %>
+			<% if @editing_id and @editing_id == te.id -%>
+				<td colspan="6" style="padding: 0; margin: 0"><%= render :partial => "edit_time_entry", :locals => { :time_entries => time_entries, :day => day } %></td>
+			<% else -%>
+				<%= render :partial => "time_entry", :object => te %>
+			<% end -%>
 		<% end -%>
 	</table>
 <% end -%>

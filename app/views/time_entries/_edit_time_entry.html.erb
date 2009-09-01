@@ -1,0 +1,18 @@
+<div id='<%= "#{day}_edit_time_entry" %>'>
+	<% remote_form_for [@user, @time_entry] do |f| -%>
+		<%= f.hidden_field :date %>
+		<table id='<%= "#{day}_edit_time_entry_table" %>' style="background-color: #eeeeee;">
+			<tr>
+				<td><%= collection_select(:time_entry, :activity_id, @activities, :id, :customer_project_name) %></td>
+				<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
+				<td><%= f.text_field :hours, :size => 4 %></td>
+				<td><%= f.text_field :notes, :size => 10 %></td>
+				<td><%= f.submit "S" %></td>
+				<td><%= button_to_remote "C", :url => cancel_edit_user_time_entry_path(@user, @time_entry, :day => day), :method => :get %></td>
+		 	</tr>
+			<tr>
+				<div id='<%= "#{day}_edit_time_entry_error_messages" %>'></div>
+			</tr>
+		</table>
+	<% end -%>
+</div>
