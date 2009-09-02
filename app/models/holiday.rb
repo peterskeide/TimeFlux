@@ -37,8 +37,25 @@ class Holiday < ActiveRecord::Base
       return 7.5
     end
   end  
-  
-  def self.expected_between(from_date, to_date)
+
+  def self.expected_hours_between(from_date, to_date)
+    period = Holiday.expected_between_hash(from_date, to_date)
+    sum = 0
+    period.each_value { |value| sum = sum + value }
+    return sum
+  end
+
+  def self.expected_days_between(from_date, to_date)
+    period = Holiday.expected_between_hash(from_date, to_date)
+    days = 0
+    period.each_value { |value| days += 1 if value > 0}
+    return days
+  end
+
+  private
+
+  # Cannot span multiple years with current hack...
+  def self.expected_between_hash(from_date, to_date)
     #HACK Repeating holidays have year set to 1992 (avoids database specific SQL)
     repeating_from = Date.civil(1992,from_date.month,from_date.mday)
     repeating_to   = Date.civil(1992,to_date.month,to_date.mday)
@@ -46,12 +63,24 @@ class Holiday < ActiveRecord::Base
     repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
     one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
 
-    if (repeating.size == 0 && one_time.size == 0 )
-      return 37.5
+    period = {}
+    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : 7.5 ) }
+    repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
+    one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
+
+    return period
+  end
+
+  def self.date_for_repeating(holiday, from_date, to_date)
+    in_from_date = Date.civil(from_date.year, holiday.date.month, holiday.date.mday)
+    in_to_date = Date.civil(to_date.year, holiday.date.month, holiday.date.mday)
+
+    if (from_date .. to_date).include? in_from_date
+      return in_from_date
+    elsif (from_date .. to_date).include? in_to_date
+      return in_to_date
     else
-      sum = 0
-      (from_date .. to_date).each{|day| sum += expected_on_day(day) }
-      return sum
+      raise "Could not find date in either year "
     end
   end
 

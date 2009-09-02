@@ -31,6 +31,26 @@ class User < ActiveRecord::Base
     "#{self.firstname} #{self.lastname}"
   end
 
+  def name
+    self.fullname
+  end
+
+  def status_for_month(date, expected_days, expected_hours)
+    hours = TimeEntry.for_user(self).between(date, date.at_end_of_month).sum(:hours)
+    days = TimeEntry.for_user(self).between(date, date.at_end_of_month).distinct_dates.count
+
+    if hours >= expected_hours && days >= expected_days
+      return "ok"
+    end
+
+    if hours >= expected_hours
+      return "warn"
+    elsif days >= expected_days
+      return "warn"
+    end
+    return "error"
+  end
+
   def self.status_values
     %w(active retired m.i.a.)
   end

@@ -1,7 +1,7 @@
 
 
-<% form_tag 'billing', :method => 'get', :id => 'billing_form' do %>
-  <div id="billing_form">
+<% form_tag 'search', :method => 'get', :id => 'search_form' do %>
+  <div id="search_form">
     <table style="width:100%;vertical-align:top;">
       <tr>
         <th>Period</th><th>Options</th><th>Formatting</th>
@@ -52,30 +52,30 @@
             </tr>
             <tr> <td></td></tr>
             <tr>
-              <td><%= label_tag "tag_type_id","Category"%></td>
-              <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
+              <td><%= label_tag "tag_type","Category"%></td>
+              <td><%= select_tag "tag_type", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type].to_i) %></td>
             </tr>
             <tr>
               <% if tag_type %>
-                <td><%= label_tag "tag_id",'Tag'%></td>
-                <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(tag_type.tags, :id, :name, params[:tag_id].to_i) %></td>
+                <td><%= label_tag "tag",'Tag'%></td>
+                <td><%= select_tag "tag", empty_option("All") + options_from_collection_for_select(tag_type.tags, :id, :name, params[:tag].to_i) %></td>
               <% else %>
-                <td><%= label_tag "tag_id","Tag", :class => 'disabled' %></td>
-                <td><%= select_tag "tag_id", empty_option("-----------"), {:disabled => true} %></td>
+                <td><%= label_tag "tag","Tag", :class => 'disabled' %></td>
+                <td><%= select_tag "tag", empty_option("-----------"), {:disabled => true} %></td>
               <% end %>
             </tr>
             <tr> <td></td></tr>
             <tr>
-              <td><%= label_tag "customer_id"%></td>
-              <td><%= select_tag "customer_id", empty_option("All") + options_from_collection_for_select( Customer.all, 'id', 'name', params[:customer_id].to_i  ) %></td>
+              <td><%= label_tag "customer"%></td>
+              <td><%= select_tag "customer", empty_option("All") + options_from_collection_for_select( Customer.all, 'id', 'name', params[:customer].to_i  ) %></td>
             </tr>
             <tr>
               <% if customer %>
-                <td><%= label_tag "project_id",'Project'%></td>
-                <td><%= select_tag "project_id", empty_option("All") + options_from_collection_for_select(customer.projects, :id, :name, @project.try("id")) %></td>
+                <td><%= label_tag "project",'Project'%></td>
+                <td><%= select_tag "project", empty_option("All") + options_from_collection_for_select(customer.projects, :id, :name, @project.try("id")) %></td>
               <% else %>
-                <td><%= label_tag "project_id",'Project', :class => 'disabled' %></td>
-                <td><%= select_tag "project_id", empty_option("-----------"), {:disabled => true} %></td>
+                <td><%= label_tag "project",'Project', :class => 'disabled' %></td>
+                <td><%= select_tag "project", empty_option("-----------"), {:disabled => true} %></td>
               <% end %>
             </tr>
           </table>
@@ -84,16 +84,8 @@
           <td><table>
 
             <tr>
-              <td><%= label_tag "grouping","Group by" %></td>
-              <td><%= select_tag "grouping", empty_option("No grouping") + options_for_select(['Consultant','Activity','Date'], params[:grouping]) %></td>
-            </tr>
-            <tr>
-              <td><%= label_tag "sort by" %></td>
-              <td><%= select_tag "sort_by", options_for_select(['Date','Consultant - Date','Activity - Date'], params[:sort_by]) %></td>
-            </tr>
-            <tr>
-              <td><%= label_tag "page_break","Pagebreak in PDF" %></td>
-              <td><%= check_box_tag "page_break", 1, params[:page_break] %></td>
+              <td><%= label_tag "group_by","Group by" %></td>
+              <td><%= select_tag "group_by", options_for_select( [['Consultant','user'],['Activity','activity'],['Date','date']], params[:group_by]) %></td>
             </tr>
             <tr>
               <td><%= label_tag "remove_comments","Remove comments" %></td>
@@ -107,12 +99,12 @@
     <%= hidden_field_tag 'type', "advanced" %>
     <span style="display:inline-block; width:50px;"></span>
     <%= submit_tag "Apply Filter" %>
-    <%= link_to "Simple form", params.merge({:action => "billing", :type => "simple"}) %>
+    <%= link_to "Simple form", :action => "search" %>
     
   </div>
 <% end -%>
 
 
-<%= observe_form 'billing_form',
-  :url => {:action => 'update_billing_advanced_form'},
-  :update => 'billing_filter' %>
+<%= observe_form 'search_form',
+  :url => {:action => 'update_search_advanced_form'},
+  :update => 'search_filter' %>

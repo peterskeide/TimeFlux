@@ -17,7 +17,7 @@ class MonthControllerTest < ActionController::TestCase
       should_redirect_to("Calender view") { "/month/calender" }
     end
 
-    pages = [:calender,:month,:listing,:shared]
+    pages = [:calender,:listing,:shared]
     pages.each do |page|  
       context "on GET to #{page}" do
         setup { get page }
@@ -46,7 +46,7 @@ class MonthControllerTest < ActionController::TestCase
   end
 
   context "Not logged in" do
-    pages = [:calender,:month,:listing]
+    pages = [:calender,:listing]
     pages.each do |page|
       context "a GET to :#{page}" do
         setup { get page }

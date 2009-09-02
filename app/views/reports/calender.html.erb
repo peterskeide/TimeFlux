@@ -1,0 +1,9 @@
+
+<h1>Hours for <%= @user.name %> </h1>
+
+<%= render :partial => 'sub_menu' -%>
+
+<div id="calender_content">
+  <%= render :partial => 'month/calender_content', :locals =>
+    { :day => @day, :user => @user, :activities_summary => @activity_summary } -%>
+</div>

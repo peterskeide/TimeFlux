@@ -1,3 +1,19 @@
-<h1>Create New Activity</h1>
+<h1>Create New Activity Template</h1>
 
-<%= render "activity" %>
+<% form_for :activity, @activity, :url => {:action => "create"} do |f| -%>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+
+  <%= hidden_field_tag 'activity[template]', 1  %>
+
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>

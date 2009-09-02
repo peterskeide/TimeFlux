@@ -92,6 +92,11 @@ a img {
 	display: inline;
 }
 
+
+.ok a { color: green; }
+.warn a { color: orange; }
+.error a { color: red; }
+
 .error {
 	color: #c80000;
 }

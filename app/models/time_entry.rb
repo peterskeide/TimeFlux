@@ -32,6 +32,14 @@ class TimeEntry < ActiveRecord::Base
   named_scope :for_activity, lambda { |*activity_ids|
     {  :conditions =>  ["activity_id IN (?)", activity_ids ] }
   }
+
+  named_scope :for_project, lambda { |project_id|
+    { :include => :activity, :conditions => ["activities.project_id = ?", project_id] }
+  }
+
+  named_scope :distinct_dates, :select => 'DISTINCT date'
+
+  named_scope :distinct_activities, :select => 'DISTINCT activity_id'
   
   def weekday
     Date::DAYNAMES[date.wday]
@@ -48,18 +56,18 @@ class TimeEntry < ActiveRecord::Base
     (eval query).between(from_date,to_date)
   end
 
-  def self.mark_as_locked(time_entries)
+  def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|
-      t.locked = true
+      t.locked = value
       t.save
     end
   end
 
   # Billed time entries are always locked
-  def self.mark_as_billed(time_entries)
+  def self.mark_as_billed(time_entries, value=true)
     time_entries.each do |t|
-      t.locked = true
-      t.billed = true
+      t.billed = value
+      t.locked = true if value
       t.save
     end
   end

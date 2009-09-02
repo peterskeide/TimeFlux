@@ -29,7 +29,7 @@
 
     <% form_tag 'set_vacation', :method => 'post', :id => 'holidays_select_form' do %>
       <% vacation_dates = TimeEntry.for_user(@user).for_activity(activity).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
-      <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
+    <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
         <td>
           <% if  d.cwday >= 6  %>
             <span class="disabled">&nbsp; -</span>

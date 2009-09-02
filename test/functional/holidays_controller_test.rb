@@ -56,7 +56,7 @@ class HolidaysControllerTest < ActionController::TestCase
     context "set vacation" do
       setup { post :set_vacation, :month => "2009-08-1", :user_id =>  users(:bob).id,
         :date => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }
-      should_redirect_to("vacation page page") { "/holidays/vacation" }
+      should_redirect_to("vacation page page") { "/holidays/vacation?date=2009-08-01" }
       should "create vacation time_entries on the checked dates" do
         entry = TimeEntry.on_day(Date.civil(2009,8,18))
         assert_equal entry[0].activity.name, activities(:vacation).name
@@ -68,7 +68,7 @@ class HolidaysControllerTest < ActionController::TestCase
         TimeEntry.create(:user => users(:bob), :hours => 4, :date => Date.parse("2009-08-3"), :activity => activities(:vacation))
         post :set_vacation, :month => "2009-08-1", :user_id =>  users(:bob).id, :date => { }
       end
-      should_redirect_to("vacation page page") { "/holidays/vacation" }
+      should_redirect_to("vacation page page") { "/holidays/vacation?date=2009-08-01" }
       should "remove unchecked vacation dates" do
         assert TimeEntry.on_day(Date.civil(2009,8,3)).empty?
       end

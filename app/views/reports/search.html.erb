@@ -1,0 +1,25 @@
+<h1>Search</h1>
+
+<%= render :partial => 'sub_menu' -%>
+
+<p class="error"><%= flash[:error] %></p>
+<p class="notice"><%= flash[:notice] %></p>
+
+<hr/>
+
+<div id="search_filter">
+  <% unless params[:type] == "advanced" %>
+    <%= render :partial => 'search_form', :locals => { :params => params, :years => @years, :months => @months } -%>
+    <%= observe_form 'search_form',
+      :url => {:action => 'update_search_content'},
+      :update => 'search_content' %>
+  <% else %>
+    <%= render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months } -%>
+  <% end %>
+</div>
+
+<hr/>
+
+<div id="search_content">
+  <%= render :partial => 'search_content', :locals => { :table => @table} %>
+</div>

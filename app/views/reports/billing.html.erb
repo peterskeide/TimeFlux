@@ -5,21 +5,27 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<hr/>
+<br/>
 
-<div id="billing_filter">
-  <% unless params[:type] == "advanced" %>
-    <%= render :partial => 'billing_form', :locals => { :params => params, :years => @years, :months => @months } -%>
-    <%= observe_form 'billing_form',
+<% form_tag 'billing', :method => 'get', :id => 'billing_form' do %>
+  <div>
+    <table>
+      <tr>
+        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
+        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
+      <td><noscript><%= submit_tag "View" %></noscript></td>
+    </table>
+  </div>
+<% end -%>
+
+<%= observe_form 'billing_form',
       :url => {:action => 'update_billing_content'},
       :update => 'billing_content' %>
-  <% else %>
-    <%= render :partial => 'billing_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months } -%>
-  <% end %>
-</div>
-
 <hr/>
 
 <div id="billing_content">
-  <%= render :partial => 'billing_content', :locals => { :table => @table} %>
+  <%= render :partial => 'billing_content', :locals => { :day => @day } -%>
 </div>
+
+
+

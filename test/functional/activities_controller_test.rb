@@ -12,30 +12,10 @@ class ActivitiesControllerTest < ActionController::TestCase
 
       should_respond_with :success
       should_assign_to :activities
-      should_render_template :index
 
     end
-  
+
     context "GET to :new" do
-      
-      setup { get :new }
-      
-      should_respond_with :success
-      should_assign_to :activity
-      should_render_template :new
-      
-    end
-    
-    context "GET to :show for an existing activity" do
-      
-      setup { get :show, :id => activities(:timeflux_development).id }
-      
-      should_assign_to :activity
-      should_render_template :show
-      
-    end
-    
-    context "GET to :show for a non existing activity" do
       
       setup { get :show, :id => 4000 }
       
@@ -79,7 +59,7 @@ class ActivitiesControllerTest < ActionController::TestCase
        
       should_change "Activity.count", :by => 1            
       should_redirect_to("Activities index") { activities_url }
-      should_set_the_flash_to "Activity created"
+      should_set_the_flash_to "New Activity was created"
             
     end
     
@@ -154,7 +134,7 @@ class ActivitiesControllerTest < ActionController::TestCase
       end
       
       should_change "Activity.count", :by => -1
-      should_set_the_flash_to "Activity deleted"      
+      should_set_the_flash_to "Activity successfully removed"      
       should_redirect_to("Activities index") { activities_url }
            
     end

@@ -3,10 +3,24 @@
 
 <h3>Projects</h3>
 <ul>
-<% @customer.projects.each do |project| %>
-  <li><%=  link_to project.name, project_path(project) %></li>
-<% end %>
+  <% @customer.projects.each do |project| %>
+    <li>
+      <%=  link_to project.name, project_path(project) %>
+      <%= link_to image_tag("delete.png", :title => "Delete"), project_path(project), :method => :delete %>
+    </li>
+  <% end %>
 </ul>
 
 <br/>
+<br/>
+
+<% form_for(Project.new) do |f| %>
+  <%= f.error_messages %>
+  <%= f.text_field :name %>
+  <%= hidden_field_tag "project[customer_id]", @customer.id %>
+  <%= f.submit 'Create Project' %>
+<% end %>
+
+<hr/>
+
 <%= link_to 'Back', customers_path %>

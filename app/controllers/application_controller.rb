@@ -36,16 +36,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #Used in month and report controller
+  #Used in review and report and holiday controller
   def setup_calender
-
     if params[:calender]
-      puts "Setting day to #{params[:calender]["date(1i)"]}, #{params[:calender]["date(2i)"]}, 1"
-      @day ||= Date.new(params[:calender]["date(1i)"].to_i, params[:calender]["date(2i)"].to_i)
-    elsif params[:month]
-      @day ||= Date.new(params[:year].to_i, params[:month].to_i, 1)
+      year = params[:calender]["date(1i)"].to_i
+      month = params[:calender]["date(2i)"].to_i
+    else
+      year = params[:year].to_i if params[:year] && params[:year] != ""
+      month = params[:month].to_i if params[:month] && params[:month] != ""
     end
-    @day ||= Date.today.at_beginning_of_month
+    relevant_date = Date.today - 7
+    @day = Date.new(year ? year : relevant_date.year, month ? month : relevant_date.month, 1)
 
     @years = (2007..Date.today.year).to_a.reverse
     @months = []
@@ -77,6 +78,17 @@ class ApplicationController < ActionController::Base
         send_data formatter.render(:text, :data => conv.convert(table), :title => conv.convert_string(title)),
           { :type => "	text/plain", :disposition  => "inline", :filename => "#{title}.txt" }
       end
+    end
+  end
+
+  #month -> calsender and report -> calender
+  def create_activity_summary(day, user=current_user_session.user)
+    activities = user.time_entries.between(day,day.at_end_of_month).distinct_activities.map do |t|
+      t.activity
+    end
+    activities.collect do |activity|
+      { :name => activity.name,
+        :hours => activity.time_entries.for_user(user).between(day,day.at_end_of_month).sum(:hours) }
     end
   end
 

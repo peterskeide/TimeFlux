@@ -7,6 +7,7 @@ class CreateActivitiesTable < ActiveRecord::Migration
       t.boolean :active,           :default => true
       t.boolean :default_activity, :default => false
       t.boolean :shared,           :default => false
+      t.boolean :template,         :default => false
       t.timestamps
     end
   end

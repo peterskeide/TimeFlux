@@ -1,0 +1,21 @@
+
+
+<% form_tag 'search', :method => 'get', :id => 'search_form' do %>
+  <div>
+    <table>
+      <tr>
+        <td><%= select_tag "year", options_for_select(years, params[:year].to_i) %></td>
+
+        <td><%= select_tag "month", options_from_collection_for_select( months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
+
+        <td><%= select_tag "customer",  empty_option("All") + options_from_collection_for_select( Customer.all, :id, :name, @customer.try("id") ) %></td>
+
+      <%= hidden_field_tag 'group_by',  "user" %>
+      <td><noscript><%= submit_tag "View" %></noscript></td>
+      
+      <td><%= link_to "Advanced options", :action => "search", :type => "advanced" %></td></tr>
+
+    </table>
+  </div>
+<% end -%>
+
