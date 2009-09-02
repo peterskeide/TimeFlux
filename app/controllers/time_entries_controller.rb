@@ -18,7 +18,6 @@ class TimeEntriesController < ApplicationController
   end
   
   def new
-    @new = true
     @time_entry = TimeEntry.new(:date => params[:date])
     @activities = @user.current_activities
     respond_to do |format|
@@ -51,7 +50,6 @@ class TimeEntriesController < ApplicationController
   
   def edit
     @time_entry = @user.time_entries.find(params[:id])
-    @editing_id = @time_entry.id
     @activities = @user.current_activities
     respond_to do |format|
       format.html { }
