@@ -92,6 +92,14 @@ a img {
 	display: inline;
 }
 
+.navigation {
+	text-align: center;
+}
+
+.navigation span {
+	display: inline-block;
+	width: 9em;
+}
 
 .ok a { color: green; }
 .warn a { color: orange; }

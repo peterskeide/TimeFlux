@@ -8,10 +8,12 @@
 <h1>Vacation</h1>
 <%= render :partial => 'sub_menu' -%>
 
-<div id="navigation" style="text-align:center;">
-<h4><%= link_to '<<', :action => 'vacation', :date => @day << 1 %>
-<span style="display:inline-block; width:9em;"><%= @day.strftime('%B %Y') %></span>
-<%= link_to '>>', :action => 'vacation', :date => @day >> 1 %></h4>
+<div class="navigation">
+	<h4>
+		<%= link_to '<<', :action => 'vacation', :date => @day << 1 %>
+		<span><%= @day.strftime('%B %Y') %></span>
+		<%= link_to '>>', :action => 'vacation', :date => @day >> 1 %>
+	</h4>
 </div>
 
 <hr/><br/>
