@@ -1,12 +1,14 @@
-<tr id='<%= "show_#{time_entry.id}" %>' class="time_entry">						
-	<td width="25%"><%= link_to truncate(time_entry.activity.customer_project_name), activity_path(time_entry.activity) %></td> 
-	<td width="15%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td> 
-	<td width="5%"><%= time_entry.hours %></td> 
-	<td width="45%"><%= time_entry.notes %></td>
-	<td width="5%"><%= link_to_remote(image_tag("pencil.png"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
-		:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %></td>
-	<td width="5%"><% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
-		:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "inline_form" }  do %>
-		<%= image_submit_tag "delete.png" %>
-		<% end -%></td>
+<tr style="background-color: #eeeeee;">
+	<td><%= collection_select(:time_entry, :activity_id, @activities, :id, :customer_project_name) %></td>
+	<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
+	<td><%= f.text_field :hours, :size => 3 %></td>
+	<td><%= f.text_field :notes, :size => 47 %></td>
+	<td><%= f.submit "S" %></td>
+	<td><%= button_to_function "C" do |page|
+			page.select(".new_time_entry_link").each { |element| element.show }
+			page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day } 
+			end %></td>
+</tr>
+<tr>
+	<td colspan="6"><div id='<%= "#{day}_time_entry_error_messages" %>'></div></td>
 </tr>

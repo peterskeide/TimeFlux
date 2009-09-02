@@ -1,0 +1,16 @@
+<tr class="time_entry">						
+	<td width="25%"><%= link_to truncate(time_entry.activity.customer_project_name), activity_path(time_entry.activity) %></td> 
+	<td width="15%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td> 
+	<td width="5%"><%= time_entry.hours %></td> 
+	<td width="45%"><%= time_entry.notes %></td>
+	<td width="5%"><%= link_to_remote(image_tag("pencil.png"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
+		:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %></td>
+	<% unless defined? in_form -%>
+		<td width="5%"><% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
+			:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "inline_form" }  do %>
+				<%= image_submit_tag "delete.png" %>
+			<% end -%></td>
+	<% else %>
+		<td></td>
+	<% end -%>
+</tr>

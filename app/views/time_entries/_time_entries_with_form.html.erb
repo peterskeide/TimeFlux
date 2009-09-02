@@ -1,0 +1,18 @@
+<% unless time_entries.empty? %>
+	<% remote_form_for [@user, @time_entry] do |f| -%>
+		<%= f.hidden_field :date %>
+		<table width="100%" id='<%= "#{day}_time_entries" %>'>
+			<%= render :partial => "time_entries_table_header" %>   		
+			<% time_entries.each do |te| %>
+				<% if @editing_id and @editing_id == te.id -%>
+					<%= render :partial => "time_entry", :locals => { :f => f, :time_entries => time_entries, :day => day } %>
+				<% else -%>
+					<%= render :partial => "show_time_entry", :locals => { :in_form => "true", :time_entry => te } %>
+				<% end -%>
+			<% end -%>
+			<% if @new -%>
+				<%= render :partial => "time_entry", :locals => { :f => f, :time_entries => time_entries, :day => day } %>
+			<% end -%>
+		</table>
+	<% end -%>
+<% end -%>

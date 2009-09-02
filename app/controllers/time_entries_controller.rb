@@ -18,6 +18,7 @@ class TimeEntriesController < ApplicationController
   end
   
   def new
+    @new = true
     @time_entry = TimeEntry.new(:date => params[:date])
     @activities = @user.current_activities
     respond_to do |format|
@@ -25,12 +26,14 @@ class TimeEntriesController < ApplicationController
       format.js {
         render :update do |page|
           page.select(".new_time_entry_link").each { |element| element.hide }
-          page.replace_html "#{@time_entry.weekday}_time_entry_form", :partial => "new_entry"
+          day = @time_entry.weekday
+          time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
+          page.replace_html "#{day}_time_entries_container", :partial => "time_entries_with_form", :locals => { :time_entries => time_entries, :day => day }
         end 
         }
     end
   end
-  
+    
   def create
     @time_entry = @user.time_entries.build(params[:time_entry])
     if @time_entry.save
@@ -59,7 +62,7 @@ class TimeEntriesController < ApplicationController
         }
         format.js {
           render :update do |page|
-            page.replace_html "new_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
+            page.replace_html "#{@time_entry.weekday}_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
           end
         }
       end           
@@ -76,7 +79,7 @@ class TimeEntriesController < ApplicationController
         render :update do |page|
           day = @time_entry.weekday
           time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-          page.replace_html "#{day}_time_entries_container", :partial => "edit_time_entry", :locals => { :time_entries => time_entries, :day => day }
+          page.replace_html "#{day}_time_entries_container", :partial => "time_entries_with_form", :locals => { :time_entries => time_entries, :day => day }
         end 
       }
     end
@@ -121,7 +124,7 @@ class TimeEntriesController < ApplicationController
         }
         format.js {
           render :update do |page|
-            page.replace_html "#{@time_entry.weekday}_edit_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
+            page.replace_html "#{@time_entry.weekday}_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
           end
         }
       end

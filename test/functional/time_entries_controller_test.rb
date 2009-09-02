@@ -71,7 +71,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :time_entry, :activities, :user
-      should_render_template :_new_entry
+      should_render_template :_time_entries_with_form
       
       should "hide all new time entry links" do
         assert_javascript_function_call(".new_time_entry_link", "hide")
@@ -97,7 +97,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :time_entry, :user, :activities
-      should_render_template :_edit_time_entry
+      should_render_template :_time_entries_with_form
      
     end
         
@@ -173,7 +173,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_not_change "TimeEntry.count"
       
       should "display error messages" do
-        assert_select_rjs :replace_html, "new_time_entry_error_messages" do
+        assert_select_rjs :replace_html, "Monday_time_entry_error_messages" do
           assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
       end
@@ -244,7 +244,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :time_entry, :activities, :user
       
       should "display error messages" do
-        assert_select_rjs :replace_html, "Monday_edit_time_entry_error_messages" do
+        assert_select_rjs :replace_html, "Monday_time_entry_error_messages" do
           assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
       end
