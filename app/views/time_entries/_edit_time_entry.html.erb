@@ -1,18 +1,32 @@
-<div id='<%= "#{day}_edit_time_entry" %>'>
+<% unless time_entries.empty? %>
 	<% remote_form_for [@user, @time_entry] do |f| -%>
 		<%= f.hidden_field :date %>
-		<table id='<%= "#{day}_edit_time_entry_table" %>' style="background-color: #eeeeee;">
+		<table width="100%" id='<%= "#{day}_time_entries" %>'>
 			<tr>
-				<td><%= collection_select(:time_entry, :activity_id, @activities, :id, :customer_project_name) %></td>
-				<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
-				<td><%= f.text_field :hours, :size => 4 %></td>
-				<td><%= f.text_field :notes, :size => 10 %></td>
-				<td><%= f.submit "S" %></td>
-				<td><%= button_to_remote "C", :url => cancel_edit_user_time_entry_path(@user, @time_entry, :day => day), :method => :get %></td>
-		 	</tr>
-			<tr>
-				<div id='<%= "#{day}_edit_time_entry_error_messages" %>'></div>
+				<th>Activity</th>
+				<th>Hour Type</th>
+				<th>Hours</th>
+				<th>Notes</th>
+				<th>Edit</th>
+				<th>Delete</th>
 			</tr>
+			<% time_entries.each do |te| %>
+				<% if @editing_id and @editing_id == te.id -%>
+					<tr style="background-color: #eeeeee;">
+						<td><%= collection_select(:time_entry, :activity_id, @activities, :id, :customer_project_name) %></td>
+						<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
+						<td><%= f.text_field :hours, :size => 3 %></td>
+						<td><%= f.text_field :notes, :size => 47 %></td>
+						<td><%= f.submit "S" %></td>
+						<td><%= button_to_remote "C", :url => cancel_edit_user_time_entry_path(@user, @time_entry, :day => day), :method => :get %></td>
+				 	</tr>
+					<tr>
+						<td colspan="6"><div id='<%= "#{day}_edit_time_entry_error_messages" %>'></div></td>
+					</tr>
+				<% else -%>
+					<%= render :partial => "time_entry", :object => te %>
+				<% end -%>
+			<% end -%>
 		</table>
 	<% end -%>
-</div>
+<% end -%>

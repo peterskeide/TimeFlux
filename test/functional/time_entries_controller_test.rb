@@ -97,7 +97,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :time_entry, :user, :activities
-      should_render_template :_new_entry
+      should_render_template :_edit_time_entry
      
     end
         
@@ -221,8 +221,8 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_assign_to :time_entry, :user
       
-      should "replace the edit form with a partial for displaying the udated time entry" do
-        assert_select_rjs :replace, "show_#{time_entries(:bob_timeflux_development_26_monday).id}"
+      should "refresh time entries for the relevant day" do
+        assert_select_rjs :replace_html, "Monday_time_entries_container"
       end
       
       should "update the day total hours field" do 
@@ -244,7 +244,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :time_entry, :activities, :user
       
       should "display error messages" do
-        assert_select_rjs :replace_html, "#{@id}_error_messages" do
+        assert_select_rjs :replace_html, "Monday_edit_time_entry_error_messages" do
           assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
       end

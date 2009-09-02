@@ -76,7 +76,7 @@ class TimeEntriesController < ApplicationController
         render :update do |page|
           day = @time_entry.weekday
           time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-          page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
+          page.replace_html "#{day}_time_entries_container", :partial => "edit_time_entry", :locals => { :time_entries => time_entries, :day => day }
         end 
       }
     end
