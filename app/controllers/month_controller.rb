@@ -90,7 +90,7 @@ class MonthController < ApplicationController
   def create_listing(day, user=current_user_session.user)
         time_data = []
     user.time_entries.between(day,(day >> 1) -1).sort.each do |t|
-      time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
+      time_data << [t.activity.customer_project_name, t.hours, t.date, t.notes] if t.hours > 0
     end
 
     table = Ruport::Data::Table.new( :data => time_data,

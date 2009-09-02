@@ -4,6 +4,10 @@ class HolidaysController < ApplicationController
   before_filter :check_admin, :except => [:index, :vacation, :set_vacation]
 
   def index
+    redirect_to(:action => 'vacation')
+  end
+  
+  def holiday
     @holidays = Holiday.all.sort
   end
 
@@ -64,11 +68,12 @@ class HolidaysController < ApplicationController
       
       #HARDCODED to activity named "Vacation"
       activity = Activity.find_by_name("Vacation")
+      hour_type = HourType.find_by_default_hour_type(true)
       month.upto((month >> 1) - 1) do |day|
         if params[:date].try("[]".to_sym, day.to_s)
           current = TimeEntry.for_user(user).for_activity(activity).on_day(day)
           if current.empty?
-            TimeEntry.create(:activity => activity, :date => day, :user_id => user.id, :hours => 7.5)
+            TimeEntry.create(:activity => activity, :hour_type => hour_type, :date => day, :user_id => user.id, :hours => 7.5)
           end
         else
           current = TimeEntry.for_user(user).for_activity(activity).on_day(day)

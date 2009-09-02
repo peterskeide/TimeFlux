@@ -10,10 +10,6 @@
     <%= f.label :description %><br />
     <%= f.text_field :description %>
   </p>
-   <p>
-     <%= f.label :project %><br />
-     <%= f.collection_select(:project_id, Project.all, :id, :name) %>
-   </p>
   <p>
     <%= f.check_box :active %>
     <%= f.label :active %>
