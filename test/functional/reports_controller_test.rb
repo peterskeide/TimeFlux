@@ -16,6 +16,16 @@ class ReportsControllerTest < ActionController::TestCase
       should_redirect_to("Billing report") { "/reports/billing" }
     end
 
+    context "GET to :search with search criteria" do
+
+      should "find all time_entries in current month if all search criteria are empty" do
+        get :search, :project_id => "", :user_id => "", :billed => "", :customer_id => ""
+        time_entries = assigns(:time_entries)
+        assert_equal(TimeEntry.between(@date.at_beginning_of_month, @date.at_end_of_month).count, time_entries.size )
+      end
+    end
+
+
     context "accessing reports," do
 
       setup { @pacman = projects(:pacman)}

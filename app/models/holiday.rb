@@ -80,7 +80,7 @@ class Holiday < ActiveRecord::Base
     elsif (from_date .. to_date).include? in_to_date
       return in_to_date
     else
-      raise "Couldn´t find date in either year "
+      raise "Could not find date in either year "
     end
   end
 

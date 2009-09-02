@@ -20,3 +20,14 @@ vacation:
     shared: true
     description: Normal vacation
     default_activity: true
+
+development_template:
+    name: Development
+    template: true
+    description: General development
+
+travel_template:
+    name: Travel
+    template: true
+    description: Travel to and from a project location
+

@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20090820113950) do
     t.boolean  "active",           :default => true
     t.boolean  "default_activity", :default => false
     t.boolean  "shared",           :default => false
+    t.boolean  "template",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -17,6 +17,7 @@
     <td><%=h project.name %></td>
     <td><%=h project.customer.name %></td>
         <td>
+      <%= link_to image_tag("application_add.png", :title => "Manage"), project_path(project) %>
       <%= link_to image_tag("pencil.png", :title => "Edit"), edit_project_path(project) %>
       <%= link_to image_tag("delete.png", :title => "Delete"), project, :method => :delete, :confirm => 'Really remove project?' %>
     </td>

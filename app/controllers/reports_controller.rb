@@ -205,7 +205,7 @@ class ReportsController < ApplicationController
   end
 
   def create_search_report
-    activities = Activity.find_by_filter(params[:tag_type], params[:tag], params[:customer], params[:project])
+    activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
 
     report_data = []
     unless  activities.empty?

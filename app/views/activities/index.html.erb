@@ -1,11 +1,11 @@
-<h1>Activities</h1>
+<h1>Activity Templates</h1>
 <%= render :partial => 'sub_menu', :locals => { :tag_types => @tag_types } -%>
 
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
 <div id="activities_filter">
-  <%=  render :partial => 'form', :locals => { :tags => @tags, :params => params, :customer => @customer } %>
+  <%#=  render :partial => 'form', :locals => { :tags => @tags, :params => params, :customer => @customer } %>
 </div>
 
 
@@ -14,4 +14,4 @@
 </div>
 
   <hr/>
-<%= link_to "New Activity", new_activity_path %>
+<%= link_to "New Activity Template", new_activity_path %>

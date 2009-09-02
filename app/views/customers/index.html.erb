@@ -16,7 +16,7 @@
   <tr>
     <td><%=h customer.name %></td>
     <td>
-      <%= link_to image_tag("magnifier.png", :title => "Show"), customer %>
+      <%= link_to image_tag("application_add.png", :title => "Manage"), customer %>
       <%= link_to image_tag("pencil.png", :title => "Edit"), edit_customer_path(customer) %>
       <%= link_to image_tag("delete.png", :title => "Delete"), customer, :method => :delete, :confirm => 'Really remove customer?' %>
     </td>

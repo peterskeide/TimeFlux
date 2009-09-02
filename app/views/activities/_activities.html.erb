@@ -22,8 +22,10 @@
     </div>
 
     <%= a.description %><br/>
-    <b>Tags:</b> <% a.tags.each do |t| %>
-      <%= image_tag "led-icons/#{t.tag_type.icon}.png", :title => t.tag_type.name -%><%=  t.name -%>,
+      <% if a.tags.count > 0 %>
+      <b>Tags:</b> <% a.tags.each do |t| %>
+        <%= image_tag "led-icons/#{t.tag_type.icon}.png", :title => t.tag_type.name -%><%=  t.name -%>,
+      <% end %>
     <% end %>
 
   </div>

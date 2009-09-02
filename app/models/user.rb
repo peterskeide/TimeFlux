@@ -39,8 +39,6 @@ class User < ActiveRecord::Base
     hours = TimeEntry.for_user(self).between(date, date.at_end_of_month).sum(:hours)
     days = TimeEntry.for_user(self).between(date, date.at_end_of_month).distinct_dates.count
 
-    puts "for #{self.name}: hours #{hours}/#{expected_hours}  days #{days}/#{expected_days}"
-
     if hours >= expected_hours && days >= expected_days
       return "ok"
     end

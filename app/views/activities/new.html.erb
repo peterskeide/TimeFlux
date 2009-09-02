@@ -1,4 +1,4 @@
-<h1>Create New Activity</h1>
+<h1>Create New Activity Template</h1>
 
 <% form_for :activity, @activity, :url => {:action => "create"} do |f| -%>
   <%= f.error_messages %>
@@ -11,30 +11,8 @@
     <%= f.text_field :description %>
   </p>
 
-   <p>
-     <%= f.label :project %><br />
-     <%= f.collection_select(:project_id, Project.all, :id, :name) %>
-   </p>
-  <p>
-    <%= f.check_box :active %>
-    <%= f.label :active %>
-  </p>
-  <p>
-    <%= f.check_box :default_activity %>
-    <%= f.label :default_activity %>
-  </p>
-  <p>
-    <%= f.check_box :shared %>
-    <%= f.label :shared, "Public" %><br />
-  </p>
-  <p>
-    <%= f.label :tags %><br/>
-    <%= f.collection_select(:tag_ids, Tag.all, :id, :name_and_type, {}, {:multiple => true, :size => 10, :class => "activity_multiselect"})%>
-  </p>
-  <p>
-    <%= f.label :assignments %><br/>
-    <%= f.collection_select(:user_ids, User.all, :id, :fullname, {}, {:multiple => true, :size => 10, :class => "activity_multiselect"})%>
-  </p>
+  <%= hidden_field_tag 'activity[template]', 1  %>
+
   <p>
     <%= f.submit "Create" %>
   </p>

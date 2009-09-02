@@ -8,7 +8,7 @@ class Activity < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_and_belongs_to_many :tags
   
-  validates_presence_of :name, :tags
+  validates_presence_of :name #, :tags
   
   before_destroy :verify_no_time_entries
   
@@ -23,7 +23,9 @@ class Activity < ActiveRecord::Base
     { :include => :project, :conditions => ["projects.customer_id = ?", customer_id] }
   }
 
-  def self.find_by_filter(tag_type_id, tag_id, customer_id, project_id)
+  named_scope :templates, :conditions => { :template => true }
+
+  def self.search(tag_type_id, tag_id, customer_id, project_id)
     search = ["Activity"]
     unless tag_id.blank?
       search << "for_tag(#{tag_id})" 
@@ -41,27 +43,6 @@ class Activity < ActiveRecord::Base
 
     query = search.join(".")
     logger.debug("Activity filter Query: #{query}")
-    eval query
-  end
-
-  def self.search(active, default, tag_id, tag_type_id, customer_id, project_id, page)
-    search = ["Activity"]
-    search << "active(#{active})" unless active.blank?
-    search << "default(#{default})" unless default.blank?
-    unless project_id.blank?
-      search << "for_project(#{project_id})"
-    else
-      search << "for_customer(#{customer_id})" unless customer_id.blank?
-    end
-
-    unless tag_id.blank?
-      search << "for_tag(#{tag_id})" 
-    else
-      search << "for_tag_type(#{tag_type_id})" unless tag_type_id.blank?
-    end
-    search << "paginate(:page => #{page}, :per_page => 10, :order => 'activities.name')"
-    query = search.join(".")
-    logger.debug("Activity Search Query: #{query}")
     eval query
   end
   
