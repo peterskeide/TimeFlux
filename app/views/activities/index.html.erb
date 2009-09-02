@@ -1,12 +1,9 @@
+<%= render :partial => "admin/menu" %>
+
 <h1>Activity Templates</h1>
-<%= render :partial => 'sub_menu', :locals => { :tag_types => @tag_types } -%>
 
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
-
-<div id="activities_filter">
-  <%#=  render :partial => 'form', :locals => { :tags => @tags, :params => params, :customer => @customer } %>
-</div>
 
 <div id="activities">
   <%=  render :partial => 'activities', :locals => { :activities => @activities } %>

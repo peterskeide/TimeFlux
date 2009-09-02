@@ -3,7 +3,7 @@
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 
-<%= render :partial => 'activities/sub_menu', :locals => { :tag_types => @tag_types } -%>
+<%= render :partial => 'customers/sub_menu', :locals => { :tag_types => @tag_types } -%>
 <br/>
 <% form_tag tags_path, :method => :get, :id => 'category_filter' do %>
 <table>

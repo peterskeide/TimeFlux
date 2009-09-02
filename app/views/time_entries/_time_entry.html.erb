@@ -5,7 +5,6 @@
 	<td><%= f.text_field :notes, :size => 47 %></td>
 	<td><%= f.submit "S" %></td>
 	<td><%= button_to_function "C" do |page|
-			page.select(".new_time_entry_link").each { |element| element.show }
 			page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day } 
 			end %></td>
 </tr>

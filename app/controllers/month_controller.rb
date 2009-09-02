@@ -1,5 +1,6 @@
-
 class MonthController < ApplicationController
+  
+  include Reporting
 
   before_filter :check_authentication
 

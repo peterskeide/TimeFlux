@@ -1,36 +1,26 @@
-
 <%= page_entries_info activities %>
 <hr/>
 <%= will_paginate activities %>
 
-<% activities.each do |a| -%>
+<table>
 
-  <div>
-    <div class="activity_header">
-      <span class="action_icons">
-        <%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(a) %>
-        <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(a), :method => :delete, :confirm => 'Really remove category?' %>
-      </span>
-      <b><%= link_to a.customer_project_name, edit_activity_path(a) %></b>
-
-      <span class="status_icons">
-        <%= if a.default_activity then image_tag("flag_blue.png", :title => "Default activity", :alt => "default") end %>
-        <%= if a.shared then image_tag("lock_unlock.png", :title => "Public", :alt => "public") end %>
-        <%= unless a.active then image_tag("control_pause.png", :title => "Inactive", :alt => "Inactive") end %>
-
-      </span>
-    </div>
-
-    <%= a.description %><br/>
-      <% if a.tags.count > 0 %>
-      <b>Tags:</b> <% a.tags.each do |t| %>
-        <%= image_tag "led-icons/#{t.tag_type.icon}.png", :title => t.tag_type.name -%><%=  t.name -%>,
-      <% end %>
-    <% end %>
-
-  </div>
-  <br/>
-<% end -%>
+	<tr>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Edit</th>
+		<th>Delete</th>
+	</tr>
+			
+	<% for activity in activities do -%>
+		<tr>
+			<td><%= activity.name %></td>
+			<td><%= activity.description %></td>
+			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
+		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>   		
+		</tr>
+	<% end -%>
+	
+</table>
 
 <br/>
 <%= will_paginate activities %>
