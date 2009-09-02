@@ -71,11 +71,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :time_entry, :activities, :user
-      should_render_template :_time_entries_with_form
-      
-      should "hide all new time entry links" do
-        assert_javascript_function_call(".new_time_entry_link", "hide")
-      end
+      should_render_template "time_entries/time_entries_with_form.rjs"
            
     end
     
@@ -97,7 +93,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :success
       should_not_set_the_flash
       should_assign_to :time_entry, :user, :activities
-      should_render_template :_time_entries_with_form
+      should_render_template "time_entries/time_entries_with_form.rjs"
      
     end
         
@@ -141,11 +137,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :user
       should_change "TimeEntry.count", :by => 1      
       should_respond_with :success
-      
-      should "hide form for new time entry" do
-        assert_select_rjs :remove, "new_time_entry"
-      end
-      
+            
       should "refresh time entries for the relevant day" do
         assert_select_rjs :replace_html, "Monday_time_entries_container"
       end
@@ -155,11 +147,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
           assert_select "b", "10.5"
         end
       end
-      
-      should "show all new time entry links" do
-        assert_javascript_function_call(".new_time_entry_link", "show")
-      end
-      
+            
     end
     
     context "unsuccessful POST to :create with javascript" do

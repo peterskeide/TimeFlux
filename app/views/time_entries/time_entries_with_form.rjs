@@ -1,0 +1,8 @@
+if @time_entry.errors.blank?
+  day = @time_entry.weekday
+  time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
+  page.replace_html "#{day}_time_entries_container", :partial => "time_entries_with_form", :locals => { :time_entries => time_entries, :day => day }
+  page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>" 
+else
+  page.replace_html "#{@time_entry.weekday}_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
+end

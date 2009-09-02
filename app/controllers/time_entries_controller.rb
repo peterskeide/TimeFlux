@@ -23,35 +23,19 @@ class TimeEntriesController < ApplicationController
     @activities = @user.current_activities
     respond_to do |format|
       format.html {}
-      format.js {
-        render :update do |page|
-          page.select(".new_time_entry_link").each { |element| element.hide }
-          day = @time_entry.weekday
-          time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-          page.replace_html "#{day}_time_entries_container", :partial => "time_entries_with_form", :locals => { :time_entries => time_entries, :day => day }
-        end 
-        }
+      format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
     end
   end
     
   def create
-    @time_entry = @user.time_entries.build(params[:time_entry])
+    @time_entry = @user.time_entries.build(params[:time_entry])    
     if @time_entry.save
       respond_to do |format|
         format.html {
           flash[:notice] = "Time Entry saved"
           redirect_to user_time_entries_url(@user, :date => @time_entry.date.beginning_of_week)
         }
-        format.js {
-          render :update do |page|
-            page.select(".new_time_entry_link").each { |element| element.show }
-            page.remove "new_time_entry"
-            day = @time_entry.weekday
-            time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-            page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
-            page.replace_html "#{day}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
-          end
-        }
+        format.js { render :template => "/time_entries/time_entries.rjs" }
       end
     else
       @activities = @user.current_activities
@@ -60,11 +44,7 @@ class TimeEntriesController < ApplicationController
           flash[:error] = "Unable to create time entry"
           render :action => "new"
         }
-        format.js {
-          render :update do |page|
-            page.replace_html "#{@time_entry.weekday}_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
-          end
-        }
+        format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
       end           
     end 
   end
@@ -75,29 +55,10 @@ class TimeEntriesController < ApplicationController
     @activities = @user.current_activities
     respond_to do |format|
       format.html { }
-      format.js { 
-        render :update do |page|
-          day = @time_entry.weekday
-          time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-          page.replace_html "#{day}_time_entries_container", :partial => "time_entries_with_form", :locals => { :time_entries => time_entries, :day => day }
-        end 
-      }
+      format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
     end
   end
-  
-  def cancel_edit
-    respond_to do |format|
-      format.js { 
-        render :update do |page|
-          time_entry = @user.time_entries.find(params[:id])
-          day = params[:day]
-          time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, time_entry.date)
-          page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
-        end 
-      }
-    end
-  end
-  
+    
   def update
     @time_entry = @user.time_entries.find(params[:id])
     if @time_entry.update_attributes(params[:time_entry])
@@ -106,14 +67,7 @@ class TimeEntriesController < ApplicationController
           flash[:notice] = "Time Entry updated"
           redirect_to user_time_entries_url(@user, :date => @time_entry.date.beginning_of_week)
         }
-        format.js {
-          render :update do |page|
-            day = @time_entry.weekday
-            time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-            page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
-            page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
-          end 
-        }
+        format.js { render :template => "/time_entries/time_entries.rjs" }
       end     
     else
       @activities = @user.current_activities
@@ -122,11 +76,7 @@ class TimeEntriesController < ApplicationController
           flash[:error] = "Unable to update time entry"
           render :action => "edit"          
         }
-        format.js {
-          render :update do |page|
-            page.replace_html "#{@time_entry.weekday}_time_entry_error_messages", "<p class='error'>#{@time_entry.errors.full_messages.to_s}</p>"
-          end
-        }
+        format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
       end
     end
   end
@@ -139,14 +89,7 @@ class TimeEntriesController < ApplicationController
         flash[:notice] = "Time Entry deleted"
         redirect_to user_time_entries_url(@user, :date => @time_entry.date.beginning_of_week)
       }
-      format.js {
-        render :update do |page|
-          day = @time_entry.weekday
-          time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-          page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
-          page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.sum_hours_for_user_and_date(@user.id, @time_entry.date)}</b>"
-        end
-      }
+      format.js { render :template => "/time_entries/time_entries.rjs" }
     end
   end 
   
@@ -159,6 +102,6 @@ class TimeEntriesController < ApplicationController
   
   def find_user
     @user = User.find(params[:user_id])
-  end    
-         
+  end
+           
 end
