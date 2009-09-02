@@ -1,7 +1,8 @@
-
 require 'ruport'
 
 class ReportsController < ApplicationController
+  
+  include Reporting
 
   before_filter :check_authentication, :check_admin
 
