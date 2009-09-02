@@ -24,7 +24,15 @@
 						<td colspan="6"><div id='<%= "#{day}_edit_time_entry_error_messages" %>'></div></td>
 					</tr>
 				<% else -%>
-					<%= render :partial => "time_entry", :object => te %>
+					<tr id='<%= "show_#{te.id}" %>' class="time_entry">						
+						<td width="25%"><%= link_to truncate(te.activity.customer_project_name), activity_path(te.activity) %></td> 
+						<td width="15%"><%= truncate(te.hour_type.name, :length => 15) %></td> 
+						<td width="5%"><%= te.hours %></td> 
+						<td width="45%"><%= te.notes %></td>
+						<td width="5%"><%= link_to_remote(image_tag("pencil.png"), { :url => { :action => :edit, :user_id => @user.id, :id => te.id }, :method => :get }, 
+							:href => edit_user_time_entry_path(@user, te), :method => :get) %></td>
+						<td width="5%"></td>
+					</tr>
 				<% end -%>
 			<% end -%>
 		</table>
