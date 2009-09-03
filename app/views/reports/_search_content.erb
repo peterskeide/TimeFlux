@@ -30,7 +30,6 @@
 
   <table>
     <tr>
-      <td><%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => 'search'})%>  </td>
       <td>
         <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
           <%= render_hidden_hours_tags(params) %>
@@ -49,6 +48,10 @@
       </td>
     </tr>
   </table>
+
+  <br/><hr/>
+  Download report:<%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => 'search'})%>
+
 <% else %>
   <p>No hits to display</p>
 <% end %>

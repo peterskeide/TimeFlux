@@ -30,7 +30,6 @@ module Reporting
       end
 
       format.pdf do
-        remove_sensitive_columns!(table)
         send_data( formatter.render_pdf( {:data => conv.convert(table), :title => conv.convert_string(title)}.merge pdf_options ),
           { :type => "	application/pdf", :disposition  => "inline", :filename => "#{title}.pdf" } )
       end
