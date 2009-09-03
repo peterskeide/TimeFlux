@@ -7,4 +7,5 @@ nbproject
 .DS_store
 *.log
 *.sqlite3
-vendor
+vendor/plugins/authlogic
+

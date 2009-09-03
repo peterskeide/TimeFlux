@@ -98,7 +98,7 @@ class ReportsController < ApplicationController
   # Remove?
   def summary
     setup_calender
-    setup_hours_form
+    setup_search_form
 
     time_entries = TimeEntry.search( @from_day, @to_day, @activities )
 
