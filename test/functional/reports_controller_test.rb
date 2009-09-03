@@ -33,7 +33,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "render billing" do
       setup { post :billing }
-      should_assign_to  :expected_days, :expected_hours, :day
+      should_assign_to  :day
       should_respond_with :success
     end
 

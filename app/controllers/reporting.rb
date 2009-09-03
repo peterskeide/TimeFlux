@@ -18,6 +18,15 @@ module Reporting
     @month_names.each_with_index { |name, i| @months << [ i+1, name ] }
   end
 
+  def prawn_params
+    {
+      :page_size => 'A4',
+      :left_margin => 50,
+      :right_margin => 50,
+      :top_margin => 24,
+      :bottom_margin => 24 }
+  end
+
   #Used in month and report controller
   def respond_with_formatter(table, formatter, title="report", pdf_options={})
 

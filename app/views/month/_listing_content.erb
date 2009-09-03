@@ -1,7 +1,7 @@
 
-<% if @time_entries != nil %>
+<% if time_entries != nil %>
 
-  <% @time_entries.each do |activity, te| %>
+  <% time_entries.each do |activity, te| %>
     <h3><%= activity.customer_project_name %></h3>
     <table>
       <tr>
@@ -10,7 +10,7 @@
       <%te.each do |entry| %>
         <tr>
           <td><%= entry.date -%></td>
-          <td><%= entry.hour_type -%></td>
+          <td><%= entry.hour_type.name -%></td>
           <td><%= entry.hours -%></td>
           <td><%= entry.notes -%></td>
         </tr>

@@ -1,5 +1,0 @@
-<h2>Available reports</h2>
-
-<% for report in @reports %>
-    <h4><%= link_to "#{report.capitalize} report", :action => report, :format => "html"%></h4>
-<% end %>

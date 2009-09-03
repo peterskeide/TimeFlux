@@ -6,7 +6,7 @@
     <tr><td></td><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th class="error">Sat</th><th class="error">Sun</th>
       <% day.beginning_of_week.upto last_in_month.end_of_week  do |d| %>
         <% if d.wday == 1 %>
-        </tr><tr><th><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></th>
+        </tr><tr><th><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => user, :date => d) %></th>
           <% end %>
         <td <%= 'style="color: #eeeeee;"' if d.month != day.month%> ><%= user.hours_on_day d -%></td>
 <% end %>

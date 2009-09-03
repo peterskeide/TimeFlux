@@ -1,4 +1,7 @@
+  <% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
+  <% expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month) -%>
 
+  <p class="error"><%= flash[:error] %></p>
 
   <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
     <table>
