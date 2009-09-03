@@ -174,6 +174,7 @@ class ReportsController < ApplicationController
 
   private
 
+  #Ruport code....(Scheduled for removal)
   def apply_formatting(table)
     if params[:sort_by]
       table.sort_rows_by!( params[:sort_by].split(' - ') )
@@ -205,10 +206,12 @@ class ReportsController < ApplicationController
     @user = param_instance(:user)
 
   end
-  
+
+  # Sets the date to the last in month if the supplied date is higher.
+  # Example 2009,2,31 returns Date.civil(2009,2,28)
   def set_date(year, month, day)
     max_day = Date.civil(year,month,1).at_end_of_month.mday
-    Date.new(year,month, day > max_day ? max_day : day)
+    Date.civil(year,month, day > max_day ? max_day : day)
   end
 
   def create_search_report
