@@ -18,8 +18,12 @@ class MonthController < ApplicationController
   def listing
     setup_calender
     @user=current_user_session.user
-    @table = create_listing(@day)
-    respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
+    @from_day = @day
+    @to_day = @day.at_end_of_month
+    @time_entries = @user.time_entries.between(@from_day,@to_day).group_by(&:activity)
+    #render :listing, :layout=>false
+    #@table = create_listing(@day)
+    #respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
   end
 
   def shared
@@ -100,7 +104,5 @@ class MonthController < ApplicationController
 
     return Grouping(table,:by => "Activity name", :order => :name)
   end
-
-
 
 end

@@ -1,2 +1,26 @@
-<%= render_table table -%>
+<%#= render_table table -%>
+
+
+<% if @time_entries != nil %>
+
+  <% @time_entries.each do |activity, te| %>
+    <h3><%= activity.customer_project_name %></h3>
+    <table>
+      <tr>
+        <th>Date</th><th>Type</th><th>Hours</th><th>Notes</th>
+      </tr>
+      <%te.each do |entry| %>
+        <tr>
+          <td><%= entry.date -%></td>
+          <td><%= entry.type -%></td>
+          <td><%= entry.hours -%></td>
+          <td><%= entry.notes -%></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% else %>
+    <p>No time entries for this period</p>
+<% end %>
+
 <%= render :partial => 'reports/download', :locals => { :params => params, :action => 'listing' } -%>

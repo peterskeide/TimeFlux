@@ -55,17 +55,5 @@ module Reporting
         :hours => activity.time_entries.for_user(user).between(day,day.at_end_of_month).sum(:hours) }
     end
   end
-
-  def remove_sensitive_columns!(table)
-    if table.is_a? Ruport::Data::Grouping
-      table.each do |name,group|
-        group.remove_column('Locked')
-        group.remove_column('Billed')
-      end
-    elsif table.is_a? Ruport::Data::Table
-      table.remove_column('Locked')
-      table.remove_column('Billed')
-    end
-  end
   
 end
