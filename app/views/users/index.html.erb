@@ -1,18 +1,22 @@
-<%= render :partial => "admin/menu" %>
+
 
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 
 <h1>Users</h1>
-<hr/>
+
+<%= render :partial => "admin/menu" %>
+
+<br/><br/>
+
 <table>
   <tr>
     <th>Name</th>
     <th>Login</th>
     <th>Status</th>
     <th>Show</th>
-	<th>Edit</th>
-	<th>Delete</th>
+    <th>Edit</th>
+    <th>Delete</th>
   </tr>
 
 <%= will_paginate @users %>

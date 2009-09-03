@@ -18,8 +18,12 @@ class MonthController < ApplicationController
   def listing
     setup_calender
     @user=current_user_session.user
-    @table = create_listing(@day)
-    respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
+    @from_day = @day
+    @to_day = @day.at_end_of_month
+    @time_entries = @user.time_entries.between(@from_day,@to_day).group_by(&:activity)
+    #render :listing, :layout=>false
+    #@table = create_listing(@day)
+    #respond_with_formatter @table, TestController, "Hour report for #{@user.fullname}"
   end
 
   def shared
@@ -91,7 +95,7 @@ class MonthController < ApplicationController
   def create_listing(day, user=current_user_session.user)
         time_data = []
     user.time_entries.between(day,(day >> 1) -1).sort.each do |t|
-      time_data << [t.activity.name, t.hours, t.date, t.notes] if t.hours > 0
+      time_data << [t.activity.customer_project_name, t.hours, t.date, t.notes] if t.hours > 0
     end
 
     table = Ruport::Data::Table.new( :data => time_data,
@@ -100,7 +104,5 @@ class MonthController < ApplicationController
 
     return Grouping(table,:by => "Activity name", :order => :name)
   end
-
-
 
 end

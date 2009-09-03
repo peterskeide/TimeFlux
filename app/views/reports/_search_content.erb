@@ -17,7 +17,7 @@
           <% unless @group_by == :date %><td><%= entry.date -%></td><% end %>
           <% unless @group_by == :user %><td><%= entry.user.name -%></td><% end %>
           <% unless @group_by == :activity %><td><%= entry.activity.name -%></td><% end %>
-          <td><%= "Normaltid" -%></td>
+          <td><%= entry.hour_type.name -%></td>
           <td><%= entry.billed -%></td>
           <td><%= entry.hours -%></td>
           <td><%= entry.notes -%></td>

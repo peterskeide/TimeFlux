@@ -10,7 +10,7 @@ class TimeEntry < ActiveRecord::Base
   
   #validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
-  
+  validates_presence_of :user, :activity, :hour_type
   #validates_format_of :hours, :with => /^[\d|.|,]*$/
 
   named_scope :on_day, lambda { |day|

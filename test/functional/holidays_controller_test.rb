@@ -7,8 +7,8 @@ class HolidaysControllerTest < ActionController::TestCase
       login_as(:bob)
     end
 
-    context "get index" do
-      setup {get :index}
+    context "get holidays" do
+      setup {get :holiday}
       should_respond_with :success
       should_assign_to :holidays
     end

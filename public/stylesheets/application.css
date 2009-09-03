@@ -14,6 +14,8 @@ background:#EEEEFF none repeat scroll 0 0;
 padding-top:5px;
 }
 
+select#activity_name {width:140px}
+
 .status_icons{
     padding-left: 20px;
 }

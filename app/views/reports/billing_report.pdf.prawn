@@ -36,6 +36,7 @@ end
     entry_data = te.map do |t|
     [
       t.date,
+      t.hour_type.name,
       t.hours,
       t.notes
     ]
@@ -53,9 +54,9 @@ end
 
     pdf.table entry_data,
       :row_colors => ["FFFFFF","f0f0f0"],
-      :headers => ['Dato', 'Timer', 'Kommentar' ],
-      :align => { 0 => :left, 1 => :center},
-      :column_widths => {0 => 70, 1 => 40},
+      :headers => ['Dato', 'Type','Timer', 'Kommentar' ],
+      :align => { 0 => :left, 1 => :left, 2 => :center},
+      :column_widths => {0 => 70, 1 => 70, 2 => 40},
       :width      => pdf.margin_box.width,
       :border_style => :underline_header,
       :font_size => 10,

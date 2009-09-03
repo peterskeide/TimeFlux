@@ -62,7 +62,13 @@ class ReportsController < ApplicationController
     end
 
     if params[:report]
-      #prawnto :inline=>true, :file_name => "file.pdf"   #TODO: prawnto and rename view?
+      prawnto :prawn => {
+      :page_size => 'A4',
+      :left_margin => 50,
+      :right_margin => 50,
+      :top_margin => 24,
+      :bottom_margin => 24},
+      :filename=>"billing_report.pdf"
       render :billing_report, :layout=>false
     else
       @projects.each do |p|
