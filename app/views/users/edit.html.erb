@@ -28,8 +28,12 @@
     <%= f.text_field :email %>
   </p>
   <p>
-    <%= f.label :operative_status %><br />
+    <%= f.label :operative_status %>&nbsp;&nbsp;
     <%= f.select :operative_status, User.status_values %>
+  </p>
+  <p>
+    <%= f.check_box :admin %>
+    <%= f.label :admin %>
   </p>
 
   <p>
