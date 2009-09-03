@@ -46,6 +46,8 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
+    @expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month)
+    @expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month)
   end
 
   def billing_action
@@ -128,14 +130,6 @@ class ReportsController < ApplicationController
     @parameters << ["Prosjekt",@project.name]  if @project
     @parameters << ["Kategori",@tag_type.name] if @tag_type
     @parameters << ["Tag",@tag.name] if @tag
-
-    @table = @billing_report
-    @title = "Search report"
-
-
-    #### This report is also prawned, uncomment to use ruport (txt, csv support).
-    #respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
-    #  {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
   end
 
   def mark_time_entries
@@ -214,17 +208,9 @@ class ReportsController < ApplicationController
   def create_search_report
     activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
 
-    report_data = []
     unless  activities.empty?
-
       @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
-      @time_entries.each do |t|
-        report_data << [ t.date, t.activity.name, t.hours, t.user.fullname, t.notes ] if t.hours > 0
-      end
     end
-
-    @billing_report = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Date', 'Activity', 'Hours', 'Consultant', 'Notes'])
 
     @date_range = "Between #{@from_day} and #{@to_day}"
     @page_break = params[:page_break] ? true : false

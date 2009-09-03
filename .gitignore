@@ -1,5 +1,6 @@
 coverage
 coverage.data
+doc/app
 project.xml
 project.properties
 nbproject
