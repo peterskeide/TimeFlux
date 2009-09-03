@@ -1,0 +1,6 @@
+<h1>Review Month for <%= @user.fullname %></h1>
+
+<p>
+	<%=  link_to "Calendar view", user_month_review_path(@current_user, :id => :calendar) %> |
+	<%=  link_to "Listing view", user_month_review_path(@current_user, :id => :listing) %>
+</p>

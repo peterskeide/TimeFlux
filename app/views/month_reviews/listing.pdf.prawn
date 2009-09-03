@@ -1,4 +1,3 @@
-
 pdf.header pdf.margin_box.top_left do
   pdf.font "Helvetica" do
     pdf.text "Timer for #{@user.name}", :size => 20, :align => :center
@@ -18,10 +17,9 @@ pdf.move_down(60)
   
 pdf.font "Helvetica" do
   pdf.pad_bottom(3) do
-    pdf.text "Periode: #{@from_day} - #{@to_day}", :size => 11
+    pdf.text "Periode: #{@beginning_of_month} - #{@end_of_month}", :size => 11
   end
 end
-
 
 @time_entries.each do |activity, te|
 
@@ -58,4 +56,3 @@ end
   pdf.move_down(10)
   pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
 end
-
