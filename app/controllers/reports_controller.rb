@@ -80,12 +80,15 @@ class ReportsController < ApplicationController
     end
   end
 
+
+#TODO Reuser review -> calender
   def calender
     @user = User.find(params[:user])
     @day = Date.parse(params[:day])
     @activity_summary = create_activity_summary(@day, @user)
   end
 
+  #TODO Reuser review -> listing
   def details
     @user = User.find(params[:user])
     @project = Project.find(params[:project])
