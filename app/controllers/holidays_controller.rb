@@ -3,7 +3,7 @@ class HolidaysController < ApplicationController
   include Reporting
 
   before_filter :check_authentication
-  before_filter :check_admin, :except => [:index, :vacation, :set_vacation]
+  before_filter :check_admin, :except => [:index, :holiday, :vacation, :set_vacation]
 
   def index
     redirect_to(:action => 'vacation')
