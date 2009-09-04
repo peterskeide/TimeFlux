@@ -71,7 +71,7 @@ class ActivitiesController < ApplicationController
     if @activity.destroy
       flash[:notice]= "Activity successfully removed"
       if project
-        redirect_to(project_url :id => project.id)
+        redirect_to project_url(:id => project.id)
       else
         redirect_to activities_url
       end

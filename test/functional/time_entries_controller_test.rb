@@ -108,7 +108,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_respond_with :redirect
       should_set_the_flash_to "Time Entry saved"
       should_redirect_to("index") { user_time_entries_path(:user_id => users(:bob).id, :date => @date.to_s) }
-      should_change "TimeEntry.count", :by => 1
+      should_change("the number of time entries", :by => 1) { TimeEntry.count }
       
     end
     
@@ -123,7 +123,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :user
       should_render_template :new
       should_set_the_flash_to "Unable to create time entry"
-      should_not_change "TimeEntry.count"
+      should_not_change("the number of time entries") { TimeEntry.count }
       
     end
     
@@ -135,7 +135,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       }
       
       should_assign_to :user
-      should_change "TimeEntry.count", :by => 1      
+      should_change("the number of time entries", :by => 1) { TimeEntry.count }     
       should_respond_with :success
             
       should "refresh time entries for the relevant day" do
@@ -158,7 +158,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       }
       
       should_assign_to :time_entry, :activities, :user
-      should_not_change "TimeEntry.count"
+      should_not_change("the number of time entries") { TimeEntry.count }
       
       should "display error messages" do
         assert_select_rjs :replace_html, "Monday_time_entry_error_messages" do
@@ -255,7 +255,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should_respond_with :redirect
       should_redirect_to("Index") { user_time_entries_url(:user_id => users(:bob).id, :date => time_entries(:bob_timeflux_development_26_monday).date.to_s) }
-      should_change "TimeEntry.count", :by => -1
+      should_change("the number of time entries", :by => -1) { TimeEntry.count }
       should_set_the_flash_to "Time Entry deleted"
       
     end
@@ -265,7 +265,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       setup { xhr :delete, :destroy, :user_id => users(:bob).id, :id => time_entries(:bob_timeflux_development_26_monday).id }
       
       should_respond_with :success
-      should_change "TimeEntry.count", :by => -1
+      should_change("the number of time entries", :by => -1) { TimeEntry.count }
       
       should "refresh time entries for the relevant day" do
         assert_select_rjs :replace_html, "Monday_time_entries_container"

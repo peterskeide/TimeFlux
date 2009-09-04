@@ -49,7 +49,7 @@ class HourTypesControllerTest < ActionController::TestCase
      setup { post :create, :hour_type => { :name => "Foo", :default_hour_type => false } }
      
      should_redirect_to("Hour Types index") { hour_types_url }
-     should_change "HourType.count", :by => 1
+     should_change("the number of hour types", :by => 1) { HourType.count }
      should_set_the_flash_to "Hour Type created"
      
    end
@@ -59,7 +59,7 @@ class HourTypesControllerTest < ActionController::TestCase
      setup { post :create, :hour_type => { :name => "", :default_hour_type => false } }# lack of name will trigger an error
      
      should_render_template :new
-     should_not_change "HourType.count"
+     should_not_change("the number of hour types") { HourType.count }
      should_set_the_flash_to "Unable to create Hour Type"
      
    end
@@ -103,7 +103,7 @@ class HourTypesControllerTest < ActionController::TestCase
      
      setup { delete :destroy, :id => hour_types(:normaltid).id }
      
-     should_change "HourType.count", :by => -1
+     should_change("the number of hour types", :by => -1) { HourType.count }
      should_redirect_to("Hour Types index") { hour_types_url }
      should_set_the_flash_to "Hour Type deleted"
       
