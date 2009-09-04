@@ -26,14 +26,6 @@ class MonthReviewsController < ApplicationController
     end
   end
   
-  def load_listing_report_data
-    @time_entries = @user.time_entries.between(@beginning_of_month, @end_of_month).group_by(&:activity)
-    respond_to do |format|
-      format.html { render :template => "month_reviews/listing.html.erb" }
-      format.pdf { render :template => "month_reviews/listing.pdf.prawn" }
-    end
-  end
-  
   def create_activity_summary
     activities = @user.time_entries.between(@beginning_of_month, @end_of_month).distinct_activities.map do |t|
       t.activity
@@ -43,5 +35,13 @@ class MonthReviewsController < ApplicationController
         :hours => activity.time_entries.for_user(@user).between(@beginning_of_month, @end_of_month).sum(:hours) }
     end
   end
-
+  
+  def load_listing_report_data
+    @time_entries = @user.time_entries.between(@beginning_of_month, @end_of_month).group_by(&:activity)
+    respond_to do |format|
+      format.html { render :template => "month_reviews/listing.html.erb" }
+      format.pdf { render :template => "month_reviews/listing.pdf.prawn" }
+    end
+  end
+  
 end
