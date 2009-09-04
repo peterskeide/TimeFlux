@@ -48,6 +48,9 @@ class ReportsController < ApplicationController
     setup_calender
   end
 
+  # With the selected project this method will either mark entries as billed,
+  # or display a pdf invoice depending on submit name.
+  #
   def billing_action
     setup_calender
 
@@ -98,7 +101,7 @@ class ReportsController < ApplicationController
   # Remove?
   def summary
     setup_calender
-    setup_search_form
+    parse_search_params
 
     time_entries = TimeEntry.search( @from_day, @to_day, @activities )
 
@@ -114,7 +117,7 @@ class ReportsController < ApplicationController
 
   def search
     setup_calender
-    setup_search_form
+    parse_search_params
     create_search_report
     
     respond_to do |format|
@@ -141,7 +144,7 @@ class ReportsController < ApplicationController
   def update_search_advanced_form
     if request.xhr?
       setup_calender
-      setup_search_form
+      parse_search_params
       render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
     end
   end
@@ -149,7 +152,7 @@ class ReportsController < ApplicationController
   def update_search_content
     if request.xhr?
       setup_calender
-      setup_search_form
+      parse_search_params
       create_search_report
       render :partial => 'search_content', :locals => { :table => @billing_report}
     end
@@ -158,7 +161,7 @@ class ReportsController < ApplicationController
   def mark_time_entries
     if params[:method] == 'post'
       setup_calender
-      setup_search_form
+      parse_search_params
       create_search_report
 
       value = (params[:value] && params[:value] == "true") ? true : false
@@ -174,21 +177,7 @@ class ReportsController < ApplicationController
 
   private
 
-  #Ruport code....(Scheduled for removal)
-  def apply_formatting(table)
-    if params[:sort_by]
-      table.sort_rows_by!( params[:sort_by].split(' - ') )
-    end
-
-    table.remove_column('Notes') if params[:remove_comments]
-
-    if params[:grouping] && params[:grouping] != ""
-      return Grouping(table,:by => params[:grouping])
-    end
-    return table
-  end
-
-  def setup_search_form
+  def parse_search_params
     params[:month] ||= @day.month
     
     if params[:from_day]
@@ -207,13 +196,6 @@ class ReportsController < ApplicationController
 
   end
 
-  # Sets the date to the last in month if the supplied date is higher.
-  # Example 2009,2,31 returns Date.civil(2009,2,28)
-  def set_date(year, month, day)
-    max_day = Date.civil(year,month,1).at_end_of_month.mday
-    Date.civil(year,month, day > max_day ? max_day : day)
-  end
-
   def create_search_report
     activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
 
@@ -225,7 +207,5 @@ class ReportsController < ApplicationController
     @group_by ||= :user
   end
 
-  def param_instance(symbol)
-    Kernel.const_get(symbol.to_s.camelcase).find(params[symbol])  if params[symbol] && params[symbol] != ""
-  end
+
 end

@@ -19,10 +19,9 @@ select#activity_name {width:140px}
 .status_icons{
     padding-left: 20px;
 }
-.action_icons{
-    clear:both;
-    float:right;
-    padding-right:20px;
+
+.action_icons img, .action_icons input{
+    padding-right: 6px;
 }
 
 
