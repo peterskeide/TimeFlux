@@ -2,8 +2,7 @@
 <p class="error"><%= flash[:error] %></p>
 <h1>Categories</h1>
 
-<%= render :partial => 'customers/sub_menu', :locals => { :tag_types => @tag_types } -%>
-<br/>
+
 
 <table>
   <% @tag_types.each do |c| -%>

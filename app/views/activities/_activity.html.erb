@@ -30,4 +30,8 @@
   </p>
 <% end %>
 
-<%= link_to "Back", project_url(:id => @activity.project.id) %>
+  <% if @activity.project %>
+    <%= link_to "Back", project_url(:id => @activity.project.id) %>
+  <% else %>
+    <%= link_to "Cancel", activities_url %>
+  <% end %>
