@@ -1,6 +1,6 @@
-<h1>Edit holiday</h1>
+<h1>Create holiday</h1>
 
-<% form_for(@holiday, :url => { :action => "update" }) do |f| %>
+<% form_for(@holiday, :url => { :action => "create" }) do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :date %><br />
@@ -20,7 +20,7 @@
   </p>
   <p>
     <%= hidden_field_tag 'holiday[date(1i)]', 1992 %>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'Create' %>
   </p>
 <% end %>
 
