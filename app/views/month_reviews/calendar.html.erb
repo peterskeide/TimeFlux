@@ -33,7 +33,30 @@
 <% end %>
 </table>
 
-<br/><br/><br/>
+<% total = @activities_summary.collect { |i| i[:hours] }.sum %>
+<% if total < @expected_hours -%>
+	<p>
+		<b><%= "You have not registered enough hours this month. Expected #{@expected_hours}, but was #{total}." %></b>		
+	</p>
+<% else -%>
+	<% locked_status = @time_entries.map { |te| te.locked }.uniq %>
+	<% unless locked_status.size == 1 and not locked_status.include? false %>
+		<p>
+			<% form_tag lock_time_entries_user_time_entries_path(@user) do -%>
+				<% @time_entries.each do |te|%>
+					<%= hidden_field_tag "time_entries[#{te.id}]" %>
+				<% end -%>
+				<%= submit_tag "Submit for billing"%>
+			<% end -%>
+		</p>
+		<br />
+	 <% else -%>
+		<p>
+			<b>You have submitted this month.</b>
+		</p>
+	<% end -%>
+<% end -%>
+
 <table>
 	<% @activities_summary.each do |entry| %>
 		<tr>
@@ -43,6 +66,6 @@
 	<% end %>
 	<tr>
 		<td>Total:</td>
-		<td> <%= @activities_summary.collect { |i| i[:hours] }.sum  -%></td>
+		<td> <%= total -%></td>
 	</tr>
 </table>

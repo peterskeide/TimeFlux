@@ -18,8 +18,10 @@ class MonthReviewsController < ApplicationController
   end
   
   private
-  
+    
   def load_calendar_report_data
+    @time_entries = @user.time_entries.between(@beginning_of_month, @end_of_month)
+    @expected_hours = Holiday.expected_hours_between(@beginning_of_month, @end_of_month)
     @activities_summary = create_activity_summary
     respond_to do |format|
       format.html { render :template => "month_reviews/calendar.html.erb" }
@@ -27,15 +29,14 @@ class MonthReviewsController < ApplicationController
   end
   
   def create_activity_summary
-    activities = @user.time_entries.between(@beginning_of_month, @end_of_month).distinct_activities.map do |t|
-      t.activity
-    end
+    puts @time_entries.inspect
+    activities = @time_entries.flatten.map { |te| te.activity }.uniq
     activities.collect do |activity|
       { :name => activity.name,
         :hours => activity.time_entries.for_user(@user).between(@beginning_of_month, @end_of_month).sum(:hours) }
     end
   end
-  
+    
   def load_listing_report_data
     @time_entries = @user.time_entries.between(@beginning_of_month, @end_of_month).group_by(&:activity)
     respond_to do |format|

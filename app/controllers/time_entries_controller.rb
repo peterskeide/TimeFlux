@@ -96,6 +96,13 @@ class TimeEntriesController < ApplicationController
     @time_entry = @user.time_entries.find(params[:id])
   end
   
+  def lock_time_entries
+    params[:time_entries].each do |id, empty|
+      TimeEntry.find(id).update_attribute(:locked, true)
+    end
+    redirect_to user_month_review_url(:user_id => params[:user_id], :id => :calendar)
+  end
+  
   private
   
   def find_user
