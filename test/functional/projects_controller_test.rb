@@ -7,14 +7,6 @@ class ProjectsControllerTest < ActionController::TestCase
 
     setup { login_as(:bob) }
 
-    context "get to index" do
-      setup { get :index }
-      should "render index" do
-      assert_response :success
-      assert_not_nil assigns(:projects)
-      end
-    end
-
     context "should get new" do
       setup { get :new }
       should_respond_with :success
@@ -40,7 +32,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
     context "should update project" do
       setup { put :update, :id => projects(:pacman).to_param, :project => { } }
-      should_redirect_to(":index") { projects_url }
+      #should_redirect_to(":index") { projects_url }
     end
 
     context "call to destroy" do

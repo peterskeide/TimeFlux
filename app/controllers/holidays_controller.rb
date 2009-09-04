@@ -1,7 +1,7 @@
 class HolidaysController < ApplicationController
   
   before_filter :check_authentication
-  before_filter :check_admin, :except => [:index, :vacation, :set_vacation]
+  before_filter :check_admin, :except => [:index, :holiday, :vacation, :set_vacation]
 
   def index
     redirect_to(:action => 'vacation')
@@ -76,6 +76,7 @@ class HolidaysController < ApplicationController
           end
         end
       end
+      flash[:notice] = "Vacation updated for #{user.name}"
     else
       flash[:error] = "No permission to perform this task"
     end
