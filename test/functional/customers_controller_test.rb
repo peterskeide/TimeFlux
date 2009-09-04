@@ -27,7 +27,7 @@ class CustomersControllerTest < ActionController::TestCase
 
     context "call to create with an existing name" do
       setup { post :create, :customer => { :name => customers(:telenor).name } }
-      should_not_change "Customer.count"
+      should_not_change("the number of customers") { Customer.count }
     end
 
     context "show customer" do

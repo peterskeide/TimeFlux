@@ -6,26 +6,34 @@
 
 <hr/>
 
-<div style="float:left; width:40%">
+<div style="float:left; width:70%">
 <h4>Current Activities</h4>
-<ul>
-  <% if @project.activities.count > 0 %>
-    <% @project.activities.each do |activity|  %>
-      <li>
-        <%= link_to activity.name, edit_activity_url(:id => activity.id) %>
-        <%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete %>
-      </li>
-    <% end %>
-  <% else %>
-    <li>No activities</li>
-  <% end %>
-</ul>
+
+<table>
+
+	<tr>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Edit</th>
+		<th>Delete</th>
+	</tr>
+			
+	<% for activity in @project.activities do -%>
+		<tr>
+			<td><%= activity.name %></td>
+			<td><%= activity.description %></td>
+			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
+		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>
+		</tr>
+	<% end -%>
+
+</table>
 </div>
 
-<div style="float:right;margin-top:50px;margin-right:35%" id="activitiesfrom_template">
+<div style="float:right;margin-top:52px;margin-right:5%" id="activitiesfrom_template">
   
 <% templates = Activity.templates.map{|a|a.name} - @project.activities.map{|a|a.name} %>
-<% if templates.size > 0 %>
+
   <div>
     <% form_tag :controller => 'activities', :action => 'create' do %>
       <%= select_tag "activity[name]", options_for_select( templates ), :multiple => true %>
@@ -35,7 +43,7 @@
     <% end %>
   </div>
   <br/>
-<% end %>
+
 </div>
 
 
@@ -55,5 +63,5 @@
 
 <br/><br/>
 
-<%= link_to 'Back', projects_path %>
+<%= link_to 'Back', customer_path(:id => @project.customer.id) %>
 </div>

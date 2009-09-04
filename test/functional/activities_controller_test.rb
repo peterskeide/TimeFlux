@@ -57,7 +57,7 @@ class ActivitiesControllerTest < ActionController::TestCase
         post :create, "activity"=>{"name"=>"Foobar", "default_activity"=>"0", "description"=>"Put the foo in the bar", "active"=>"1", "tag_ids" => "#{tags(:timeflux).id}"}
       end
        
-      should_change "Activity.count", :by => 1            
+      should_change("the number of activities", :by => 1) { Activity.count }           
       should_redirect_to("Activities index") { activities_url }
       should_set_the_flash_to "New Activity was created"
             
@@ -72,7 +72,7 @@ class ActivitiesControllerTest < ActionController::TestCase
       
       should_assign_to :activity      
       should_render_template :new
-      should_not_change "Activity.count"
+      should_not_change("the number of activities") { Activity.count }
       should_set_the_flash_to "Unable to create activity"      
       
     end
@@ -133,7 +133,7 @@ class ActivitiesControllerTest < ActionController::TestCase
         delete :destroy, "id"=>@id
       end
       
-      should_change "Activity.count", :by => -1
+      should_change("the number of activities", :by => -1) { Activity.count }
       should_set_the_flash_to "Activity successfully removed"      
       should_redirect_to("Activities index") { activities_url }
            
@@ -146,7 +146,7 @@ class ActivitiesControllerTest < ActionController::TestCase
         delete :destroy, "id"=>@id
       end
       
-      should_not_change "Activity.count"           
+      should_not_change("the number of activities ") { Activity.count }           
       should_set_the_flash_to "Activities with time entries cannot be removed"      
       should_redirect_to("Activities index") { activities_url }
       

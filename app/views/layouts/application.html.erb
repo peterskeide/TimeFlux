@@ -15,17 +15,16 @@
 			</div>
 			<div id="menu">
 				<% if defined? @current_user_session -%>
-                    <span class="menu_item"><%= link_to "Time Entry", user_time_entries_url(@current_user.id), :class => "menu_link" %></span>
-					<span class="menu_item"><%= link_to "Review", month_url, :class => "menu_link" %></span>
+                    <span class="menu_item"><%= link_to "Time Entry", user_time_entries_path(@current_user.id), :class => "menu_link" %></span>
+					<span class="menu_item"><%= link_to "Review", user_month_review_path(@current_user, :id => :calendar), :class => "menu_link" %></span>
 					<% if @current_user.admin -%>
-						<span class="menu_item"><%= link_to "Reports", reports_url, :class => "menu_link" %></span>
-						<span class="menu_item"><%= link_to "Customers", customers_url, :class => "menu_link" %></span>                                                
-						<span class="menu_item"><%= link_to "Admin", users_url, :class => "menu_link" %></span> 
+						<span class="menu_item"><%= link_to "Reports", reports_path, :class => "menu_link" %></span>                                                
+						<span class="menu_item"><%= link_to "Admin", users_path, :class => "menu_link" %></span> 
 					<% end -%>
-                                        <span class="menu_item"><%= link_to "Holidays", {:controller => :holidays}, :class => "menu_link" %></span>
+                    <span class="menu_item"><%= link_to "Holidays", {:controller => :holidays}, :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Logout", {:controller => "user_sessions", :action => "destroy"}, :method => :delete, :class => "menu_link" %></span>
 			    <% else -%>
-					<span class="menu_item"><%= link_to "Login", new_user_session_url, :class => "menu_link" %></span>
+					<span class="menu_item"><%= link_to "Login", new_user_session_path, :class => "menu_link" %></span>
 				<% end -%>
 			</div>
 

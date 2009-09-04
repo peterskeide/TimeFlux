@@ -38,10 +38,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users do |user|
     user.resources :time_entries, :member => { :confirm_destroy => :delete }
+    user.resources :month_reviews, :only => [:show]
   end
   map.reports "reports", :controller => "reports"
 
-  map.month "month", :controller => "month"
+  #map.month "month", :controller => "month"
   map.month_list "month/:action.:format", :controller => "month"
 
   map.reports "reports/:action.:format", :controller => "reports"

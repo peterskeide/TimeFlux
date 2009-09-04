@@ -3,10 +3,6 @@ class ProjectsController < ApplicationController
   before_filter :check_authentication
   before_filter :check_admin
 
-  def index
-    @projects = Project.paginate :page => params[:page] || 1, :per_page => 15, :order => 'name'
-  end
-
   def show
     @project = Project.find(params[:id])
   end
@@ -24,7 +20,7 @@ class ProjectsController < ApplicationController
 
     if @project.save
       flash[:notice] = 'Project was successfully created.'
-      redirect_to(projects_url)
+      redirect_to customer_url(:id => @project.customer.id)
     else
       render :action => "new"
     end
@@ -35,7 +31,7 @@ class ProjectsController < ApplicationController
 
     if @project.update_attributes(params[:project])
       flash[:notice] = 'Project was successfully updated.'
-      redirect_to(projects_url)
+      redirect_to customer_url(:id => @project.customer.id)
     else
       render :action => "edit"
     end
@@ -44,6 +40,6 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find(params[:id])
     @project.destroy
-    redirect_to(projects_url)
+    redirect_to  customer_url(:id => @project.customer.id)
   end
 end

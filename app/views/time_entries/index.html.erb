@@ -15,13 +15,7 @@
 		<div id="<%= day %>">
 			<p>
 				<div id='<%= "#{day}_header" %>'>
-					<b><%= "#{day} (#{@date.+(index)})" %></b>
-					<label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>  
-					<span id='<%= "#{day}_total" %>'>
-						<b><%= TimeEntry.sum_hours_for_user_and_date(@user.id, @date.+(index)) %></b>
-					 </span>
-					<%= link_to_remote("New", { :url => { :action => :new, :user_id => @user.id, :date => @date.+(index), :day => day }, :method => :get }, 
-					:href => new_user_time_entry_path(@user, :date => @date.+(index)), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %> 
+ 					<%= render :partial => "day_header", :locals => { :date => @date.+(index), :day => day} %>
 				</div>
 			    <br />
 			<div id='<%= "#{day}_time_entry_form"%>'></div>
