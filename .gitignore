@@ -1,8 +1,19 @@
 coverage
 coverage.data
+doc/app
 project.xml
 project.properties
 nbproject
 .DS_store
 *.log
+<<<<<<< HEAD:.gitignore
 *.sqlite3
+=======
+<<<<<<< HEAD:.gitignore
+*.sqlite3
+vendor/plugins/authlogic
+
+=======
+*.sqlite3
+>>>>>>> 75f6faf99ecbd61a2fbe7934d45e4b7d72f12d4b:.gitignore
+>>>>>>> 7eccced39a4eac5263b02489474f05378529cfd9:.gitignore

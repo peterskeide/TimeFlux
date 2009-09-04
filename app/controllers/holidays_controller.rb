@@ -13,7 +13,6 @@ class HolidaysController < ApplicationController
 
   def new
     @holiday = Holiday.new
-    render :action => "edit"
   end
 
   def edit
@@ -24,7 +23,7 @@ class HolidaysController < ApplicationController
     @holiday = Holiday.new(params[:holiday])
     if @holiday.save
       flash[:notice] = 'Holiday was successfully created.'
-      redirect_to :controller => 'holidays'
+      redirect_to :action => 'holiday'
     else
       render :action => "edit"
     end
@@ -36,7 +35,7 @@ class HolidaysController < ApplicationController
     @holiday.update_attributes(params[:holiday])
     
     if @holiday.save
-      redirect_to :controller => 'holidays'
+      redirect_to :action => 'holiday'
     else
       render :action => "edit"
     end
@@ -45,7 +44,7 @@ class HolidaysController < ApplicationController
   def destroy
     @holiday = Holiday.find(params[:id])
     @holiday.destroy
-    redirect_to :controller => 'holidays'
+    redirect_to :action => 'holiday'
   end
 
   def vacation
@@ -81,7 +80,7 @@ class HolidaysController < ApplicationController
       flash[:error] = "No permission to perform this task"
     end
 
-    redirect_to :action => :vacation, :date => month
+    redirect_to :action => 'vacation', :date => month
   end
 
 end

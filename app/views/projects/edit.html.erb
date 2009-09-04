@@ -16,5 +16,6 @@
   </p>
 <% end %>
 
+  <% customer_id = @project.customer.id %>
 
-<%= link_to 'Back', projects_path %>
+<%= link_to 'Back', customer_path(:id => customer_id) %>

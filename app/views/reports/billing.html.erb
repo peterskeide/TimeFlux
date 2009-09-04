@@ -2,8 +2,7 @@
 
 <%= render :partial => 'sub_menu' -%>
 
-<p class="error"><%= flash[:error] %></p>
-<p class="notice"><%= flash[:notice] %></p>
+ 
 
 <br/>
 
@@ -24,7 +23,7 @@
 <hr/>
 
 <div id="billing_content">
-  <%= render :partial => 'billing_content', :locals => { :day => @day } -%>
+  <%= render :partial => 'billing_content', :locals => { :day => @day, :expected_days => @expected_days, :expected_hours => @expected_hours} %>
 </div>
 
 

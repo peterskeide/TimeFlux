@@ -56,7 +56,19 @@ class Activity < ActiveRecord::Base
     else
       "#{customer.name} > #{project.name} > #{name}"
     end
+  end
 
+  def truncated_name_path(max_characters=25)
+    max_characters -= self.name.size;
+    if project != nil
+      if project.name.size > max_characters
+        "#{project.name.first(max_characters).strip}.. > #{self.name}"
+      else
+        "#{project.name}... > #{self.name}"
+      end
+    else
+      self.name
+    end
   end
 
   private

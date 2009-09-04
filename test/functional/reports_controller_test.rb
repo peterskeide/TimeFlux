@@ -23,49 +23,40 @@ class ReportsControllerTest < ActionController::TestCase
         time_entries = assigns(:time_entries)
         assert_equal(TimeEntry.between(@date.at_beginning_of_month, @date.at_end_of_month).count, time_entries.size )
       end
-    end
 
-
-    context "accessing reports," do
-
-      setup { @pacman = projects(:pacman)}
-
-      #TODO prawn doesn´t like being tested? (pdf test fails for search and billing)
-      reports = [
-        [:user, {}, %w{ html pdf csv text} ],
-        [:summary, {}, %w{ html pdf csv text} ],
-        [:search, {}, %w{ html } ],
-        [:billing, { :project => @pacman}, %w{ html } ] 
-      ]
-      reports.each do |report, params, formats|
-        context "on GET to :#{report} with params #{params}" do
-
-          formats.each do |format|
-            context "with format=#{format}" do
-              setup { get report, {:format => format}.merge(params) }
-              should_respond_with :success
-            end
-          end
-        end
+      context "render the result in pdf" do
+        setup { get :search, :project_id => "", :user_id => "", :billed => "", :customer_id => "", :format => 'pdf' }
+        should_respond_with :success
+        should_assign_to  :parameters
       end
     end
 
-    ['locked','billed'].each do |mark|
-      context "marking hours as #{mark}" do
-        setup do
-          @time_entry = activities(:timeflux_development).time_entries.on_day( Date.new(2009,7,4) )[0]
-          @billed_before = @time_entry.__send__(mark)
-          post :mark_time_entries, :mark_as => mark, :value => 'true',:month=>7, :year=>2009, :method => 'post'
-        end
-        should 'have billed=false initially' do
-          assert ! @billed_before
-        end
+    context "render billing" do
+      setup { post :billing }
+      should_assign_to  :day
+      should_respond_with :success
+    end
 
-        should "change #{mark} to true" do
-          @time_entry.reload
-          assert @time_entry.__send__(mark)
-        end
+    context "POST to :billing_action" do
+
+      context "render report in PDF" do
+        setup { post :billing_action, :format=>"pdf", :project =>{ projects(:community).id =>"1"}, :report=>"Report (PDF)" }
+        should_assign_to  :projects
+        should_respond_with :success
       end
+
+     context "mark time entries as billed" do
+        setup { post :billing_action, :format=>"pdf", :project =>{ projects(:community).id =>"1"}, :bill =>"Mark as billed" }
+        should_change "TimeEntry.billed(true).count", :by => 23
+      end
+      
+    end
+
+    context "marking hours as billed" do
+      setup do
+        post :mark_time_entries, :mark_as => 'billed', :value => 'true',:month=>7, :year=>2009, :method => 'post'
+      end
+      should_change "TimeEntry.billed(true).count"
     end
 
   end

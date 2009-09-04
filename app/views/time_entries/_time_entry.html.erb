@@ -1,10 +1,10 @@
 <tr style="background-color: #eeeeee;">
-	<td><%= collection_select(:time_entry, :activity_id, @activities, :id, :customer_project_name) %></td>
+	<td><%= collection_select(:time_entry, :activity_id, @activities, :id, :truncated_name_path) %></td>
 	<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
 	<td><%= f.text_field :hours, :size => 3 %></td>
 	<td><%= f.text_field :notes, :size => 47 %></td>
-	<td><%= f.submit "S" %></td>
-	<td><%= button_to_function "C" do |page|
+	<td><%=  image_submit_tag("disk.png", :title => 'Save') %></td>
+	<td><%= link_to_function image_tag("cancel.png", :title => 'Cancel') do |page|
 			page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day } 
 			end %></td>
 </tr>

@@ -18,7 +18,7 @@
     <td><%=h holiday.note %></td>
     <% if @current_user.admin -%>
       <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => :edit, :id => holiday %>
-          <%= link_to image_tag("delete.png", :title => "Delete"), :action => :destroy, :confirm => 'Really delete holiday?', :method => :delete, :id => holiday %></td>
+          <%= link_to image_tag("delete.png", :title => "Delete"), holiday_path(holiday), :method => :delete, :confirm => 'Really delete holiday?' %></td>
     <% end %>
   </tr>
 <% end %>
@@ -26,5 +26,5 @@
 
 <% if @current_user.admin -%>
 <br />
-<%= link_to 'New holiday', :action => :create %>
+<%= link_to 'New holiday', :action => :new %>
 <% end %>

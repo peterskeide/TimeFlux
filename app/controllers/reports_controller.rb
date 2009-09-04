@@ -8,9 +8,9 @@ class ReportsController < ApplicationController
 
   def index
     redirect_to(:action => 'billing')
-    #  @reports = self.__send__(:action_methods).delete("index").sort
   end
 
+  # Remove?
   def user
     setup_calender
     if params[:status] then
@@ -48,35 +48,32 @@ class ReportsController < ApplicationController
     setup_calender
   end
 
+  # With the selected project this method will either mark entries as billed,
+  # or display a pdf invoice depending on submit name.
+  #
   def billing_action
     setup_calender
-    @from_day = @day
-    @to_day = (@day >> 1) -1
 
     if params[:project]
       project_keys = params[:project].keys
       @projects = project_keys.map{|key| Project.find(key.to_i)}
-      @projects.reject { |p| TimeEntry.for_project(p).between(@from_day, @to_day).sum(:hours) == 0 }
-    else
-      @projects = []
-    end
 
-    if params[:report]
-      prawnto :prawn => {
-      :page_size => 'A4',
-      :left_margin => 50,
-      :right_margin => 50,
-      :top_margin => 24,
-      :bottom_margin => 24},
-      :filename=>"billing_report.pdf"
-      render :billing_report, :layout=>false
-    else
-      @projects.each do |p|
-        TimeEntry.mark_as_billed( TimeEntry.for_project(p).between(@from_day, @to_day) , true)
+      if params[:report]
+        @from_day = @day
+        @to_day = @day.at_end_of_month
+        prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
+        render :billing_report, :layout=>false
+      else
+        @projects.each do |p|
+          TimeEntry.mark_as_billed( TimeEntry.for_project(p).between(@day, @day.at_end_of_month) , true)
+        end
+        redirect_to params.merge( :action => 'billing', :format => 'html' )
       end
-      redirect_to params.merge( :action => 'billing', :format => 'html' )
-    end
 
+    else
+      flash[:error] = "No projects selected"
+      redirect_to :action => 'billing', :month => @day.month, :year => @day.year
+    end
   end
 
   def update_billing_content
@@ -86,22 +83,25 @@ class ReportsController < ApplicationController
     end
   end
 
+
+#TODO Reuser review -> calender
   def calender
     @user = User.find(params[:user])
     @day = Date.parse(params[:day])
     @activity_summary = create_activity_summary(@day, @user)
   end
 
+  #TODO Reuser review -> listing
   def details
     @user = User.find(params[:user])
     @project = Project.find(params[:project])
     @day = Date.parse(params[:day])
   end
 
-
+  # Remove?
   def summary
     setup_calender
-    setup_hours_form
+    parse_search_params
 
     time_entries = TimeEntry.search( @from_day, @to_day, @activities )
 
@@ -117,31 +117,51 @@ class ReportsController < ApplicationController
 
   def search
     setup_calender
-    setup_hours_form
+    parse_search_params
     create_search_report
+    
+    respond_to do |format|
+      format.html do
+        
+      end
+      format.pdf  do
+        @parameters = []
+        @parameters << ["Periode","#{@from_day} to #{@to_day}"]
+        @parameters << ["Bruker",@user.fullname] if @user
+        @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
+        @parameters << ["Kunde",@customer.name] if @customer
+        @parameters << ["Prosjekt",@project.name]  if @project
+        @parameters << ["Kategori",@tag_type.name] if @tag_type
+        @parameters << ["Tag",@tag.name] if @tag
 
-    @parameters = []
-    @parameters << ["Periode","#{@from_day} to #{@to_day}"]
-    @parameters << ["Bruker",@user.fullname] if @user
-    @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
-    @parameters << ["Kunde",@customer.name] if @customer
-    @parameters << ["Prosjekt",@project.name]  if @project
-    @parameters << ["Kategori",@tag_type.name] if @tag_type
-    @parameters << ["Tag",@tag.name] if @tag
+        prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
+        render :search, :layout=>false
+      end
+    end
 
-    @table = @billing_report
-    @title = "Search report"
+  end
 
+  def update_search_advanced_form
+    if request.xhr?
+      setup_calender
+      parse_search_params
+      render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
+    end
+  end
 
-    #### This report is also prawned, uncomment to use ruport (txt, csv support).
-    #respond_with_formatter( apply_formatting(@billing_report), TestController, "Hour report",
-    #  {:page_break => @page_break, :customer => @customer.try("name"), :project => @project, :date_range => @date_range} )
+  def update_search_content
+    if request.xhr?
+      setup_calender
+      parse_search_params
+      create_search_report
+      render :partial => 'search_content', :locals => { :table => @billing_report}
+    end
   end
 
   def mark_time_entries
     if params[:method] == 'post'
       setup_calender
-      setup_hours_form
+      parse_search_params
       create_search_report
 
       value = (params[:value] && params[:value] == "true") ? true : false
@@ -155,39 +175,9 @@ class ReportsController < ApplicationController
     redirect_to( params.merge( {:action => 'search'}) )
   end
 
-  def update_search_advanced_form
-    if request.xhr?
-      setup_calender
-      setup_hours_form
-      render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
-    end
-  end
-
-  def update_search_content
-    if request.xhr?
-      setup_calender
-      setup_hours_form
-      create_search_report
-      render :partial => 'search_content', :locals => { :table => @billing_report}
-    end
-  end
-
   private
 
-  def apply_formatting(table)
-    if params[:sort_by]
-      table.sort_rows_by!( params[:sort_by].split(' - ') )
-    end
-
-    table.remove_column('Notes') if params[:remove_comments]
-
-    if params[:grouping] && params[:grouping] != ""
-      return Grouping(table,:by => params[:grouping])
-    end
-    return table
-  end
-
-  def setup_hours_form
+  def parse_search_params
     params[:month] ||= @day.month
     
     if params[:from_day]
@@ -195,7 +185,7 @@ class ReportsController < ApplicationController
       @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
     else
       @from_day = @day
-      @to_day = (@day >> 1) -1
+      @to_day = @day.at_end_of_month
     end
 
     @customer = param_instance(:customer)
@@ -205,34 +195,17 @@ class ReportsController < ApplicationController
     @user = param_instance(:user)
 
   end
-  
-  def set_date(year, month, day)
-    max_day = Date.civil(year,month,1).at_end_of_month.mday
-    Date.new(year,month, day > max_day ? max_day : day)
-  end
 
   def create_search_report
     activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
 
-    report_data = []
     unless  activities.empty?
-
       @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
-      @time_entries.each do |t|
-        report_data << [ t.date, t.activity.name, t.hours, t.user.fullname, t.notes ] if t.hours > 0
-      end
     end
 
-    @billing_report = Ruport::Data::Table.new( :data => report_data,
-      :column_names => ['Date', 'Activity', 'Hours', 'Consultant', 'Notes'])
-
-    @date_range = "Between #{@from_day} and #{@to_day}"
-    @page_break = params[:page_break] ? true : false
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user
   end
 
-  def param_instance(symbol)
-    Kernel.const_get(symbol.to_s.camelcase).find(params[symbol])  if params[symbol] && params[symbol] != ""
-  end
+
 end

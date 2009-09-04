@@ -1,5 +1,8 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
+conduct:
+  name: Conduct
+
 telenor:
   name: Telenor
 

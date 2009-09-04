@@ -46,5 +46,5 @@ class MonthReviewsController < ApplicationController
       return Date.today.beginning_of_month    
     end
   end
-  
+
 end

@@ -1,6 +1,7 @@
 timeflux_development:
     name: TimeFlux Development
     shared: true
+    project: community
     description: Implement Open Source time management and billing application
     tags: conduct, timeflux
 

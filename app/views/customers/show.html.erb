@@ -2,14 +2,24 @@
 
 
 <h3>Projects</h3>
-<ul>
-  <% @customer.projects.each do |project| %>
-    <li>
-      <%=  link_to project.name, project_path(project) %>
-      <%= link_to image_tag("delete.png", :title => "Delete"), project_path(project), :method => :delete %>
-    </li>
-  <% end %>
-</ul>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+
+<% @customer.projects.each do |project| %>
+  <tr>
+    <td><%=h project.name %></td>
+    <td>
+      <%= link_to image_tag("application_add.png", :title => "Manage"), project_path(project) %>
+      <%= link_to image_tag("pencil.png", :title => "Edit"), edit_project_path(project) %>
+      <%= link_to image_tag("delete.png", :title => "Delete"), project, :method => :delete, :confirm => 'Really remove project?' %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
 
 <br/>
 <br/>
@@ -18,7 +28,7 @@
   <%= f.error_messages %>
   <%= f.text_field :name %>
   <%= hidden_field_tag "project[customer_id]", @customer.id %>
-  <%= f.submit 'Create Project' %>
+  <%= f.submit 'Create New Project' %>
 <% end %>
 
 <hr/>
