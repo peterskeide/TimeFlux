@@ -3,12 +3,12 @@
 	<td width="15%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td> 
 	<td width="5%"><%= time_entry.hours %></td> 
 	<td width="45%"><%= time_entry.notes %></td>
-	<td width="5%"><%= link_to_remote(image_tag("pencil.png"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
+	<td width="5%"><%= link_to_remote(image_tag("pencil.png", :title => "Edit"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
 		:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %></td>
 	<% unless defined? in_form -%>
 		<td width="5%"><% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
 			:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "inline_form" }  do %>
-				<%= image_submit_tag "delete.png" %>
+				<%= image_submit_tag "delete.png", :title => "Delete" %>
 			<% end -%></td>
 	<% else %>
 		<td></td>
