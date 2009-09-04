@@ -83,6 +83,7 @@ class HolidaysController < ApplicationController
           end
         end
       end
+      flash[:notice] = "Vacation updated for #{user.name}"
     else
       flash[:error] = "No permission to perform this task"
     end
