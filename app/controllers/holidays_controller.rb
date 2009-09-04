@@ -1,7 +1,5 @@
 class HolidaysController < ApplicationController
   
-  include Reporting
-
   before_filter :check_authentication
   before_filter :check_admin, :except => [:index, :vacation, :set_vacation]
 
@@ -50,13 +48,8 @@ class HolidaysController < ApplicationController
     redirect_to :controller => 'holidays'
   end
 
-
-
   def vacation
-    setup_calender
-    if params[:date]
-      @day = Date.parse(params[:date])
-    end
+    @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date])
     @last_in_month = (@day >> 1) -1
     @user = current_user_session.user
     @others = User.all

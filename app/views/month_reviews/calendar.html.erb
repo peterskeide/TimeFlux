@@ -1,9 +1,9 @@
 <%= render :partial => 'sub_menu' -%>
 
-<% form_tag user_month_review_path(@current_user, :id => :calendar), :method => :get do %>
+<% form_tag user_month_review_path(@user, :id => :calendar), :method => :get do %>
   <p>
     <label for="date">Period</label>
-    <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @beginning_of_month} %>
+    <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @period.start} %>
     <%= submit_tag 'View' %>
   </p>
 <% end %>
@@ -21,42 +21,18 @@
 	<th class="error">Sat</th>
 	<th class="error">Sun</th>
 </tr>
-<% @beginning_of_month.beginning_of_week.upto(@end_of_month.end_of_week) do |d| %>
+<% @period.start.beginning_of_week.upto(@period.end.end_of_week) do |d| %>
 	<% if d.wday == 1 %>
 		<tr>
 		<th><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></th>
 	<% end %>
-	<td <%= 'style="color: #eeeeee;"' if d.month != @beginning_of_month.month %>><%= @user.hours_on_day d -%></td>
+	<td <%= 'style="color: #eeeeee;"' if d.month != @period.start.month %>><%= @user.hours_on_day d -%></td>
 	<% if d.wday == 0 %>
 		</tr>
 	<% end -%>
 <% end %>
 </table>
-
-<% total = @activities_summary.collect { |i| i[:hours] }.sum %>
-<% if total < @expected_hours -%>
-	<p>
-		<b><%= "You have not registered enough hours this month. Expected #{@expected_hours}, but was #{total}." %></b>		
-	</p>
-<% else -%>
-	<% locked_status = @time_entries.map { |te| te.locked }.uniq %>
-	<% unless locked_status.size == 1 and not locked_status.include? false %>
-		<p>
-			<% form_tag lock_time_entries_user_time_entries_path(@user) do -%>
-				<% @time_entries.each do |te|%>
-					<%= hidden_field_tag "time_entries[#{te.id}]" %>
-				<% end -%>
-				<%= submit_tag "Submit for billing"%>
-			<% end -%>
-		</p>
-		<br />
-	 <% else -%>
-		<p>
-			<b>You have submitted this month.</b>
-		</p>
-	<% end -%>
-<% end -%>
-
+<br />
 <table>
 	<% @activities_summary.each do |entry| %>
 		<tr>
@@ -66,6 +42,26 @@
 	<% end %>
 	<tr>
 		<td>Total:</td>
-		<td> <%= total -%></td>
+		<td> <%= @period.total_hours -%></td>
 	</tr>
 </table>
+
+<% if @period.locked? -%>
+	<p>
+		<b>You have submitted this month.</b>
+	</p>
+<% elsif @period.ready_for_approval? -%>
+   <p>
+		<% form_tag lock_user_time_entries_path(@user) do -%>
+			<%= hidden_field_tag "user_id", @user.id %>
+			<%= hidden_field_tag "start_date", @period.start %>
+			<%= hidden_field_tag "end_date", @period.end %>
+			<%= submit_tag "Submit for billing"%>
+		<% end -%> 
+	</p>
+	<br/>
+<% else -%>
+	<p>
+		<b><%= "You have not registered enough hours this month. Expected #{@period.expected_hours}, but was #{@period.total_hours}." %></b>		
+	</p>
+<% end -%>
