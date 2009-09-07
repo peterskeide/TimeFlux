@@ -55,7 +55,11 @@ class ActivitiesController < ApplicationController
       @activity = Activity.find(params[:id])
       if @activity.update_attributes(params[:activity])
         flash[:notice] = "Activity updated"
-        redirect_to project_url(:id => @activity.project.id)
+        if @activity.project
+          redirect_to project_url(:id => @activity.project.id)
+        else
+          redirect_to activities_url
+        end
       else
         flash[:error] = "Unable to update activity"
         render :edit
