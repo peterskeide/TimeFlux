@@ -7,7 +7,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'tasks/rails'
-require 'shoulda/tasks'
+#require 'shoulda/tasks'
 namespace :test do
   desc 'Measures test coverage'
   task :coverage do
