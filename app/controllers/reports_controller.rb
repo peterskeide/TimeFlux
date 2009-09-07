@@ -149,7 +149,7 @@ class ReportsController < ApplicationController
       parse_search_params
       create_search_report
 
-      value = (params[:value] && params[:value] == "true") ? true : false
+      value = (params[:value] && params[:value] == "true")
 
       if params[:mark_as] == 'billed'
         TimeEntry.mark_as_billed(@time_entries, value)
