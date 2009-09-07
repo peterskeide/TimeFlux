@@ -34,7 +34,7 @@ class ActivitiesController < ApplicationController
       @activity = Activity.new(params[:activity])
       if @activity.save
         flash[:notice] = "New Activity was created"
-        redirect_to activities_url
+        redirect_to_activity(@activity)
       else
         flash[:notice] = "Unable to create activity"
         render :action => "new"
@@ -55,11 +55,7 @@ class ActivitiesController < ApplicationController
       @activity = Activity.find(params[:id])
       if @activity.update_attributes(params[:activity])
         flash[:notice] = "Activity updated"
-        if @activity.project
-          redirect_to project_url(:id => @activity.project.id)
-        else
-          redirect_to activities_url
-        end
+        redirect_to_activity(@activity)
       else
         flash[:error] = "Unable to update activity"
         render :edit
@@ -74,11 +70,7 @@ class ActivitiesController < ApplicationController
     project = @activity.project
     if @activity.destroy
       flash[:notice]= "Activity successfully removed"
-      if project
-        redirect_to project_url(:id => project.id)
-      else
-        redirect_to activities_url
-      end
+      redirect_to_activity(@activity)
     else
       flash[:error] = @activity.errors.entries[0][0]
       redirect_to project_url(:id => project.id)
@@ -86,7 +78,15 @@ class ActivitiesController < ApplicationController
   end
   
   private
-  
+
+  def redirect_to_activity(activity)
+    if activity.project
+      redirect_to project_url(:id => activity.project.id)
+    else
+      redirect_to activities_url
+    end
+  end
+
   def handle_missing_resource
     flash[:error] = "The requested resource does not exist"
     redirect_to activities_url

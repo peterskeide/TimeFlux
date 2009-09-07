@@ -8,6 +8,10 @@ pacman:
   name: Pacman
   customer: telenor
 
+fri99:
+  name: fri99
+  customer: telenor
+
 snuskete:
   name: Ny Cupido portal
   customer: cupido

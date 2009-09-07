@@ -1,23 +1,15 @@
-<h1>Project: <%= @project.name %></h1>
+<h1><%= @project.name %></h1>
 
-<h3>
-  Customer: <%= link_to @project.customer.name, customer_url(:id => @project.customer.id) %>
-</h3>
+<p><%= link_to @project.customer.name, customer_url(:id => @project.customer.id) %> >> <%= @project.name %></p>
 
 <hr/>
 
 <div style="float:left; width:70%">
-<h4>Current Activities</h4>
+<h2>Current Activities</h2>
 
 <table>
+        <tr><th>Name</th><th>Description</th><th>Edit</th><th>Delete</th></tr>
 
-	<tr>
-		<th>Name</th>
-		<th>Description</th>
-		<th>Edit</th>
-		<th>Delete</th>
-	</tr>
-			
 	<% for activity in @project.activities do -%>
 		<tr>
 			<td><%= activity.name %></td>
@@ -26,7 +18,6 @@
 		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>
 		</tr>
 	<% end -%>
-
 </table>
 </div>
 
@@ -46,7 +37,6 @@
 
 </div>
 
-
 <div style="clear:both">
 <br/>
 <hr/>
@@ -60,6 +50,11 @@
 
 <br/>
 <hr/>
+
+<h2>Current Assignments</h2>
+TODO!!
+
+
 
 <br/><br/>
 

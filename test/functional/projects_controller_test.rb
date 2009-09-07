@@ -18,6 +18,11 @@ class ProjectsControllerTest < ActionController::TestCase
           post :create, :project => { :name => "Kaffedrikkerprosjektet", :customer => customers(:telenor) }
         end
       end
+      
+      context "creating a project for a customer that already has a project with the given name" do
+        setup { post :create, :project => { :name => projects(:pacman).name, :customer => customers(:telenor) } }
+        should_render_template :new
+      end
     end
 
     context "should show project" do
@@ -31,8 +36,16 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     context "should update project" do
-      setup { put :update, :id => projects(:pacman).to_param, :project => { } }
-      #should_redirect_to(":index") { projects_url }
+      setup do
+        @pacman = projects(:pacman)
+        put :update, :id => @pacman.to_param, :project => { }
+      end
+      should_redirect_to("The projects customer page") { customer_url(:id=> @pacman.customer.id) }
+    end
+
+    context "updating a project for a customer that already has a project with the given name" do
+      setup { post :update, :id => projects(:fri99).id, :project => { :name => projects(:pacman).name, :customer => customers(:telenor) } }
+      should_render_template :edit
     end
 
     context "call to destroy" do

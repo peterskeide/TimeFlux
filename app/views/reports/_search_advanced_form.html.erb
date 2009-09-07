@@ -48,7 +48,7 @@
             </tr>
             <tr>
               <td><%= label_tag "user" %></td>
-              <td><%= select_tag "user", empty_option("All") + options_from_collection_for_select( User.all, :id, :fullname, params[:user].to_i ) %></td>
+              <td><%= select_tag "user", empty_option("All") + options_from_collection_for_select( User.all.sort, :id, :fullname, params[:user].to_i ) %></td>
             </tr>
             <tr> <td></td></tr>
             <tr>
@@ -67,7 +67,7 @@
             <tr> <td></td></tr>
             <tr>
               <td><%= label_tag "customer"%></td>
-              <td><%= select_tag "customer", empty_option("All") + options_from_collection_for_select( Customer.all, 'id', 'name', params[:customer].to_i  ) %></td>
+              <td><%= select_tag "customer", empty_option("All") + options_from_collection_for_select( Customer.all.sort, 'id', 'name', params[:customer].to_i  ) %></td>
             </tr>
             <tr>
               <% if customer %>

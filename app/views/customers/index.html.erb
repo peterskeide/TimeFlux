@@ -9,7 +9,7 @@
 
 <table>
   <tr>
-    <th>Name</th>
+    <th>Name</th><th>Show</th><th>Edit</th><th>Delete</th>
   </tr>
 
 <% @customers.each do |customer| %>
@@ -17,7 +17,9 @@
     <td><%=h customer.name %></td>
     <td>
       <%= link_to image_tag("application_add.png", :title => "Manage"), customer %>
+    </td><td>
       <%= link_to image_tag("pencil.png", :title => "Edit"), edit_customer_path(customer) %>
+    </td><td>
       <%= link_to image_tag("delete.png", :title => "Delete"), customer, :method => :delete, :confirm => 'Really remove customer?' %>
     </td>
   </tr>

@@ -6,10 +6,6 @@ project.properties
 nbproject
 .DS_store
 *.log
-<<<<<<< HEAD:.gitignore
 *.sqlite3
 vendor/plugins/authlogic
-
-=======
-*.sqlite3
->>>>>>> 75f6faf99ecbd61a2fbe7934d45e4b7d72f12d4b:.gitignore
+db/fixtures

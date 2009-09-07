@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   
   has_many :time_entries
   has_and_belongs_to_many :activities
+  has_and_belongs_to_many :projects
      
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login

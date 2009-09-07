@@ -4,4 +4,5 @@ class Project < ActiveRecord::Base
    has_many :activities
    belongs_to :customer
 
+  has_and_belongs_to_many :users
 end

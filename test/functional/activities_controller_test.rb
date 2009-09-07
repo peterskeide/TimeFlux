@@ -15,11 +15,14 @@ class ActivitiesControllerTest < ActionController::TestCase
     end
 
     context "GET to :new" do
-      
+      setup { get :new }
+      should_render_template :new
+    end
+
+    context "GET to :show for a non exsisting activity" do
       setup { get :show, :id => 4000 }
       should_set_the_flash_to "The requested resource does not exist"
-      should_redirect_to("Activities index") { activities_url }
-      
+      should_redirect_to("Activities index") { activities_url } 
     end
     
     context "GET to :edit for an existing activity" do
@@ -59,6 +62,14 @@ class ActivitiesControllerTest < ActionController::TestCase
       should_redirect_to("Activities index") { activities_url }
       should_set_the_flash_to "New Activity was created"
             
+    end
+
+    context "POST to :create from template" do
+      setup do
+        @pacman = projects(:pacman)
+        post :create, "activity"=>{"name"=>[ activities(:travel_template).name ], :project_id => @pacman.id }
+      end
+      should_redirect_to("Project") { project_url(:id => @pacman.id) }
     end
     
     context "an unsuccessful POST to :create" do
