@@ -42,4 +42,20 @@ class ProjectsController < ApplicationController
     @project.destroy
     redirect_to  customer_url(:id => @project.customer.id)
   end
+
+  def assign_to_users
+    project = Project.find(params[:project_id])
+    params[:users].each do |user_id|
+      user = User.find(user_id.to_i)
+      project.users << user
+    end
+    redirect_to project_url(:id => project.id)
+  end
+
+  def remove_user_assignment
+    project = Project.find(params[:id])
+    user = User.find(params[:user])
+    project.users.delete user
+    redirect_to project_url(:id => project.id)
+  end
 end

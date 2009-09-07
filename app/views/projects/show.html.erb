@@ -39,7 +39,7 @@
 
 <div style="clear:both">
 <br/>
-<hr/>
+
 <br/>
 <% form_for(Activity.new) do |f| %>
   <%= f.error_messages %>
@@ -51,12 +51,32 @@
 <br/>
 <hr/>
 
+<div style="float:left; width:70%">
 <h2>Current Assignments</h2>
-TODO!!
 
+  <table>
+    <tr><th>Assigned User</th><th>Remove</th></tr>
 
+    <% for user in @project.users do -%>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= link_to image_tag("delete.png", :title => "Delete"), :action => 'remove_user_assignment', :id => @project.id, :user => user.id %></td>
+        </tr>
+      <% end -%>
+    </table>
+</div>
 
-<br/><br/>
+<div style="float:right;margin-top:52px;margin-right:5%">
+    <% form_tag :controller => 'projects', :action => 'assign_to_users' do %>
+      <%= select_tag "users", options_from_collection_for_select( User.all.sort - @project.users, :id, :fullname ), :multiple => true %>
+      <%= hidden_field_tag "project_id", @project.id %>
+      <br/><br/>
+      <%= submit_tag "<< Assign to users" %>
+    <% end %>
+</div>
 
-<%= link_to 'Back', customer_path(:id => @project.customer.id) %>
+<div style="clear:both">
+  <br/><br/>
+  <hr/>
+  <%= link_to 'Back', customer_path(:id => @project.customer.id) %>
 </div>

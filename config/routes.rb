@@ -35,8 +35,9 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "user_sessions", :action => "new"
 
   map.resources :holidays, :collection => { :vacation => :get, :holiday => :get }
+  map.resources :projects, :collection => { :assign_to_users => :post, :remove_user_assignment => :post }
 
-  map.resources :projects, :customers, :tags, :user_sessions, :time_entries, :users, :activities, :tag_types, :hour_types
+  map.resources :customers, :tags, :user_sessions, :time_entries, :users, :activities, :tag_types, :hour_types
 
   map.resources :users do |user|
     user.resources :time_entries, :member => { :confirm_destroy => :delete }
