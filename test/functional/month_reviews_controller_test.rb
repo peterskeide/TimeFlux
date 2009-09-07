@@ -17,7 +17,7 @@ class MonthReviewsControllerTest < ActionController::TestCase
       
       should_render_template "month_reviews/calendar.html.erb"
       should_respond_with :success
-      should_assign_to :user, :beginning_of_month, :end_of_month, :activities_summary
+      should_assign_to :user, :period, :activities_summary
     end
     
     context "on GET to :show for listing report" do

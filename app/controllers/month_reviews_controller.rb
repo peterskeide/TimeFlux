@@ -4,12 +4,7 @@ class MonthReviewsController < ApplicationController
   
   def show
     @user = User.find(params[:user_id])
-    if params[:calendar]
-      @beginning_of_month = Date.new(params[:calendar]["date(1i)"].to_i, params[:calendar]["date(2i)"].to_i, 1)
-    else
-      @beginning_of_month = Date.today.beginning_of_month    
-    end
-    @end_of_month = @beginning_of_month.end_of_month
+    @beginning_of_month = parse_or_create_date
     if params[:id] == "calendar"
       load_calendar_report_data
     elsif params[:id] == "listing"
@@ -18,8 +13,9 @@ class MonthReviewsController < ApplicationController
   end
   
   private
-  
+    
   def load_calendar_report_data
+    @period = Period.new(@user, @beginning_of_month.year, @beginning_of_month.month)
     @activities_summary = create_activity_summary
     respond_to do |format|
       format.html { render :template => "month_reviews/calendar.html.erb" }
@@ -27,16 +23,15 @@ class MonthReviewsController < ApplicationController
   end
   
   def create_activity_summary
-    activities = @user.time_entries.between(@beginning_of_month, @end_of_month).distinct_activities.map do |t|
-      t.activity
-    end
+    activities = @period.time_entries.flatten.map { |te| te.activity }.uniq
     activities.collect do |activity|
       { :name => activity.name,
-        :hours => activity.time_entries.for_user(@user).between(@beginning_of_month, @end_of_month).sum(:hours) }
+        :hours => activity.time_entries.for_user(@user).between(@period.start, @period.end).sum(:hours) }
     end
   end
-  
-  def load_listing_report_data
+    
+  def load_listing_report_data    
+    @end_of_month = @beginning_of_month.end_of_month
     @time_entries = @user.time_entries.between(@beginning_of_month, @end_of_month).group_by(&:activity)
     respond_to do |format|
       format.html { render :template => "month_reviews/listing.html.erb" }
@@ -44,4 +39,12 @@ class MonthReviewsController < ApplicationController
     end
   end
   
+  def parse_or_create_date
+    if params[:calendar]
+      return Date.new(params[:calendar]["date(1i)"].to_i, params[:calendar]["date(2i)"].to_i, 1)
+    else
+      return Date.today.beginning_of_month    
+    end
+  end
+
 end

@@ -40,9 +40,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :customers, :tags, :user_sessions, :time_entries, :users, :activities, :tag_types, :hour_types
 
   map.resources :users do |user|
-    user.resources :time_entries, :member => { :confirm_destroy => :delete }
+    user.resources :time_entries, :member => { :confirm_destroy => :delete }, :collection => { :lock => :post }
     user.resources :month_reviews, :only => [:show]
   end
+  
+  map.reports "reports", :controller => "reports"
+
+  #map.month "month", :controller => "month"
+  map.month_list "month/:action.:format", :controller => "month"
 
   map.reports "reports", :controller => "reports"
   map.reports "reports/:action.:format", :controller => "reports"

@@ -3,10 +3,10 @@
 	<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
 	<td><%= f.text_field :hours, :size => 3 %></td>
 	<td><%= f.text_field :notes, :size => 47 %></td>
-	<td><span class="action_icons"><%=  image_submit_tag("disk.png", :title => 'save') %>
-	    <%= link_to_function image_tag("cancel.png", :title => 'cancel') do |page|
+	<td><%=  image_submit_tag("disk.png", :title => 'Save') %></td>
+	<td><%= link_to_function image_tag("cancel.png", :title => 'Cancel') do |page|
 			page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day } 
-			end %></span></td>
+			end %></td>
 </tr>
 <tr>
 	<td colspan="6"><div id='<%= "#{day}_time_entry_error_messages" %>'></div></td>

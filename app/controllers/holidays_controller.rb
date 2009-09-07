@@ -47,13 +47,9 @@ class HolidaysController < ApplicationController
     redirect_to :action => 'holiday'
   end
 
-
-
   def vacation
-    if params[:date]
-      @day = Date.parse(params[:date])
-    end
-    @day ||= Date.today.at_beginning_of_month
+    @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date])
+
     @last_in_month = (@day >> 1) -1
     @user = current_user_session.user
     @others = User.all.sort!

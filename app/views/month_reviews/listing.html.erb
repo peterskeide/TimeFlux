@@ -20,7 +20,7 @@
 		<th>Hours</th>
 		<th>Notes</th>
       </tr>
-      <%te.each do |entry| %>
+      <% te.sort { |te1, te2| te1 <=> te2 }.each do |entry| %>
         <tr>
           <td><%= entry.date -%></td>
           <td><%= entry.hour_type.name -%></td>

@@ -8,4 +8,4 @@ nbproject
 *.log
 *.sqlite3
 vendor/plugins/authlogic
-db/fixtures
+
