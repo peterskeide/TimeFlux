@@ -24,6 +24,14 @@ module ReportsHelper
      #{hidden_field_tag 'type',  params[:type]} "
   end
 
+  def date_to_url(date)
+    return {
+      'calendar[date(1i)]' => date.year,
+      'calendar[date(2i)]' => date.month,
+      'calendar[date(3i)]' => 1
+    }
+  end
+
   def is_empty?(table)
     if not table
       true

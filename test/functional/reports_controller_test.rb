@@ -47,16 +47,16 @@ class ReportsControllerTest < ActionController::TestCase
 
      context "mark time entries as billed" do
         setup { post :billing_action, :format=>"pdf", :project =>{ projects(:community).id =>"1"}, :bill =>"Mark as billed" }
-        should_change "TimeEntry.billed(true).count", :by => 23
+        should_change("the number of billed time entries", :by => 23) { TimeEntry.billed(true).count }
       end
       
     end
 
-    context "marking hours as billed" do
+    context "marking hours as billed from search page" do
       setup do
         post :mark_time_entries, :mark_as => 'billed', :value => 'true',:month=>7, :year=>2009, :method => 'post'
       end
-      should_change "TimeEntry.billed(true).count"
+      should_change("the number of billed time entries") { TimeEntry.billed(true).count }
     end
 
   end

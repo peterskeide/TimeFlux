@@ -28,11 +28,11 @@
                   <td>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="<%= user.status_for_month(day, expected_days, expected_hours)%>">
-                      <%= link_to user.name, :action => 'calender', :user => user, :day => day%></span>
+                      <%= link_to user.name, user_month_review_path( @current_user, {:id => :calendar}.merge( date_to_url(day) ) ) %></span>
                   </td>
                   <td> normaltid</td>
                   <td><%= hours %> t </td>
-                  <td><%= link_to "Details", :action => 'details', :project => project, :user => user, :day => day %></td>
+                  <td><%= link_to "Details", user_month_review_path( @current_user, {:id => :listing}.merge( date_to_url(day) ) ) %></td>
                 </tr>
               <% end %>
 
