@@ -27,20 +27,24 @@
     <%= f.label :email %><br />
     <%= f.text_field :email %>
   </p>
-  <p>
-    <%= f.label :operative_status %>&nbsp;&nbsp;
-    <%= f.select :operative_status, User.status_values %>
-  </p>
-  <p>
-    <%= f.check_box :admin %>
-    <%= f.label :admin %>
-  </p>
-
+	<% if @current_user.admin -%>
+	  <p>
+	    <%= f.label :operative_status %>&nbsp;&nbsp;
+	    <%= f.select :operative_status, User.status_values %>
+	  </p>
+	  <p>
+	    <%= f.check_box :admin %>
+	    <%= f.label :admin %>
+	  </p>
+	<% end -%>
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
-<%= link_to 'Show', user_path(@user) %> |
-<%= link_to 'User list', users_path %>
+<%= link_to 'Show', user_path(@user) %>
+<% if @current_user.admin -%>
+	|
+	<%= link_to 'User list', users_path %>
+<% end -%>
 
