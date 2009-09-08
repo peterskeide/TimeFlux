@@ -10,28 +10,30 @@
 
 <hr/>
 <br/>
-<table>
-<tr>
-	<td></td>
-	<th>Mon</th>
-	<th>Tue</th>
-	<th>Wed</th>
-	<th>Thu</th>
-	<th>Fri</th>
-	<th class="error">Sat</th>
-	<th class="error">Sun</th>
-</tr>
-<% @period.start.beginning_of_week.upto(@period.end.end_of_week) do |d| %>
-	<% if d.wday == 1 %>
-		<tr>
-		<th><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></th>
-	<% end %>
-	<td <%= 'style="color: #eeeeee;"' if d.month != @period.start.month %>><%= @user.hours_on_day d -%></td>
-	<% if d.wday == 0 %>
-		</tr>
-	<% end -%>
-<% end %>
-</table>
+<div class="calender">
+  <table>
+    <tr>
+      <td></td>
+      <th>Mon</th>
+      <th>Tue</th>
+      <th>Wed</th>
+      <th>Thu</th>
+      <th>Fri</th>
+      <th class="error">Sat</th>
+      <th class="error">Sun</th>
+    </tr>
+    <% @period.start.beginning_of_week.upto(@period.end.end_of_week) do |d| %>
+      <% if d.wday == 1 %>
+        <tr>
+          <th><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></th>
+        <% end %>
+        <td <%= 'style="color: #eeeeee;"' if d.month != @period.start.month %>><%= @user.hours_on_day d -%></td>
+        <% if d.wday == 0 %>
+        </tr>
+      <% end -%>
+    <% end %>
+  </table>
+</div>
 <br />
 <table>
 	<% @activities_summary.each do |entry| %>

@@ -9,6 +9,13 @@ table {
         text-align: left;
 }
 
+.calender {
+    font-size : 120%;
+    margin-bottom: 30px;
+}
+
+.calender table { text-align:center}
+
 .activity_header {
 background:#EEEEFF none repeat scroll 0 0;
 padding-top:5px;
@@ -106,7 +113,7 @@ a img {
 .warn a { color: orange; }
 .error a { color: red; }
 
-.error {
+.error, .red {
 	color: #c80000;
 }
 

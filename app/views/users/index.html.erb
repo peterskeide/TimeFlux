@@ -22,7 +22,7 @@
   <tr>
     <td><%=h user.fullname %></td>
     <td><%=h user.login %></td>
-    <td><%=h user.operative_status %></td>
+    <td><%=h user.operative_status %><%= user.admin ? ", admin" : ''  %></td>
     <td><%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %></td>
     <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_user_path(user) %></td>
     <td><%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => 'Really remove user?' %></td>    
