@@ -56,5 +56,27 @@ class ProjectsControllerTest < ActionController::TestCase
       end
     end
 
+    context "POST to assign_to_users" do
+      setup do
+        @community = projects(:community)
+        post :assign_to_users, :project_id => @community.id, :users => [users(:bob).id]
+      end
+
+      should "assign bob to the project" do
+        assert @community.users.first.firstname == "Bob"
+      end
+    end
+
+    context "POST to remove_user_assignment" do
+      setup do
+        @pacman = projects(:pacman)
+        post :remove_user_assignment, :id => @pacman.id, :user => users(:bob).id
+      end
+
+      should "reduce the number of assignments for the project" do
+        assert @pacman.users.count == 0
+      end
+    end
+
   end
 end

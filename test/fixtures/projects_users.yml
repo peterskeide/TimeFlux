@@ -1,0 +1,6 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+bob_packman:
+  project_id: packman
+  user_id: bob
+
