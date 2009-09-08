@@ -3,3 +3,5 @@ ruport
 mislav-will_paginate --source http://gems.github.com
 ruby-net-ldap
 prawn
+taps
+
