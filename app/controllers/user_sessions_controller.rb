@@ -1,5 +1,7 @@
 class UserSessionsController < ApplicationController
-  
+
+  before_filter :redirect_to_ssl
+
   def new 
     @user_session = UserSession.new
   end

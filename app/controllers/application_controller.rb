@@ -9,7 +9,11 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
 
   private
-  
+
+  def redirect_to_ssl
+    redirect_to :protocol => "https://" unless (request.ssl? or local_request?)
+  end
+
   def current_user_session
     return @current_user_session if defined? @current_user_session
     @current_user_session = UserSession.find

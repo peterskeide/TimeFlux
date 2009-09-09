@@ -3,6 +3,8 @@ require 'test_helper'
 class UserSessionsControllerTest < ActionController::TestCase
 
   context "Logged out," do
+    
+    setup { @request.env['HTTPS'] = 'on' }
 
     context "accessing the login page" do
       setup { get :new }
@@ -26,9 +28,15 @@ class UserSessionsControllerTest < ActionController::TestCase
   end
 
   context "Logged in, logging out" do
-    setup { login_as(:bill); post :destroy }
+    setup { @request.env['HTTPS'] = 'on'; login_as(:bill); post :destroy }
     should_set_session(:user_credentials_id) { nil }
     should_redirect_to("Login page") { "/user_sessions/new" }
   end
+
+  context "get :new with http" do
+    setup { get :new; @request.env['HTTPS'] = nil }
+    should_redirect_to("SSL") {"https://" + @request.host + @request.request_uri }
+  end
+
 
 end
