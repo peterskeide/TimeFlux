@@ -8,7 +8,7 @@
 		<%= link_to ">>", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.+(7)) %>
 	</h4>
 </div>
-<hr />
+
 <p>
 	<% 7.times do |index| %>
 		<% day = TimeEntriesController::WEEKDAYS[index] %>
@@ -26,14 +26,15 @@
 		</div>
 	<% end -%>
 </p>
-<hr />
-<p>
-	<% if @current_user.admin -%>
-		<% form_tag "/time_entries/change_user" do %>
-			<%= hidden_field_tag :user_id, @user.id %>
-			<%= hidden_field_tag :date, @date %>
-			<%= select_tag "new_user_id", options_from_collection_for_select(User.all, :id, :fullname) %>
-			<%= submit_tag "View for selected user" %>
-		<% end -%>
-	<% end -%>
-</p>
+<% if @current_user.admin -%>
+  <br />
+  <hr />
+  <p>
+    <% form_tag "/time_entries/change_user" do %>
+      <%= hidden_field_tag :user_id, @user.id %>
+      <%= hidden_field_tag :date, @date %>
+      <%= select_tag "new_user_id", options_from_collection_for_select(User.all, :id, :fullname) %>
+      <%= submit_tag "View for selected user" %>
+    <% end -%>
+  </p>
+<% end -%>
