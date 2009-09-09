@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
   
+  before_destroy :validate_not_last_admin, :validate_has_no_projects, :validate_has_no_time_entries
+  
   if TimeFlux::CONFIG.use_ldap
         
     acts_as_authentic { |c| c.validate_password_field = false }
@@ -70,14 +72,31 @@ class User < ActiveRecord::Base
   # the activities assigned to the user
   def current_activities
     current = self.activities + Activity.active(true).default(true)
-
     current += self.projects.map{|project| project.activities }.flatten
-
-    return current
+    current
   end
-
-  #def to_s
-  #  "#{self.fullname} (id=#{self.object_id})"
-  #end
+  
+  private
+  
+  def validate_not_last_admin
+    if admin && User.find_all_by_admin(true).size == 1 then
+      errors.add_to_base('Cannot not remove last admin user')
+      return false
+    end
+  end
+  
+  def validate_has_no_projects
+    if projects.size > 0 then
+      errors.add_to_base('User is assigned to one or more projects')
+      return false
+    end
+  end
+  
+  def validate_has_no_time_entries
+    if time_entries.size > 0 then
+      errors.add_to_base('User has time entries')
+      return false
+    end
+  end
 
 end
