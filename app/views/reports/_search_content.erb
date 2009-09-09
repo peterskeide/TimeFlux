@@ -4,7 +4,7 @@
   <% user_entries = @time_entries.group_by(&@group_by) %>
   <% user_entries.each do |group, te| %>
     <h3><%= group.respond_to?('name') ? group.name : group.to_s %></h3>
-    <table>
+    <table class="regular">
       <tr>
         <% columns = %w{Date User Activity Type Billed Hours Notes};
            columns.delete(@group_by.to_s.capitalize) %>

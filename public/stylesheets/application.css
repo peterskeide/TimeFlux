@@ -16,6 +16,32 @@ table {
 
 .calender table { text-align:center}
 
+ /* Time entry day header */
+.container {
+   position: relative;
+   height:20px;
+   margin-bottom:8px;
+   background-color:#EEEEEE;
+   }
+
+.left-element {
+   position: absolute;
+   left: 0;
+   width: 50%;
+   font-size: 120%;
+   }
+
+.right-element {
+   position: absolute;
+   right: 10px;
+   top: 2px;
+   width: 50%;
+   color: gray;
+   text-align: right;
+   }
+
+
+
 .activity_header {
 background:#EEEEFF none repeat scroll 0 0;
 padding-top:5px;
@@ -71,7 +97,7 @@ table.vacation tbody tr td.user  {
         text-align: left;
 }
 
-table tbody tr th  {
+table.regular tbody tr th  {
         background:#EEEEEE none repeat scroll 0 0;
 }
 
@@ -91,6 +117,14 @@ a img {
 
 .time_entry {
 	padding-left: 1em;
+}
+
+.time_entry td a{
+	color: black;
+        text-decoration: none;
+}
+.time_entry td a:hover{
+        text-decoration: underline;
 }
 
 .menu_item {

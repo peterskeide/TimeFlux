@@ -17,7 +17,7 @@
 				<div id='<%= "#{day}_header" %>'>
  					<%= render :partial => "day_header", :locals => { :date => @date.+(index), :day => day} %>
 				</div>
-			    <br />
+			    
 			<div id='<%= "#{day}_time_entry_form"%>'></div>
 			<div id='<%= "#{day}_time_entries_container"%>'>
  				<%= render :partial => "time_entries", :locals => { :time_entries => TimeEntry.find_all_by_user_id_and_date(@user.id, @date.+(index)), :day => day } %>

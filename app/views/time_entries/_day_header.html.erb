@@ -1,9 +1,27 @@
-<b><%= "#{day} (#{date})" %></b>
-<label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>  
-<span id='<%= "#{day}_total" %>'>
-	<b><%= TimeEntry.sum_hours_for_user_and_date(@user.id, date) %></b>
- </span>
-<label id='<%= "#{day}_expected_label" %>' for='<%= "#{day}_expected" %>'>Expected</label>
-<b><%= Holiday.expected_on_day(date) %></b>
-<%= link_to_remote("New", { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get }, 
-:href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
+<div class="container">
+
+  <div class="left-element">
+    <b><%= "#{day} #{date.day.ordinalize} #{Date::MONTHNAMES[date.month]}" %></b>
+    <%#= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
+      :href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
+  </div>
+
+  <div style="position: absolute;left:16em;top:2px">
+    <%= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
+      :href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
+  </div>
+
+
+  <div class="right-element">
+    <label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>
+    <span id='<%= "#{day}_total" %>'>
+      <b><%= TimeEntry.sum_hours_for_user_and_date(@user.id, date) %></b>
+    </span>
+    <label id='<%= "#{day}_expected_label" %>' for='<%= "#{day}_expected" %>'>Expected</label>
+    <b><%= Holiday.expected_on_day(date) %></b>
+  </div>
+
+</div>
+
+
+
