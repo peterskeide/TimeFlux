@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :check_authentication
-  before_filter :check_admin, :only => [:create, :destroy, :index]
+  before_filter :check_admin, :only => [:new, :create, :destroy, :index]
 
   def index
     @users = User.paginate :page => params[:page] || 1, :per_page => 15, :order => 'lastname'
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-
+    
     if params[:user][:password] then
        @user.password = params[:user][:password]
        @user.password_confirmation = params[:user][:password_confirmation]
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     
     if @user.save
       flash[:notice] = 'User was successfully updated.'
-      redirect_to(:controller => 'users', :action => 'show', :id => @user.id)
+      redirect_to user_path(@user)
     else
       render :action => "edit"
     end
@@ -62,22 +62,10 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    errors = []
-    if @user.admin && User.find_all_by_admin(true).size == 1 then
-      errors << 'Cannot not remove last admin user'
-    end
-    if @user.activities.size > 0 then
-      errors << 'User is assigned to activities'
-    end
-    if @user.time_entries.size > 0 then
-      errors << 'User has time_entries registrered'
-    end
-
-    if errors.empty?
-      @user.destroy
+    if @user.destroy
       flash[:notice] = 'User was removed.'
     else
-      flash[:error] = "Could not remove user due to error(s): #{errors.join(', ')}"
+      flash[:error] = "Could not remove user due to error(s): #{@user.errors.entries[0][1]}"
     end
     redirect_to(users_url)
   end
