@@ -21,6 +21,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    
+    if TimeFlux::CONFIG.use_ldap
+       @user.crypted_password = 'not_in_use'
+       @user.password_salt = 'not_in_use'
+    end
+
     if @user.save
       flash[:notice] = "New user was created"
       redirect_to(:action => 'show', :id => @user.id) 
@@ -45,7 +51,7 @@ class UsersController < ApplicationController
     if @current_user.admin
       @user.admin = params[:user][:admin]
     end
-
+    
     if @user.save
       flash[:notice] = 'User was successfully updated.'
       redirect_to(:controller => 'users', :action => 'show', :id => @user.id)
