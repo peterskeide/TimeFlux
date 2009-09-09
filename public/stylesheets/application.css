@@ -62,6 +62,15 @@ table.compact tbody tr td, table.compact tbody tr th  {
         padding-right: 0px;
 }
 
+table.vacation tbody tr td, table.vacation tbody tr th  {
+        padding-right: 0px;
+        text-align: center;
+        min-width: 1.3em;
+}
+table.vacation tbody tr td.user  {
+        text-align: left;
+}
+
 table tbody tr th  {
         background:#EEEEEE none repeat scroll 0 0;
 }

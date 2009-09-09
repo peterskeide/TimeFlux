@@ -18,7 +18,7 @@
 
 <hr/><br/>
 
-<table class="compact">
+<table class="vacation">
 
   <tr>
     <td></td>
@@ -27,14 +27,14 @@
       <% end %>
   </tr>
 
-  <tr><td><%=  @user.fullname %></td>
+  <tr><td class="user"><%=  @user.fullname %></td>
 
     <% form_tag 'set_vacation', :method => 'post', :id => 'holidays_select_form' do %>
       <% vacation_dates = TimeEntry.for_user(@user).for_activity(activity).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
         <td>
           <% if  d.cwday >= 6  %>
-            <span class="disabled">&nbsp; -</span>
+            <span class="disabled">-</span>
           <% else %>
             <%= check_box_tag  "date[#{d}]", '1',  vacation_dates.include?(d) -%>
           <% end %>
@@ -49,7 +49,7 @@
 
 
     <% @others.each do |user| %>
-    <tr><td><%=  user.fullname %></td>
+    <tr><td class="user"><%=  user.fullname %></td>
       
       <% vacation_dates = TimeEntry.for_user(user).for_activity(activity).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
       <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
@@ -58,7 +58,7 @@
           <% if vacation_dates.include?(d) %>
             <input type="checkbox" checked="1" disabled="true"/>
           <% else %>
-            <span class="disabled">&nbsp; -</span>
+            <span class="disabled">-</span>
           <% end %>
         </td>
       <% end %>
