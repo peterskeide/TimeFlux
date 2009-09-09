@@ -1,5 +1,5 @@
 <tr class="time_entry">						
-	<td width="25%"><%= link_to time_entry.activity.truncated_name_path(22), activity_path(time_entry.activity) %></td>
+	<td width="25%"><%= link_to time_entry.activity.truncated_name_path, activity_path(time_entry.activity) %></td>
 	<td width="15%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td> 
 	<td width="5%"><%= time_entry.hours %></td> 
 	<td width="45%"><%= time_entry.notes %></td>

@@ -40,8 +40,11 @@ class UsersController < ApplicationController
     @user.lastname = params[:user][:lastname]
     @user.login = params[:user][:login]
     @user.email = params[:user][:email]
-    @user.admin = params[:user][:admin]
     @user.operative_status = params[:user][:operative_status]
+
+    if @current_user.admin
+      @user.admin = params[:user][:admin]
+    end
 
     if @user.save
       flash[:notice] = 'User was successfully updated.'

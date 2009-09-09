@@ -35,6 +35,8 @@ c = Customer.create(:name => 'Conduct')
 c.projects << p = Project.create(:name => 'Fri')
 p.activities << Activity.new(:name => 'Ferie', :description => 'Ikke slett meg!',:default_activity => true)
 
+c.projects << Project.create(:name => 'Conduct Community Contribution Project')
+
 Holiday.create(:date => Date.parse('1992-6-1'), :note => '1 Mai', :repeat => true, :working_hours => 0.0)
 Holiday.create(:date => Date.parse('1992-6-17'), :note => '17 Mai', :repeat => true, :working_hours => 0.0)
 Holiday.create(:date => Date.parse('1992-12-24'), :note => 'Juleaften', :repeat => true, :working_hours => 0.0)
