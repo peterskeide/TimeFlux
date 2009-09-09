@@ -1,17 +1,22 @@
 class TimeEntry < ActiveRecord::Base
-
-  def before_destroy
-    errors.add_to_base "Cannot delete locked hours"; return false if locked
-  end
-
+  
   belongs_to :user
   belongs_to :activity
   belongs_to :hour_type
   
-  #validates_numericality_of :hours, :greater_than_or_equal_to => -24.0, :less_than_or_equal_to => 24.0
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
   validates_presence_of :user, :activity, :hour_type
-  #validates_format_of :hours, :with => /^[\d|.|,]*$/
+
+  attr_protected :locked, :billed
+
+  before_save :validate_changes_on_locked_entry
+  
+  def before_destroy
+    if locked
+      errors.add_to_base "Cannot delete locked hours"
+      return false
+    end
+  end
 
   named_scope :on_day, lambda { |day|
     {  :conditions => ['date = ?', day ] }
@@ -40,7 +45,7 @@ class TimeEntry < ActiveRecord::Base
   named_scope :distinct_dates, :select => 'DISTINCT date'
 
   named_scope :distinct_activities, :select => 'DISTINCT activity_id'
-  
+    
   def weekday
     Date::DAYNAMES[date.wday]
   end
@@ -91,6 +96,14 @@ class TimeEntry < ActiveRecord::Base
   end
 
   private
-
-
+  
+  # Halt changes to locked time entries unless the dirty state
+  # includes changes to the locked attribute itself or the billed status.
+  def validate_changes_on_locked_entry
+    if locked && !(changed.include?("locked") || changed.include?("billed"))
+      errors.add_to_base("Editing of locked time entries is not allowed")
+      return false
+    end
+  end
+  
 end
