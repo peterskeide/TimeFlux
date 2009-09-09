@@ -59,7 +59,7 @@ class HolidaysControllerTest < ActionController::TestCase
       should_redirect_to("vacation page page") { "/holidays/vacation?date=2009-08-01" }
       should "create vacation time_entries on the checked dates" do
         entry = TimeEntry.on_day(Date.civil(2009,8,18))
-        assert_equal entry[0].activity.name, activities(:vacation).name
+        assert_equal entry[0].hours, 7.5
       end
     end
     

@@ -1,6 +1,6 @@
 
 <%## TODO: Hack find vacation through configuration %>
-<% activity = Activity.find_by_name("Vacation") %>
+<% activity = Activity.first %>
 
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>

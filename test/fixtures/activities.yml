@@ -1,3 +1,9 @@
+vacation:
+    name: Vacation
+    shared: true
+    description: Normal vacation
+    default_activity: true
+
 timeflux_development:
     name: TimeFlux Development
     shared: true
@@ -15,12 +21,6 @@ pacman_development:
     project: pacman
     name: Pacman development
     description: Development for the Pacman project
-
-vacation:
-    name: Vacation
-    shared: true
-    description: Normal vacation
-    default_activity: true
 
 development_template:
     name: Development

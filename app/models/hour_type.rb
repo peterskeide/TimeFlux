@@ -10,7 +10,10 @@ class HourType < ActiveRecord::Base
   
   def reset_existing_default
     if default_hour_type
-      HourType.find_by_default_hour_type(true).update_attribute(:default_hour_type, false) 
+      current = HourType.find_by_default_hour_type(true)
+      if current
+        current.update_attribute(:default_hour_type, false)
+      end
     end
   end
   
