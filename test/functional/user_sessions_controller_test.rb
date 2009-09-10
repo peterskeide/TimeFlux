@@ -38,5 +38,4 @@ class UserSessionsControllerTest < ActionController::TestCase
     should_redirect_to("SSL") {"https://" + @request.host + @request.request_uri }
   end
 
-
 end
