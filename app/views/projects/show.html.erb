@@ -8,12 +8,13 @@
 <h2>Current Activities</h2>
 
 <table>
-        <tr><th>Name</th><th>Description</th><th>Edit</th><th>Delete</th></tr>
+        <tr><th>Name</th><th>Description</th><th>Status</th><th>Edit</th><th>Delete</th></tr>
 
 	<% for activity in @project.activities do -%>
 		<tr>
 			<td><%= activity.name %></td>
 			<td><%= activity.description %></td>
+                        <td><%= activity.status %></td>
 			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
 		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>
 		</tr>

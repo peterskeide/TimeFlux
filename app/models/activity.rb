@@ -58,6 +58,14 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def status
+    list = []
+    list << "shared" if self.default_activity
+    list << "disabled" unless self.active
+    list << "public" if self.shared
+    return list.join(', ')
+  end
+
   def truncated_name_path(max_characters=22)
     max_characters -= self.name.size;
     if project != nil
