@@ -79,6 +79,12 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def self.vacation
+    vacation = Activity.find_by_name('Vacation')
+    vacation ||= Activity.find_by_name('Ferie')
+    vacation ||= Activity.first
+  end
+
   private
 
   def verify_no_time_entries

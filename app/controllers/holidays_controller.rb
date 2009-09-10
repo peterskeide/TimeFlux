@@ -29,7 +29,7 @@ class HolidaysController < ApplicationController
     end
   end
 
-  #HACK For repeated hloidays we the year with javascript to 1992 (for non-database specific extraction)
+  #HACK For repeated holidays we the year with javascript to 1992 (for non-database specific extraction)
   def update
     @holiday = Holiday.find(params[:id])
     @holiday.update_attributes(params[:holiday])
@@ -62,7 +62,7 @@ class HolidaysController < ApplicationController
       month = Date.parse( params[:month])
       
       #HARDCODED to activity named "Vacation"
-      activity = Activity.first
+      activity = Activity.vacation
       hour_type = HourType.find_by_default_hour_type(true)
       month.upto((month >> 1) - 1) do |day|
         if params[:date].try("[]".to_sym, day.to_s)

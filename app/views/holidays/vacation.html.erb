@@ -1,7 +1,4 @@
 
-<%## TODO: Hack find vacation through configuration %>
-<% activity = Activity.first %>
-
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 
@@ -30,7 +27,7 @@
   <tr><td class="user"><%=  @user.fullname %></td>
 
     <% form_tag 'set_vacation', :method => 'post', :id => 'holidays_select_form' do %>
-      <% vacation_dates = TimeEntry.for_user(@user).for_activity(activity).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
+      <% vacation_dates = TimeEntry.for_user(@user).for_activity(Activity.vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
         <td>
           <% unless  d.cwday >= 6  %>
@@ -49,7 +46,7 @@
     <% @others.each do |user| %>
     <tr><td class="user"><%=  user.fullname %></td>
       
-      <% vacation_dates = TimeEntry.for_user(user).for_activity(activity).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
+      <% vacation_dates = TimeEntry.for_user(user).for_activity(Activity.vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
       <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
 
         <td>
