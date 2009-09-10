@@ -31,11 +31,14 @@
         <td><%= user.fullname %> </td>
         <% @weeks.each_with_index do |date, index| %>
           <% hours = TimeEntry.for_user(user).between(date, (date + 6)).sum(:hours) %>
-          <% if hours >= @expected[index] %>
-            <td><%= hours %></td>
-          <% else %>
-            <td class="error"><%= hours %></td>
-          <% end %>
+          <% color_code = case hours
+              when 0..(@expected[index] -1): "warn"
+              when (@expected[index])..(@expected[index] * 1.4): "ok"
+              else "error"
+          end %>
+
+            <td class="<%= color_code -%>"><%= hours %></td>
+
         <% end %>
       </tr>
     <% end %>

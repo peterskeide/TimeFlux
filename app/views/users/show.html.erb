@@ -1,21 +1,20 @@
-<p>
-  <b>Full name:</b>
+<h1>
   <%=h @user.fullname %>
+</h1>
+
+<p>
+  Login:
+  <b><%=h @user.login %></b>
 </p>
 
 <p>
-  <b>Login name:</b>
-  <%=h @user.login %>
+  Email:
+  <b><%= @user.email %></b>
 </p>
 
 <p>
-  <b>Email</b>
-  <%= @user.email %>
-</p>
-
-<p>
-  <b>Operative status</b>
-  <%= @user.operative_status %>
+  Operative status:
+  <b><%= @user.operative_status %></b>
 </p>
 
 

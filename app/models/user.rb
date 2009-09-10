@@ -38,10 +38,10 @@ class User < ActiveRecord::Base
     self.fullname
   end
 
-  def status_for_month(date, expected_days, expected_hours)
-    hours = TimeEntry.for_user(self).between(date, date.at_end_of_month).sum(:hours)
-    days = TimeEntry.for_user(self).between(date, date.at_end_of_month).distinct_dates.count
-    unlocked_count = TimeEntry.for_user(self).between(date, date.at_end_of_month).locked(false).count
+  def status_for_period(from_date, to_date, expected_days, expected_hours)
+    hours = TimeEntry.for_user(self).between(from_date, to_date).sum(:hours)
+    days = TimeEntry.for_user(self).between(from_date, to_date).distinct_dates.count
+    unlocked_count = TimeEntry.for_user(self).between(from_date, to_date).locked(false).count
 
     if hours >= expected_hours && days >= expected_days && unlocked_count == 0
       return "ok"
@@ -53,6 +53,10 @@ class User < ActiveRecord::Base
       return "warn"
     end
     return "error"
+  end
+
+   def status_for_month(date, expected_days, expected_hours)
+     status_for_period(date, date.at_end_of_month, expected_days, expected_hours)
   end
 
   def self.status_values

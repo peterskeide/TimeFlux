@@ -151,9 +151,9 @@ a img {
 	width: 9em;
 }
 
-.ok a { color: green; }
-.warn a { color: orange; }
-.error a { color: red; }
+.ok, .ok a { color: green; }
+.warn, .warn a { color: orange; }
+.error, .error a { color: red; }
 
 .error, .red {
 	color: #c80000;
