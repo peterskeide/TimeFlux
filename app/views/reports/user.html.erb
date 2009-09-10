@@ -28,7 +28,7 @@
 
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.fullname %> </td>
+        <td><%=h user.name %> </td>
         <% @weeks.each_with_index do |date, index| %>
           <% hours = TimeEntry.for_user(user).between(date, (date + 6)).sum(:hours) %>
           <% color_code = case hours

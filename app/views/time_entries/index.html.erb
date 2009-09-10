@@ -1,4 +1,4 @@
-<h1>Time Entries for <%= User.find(params[:user_id]).fullname %></h1>
+<h1>Time Entries for <%=h User.find(params[:user_id]).fullname %></h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 <div class="navigation">

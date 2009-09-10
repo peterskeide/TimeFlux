@@ -24,7 +24,7 @@
       <% end %>
   </tr>
 
-  <tr><td class="user"><%=  @user.fullname %></td>
+  <tr><td class="user"><%=h  @user.name %></td>
 
     <% form_tag 'set_vacation', :method => 'post', :id => 'holidays_select_form' do %>
       <% vacation_dates = TimeEntry.for_user(@user).for_activity(Activity.vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>

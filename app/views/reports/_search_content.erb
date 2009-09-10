@@ -20,7 +20,7 @@
           <td><%= entry.hour_type.name -%></td>
           <td><%= entry.billed -%></td>
           <td><%= entry.hours -%></td>
-          <td><%= entry.notes -%></td>
+          <td><%=h entry.notes -%></td>
         </tr>
       <% end %>
     </table>

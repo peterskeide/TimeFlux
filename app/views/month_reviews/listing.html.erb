@@ -25,7 +25,7 @@
           <td><%= entry.date -%></td>
           <td><%= entry.hour_type.name -%></td>
           <td><%= entry.hours -%></td>
-          <td><%= entry.notes -%></td>
+          <td><%=h entry.notes -%></td>
         </tr>
       <% end %>
     </table>

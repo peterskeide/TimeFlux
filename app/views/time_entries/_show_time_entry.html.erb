@@ -2,7 +2,7 @@
 	<td width="25%"><%= link_to time_entry.activity.truncated_name_path, activity_path(time_entry.activity) %></td>
 	<td width="15%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td> 
 	<td width="5%"><%= time_entry.hours %></td> 
-	<td width="45%"><%= time_entry.notes %></td>
+	<td width="45%"><%=h time_entry.notes %></td>
 	<td width="5%">
 		<% unless time_entry.locked %>
 			<%= link_to_remote(image_tag("pencil.png", :title => "Edit"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
