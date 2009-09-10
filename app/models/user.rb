@@ -41,8 +41,9 @@ class User < ActiveRecord::Base
   def status_for_month(date, expected_days, expected_hours)
     hours = TimeEntry.for_user(self).between(date, date.at_end_of_month).sum(:hours)
     days = TimeEntry.for_user(self).between(date, date.at_end_of_month).distinct_dates.count
+    unlocked_count = TimeEntry.for_user(self).between(date, date.at_end_of_month).locked(false).count
 
-    if hours >= expected_hours && days >= expected_days
+    if hours >= expected_hours && days >= expected_days && unlocked_count == 0
       return "ok"
     end
 

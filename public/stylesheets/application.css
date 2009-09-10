@@ -91,7 +91,6 @@ table.compact tbody tr td, table.compact tbody tr th  {
 table.vacation tbody tr td, table.vacation tbody tr th  {
         padding-right: 0px;
         text-align: center;
-        min-width: 1.3em;
 }
 table.vacation tbody tr td.user  {
         text-align: left;

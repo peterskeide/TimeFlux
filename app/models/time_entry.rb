@@ -30,6 +30,10 @@ class TimeEntry < ActiveRecord::Base
     { :conditions => { :billed => billed } }
   }
 
+  named_scope :locked, lambda { |locked|
+    { :conditions => { :locked => locked } }
+  }
+
   named_scope :between, lambda { |*args|
     {  :conditions => ['date between ? and ?', args.first, args.second] }
   }

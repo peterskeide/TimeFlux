@@ -33,9 +33,7 @@
       <% vacation_dates = TimeEntry.for_user(@user).for_activity(activity).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
         <td>
-          <% if  d.cwday >= 6  %>
-            <span class="disabled">-</span>
-          <% else %>
+          <% unless  d.cwday >= 6  %>
             <%= check_box_tag  "date[#{d}]", '1',  vacation_dates.include?(d) -%>
           <% end %>
         </td>
@@ -58,7 +56,9 @@
           <% if vacation_dates.include?(d) %>
             <input type="checkbox" checked="1" disabled="true"/>
           <% else %>
-            <span class="disabled">-</span>
+            <% unless d.cwday >= 6 %>
+              <span class="disabled">-</span>
+            <% end %>
           <% end %>
         </td>
       <% end %>
