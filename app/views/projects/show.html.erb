@@ -2,35 +2,37 @@
 
 <p><%= link_to @project.customer.name, customer_url(:id => @project.customer.id) %> >> <%= @project.name %></p>
 
+<p class="error"><%=h flash[:error] %></p>
+
 <hr/>
 
 <div style="float:left; width:70%">
-<h2>Current Activities</h2>
+  <h2>Current Activities</h2>
 
-<table>
-        <tr><th>Name</th><th>Description</th><th>Status</th><th>Edit</th><th>Delete</th></tr>
+  <table>
+    <tr><th>Name</th><th>Description</th><th>Status</th><th>Edit</th><th>Delete</th></tr>
 
-	<% for activity in @project.activities do -%>
-		<tr>
-			<td><%= activity.name %></td>
-			<td><%= activity.description %></td>
-                        <td><%= activity.status %></td>
-			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
-		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>
-		</tr>
-	<% end -%>
-</table>
+    <% for activity in @project.activities do -%>
+        <tr>
+          <td><%= activity.name %></td>
+          <td><%= activity.description %></td>
+          <td><%= activity.status %></td>
+          <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
+          <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>
+        </tr>
+    <% end -%>
+  </table>
 </div>
 
 <div style="float:right;margin-top:52px;margin-right:5%" id="activitiesfrom_template">
-  
-<% templates = Activity.templates.map{|a|a.name} - @project.activities.map{|a|a.name} %>
+
+  <% templates = Activity.templates.map{|a|a.name} - @project.activities.map{|a|a.name} %>
 
   <div>
     <% form_tag :controller => 'activities', :action => 'create' do %>
       <%= select_tag "activity[name]", options_for_select( templates ), :multiple => true %>
       <%= hidden_field_tag "activity[project_id]", @project.id %>
-    <br/><br/>
+      <br/><br/>
       <%= submit_tag "<< Add from Templates" %>
     <% end %>
   </div>
@@ -39,45 +41,54 @@
 </div>
 
 <div style="clear:both">
-<br/>
+  <br/>
 
-<br/>
-<% form_for(Activity.new) do |f| %>
-  <%= f.error_messages %>
-  <%= f.text_field :name %>
-  <%= hidden_field_tag "activity[project_id]", @project.id %>
-  <%= f.submit 'Add Activity' %>
-<% end %>
+  <br/>
+  <% form_for(Activity.new) do |f| %>
+    <%= f.error_messages %>
+    <%= f.text_field :name %>
+    <%= hidden_field_tag "activity[project_id]", @project.id %>
+    <%= f.submit 'Add Activity' %>
+  <% end %>
 
-<br/>
-<hr/>
+  <br/>
+  <hr/>
+</div>
 
 <div style="float:left; width:70%">
-<h2>Current Assignments</h2>
+  <h2>Current Assignments</h2>
 
   <table>
     <tr><th>Assigned User</th><th>Remove</th></tr>
 
     <% for user in @project.users do -%>
-        <tr>
-          <td><%= user.name %></td>
-          <td><%= link_to image_tag("delete.png", :title => "Delete"), :action => 'remove_user_assignment', :id => @project.id, :user => user.id %></td>
-        </tr>
-      <% end -%>
-    </table>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= link_to image_tag("delete.png", :title => "Delete"), :action => 'remove_user_assignment', :id => @project.id, :user => user.id %></td>
+      </tr>
+    <% end -%>
+  </table>
 </div>
 
 <div style="float:right;margin-top:52px;margin-right:5%">
-    <% form_tag :controller => 'projects', :action => 'assign_to_users' do %>
-      <%= select_tag "users", options_from_collection_for_select( User.all.sort - @project.users, :id, :fullname ), :multiple => true %>
-      <%= hidden_field_tag "project_id", @project.id %>
-      <br/><br/>
-      <%= submit_tag "<< Assign to users" %>
-    <% end %>
+  <% form_tag :controller => 'projects', :action => 'assign_to_users' do %>
+    <%= select_tag "users", options_from_collection_for_select( User.all.sort - @project.users, :id, :fullname ), :multiple => true %>
+    <%= hidden_field_tag "project_id", @project.id %>
+    <br/><br/>
+    <%= submit_tag "<< Assign to users" %>
+  <% end %>
 </div>
 
 <div style="clear:both">
-  <br/><br/>
+  <br/>
+
+  <% form_tag :controller => 'projects', :action => 'assign_by_login' do %>
+    <%= text_field 'login', nil %>
+    <%= hidden_field_tag "project_id", @project.id %>
+    <%= submit_tag 'Assign by login' %>
+  <% end %>
+
+  <br/>
   <hr/>
   <%= link_to 'Back', customer_path(:id => @project.customer.id) %>
 </div>

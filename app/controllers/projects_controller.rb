@@ -52,6 +52,18 @@ class ProjectsController < ApplicationController
     redirect_to project_url(:id => project.id)
   end
 
+  def assign_by_login
+    project = Project.find(params[:project_id])
+    user = User.find_by_login(params[:login])
+    if user
+    project.users << user
+    else
+      flash[:error] = "User #{params[:login]} not found"
+    end
+
+    redirect_to project_url(:id => project.id)
+  end
+
   def remove_user_assignment
     project = Project.find(params[:id])
     user = User.find(params[:user])
