@@ -34,7 +34,7 @@ ActionController::Routing::Routes.draw do |map|
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "user_sessions", :action => "new"
 
-  map.resources :holidays, :collection => { :vacation => :get, :holiday => :get }
+  map.resources :holidays, :collection => { :vacation => :get, :vacation_overview => :get, :holiday => :get }
   map.resources :projects, :collection => { :assign_to_users => :post, :remove_user_assignment => :post }
 
   map.resources :customers, :tags, :user_sessions, :time_entries, :users, :activities, :tag_types, :hour_types

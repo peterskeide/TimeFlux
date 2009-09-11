@@ -61,6 +61,10 @@ class HolidaysController < ApplicationController
     @others.delete(@user)
   end
 
+  def vacation_overview
+    @year = params[:year].blank? ? Date.today.year : params[:year].to_i
+  end
+
   def set_vacation
     user = User.find params[:user_id]
     if user == current_user_session.user || current_user_session.user.admin
