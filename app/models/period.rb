@@ -20,6 +20,14 @@ class Period
   def locked?
     @locked
   end
+
+  def month_name
+    Date::MONTHNAMES[@start.month]
+  end
+
+  def activities
+    @user.time_entries.between(@start, @end).distinct_activities.map { |e| e.activity }
+  end
   
   private
   

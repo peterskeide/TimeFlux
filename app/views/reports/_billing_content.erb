@@ -28,7 +28,7 @@
                   <td>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="<%= user.status_for_month(day, expected_days, expected_hours)%>">
-                      <%= link_to h(user.name), user_month_review_path( @current_user, {:id => :calendar}.merge( date_to_url(day) ) ) %>
+                      <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(day) ) ) %>
                     </span>
                   </td>
                   <td> normaltid</td>
