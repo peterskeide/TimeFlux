@@ -1,5 +1,5 @@
 <% unless time_entries.empty? %>
-	<table width="100%" id='<%= "#{day}_time_entries" %>'>
+	<table class="" width="100%" id='<%= "#{day}_time_entries" %>'>
 			<%= render :partial => "time_entries_table_header" %>
 		<% time_entries.each do |te| %>
 			<%= render :partial => "show_time_entry", :locals => { :time_entry => te } %>

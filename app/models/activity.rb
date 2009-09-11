@@ -66,7 +66,7 @@ class Activity < ActiveRecord::Base
     return list.join(', ')
   end
 
-  def truncated_name_path(max_characters=22)
+  def truncated_name_path(max_characters=30)
     max_characters -= self.name.size;
     if project != nil
       if project.name.size > max_characters

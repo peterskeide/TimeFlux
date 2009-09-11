@@ -5,8 +5,6 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<hr/>
-
 <div id="search_filter">
   <% unless params[:type] == "advanced" %>
     <%= render :partial => 'search_form', :locals => { :params => params, :years => @years, :months => @months } -%>

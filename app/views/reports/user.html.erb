@@ -3,12 +3,17 @@
 
 <%= render :partial => 'sub_menu' -%>
 
+<p class="error"><%= flash[:error] %></p>
+<p class="notice"><%= flash[:notice] %></p>
+
+
 <% form_tag :action => 'user', :method => 'get' do %>
   <label for="status">Status</label>
   <%= select_tag "status", options_for_select(User.status_values, params[:status].to_i), {:include_blank => 'None'} %>
   <%= submit_tag 'Generate' %>
 <% end %>
 
+  <br/>
   <hr/>
 
   <table>
@@ -51,6 +56,7 @@
     </tr>
     
   </table>
+  <br/>
 
 <%= render :partial => 'download', :locals => { :params => params, :action => 'user' } -%>
 

@@ -13,7 +13,7 @@
 <br/>
 <% time_entries = TimeEntry.for_user(@user).for_project(@project).between(@day, @day.at_end_of_month) %>
 
-<table>
+<table class="regular">
   <tr><th>Date</th><th>Activity</th><th>Hours</th><th>Notes</th></tr>
 <% time_entries.each do |e|%>
   <tr>

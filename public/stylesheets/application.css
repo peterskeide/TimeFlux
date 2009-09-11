@@ -90,8 +90,9 @@ td.report a:hover{
         text-decoration: underline;
 }
 
+
+
 table tbody tr td, table tbody tr th  {
-        padding-right: 10px;
         vertical-align:top;
 }
 
@@ -107,8 +108,14 @@ table.vacation tbody tr td.user  {
         text-align: left;
 }
 
+table.regular { border-collapse: collapse; }
+
 table.regular tbody tr th  {
         background:#EEEEEE none repeat scroll 0 0;
+        
+}
+table.regular tbody tr th, table.regular tbody tr td  {
+        padding-right: 10px;
 }
 
 a.menu_link {

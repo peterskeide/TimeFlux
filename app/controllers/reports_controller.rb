@@ -97,7 +97,7 @@ class ReportsController < ApplicationController
     time_entries = TimeEntry.search( @from_day, @to_day, @activities )
 
     data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
-      [activity.name, time_entries.sum(&:hours)]
+      [activity.customer_project_name, time_entries.sum(&:hours)]
     end
 
     table = Ruport::Data::Table.new( :data => data_set,
