@@ -50,6 +50,11 @@ class HolidaysController < ApplicationController
   def vacation
     @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date])
 
+    @is_holiday = {}
+    @day.at_beginning_of_month.upto @day.at_end_of_month do |d|
+      @is_holiday.merge!({d => Holiday.expected_on_day(d) == 0})
+    end
+
     @last_in_month = (@day >> 1) -1
     @user = current_user_session.user
     @others = User.all.sort!

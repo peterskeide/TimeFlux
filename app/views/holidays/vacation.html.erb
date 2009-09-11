@@ -2,6 +2,8 @@
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 
+<% activity_vacation = Activity.vacation %>
+
 <h1>Vacation</h1>
 <%= render :partial => 'sub_menu' -%>
 
@@ -20,17 +22,17 @@
   <tr>
     <td></td>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
-      <th <%= 'class="error"' if d.cwday >= 6 -%> ><%= d.day -%><%='</th>'-%>
+      <th <%= 'class="error"' if @is_holiday[d] -%> ><%= d.day -%><%='</th>'-%>
       <% end %>
   </tr>
 
   <tr><td class="user"><%=h  @user.name %></td>
 
     <% form_tag 'set_vacation', :method => 'post', :id => 'holidays_select_form' do %>
-      <% vacation_dates = TimeEntry.for_user(@user).for_activity(Activity.vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
+      <% vacation_dates = TimeEntry.for_user(@user).for_activity(activity_vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
         <td>
-          <% unless  d.cwday >= 6  %>
+          <% unless @is_holiday[d]  %>
             <%= check_box_tag  "date[#{d}]", '1',  vacation_dates.include?(d) -%>
           <% end %>
         </td>
@@ -46,14 +48,14 @@
     <% @others.each do |user| %>
     <tr><td class="user"><%=  user.fullname %></td>
       
-      <% vacation_dates = TimeEntry.for_user(user).for_activity(Activity.vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
+      <% vacation_dates = TimeEntry.for_user(user).for_activity(activity_vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
       <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
 
         <td>
           <% if vacation_dates.include?(d) %>
             <input type="checkbox" checked="1" disabled="true"/>
           <% else %>
-            <% unless d.cwday >= 6 %>
+            <% unless @is_holiday[d] %>
               <span class="disabled">-</span>
             <% end %>
           <% end %>
