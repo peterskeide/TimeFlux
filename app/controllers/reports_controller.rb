@@ -76,6 +76,12 @@ class ReportsController < ApplicationController
     end
   end
 
+  def details
+    @user = User.find(params[:user])
+    @project = Project.find(params[:project])
+    @day = Date.parse(params[:day])
+  end
+
   def update_billing_content
     if request.xhr?
       setup_calender

@@ -33,7 +33,7 @@
                   </td>
                   <td> normaltid</td>
                   <td><%= hours %> t </td>
-                  <td><%= link_to "Details", user_month_review_path( @current_user, {:id => :listing}.merge( date_to_url(day) ) ) %></td>
+                  <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => day %></td>
                 </tr>
               <% end %>
 
