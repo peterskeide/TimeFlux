@@ -9,6 +9,11 @@ table {
         text-align: left;
 }
 
+h3.compact {
+    margin-bottom:6px;
+    margin-top:10px
+}
+
 .calender {
     font-size : 120%;
     margin-bottom: 30px;

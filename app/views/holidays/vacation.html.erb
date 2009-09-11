@@ -8,14 +8,14 @@
 <%= render :partial => 'sub_menu' -%>
 
 <div class="navigation">
-	<h4>
+	<h3 class="compact">
 		<%= link_to '<<', :action => 'vacation', :date => @day << 1 %>
 		<span><%= @day.strftime('%B %Y') %></span>
 		<%= link_to '>>', :action => 'vacation', :date => @day >> 1 %>
-	</h4>
+	</h3>
 </div>
 
-<hr/><br/>
+<br/>
 
 <table class="vacation">
 

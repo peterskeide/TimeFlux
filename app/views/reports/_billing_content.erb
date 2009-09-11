@@ -8,7 +8,7 @@
       <% Customer.all.each do |customer| %>
         
         <tr>
-          <td colspan="99"> <h3 style="margin-bottom:6px;margin-top:10px"><%= customer.name %></h3></td>
+          <td colspan="99"> <h3 class="compact"><%= customer.name %></h3></td>
         </tr>
         <% customer.projects.each do |project| %>
           <% total= TimeEntry.billed(false).between(day,day.at_end_of_month).for_project(project).sum(:hours) %>

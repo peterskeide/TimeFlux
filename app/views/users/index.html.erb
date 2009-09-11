@@ -5,7 +5,7 @@
 
 <%= render :partial => "admin/menu" %>
 
-<br/><br/>
+<%= will_paginate @users %>
 
 <table class="regular">
   <tr>
@@ -17,7 +17,6 @@
     <th>Delete</th>
   </tr>
 
-<%= will_paginate @users %>
 <% for user in @users %>
   <tr>
     <td><%=h user.fullname %></td>

@@ -8,14 +8,14 @@
 <%= render :partial => 'sub_menu' -%>
 
 <div class="navigation">
-	<h4>
+	<h3 class="compact">
 		<%= link_to '<<', :action => 'vacation_overview', :year => @year - 1 %>
 		<span><%= @year %></span>
 		<%= link_to '>>', :action => 'vacation_overview', :year => @year + 1 %>
-	</h4>
+	</h3>
 </div>
 
-<hr/><br/>
+<br/>
 
 <table class="vacation regular" width="100%">
 
