@@ -92,12 +92,6 @@ class TimeEntry < ActiveRecord::Base
   def hours_to_s
     if self.hours > 0 then self.hours.to_s else '-' end
   end
-  
-  def self.sum_hours_for_user_and_date(user_id, date = Date.today)
-    TimeEntry.sum("hours", :conditions => 
-      [ "user_id = :user_id AND date = :date", 
-      { :user_id => user_id, :date => date } ])
-  end
 
   private
   

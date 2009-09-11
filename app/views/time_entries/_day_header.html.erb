@@ -1,27 +1,26 @@
-<div class="container">
-
-  <div class="left-element">
-    <b><%= "#{day} #{date.day.ordinalize} #{Date::MONTHNAMES[date.month]}" %></b>
-    <%#= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
+<table style="background-color: #EEEEEE; width:100%;padding-top:2px">
+  <tr>
+    <td width="22%">
+      <span style="white-space: nowrap; font-weight: bold; ">
+        <%= Holiday.expected_on_day(date) == 0 ?  "<span class=\"error\">#{day}</span>" : day  %>
+        <%= "#{date.day.ordinalize} #{Date::MONTHNAMES[date.month]}" %>
+      </span>
+    </td>
+    <td>
+<%= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
       :href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
-  </div>
-
-  <div style="position: absolute;left:16em;top:2px">
-    <%= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
-      :href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
-  </div>
-
-
-  <div class="right-element">
-    <label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>
+    </td>
+    <td width="80%" style="text-align: right; color:gray;">
+      <label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>
     <span id='<%= "#{day}_total" %>'>
-      <b><%= TimeEntry.sum_hours_for_user_and_date(@user.id, date) %></b>
+      <b><%= TimeEntry.for_user(@user).on_day(date).sum(:hours) %></b>
     </span>
     <label id='<%= "#{day}_expected_label" %>' for='<%= "#{day}_expected" %>'>Expected</label>
     <b><%= Holiday.expected_on_day(date) %></b>
-  </div>
+    </td>
+  </tr>
+</table>
 
-</div>
 
 
 
