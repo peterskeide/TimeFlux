@@ -1,4 +1,3 @@
-db/seeds.rb
 db/fixtures
 coverage
 coverage.data
