@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :start, :end, :time_entries
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -8,14 +8,15 @@ class Period
     @user = user
     @time_entries = @user.time_entries.between(@start, @end)
     @total_hours = @time_entries.collect { |te| te.hours }.sum
-    #@total_days = @user.time_entries.between(@start, @end).distinct_dates.count
     @expected_hours = find_expected_hours
+    @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
     @locked = is_period_locked?
   end
   
   def ready_for_approval?
-    @total_hours >= @expected_hours
+    @total_hours >= @expected_hours &&
+     @total_days >= @expected_days
   end
   
   def locked?
@@ -26,18 +27,12 @@ class Period
     Date::MONTHNAMES[@start.month]
   end
 
-  # Why doesn´t distinct_days work?
-  def total_days
-    list = {}
-    TimeEntry.for_user(@user).between(@start, @end).each { |i| list.merge!({i.date => true}) }
-    list.size
-  end
-
   def activities
     @user.time_entries.between(@start, @end).distinct_activities.map { |e| e.activity }
   end
   
   private
+
   
   def find_expected_hours
     period = expected_between_hash(@start, @end)

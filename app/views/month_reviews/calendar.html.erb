@@ -3,7 +3,7 @@
   <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
 </h1>
 
-<p></p><br/>
+<br/>
 
 <% form_tag user_month_review_path(@user, :id => :calendar), :method => :get do %>
   <p>

@@ -3,7 +3,7 @@
   <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
 </h1>
 
-<p><%= link_to 'Back', user_month_review_path(@user, :id => :calendar) %></p>
+<br/>
 
 <% form_tag user_month_review_path(@user, :id => :listing), :method => :get do %>
   <p>
@@ -45,6 +45,9 @@
 <% else %>
     <p>No time entries for this period</p>
 <% end %>
+    
+<br/>
+<p><%= link_to 'Back', user_month_review_path(@user, :id => :calendar) %></p>
 
-<br/><hr/>
+<hr/>
 Download report: <%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({ :format => "pdf", :action => "show" }) %>
