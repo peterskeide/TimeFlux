@@ -59,7 +59,8 @@
       <% end -%>
     <% end %>
   </table>
-  <div class="footer"> Hours: <%= "#{@period.total_hours} / #{@period.expected_hours}" %>, days: X / YY</div>
+  <div class="footer"> Hours: <%= "#{@period.total_hours} / #{@period.expected_hours}" %>,
+    days: <%= "#{@period.total_days} / #{@period.expected_days}" %></div>
 </div>
 
 <br/>
