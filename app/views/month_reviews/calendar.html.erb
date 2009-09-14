@@ -1,4 +1,9 @@
-<%= render :partial => 'sub_menu' -%>
+<%#= render :partial => 'sub_menu' -%>
+<h1>Review Month
+  <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
+</h1>
+
+<p></p><br/>
 
 <% form_tag user_month_review_path(@user, :id => :calendar), :method => :get do %>
   <p>
