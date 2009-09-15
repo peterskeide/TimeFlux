@@ -8,7 +8,7 @@ class Activity < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_and_belongs_to_many :tags
   
-  validates_presence_of :name #, :tags
+  validates_presence_of :name
   
   before_destroy :verify_no_time_entries
   
@@ -62,11 +62,10 @@ class Activity < ActiveRecord::Base
     list = []
     list << "shared" if self.default_activity
     list << "disabled" unless self.active
-    list << "public" if self.shared
     return list.join(', ')
   end
 
-  def truncated_name_path(max_characters=30)
+  def truncated_name_path(max_characters=29)
     max_characters -= self.name.size;
     if project != nil
       if project.name.size > max_characters

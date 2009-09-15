@@ -2,22 +2,27 @@
   <%=h @user.fullname %>
 </h1>
 
-<p>
-  Login:
-  <b><%=h @user.login %></b>
-</p>
+<table class="regular">
+  <tr>
+    <td>Login</td>
+    <td><b><%=h @user.login %></b></td>
+  </tr>
+  <tr><td></td></tr>
+  <tr>
+    <td>Email</td>
+    <td><b><%=h @user.email %></b></td>
+  </tr>
+</table>
 
-<p>
-  Email:
-  <b><%= @user.email %></b>
-</p>
+<br/>
+    <h3>Assignments</h3>
+    <ul>
+      <%  @user.projects.each do |project| %>
+        <li><%= "#{project.name} (#{project.customer.name})" %></li>
+      <% end %>
+    </ul>
 
-<p>
-  Operative status:
-  <b><%= @user.operative_status %></b>
-</p>
-
-
+<br/>
 <%= link_to 'Edit', edit_user_path(@user) %> 
 <% if @current_user.admin -%>
 	|

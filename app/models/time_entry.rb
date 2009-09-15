@@ -67,8 +67,10 @@ class TimeEntry < ActiveRecord::Base
 
   def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|
-      t.locked = value
-      t.save
+      if value || t.billed == false
+        t.locked = value
+        t.save
+      end
     end
   end
 

@@ -43,7 +43,6 @@ h3.compact {
 
 .calender_activities {
     float:right;
-/*    border-left:1px dotted;*/
     min-height:158px;
     padding-left:10px;
     color:#444444
@@ -113,7 +112,10 @@ table.vacation tbody tr td.user  {
         text-align: left;
 }
 
-table.regular { border-collapse: collapse; }
+table.regular { 
+    border-collapse: collapse;
+    border-spacing: 10px 0px;
+}
 
 table.regular tbody tr th  {
         background:#EEEEEE none repeat scroll 0 0;
@@ -272,44 +274,3 @@ td.week_entries_hours {
 	padding-left: 1em;
 }
 
-/* sub drop down menu */
-
-ul { /* all lists */
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    background:#EEEEEE
-}
-
-li.menu { /* all list items */
-    float: left;
-    position: relative;
-    padding-right:1em;
-}
-
-li.menu a {
-    text-decoration:none;
-    white-space:nowrap;
-    font-size:16px;
-}
-
-li.sub a {
-    font-size:14px;
-}
-
-li.menu ul { /* second-level lists */
-    display: none;
-    position: absolute;
-    top: 1em;
-    left: 0;
-}
-
-li.menu>ul { /* to override top and left in browsers other than IE, which will position to the top right of the containing li, rather than bottom left */
-    top: auto;
-    left: auto;
-    background:#EEEEEE
-}
-
-li.menu:hover ul, li.over ul { /* lists nested under hovered list items */
-    display: block;
-}

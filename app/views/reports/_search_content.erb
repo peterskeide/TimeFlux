@@ -3,10 +3,15 @@
 
   <% user_entries = @time_entries.group_by(&@group_by) %>
   <% user_entries.each do |group, te| %>
-    <h3><%= group.respond_to?('name') ? group.name : group.to_s %></h3>
+    <h3>
+    <%= case @group_by
+        when :activity then group.customer_project_name
+        when :user then group.name
+        else group.to_s end %>
+    </h3>
     <table class="regular">
       <tr>
-        <% columns = %w{Date User Activity Type Billed Hours Notes};
+        <% columns = %w{Date User Activity Type Status Hours Notes};
            columns.delete(@group_by.to_s.capitalize) %>
         <% columns.each do |column| %>
           <th><%= column %></th>
@@ -14,19 +19,18 @@
       </tr>
       <%te.each do |entry| %>
         <tr>
-          <% unless @group_by == :date %><td><%= entry.date -%></td><% end %>
-          <% unless @group_by == :user %><td><%= entry.user.name -%></td><% end %>
-          <% unless @group_by == :activity %><td><%= entry.activity.name -%></td><% end %>
-          <td><%= entry.hour_type.name -%></td>
-          <td><%= entry.billed -%></td>
+          <% unless @group_by == :date %><td style="white-space:nowrap;"><%= entry.date -%></td><% end %>
+          <% unless @group_by == :user %><td style="white-space:nowrap;"><%= entry.user.name -%></td><% end %>
+          <% unless @group_by == :activity %><td style="white-space:nowrap;"><%= entry.activity.name -%></td><% end %>
+          <td style="white-space:nowrap;"><%= entry.hour_type.name -%></td>
+          <td><%= entry.billed ? 'billed' : (entry.locked ? 'locked' : '' ) -%></td>
           <td><%= entry.hours -%></td>
           <td><%=h entry.notes -%></td>
         </tr>
       <% end %>
     </table>
+ <br/>
   <% end %>
-
-  <br/>
 
   <table>
     <tr>
@@ -44,6 +48,14 @@
           <%= hidden_field_tag 'mark_as',  'billed' %>
           <%= hidden_field_tag 'value',  'false' %>
           <%= submit_tag 'Change to unbilled', :confirm => 'Really mark selected entries as unbilled?' %>
+        <% end %>
+      </td>
+      <td>
+        <% form_tag :action => 'mark_time_entries', :method => 'post' do %>
+          <%= render_hidden_hours_tags(params) %>
+          <%= hidden_field_tag 'mark_as',  'locked' %>
+          <%= hidden_field_tag 'value',  'false' %>
+          <%= submit_tag 'Unlock' %>
         <% end %>
       </td>
     </tr>
