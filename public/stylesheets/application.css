@@ -94,7 +94,9 @@ td.report a:hover{
         text-decoration: underline;
 }
 
-
+table td input, table td img {
+    vertical-align: middle;
+}
 
 table tbody tr td, table tbody tr th  {
         vertical-align:top;
