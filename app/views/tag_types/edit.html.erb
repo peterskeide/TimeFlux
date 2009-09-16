@@ -1,0 +1,66 @@
+<h1>Edit tag category</h1>
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+
+<br/>
+<div style="width:80%">
+
+  <div style="float:right">
+    
+    Icon: <span id="icon"><%= render :partial => 'icon', :locals => { :icon => @tag_type.icon } -%></span><br/><br/>
+    
+    <% form_remote_tag(:url => {:action => 'update_icon'}, :update => 'icon',
+      :html => { :name => 'icon_form' } ) do %>
+      <%= hidden_field_tag 'icon' %>
+
+      <table style="border:1px solid #BBBBBB;"><tr>
+          <% @icons.each_with_index do |icon, index| %>
+            <%= if index % 10 == 0 then "</tr><tr>" else "" end %>
+            <td>
+              <%= hidden_field_tag 'id', @tag_type.id %>
+              <%= image_submit_tag "/images/led-icons/#{icon}.png", :name => icon,
+                :onClick => "document.icon_form.icon.value='#{icon}';document.tag_type_form.tag_type_icon.value='#{icon}'" %>
+            </td>
+          <% end %>
+        </tr></table>
+    <% end %>
+  </div>
+
+  <% form_for @tag_type, :html => { :name => 'tag_type_form' } do |f| %>
+    <%= f.error_messages %>
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+
+    <p>
+      <%= f.check_box :mutually_exclusive %>
+      <%= f.label :mutually_exclusive %>
+    </p>
+
+    <p style="clear:both">
+      <%= hidden_field_tag 'tag_type[icon]', @tag_type.icon %>
+      <%= f.submit "Update" %>
+    </p>
+  <% end %>
+</div>
+
+<br/><br/>
+
+
+
+<br/><br/><hr/>
+
+Alternative Firefox only icon select
+
+<p>
+  Icon<br />
+  <select>
+    <% @icons.each do |icon| %>
+      <optgroup style="background-image: url(/images/led-icons/<%= icon%>.png); background-repeat:no-repeat; height:18px;">
+        <option value="<%=icon%>"><%=icon%></option>
+      </optgroup>
+    <% end %>
+  </select>
+</p>
+

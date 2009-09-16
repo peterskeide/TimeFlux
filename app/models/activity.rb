@@ -2,6 +2,8 @@ class Activity < ActiveRecord::Base
 
   has_many :time_entries
 
+  has_and_belongs_to_many :tags
+
   belongs_to :project, :include => :customer
   delegate :customer, :customer=, :to => :project
   
