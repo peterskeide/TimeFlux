@@ -3,7 +3,7 @@ require 'net/ldap'
 class User < ActiveRecord::Base
   
   has_many :time_entries
-  has_and_belongs_to_many :activities
+  #has_and_belongs_to_many :activities
   has_and_belongs_to_many :projects
      
   validates_presence_of :firstname, :lastname, :login
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
   # the activities assigned to the user
   def current_activities
     current  = self.projects.map{|project| project.activities }.flatten
-    current += self.activities
+    #current += self.activities
     current += Activity.active(true).default(true)
     current.uniq
   end
