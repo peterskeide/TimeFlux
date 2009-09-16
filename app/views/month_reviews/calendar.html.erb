@@ -74,7 +74,7 @@
   </div>
 </div>
 
-Ballance: <span class="<%= case @period.ballance when (-9999..0) then "red" when (0..9999) then "ok" end %>">
+Balance: <span class="<%= case @period.ballance when (-9999..0) then "red" when (0..9999) then "ok" end %>">
   <%= "%+.1f" % @period.ballance %></span> hours
 <%= ((@period.start..@period.end).include? Date.today) ? "in the first #{Date.today.mday} days" : '' %>
 <br/>
