@@ -1,0 +1,15 @@
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+
+<h1>Configure</h1>
+<%= render :partial => 'admin/menu' -%>
+
+<p>Timezone <%= time_zone_select( "user", "time_zone") %></p>
+
+
+
+<p>Authentication method</p>
+
+<p>Vacation activity</p>
+
+<p>Expected work hours per day</p>
