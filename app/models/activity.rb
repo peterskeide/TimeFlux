@@ -4,8 +4,6 @@ class Activity < ActiveRecord::Base
 
   belongs_to :project, :include => :customer
   delegate :customer, :customer=, :to => :project
-
-  #has_and_belongs_to_many :users
   
   validates_presence_of :name
   
