@@ -6,7 +6,6 @@ class ReportsControllerTest < ActionController::TestCase
     
     setup do
       login_as(:bob)
-      @tag_type_id = tag_types(:project).id
       @date = Date.new(2009, 6, 22) # monday in week 26, 2009
       Date.stubs(:today).returns(@date)
     end

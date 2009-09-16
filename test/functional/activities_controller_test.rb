@@ -55,7 +55,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     context "a successful POST to :create" do
       
       setup do
-        post :create, "activity"=>{"name"=>"Foobar", "default_activity"=>"0", "description"=>"Put the foo in the bar", "active"=>"1", "tag_ids" => "#{tags(:timeflux).id}"}
+        post :create, "activity"=>{"name"=>"Foobar", "default_activity"=>"0", "description"=>"Put the foo in the bar", "active"=>"1"}
       end
        
       should_change("the number of activities", :by => 1) { Activity.count }           
@@ -180,16 +180,6 @@ class ActivitiesControllerTest < ActionController::TestCase
       assert_redirected_to new_user_session_url
     end
     
-    should "be redirected to login page on POST to :filter_by_tag_type" do
-      post :filter_by_tag_type
-      assert_redirected_to new_user_session_url
-    end
-    
-    should "be redirected to login page on POST to :filter_by_tag" do
-      post :filter_by_tag
-      assert_redirected_to new_user_session_url
-    end
-    
     should "be redirected to login page on GET to :edit" do
       get :edit
       assert_redirected_to new_user_session_url
@@ -204,21 +194,13 @@ class ActivitiesControllerTest < ActionController::TestCase
       put :update
       assert_redirected_to new_user_session_url
     end
-    
-    should "be redirected to login page on POST to :add_tag" do
-      post :add_tag
-      assert_redirected_to new_user_session_url
-    end
+
     
     should "be redirected to login page on POST to :add_user" do
       post :add_user
       assert_redirected_to new_user_session_url
     end
-    
-    should "be redirected to login page on GET to :remove_tag" do
-      get :remove_tag
-      assert_redirected_to new_user_session_url
-    end
+
     
     should "be redirected to login page on GET to :remove_user" do
       get :remove_user

@@ -9,13 +9,11 @@ timeflux_development:
     shared: true
     project: community
     description: Implement Open Source time management and billing application
-    tags: conduct, timeflux
 
 timeflux_administration:
     name: TimeFlux Administration
     description: Administration of TimeFlux in production
     default_activity: true
-    tags: conduct, timeflux
 
 pacman_development:
     project: pacman

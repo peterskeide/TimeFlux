@@ -93,16 +93,14 @@ class ActivitiesController < ApplicationController
   end
 
   def update_form
-    tags = params[:tag_type_id] && params[:tag_type_id] != "" ? TagType.find(params[:tag_type_id]).tags : []
+
     customer = Customer.find(params[:customer_id]) if params[:customer_id] && params[:customer_id] != ""
-    render :partial => 'form', :locals => { :tags => tags, :customer => customer, :params => params }
+    render :partial => 'form', :locals => { :customer => customer, :params => params }
   end
 
   def update_activities
-    if !params[:tag_type_id] || params[:tag_type_id] = ""
-      params[:tag_id] = nil
-    end
-    activities = Activity.search(params[:active], params[:default], params[:tag_id], params[:tag_type_id], 1)
+
+    activities = Activity.search(params[:active], params[:default], 1)
     render :partial => 'activities', :locals => { :activities => activities }
   end
   

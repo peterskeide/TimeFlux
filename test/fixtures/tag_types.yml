@@ -1,7 +1,0 @@
-customer:
-  name: Customer
-  icon: user
-
-project:
-  name: Project
-  icon: chart_curve

@@ -19,8 +19,6 @@ module ReportsHelper
      #{hidden_field_tag 'month',  params[:month]} \n
      #{hidden_field_tag 'billed',  params[:billed]} \n
      #{hidden_field_tag 'user',  params[:user]} \n
-     #{hidden_field_tag 'tag_type_id',  params[:tag_type_id]} \n
-     #{hidden_field_tag 'tag_id',  params[:tag_id]} \n
      #{hidden_field_tag 'type',  params[:type]} "
   end
 
