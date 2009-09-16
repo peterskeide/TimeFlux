@@ -1,23 +1,31 @@
-<p class="notice"><%= flash[:notice] %></p>
-<p class="error"><%= flash[:error] %></p>
+
 <h1>Categories</h1>
 
+<%= render :partial => 'admin/menu' -%>
 
 
-<table>
+<table class="regular">
+
+  <tr>
+    <th>Icon</th><th>Name</th><th>Edit</th><th>Delete</th>
+  </tr>
+
+
   <% @tag_types.each do |c| -%>
   <tr>
-    <td><%= image_tag "led-icons/#{c.icon}.png", :alt => "" %></td>
+    <td style="text-align:center"><%= image_tag "led-icons/#{c.icon}.png", :alt => "" %></td>
     <td><%= c.name %></td>
     <td>
       <%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => c %>
+    </td>
+    <td>
       <%= link_to image_tag("delete.png", :title => "Delete"), tag_type_path(c), :method => :delete, :confirm => 'Really remove category?' %>
     </td>
 </tr>
   <% end -%>
 </table>
 
-<hr/>
+<br/><br/>
 
 <% form_for :tag_type, @tag_type, :url => {:action => "create"} do |f| %>
   <div><%= label_tag "tag_type_name","New tag type"%> <%= f.text_field :name %>

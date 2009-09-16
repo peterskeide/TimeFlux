@@ -1,11 +1,9 @@
-<p class="notice"><%= flash[:notice] %></p>
-<p class="error"><%= flash[:error] %></p>
 
 <h1>Users</h1>
 
 <%= render :partial => "admin/menu" %>
 
-<br/><br/>
+<%= will_paginate @users %>
 
 <table class="regular">
   <tr>
@@ -17,7 +15,6 @@
     <th>Delete</th>
   </tr>
 
-<%= will_paginate @users %>
 <% for user in @users %>
   <tr>
     <td><%=h user.fullname %></td>
@@ -25,7 +22,7 @@
     <td><%=h user.operative_status %><%= user.admin ? ", admin" : ''  %></td>
     <td><%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %></td>
     <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_user_path(user) %></td>
-    <td><%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => 'Really remove user?' %></td>    
+    <td><%= link_to image_tag("delete.png", :title => "Delete"), user_path(user), :method => :delete, :confirm => "Really remove #{user.name}?" %></td>
   </tr>
 <% end %>
 </table>

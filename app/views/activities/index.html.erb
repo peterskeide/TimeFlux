@@ -3,12 +3,9 @@
 
 <%= render :partial => "admin/menu" %>
 
-<p class="error"><%= flash[:error] %></p>
-<p class="notice"><%= flash[:notice] %></p>
-
 <div id="activities">
   <%=  render :partial => 'activities', :locals => { :activities => @activities } %>
 </div>
 
-  <hr/>
+  <br/>
 <%= link_to "New Activity Template", new_activity_path %>

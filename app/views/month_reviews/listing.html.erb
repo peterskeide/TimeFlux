@@ -1,6 +1,11 @@
-<%= render :partial => 'sub_menu' -%>
+<%#= render :partial => 'sub_menu' -%>
+<h1>Review Month
+  <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
+</h1>
 
-<% form_tag user_month_review_path(@current_user, :id => :listing), :method => :get do %>
+<br/>
+
+<% form_tag user_month_review_path(@user, :id => :listing), :method => :get do %>
   <p>
     <label for="date">Period</label>
     <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @beginning_of_month} %>
@@ -13,6 +18,7 @@
 <% if @time_entries != nil %>
   <% @time_entries.each do |activity, te| %>
     <h3><%= activity.customer_project_name %></h3>
+    <% total = 0 %>
     <table class="regular">
       <tr>
         <th>Date</th>
@@ -21,6 +27,7 @@
 		<th>Notes</th>
       </tr>
       <% te.sort { |te1, te2| te1 <=> te2 }.each do |entry| %>
+        <% total += entry.hours -%>
         <tr>
           <td><%= entry.date -%></td>
           <td><%= entry.hour_type.name -%></td>
@@ -28,11 +35,19 @@
           <td><%=h entry.notes -%></td>
         </tr>
       <% end %>
+        <tr>
+          <td></td>
+          <td><b>Total</b></td>
+          <td><b><%= total -%></b></td>
+        </tr>
     </table>
   <% end %>
 <% else %>
     <p>No time entries for this period</p>
 <% end %>
+    
+<br/>
+<p><%= link_to 'Back', user_month_review_path(@user, :id => :calendar) %></p>
 
-<br/><hr/>
+<hr/>
 Download report: <%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({ :format => "pdf", :action => "show" }) %>

@@ -51,7 +51,7 @@ class TagsControllerTest < ActionController::TestCase
         should_render_template :show
         should_not_set_the_flash
       end
-      
+
       context "on GET to :edit" do
         setup {
           get :edit, :id => tags(:conduct).id
@@ -59,7 +59,7 @@ class TagsControllerTest < ActionController::TestCase
         should_render_template :edit
         should_not_set_the_flash
       end
-            
+
       context "on POST to :update" do
         setup {
           post :update, :id => tags(:conduct).id, :tag => {:name => 'Conduct ASA'}

@@ -10,21 +10,6 @@
       <td><%= select_tag "active", options_for_select(boolean_options, params[:active]) %></td>
     </tr>
     <tr> <td></td></tr>
-
-    <tr>
-      <td><%= label_tag "tag_type_id","Category"%></td>
-      <td><%= select_tag "tag_type_id", empty_option("All") + options_from_collection_for_select(TagType.all, :id, :name, params[:tag_type_id].to_i) %></td>
-    </tr>
-    <tr>
-      <% if tags.empty?%>
-        <td><%= label_tag "tag_id","Tag", :class => 'disabled' %></td>
-        <td><%= select_tag "tag_id", empty_option("-----------"), {:disabled => true} %></td>
-      <% else %>
-        <td><%= label_tag "tag_id","Tag"%></td>
-        <td><%= select_tag "tag_id", empty_option("All") + options_from_collection_for_select(tags, :id, :name, params[:tag_id].to_i ) %></td>
-      <% end %>
-    </tr>
-    <tr> <td></td></tr>
     
     <tr>
       <td><%= label_tag "customer_id"%></td>

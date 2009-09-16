@@ -10,5 +10,8 @@ class TagType < ActiveRecord::Base
   def activities
       self.tags.collect { |tag| tag.activities }.flatten
   end
-    
+
+  def <=>(other)
+    name <=> other.name
+  end
 end

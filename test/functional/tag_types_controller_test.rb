@@ -60,8 +60,8 @@ class TagTypesControllerTest < ActionController::TestCase
           xhr :post, :update_icon, :id => tag_types(:project), :icon => 'hammer'
         }
         should_render_template :_icon
-      end      
- 
+      end
+
     end
   end
 

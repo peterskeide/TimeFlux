@@ -1,0 +1,44 @@
+
+<p class="notice"><%= flash[:notice] %></p>
+<p class="error"><%= flash[:error] %></p>
+
+<% activity_vacation = Activity.vacation %>
+
+<h1>Vacation overview</h1>
+<%= render :partial => 'holidays/sub_menu' -%>
+
+<div class="navigation">
+	<h3 class="compact">
+		<%= link_to '<<', :action => 'vacation_overview', :year => @year - 1 %>
+		<span><%= @year %></span>
+		<%= link_to '>>', :action => 'vacation_overview', :year => @year + 1 %>
+	</h3>
+</div>
+
+<br/>
+
+<table class="vacation regular" width="100%">
+
+  <tr>
+    <% Date::ABBR_MONTHNAMES.each do |month_name| %>
+      <th><%= month_name -%></th>
+    <% end %>
+      <th>TOTAL</th>
+  </tr>
+
+    <% User.all.sort.each do |user| %>
+    <tr><td class="user"><%=  user.name %></td>
+      
+      <% 1.upto(12) do |month| %>
+
+        <td>
+          <% day_from = Date.civil(@year, month,1) %>
+          <% days = TimeEntry.for_user(user).for_activity(activity_vacation).between(day_from, day_from.at_end_of_month).count %>
+          <%= days > 0 ? days : '-' %>
+        </td>
+      <% end %>
+      <td><%= TimeEntry.for_user(user).for_activity(activity_vacation).between(Date.civil(@year, 1,1), Date.civil(@year + 1, 1,1) -1).count %></td>
+    </tr>
+  <% end %>
+
+</table>

@@ -62,7 +62,7 @@ class TagsController < ApplicationController
     if tag_type_id && tag_type_id != ""
       TagType.find(tag_type_id).tags.paginate( :page => 1, :per_page => 20, :order => 'name' )
     else
-      Tag.paginate( :page => page, :per_page => 20, :order => 'name' )
+      Tag.paginate( :page => page, :per_page => 20, :order => 'tag_type_id' )
     end
   end
 

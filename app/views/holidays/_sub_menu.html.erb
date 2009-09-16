@@ -1,5 +1,8 @@
 <div id="nav">
-  <%= link_to "Vacation", :action => :vacation %> |
-  <%= link_to "Public Holidays", :action => :holiday %>
+  <%= link_to "Vacation", :controller => :vacations %> |
+  <% if @current_user.admin -%>
+    <%= link_to "Vacation Overview", :controller => :vacations, :action => :vacation_overview %> |
+  <% end %>
+  <%= link_to "Public Holidays", :controller => :holidays %>
 </div>
-<br/>
+<br/><br/>

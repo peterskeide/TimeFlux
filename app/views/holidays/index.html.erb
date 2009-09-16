@@ -9,6 +9,8 @@
     <th>Date</th>
     <th>Working Hours</th>
     <th>Note</th>
+    <th>Edit</th>
+    <th>Delete</th>
   </tr>
 
 <% @holidays.each do |holiday| %>
@@ -17,8 +19,8 @@
     <td><%=h holiday.working_hours %></td>
     <td><%=h holiday.note %></td>
     <% if @current_user.admin -%>
-      <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => :edit, :id => holiday %>
-          <%= link_to image_tag("delete.png", :title => "Delete"), holiday_path(holiday), :method => :delete, :confirm => 'Really delete holiday?' %></td>
+      <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => :edit, :id => holiday %></td>
+      <td><%= link_to image_tag("delete.png", :title => "Delete"), holiday_path(holiday), :method => :delete, :confirm => "Really delete #{holiday.note}?" %></td>
     <% end %>
   </tr>
 <% end %>

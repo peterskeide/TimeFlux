@@ -2,9 +2,8 @@
 
 <%= render :partial => 'sub_menu' -%>
 
- 
-
-<br/>
+<p class="error"><%= flash[:error] %></p>
+<p class="notice"><%= flash[:notice] %></p>
 
 <% form_tag 'billing', :method => 'get', :id => 'billing_form' do %>
   <div>

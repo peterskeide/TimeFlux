@@ -1,5 +1,5 @@
-<%= page_entries_info activities %>
-<hr/>
+<p><%= page_entries_info activities %></p>
+
 <%= will_paginate activities %>
 
 <table class="regular">
@@ -16,7 +16,7 @@
 			<td><%= activity.name %></td>
 			<td><%= activity.description %></td>
 			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_activity_path(activity) %></td>
-		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => 'Really remove activity?' %></td>   		
+		    <td><%= link_to image_tag("delete.png", :title => "Delete"), activity_path(activity), :method => :delete, :confirm => "Really remove #{activity.name}?" %></td>
 		</tr>
 	<% end -%>
 	

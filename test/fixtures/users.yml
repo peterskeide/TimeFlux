@@ -7,7 +7,6 @@ bob:
     firstname: Bob
     lastname: Foobar
     admin: true
-    activities: timeflux_development
     operative_status: active
 
 bill:

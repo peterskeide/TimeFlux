@@ -1,3 +1,4 @@
+
 conduct:
   name: Conduct
   description: IT consulting company specializing in professional open source
@@ -7,7 +8,7 @@ timeflux:
   name: TimeFlux
   description: Open source time management and billing application
   tag_type: project
-    
+
 foobar:
   name: Foobar
   description: The Foo the Bar

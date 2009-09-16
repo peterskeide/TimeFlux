@@ -9,37 +9,52 @@ table {
         text-align: left;
 }
 
+h3.compact {
+    margin-bottom:6px;
+    margin-top:10px
+}
+
 .calender {
     font-size : 120%;
     margin-bottom: 30px;
 }
 
-.calender table { text-align:center}
+.calender .footer {
+    font-size:80%;
+    color:gray;
+    margin-top:5px;
+    text-align:right;
+    width:450px
+}
 
- /* Time entry day header */
-.container {
-   position: relative;
-   height:20px;
-   margin-bottom:8px;
-   background-color:#EEEEEE;
-   }
+.calender table { 
+    text-align:center;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    border-color:gray
+}
 
-.left-element {
-   position: absolute;
-   left: 2px;
-   width: 50%;
-   font-size: 120%;
-   }
+.calender table tr th {
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: gray
+}
 
-.right-element {
-   position: absolute;
-   right: 10px;
-   top: 2px;
-   width: 50%;
-   color: gray;
-   text-align: right;
-   }
+.calender_activities {
+    float:right;
+    min-height:158px;
+    padding-left:10px;
+    color:#444444
+}
 
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 6em;
+
+}
 
 
 .activity_header {
@@ -79,8 +94,11 @@ td.report a:hover{
         text-decoration: underline;
 }
 
+table td input, table td img {
+    vertical-align: middle;
+}
+
 table tbody tr td, table tbody tr th  {
-        padding-right: 10px;
         vertical-align:top;
 }
 
@@ -96,8 +114,17 @@ table.vacation tbody tr td.user  {
         text-align: left;
 }
 
+table.regular { 
+    border-collapse: collapse;
+    border-spacing: 10px 0px;
+}
+
 table.regular tbody tr th  {
         background:#EEEEEE none repeat scroll 0 0;
+        
+}
+table.regular tbody tr th, table.regular tbody tr td  {
+        padding-right: 10px;
 }
 
 a.menu_link {
@@ -249,44 +276,3 @@ td.week_entries_hours {
 	padding-left: 1em;
 }
 
-/* sub drop down menu */
-
-ul { /* all lists */
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    background:#EEEEEE
-}
-
-li.menu { /* all list items */
-    float: left;
-    position: relative;
-    padding-right:1em;
-}
-
-li.menu a {
-    text-decoration:none;
-    white-space:nowrap;
-    font-size:16px;
-}
-
-li.sub a {
-    font-size:14px;
-}
-
-li.menu ul { /* second-level lists */
-    display: none;
-    position: absolute;
-    top: 1em;
-    left: 0;
-}
-
-li.menu>ul { /* to override top and left in browsers other than IE, which will position to the top right of the containing li, rather than bottom left */
-    top: auto;
-    left: auto;
-    background:#EEEEEE
-}
-
-li.menu:hover ul, li.over ul { /* lists nested under hovered list items */
-    display: block;
-}

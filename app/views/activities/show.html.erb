@@ -4,17 +4,26 @@
   <%= @activity.description %>
 </p>
 
+<table class="regular">
+  <tr>
+    <td>Project</td>
+    <td><b><%= @activity.project ? @activity.project.name : 'none' %></b></td>
+  </tr>
+  <tr><td></td></tr>
+  <tr>
+    <td>Customer</td>
+    <td><b><%= @activity.project ? @activity.project.customer.name : 'none' %></b></td>
+  </tr>
+</table>
+
+<br/>
 <p>
-   <b>Project:</b>
-     <%= @activity.project ? @activity.project.name : 'none' %>
+  This activity is assigned to
+  <% if  @activity.default_activity %>
+    all users
+  <% else %>
+    <b><%= @activity.project.users.map{|u|u.name}.join(', ') %></b>
+
+  <% end %>
 </p>
 
-<p>
-  <b>Public:</b>
-  <%= @activity.shared %>
-</p>
-
-<p>
-  <b>Default:</b>
-  <%= @activity.default_activity %>
-</p>

@@ -30,7 +30,7 @@
 
   <div>
     <% form_tag :controller => 'activities', :action => 'create' do %>
-      <%= select_tag "activity[name]", options_for_select( templates ), :multiple => true %>
+      <%= select_tag "activity[name]", options_for_select( templates ),{ :multiple => true} %>
       <%= hidden_field_tag "activity[project_id]", @project.id %>
       <br/><br/>
       <%= submit_tag "<< Add from Templates" %>

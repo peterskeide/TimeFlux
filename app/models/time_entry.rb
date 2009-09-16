@@ -26,6 +26,10 @@ class TimeEntry < ActiveRecord::Base
     { :conditions => { :user_id => user_id } }
   }
 
+  named_scope :for_type, lambda { |hour_type_id|
+    { :conditions => { :hour_type_id => hour_type_id } }
+  }
+
   named_scope :billed, lambda { |billed|
     { :conditions => { :billed => billed } }
   }
@@ -49,7 +53,9 @@ class TimeEntry < ActiveRecord::Base
   named_scope :distinct_dates, :select => 'DISTINCT date'
 
   named_scope :distinct_activities, :select => 'DISTINCT activity_id'
-    
+  
+  named_scope :distinct_types, :select => 'DISTINCT hour_type_id'
+  
   def weekday
     Date::DAYNAMES[date.wday]
   end
@@ -67,8 +73,10 @@ class TimeEntry < ActiveRecord::Base
 
   def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|
-      t.locked = value
-      t.save
+      if value || t.billed == false
+        t.locked = value
+        t.save
+      end
     end
   end
 
@@ -91,12 +99,6 @@ class TimeEntry < ActiveRecord::Base
 
   def hours_to_s
     if self.hours > 0 then self.hours.to_s else '-' end
-  end
-  
-  def self.sum_hours_for_user_and_date(user_id, date = Date.today)
-    TimeEntry.sum("hours", :conditions => 
-      [ "user_id = :user_id AND date = :date", 
-      { :user_id => user_id, :date => date } ])
   end
 
   private

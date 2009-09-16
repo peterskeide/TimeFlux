@@ -38,7 +38,7 @@ end
 
   pdf.move_down(30)
   pdf.font "Helvetica", :style => :bold do
-    pdf.text activity.name
+    pdf.text activity.customer_project_name
   end
   pdf.move_down(5)
 

@@ -33,11 +33,6 @@
       <%= f.text_field :name %>
     </p>
 
-    <p>
-      <%= f.check_box :mutually_exclusive %>
-      <%= f.label :mutually_exclusive %>
-    </p>
-
     <p style="clear:both">
       <%= hidden_field_tag 'tag_type[icon]', @tag_type.icon %>
       <%= f.submit "Update" %>
@@ -46,21 +41,4 @@
 </div>
 
 <br/><br/>
-
-
-
-<br/><br/><hr/>
-
-Alternative Firefox only icon select
-
-<p>
-  Icon<br />
-  <select>
-    <% @icons.each do |icon| %>
-      <optgroup style="background-image: url(/images/led-icons/<%= icon%>.png); background-repeat:no-repeat; height:18px;">
-        <option value="<%=icon%>"><%=icon%></option>
-      </optgroup>
-    <% end %>
-  </select>
-</p>
 

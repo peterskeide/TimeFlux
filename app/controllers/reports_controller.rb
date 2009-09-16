@@ -76,6 +76,12 @@ class ReportsController < ApplicationController
     end
   end
 
+  def details
+    @user = User.find(params[:user])
+    @project = Project.find(params[:project])
+    @day = Date.parse(params[:day])
+  end
+
   def update_billing_content
     if request.xhr?
       setup_calender
@@ -91,7 +97,7 @@ class ReportsController < ApplicationController
     time_entries = TimeEntry.search( @from_day, @to_day, @activities )
 
     data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
-      [activity.name, time_entries.sum(&:hours)]
+      [activity.customer_project_name, time_entries.sum(&:hours)]
     end
 
     table = Ruport::Data::Table.new( :data => data_set,
@@ -116,8 +122,6 @@ class ReportsController < ApplicationController
         @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
         @parameters << ["Kunde",@customer.name] if @customer
         @parameters << ["Prosjekt",@project.name]  if @project
-        @parameters << ["Kategori",@tag_type.name] if @tag_type
-        @parameters << ["Tag",@tag.name] if @tag
 
         prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
         render :search, :layout=>false
@@ -130,7 +134,7 @@ class ReportsController < ApplicationController
     if request.xhr?
       setup_calender
       parse_search_params
-      render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
+      render :partial => 'search_advanced_form', :locals => { :params => params, :customer => @customer, :years => @years, :months => @months }
     end
   end
 
@@ -175,14 +179,12 @@ class ReportsController < ApplicationController
 
     @customer = param_instance(:customer)
     @project = param_instance(:project)    
-    @tag_type = param_instance(:tag_type)
-    @tag = param_instance(:tag)
     @user = param_instance(:user)
 
   end
 
   def create_search_report
-    activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
+    activities = Activity.search(params[:customer], params[:project])
 
     unless  activities.empty?
       @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )

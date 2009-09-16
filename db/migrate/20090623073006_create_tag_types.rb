@@ -3,7 +3,6 @@ class CreateTagTypes < ActiveRecord::Migration
     create_table :tag_types do |t|
       t.string :name
       t.string :icon
-      t.boolean :mutually_exclusive, :default => false
       t.timestamps
     end
   end

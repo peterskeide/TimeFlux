@@ -41,13 +41,14 @@ else
     ]
     end
 
-  #pdf.bounding_box [0,600], :width => pdf.margin_box.width, :height => 550 do
     pdf.move_down(30)
     pdf.font "Helvetica", :style => :bold do
-      pdf.text group.respond_to?('name') ? group.name : group.to_s
+      pdf.text case @group_by
+               when :activity then group.customer_project_name
+               when :user then group.name
+               else group.to_s end
     end
     pdf.move_down(5)
-    #pdf.stroke_horizontal_rule
 
     pdf.table entry_data,
       :row_colors => ["FFFFFF","f0f0f0"],
