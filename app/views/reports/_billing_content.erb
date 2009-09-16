@@ -21,25 +21,32 @@
               <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
             </tr>
 
-            <% User.all.each do |user| %>
-              <% hours = TimeEntry.billed(false).between(day,day.at_end_of_month).for_project(project).for_user(user).sum(:hours) %>
+            <% project.users.each do |user| %>
+              <% time_entries =  user.time_entries.billed(false).between(day,day.at_end_of_month).for_project(project) %>
+              <% hours = time_entries.sum(:hours) %>
               <% if hours > 0 %>
+                <% types = time_entries.map{|e| e.hour_type}.uniq %>
+                <% types.each do |type| %>
+                  <% hours_for_type = time_entries.for_type(type).sum(:hours) %>
                 <tr>
                   <td>
+                    <% if type == types.first %>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="<%= user.status_for_month(day, expected_days, expected_hours)%>">
                       <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(day) ) ) %>
                     </span>
+                    <% end %>
                   </td>
-                  <td> normaltid</td>
-                  <td><%= hours %> t </td>
+                  <td><%= type.name %></td>
+                  <td><%= hours_for_type %> t </td>
                   <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => day %></td>
                 </tr>
               <% end %>
-
+<% end %>
             <% end %>
             <tr>
               <td></td><td><b>total</b></td><td><b><%= total %> t</b></td>
+              
             </tr>
           <% end %>
         <% end %>

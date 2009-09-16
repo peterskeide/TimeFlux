@@ -26,6 +26,10 @@ class TimeEntry < ActiveRecord::Base
     { :conditions => { :user_id => user_id } }
   }
 
+  named_scope :for_type, lambda { |hour_type_id|
+    { :conditions => { :hour_type_id => hour_type_id } }
+  }
+
   named_scope :billed, lambda { |billed|
     { :conditions => { :billed => billed } }
   }
@@ -49,7 +53,9 @@ class TimeEntry < ActiveRecord::Base
   named_scope :distinct_dates, :select => 'DISTINCT date'
 
   named_scope :distinct_activities, :select => 'DISTINCT activity_id'
-    
+  
+  named_scope :distinct_types, :select => 'DISTINCT hour_type_id'
+  
   def weekday
     Date::DAYNAMES[date.wday]
   end

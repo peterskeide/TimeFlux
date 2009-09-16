@@ -70,15 +70,16 @@ class User < ActiveRecord::Base
   end
 
   def <=>(other)
-    lastname <=> other.lastname
+    firstname <=> other.firstname
   end
   
   # Returns a list of shared activities +
   # the activities assigned to the user
   def current_activities
-    current = self.activities + Activity.active(true).default(true)
-    current += self.projects.map{|project| project.activities }.flatten
-    current
+    current  = self.projects.map{|project| project.activities }.flatten
+    current += self.activities
+    current += Activity.active(true).default(true)
+    current.uniq
   end
   
   private

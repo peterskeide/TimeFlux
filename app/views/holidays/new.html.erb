@@ -1,6 +1,6 @@
 <h1>Create holiday</h1>
 
-<% form_for(@holiday, :url => { :action => "create" }) do |f| %>
+<% form_for(@holiday) do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :date %><br />
@@ -26,4 +26,4 @@
 
 <script type="text/javascript">enable_disable_year();</script>
 
-<%= link_to 'Back', :action => 'holiday' %>
+<%= link_to 'Back', :action => 'index' %>

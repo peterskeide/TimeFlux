@@ -7,24 +7,30 @@
 
 <table class="regular">
 
-	<tr>
-		<th>Name</th>
-		<th>Default</th>
-		<th>Edit</th>
-		<th>Delete</th>
-	</tr>
-			
-	<% for hour_type in @hour_types do -%>
-		<tr>
-			<td><%= hour_type.name %></td>
-			<td><%= hour_type.default_hour_type %></td>
-			<td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_hour_type_path(hour_type) %></td>
-		    <td><%= link_to image_tag("delete.png", :title => "Delete"), hour_type_path(hour_type), :method => :delete, :confirm => 'Really remove hour type?' %></td>   		
-		</tr>
-	<% end -%>
-	
-</table>
-<br />
-<p>
-	<%= link_to "New Hour Type", new_hour_type_path %>
-</p>
+  <tr>
+    <th>Name</th>
+    <th>Default</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+
+  <% for hour_type in @hour_types do -%>
+      <tr>
+        <td><%= hour_type.name %></td>
+        <td><%= hour_type.default_hour_type %></td>
+        <td><%= link_to image_tag("pencil.png", :title => "Edit"), edit_hour_type_path(hour_type) %></td>
+        <td>
+          <% if hour_type.default_hour_type %>
+            <%= image_tag("delete_grayed.png") %>
+          <% else %>
+            <%= link_to image_tag("delete.png", :title => "Delete"), hour_type_path(hour_type), :method => :delete, :confirm => "Really remove #{hour_type.name}?" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end -%>
+
+  </table>
+  <br />
+  <p>
+    <%= link_to "New Hour Type", new_hour_type_path %>
+  </p>

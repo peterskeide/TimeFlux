@@ -20,7 +20,7 @@
     </td><td>
       <%= link_to image_tag("pencil.png", :title => "Edit"), edit_customer_path(customer) %>
     </td><td>
-      <%= link_to image_tag("delete.png", :title => "Delete"), customer, :method => :delete, :confirm => 'Really remove customer?' %>
+      <%= link_to image_tag("delete.png", :title => "Delete"), customer, :method => :delete, :confirm => "Really remove #{customer.name}?" %>
     </td>
   </tr>
 <% end %>

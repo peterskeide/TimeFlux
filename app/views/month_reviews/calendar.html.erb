@@ -1,4 +1,4 @@
-<%#= render :partial => 'sub_menu' -%>
+
 <h1>Review Month
   <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
 </h1>
@@ -58,16 +58,25 @@
             &nbsp;&nbsp;<b><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></b>&nbsp;&nbsp;&nbsp;
           </td>
         <% end %>
-        <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>><%= @user.hours_on_day d -%></td>
+        <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
+            <%= d == Date.today ? "<u>#{@user.hours_on_day d}</u>" : "#{@user.hours_on_day d}" -%>
+        </td>
         <% if d.wday == 0 %>
         </tr>
       <% end -%>
     <% end %>
   </table>
-  <div class="footer"> Hours: <%= "#{@period.total_hours} / #{@period.expected_hours}" %>,
-    days: <%= "#{@period.total_days} / #{@period.expected_days}" %></div>
+  <div class="footer">
+    <% hours_color = @period.total_hours >= @period.expected_hours ? '' : 'warn' %>
+    <% days_color = @period.total_days >= @period.expected_days ? '' : 'warn' %>
+    Hours: <%= " <span class=\"#{hours_color}\"> #{@period.total_hours}</span> / #{@period.expected_hours}" %>,
+    days: <%= " <span class=\"#{days_color}\"> #{@period.total_days}</span> / #{@period.expected_days}" %>
+  </div>
 </div>
 
+Ballance: <span class="<%= case @period.ballance when (-9999..0) then "red" when (0..9999) then "ok" end %>">
+  <%= "%+.1f" % @period.ballance %></span> hours
+<%= ((@period.start..@period.end).include? Date.today) ? "in the first #{Date.today.mday} days" : '' %>
 <br/>
 <hr/>
 <br/>

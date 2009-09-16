@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :time_entries
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :ballance, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -11,6 +11,7 @@ class Period
     @expected_hours = find_expected_hours
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
+    @ballance = find_ballance
     @locked = is_period_locked?
   end
   
@@ -30,12 +31,26 @@ class Period
   def activities
     @user.time_entries.between(@start, @end).distinct_activities.map { |e| e.activity }
   end
-  
-  private
+
 
   
-  def find_expected_hours
-    period = expected_between_hash(@start, @end)
+  private
+  
+  def find_ballance
+    if Date.today > @end
+      @total_hours - @expected_hours
+    elsif (@start..@end).include?(Date.today)
+      expected = find_expected_hours(@start,Date.today)
+      actual = @user.time_entries.between(@start, Date.today).sum(:hours)
+      actual - expected
+    else
+      0
+    end
+  end  
+
+  
+  def find_expected_hours(from=@start, to=@end)
+    period = expected_between_hash(from, to)
     sum = 0
     period.each_value { |value| sum = sum + value }
     sum
