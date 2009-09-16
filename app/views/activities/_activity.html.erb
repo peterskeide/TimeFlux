@@ -6,10 +6,17 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
+  
   <p>
     <%= f.label :description %><br />
     <%= f.text_field :description %>
   </p>
+
+  <p>
+    <%= f.label :tags %><br />
+    <%= select_tag 'tags[]', options_from_collection_for_select(Tag.all.sort, :id, :name_and_type, @activity.tags.map { |t| t.id }), :multiple => true, :style=>"width: 223px;" %>
+  </p>
+
   <p>
     <%= f.check_box :active %>
     <%= f.label :active %>
@@ -18,6 +25,7 @@
     <%= f.check_box :default_activity %>
     <%= f.label :default_activity, "Assign to all users" %>
   </p>
+
   <p>
     <%= f.submit "Save" %>
   </p>

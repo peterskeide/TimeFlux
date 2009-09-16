@@ -2,9 +2,6 @@
 
 <%= render :partial => 'admin/menu' -%>
 
- <p class="notice"><%= flash[:notice] %></p>
- <p class="error"><%= flash[:error] %></p>
-
 <%= will_paginate @customers %>
 
 <table class="regular">

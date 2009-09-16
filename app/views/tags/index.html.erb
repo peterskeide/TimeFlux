@@ -1,12 +1,9 @@
 
 <h1>Tags</h1>
-<p class="notice"><%= flash[:notice] %></p>
-<p class="error"><%= flash[:error] %></p>
 
 <%= render :partial => 'admin/menu' -%>
 
 
-<br/>
 <% form_tag tags_path, :method => :get, :id => 'category_filter' do %>
 <table>
     <tr>
@@ -22,13 +19,13 @@
       :update => 'tags',
       :with => 'tag_type'
        %>
-<hr/>
+<br/>
 
 <div id="tags">
   <%=  render :partial => 'tags', :locals => { :tags => @tags } %>
 </div>
 
-<hr/>
+<br/><br/>
 
 
 <% form_for Tag.new do |f| -%>          
