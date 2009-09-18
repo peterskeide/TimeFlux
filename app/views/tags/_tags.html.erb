@@ -1,9 +1,10 @@
 <%= will_paginate tags %>
 <table class="regular">
-  <tr><th>Name</th><th>Edit</th><th>Delete</th></tr>
+  <tr><th>Name</th><th>Show</th><th>Edit</th><th>Delete</th></tr>
   <% tags.each do |tag| -%>
     <tr>
       <td><%= image_tag "led-icons/#{tag.tag_type.icon}.png", :alt => "#{tag.tag_type.name} - " %> <%= link_to tag.name, :action => 'edit', :id => tag %></td>
+      <td><%= link_to image_tag("magnifier.png", :title => "Show"), :action => "show", :id => tag %></td>
       <td><%= link_to image_tag("pencil.png", :title => "Edit"), :action => "edit", :id => tag %></td>
       <td><%= link_to image_tag("delete.png", :title => "Delete"), tag_path(tag), :method => :delete, :tag_type => params[:tag_type] %></td>
     </tr>
