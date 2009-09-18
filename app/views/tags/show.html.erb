@@ -5,7 +5,11 @@
 
   <h3>Activities tagged </h3>
   <% if @tag.activities.count > 0 %>
-    <ul><li><%= @tag.activities.map{|a| a.customer_project_name}.join('</li><li>') %></li></ul>
+    <ul>
+      <% @tag.activities.each do |activity| %>
+        <li> <%= link_to activity.customer_project_name, activity_path(activity) %></li>
+      <% end %>
+    </ul>
   <% else %>
     <ul><li>None</li></ul>
   <% end %>

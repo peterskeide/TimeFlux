@@ -52,11 +52,15 @@ class Activity < ActiveRecord::Base
   end
 
   def customer_project_name
-    if project == nil
-      name
+    if template
+      "#{name} (Template)"
     else
       "#{customer.name} > #{project.name} > #{name}"
     end
+  end
+
+  def to_s
+    customer_project_name
   end
 
   def status
