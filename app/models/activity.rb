@@ -54,6 +54,8 @@ class Activity < ActiveRecord::Base
   def customer_project_name
     if template
       "#{name} (Template)"
+    elsif project == nil
+      name
     else
       "#{customer.name} > #{project.name} > #{name}"
     end
