@@ -1,4 +1,3 @@
-require 'ruport'
 
 class ReportsController < ApplicationController
   
