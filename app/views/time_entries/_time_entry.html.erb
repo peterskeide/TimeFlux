@@ -15,10 +15,10 @@
     <div style="width:90%">
       <% current_tags = @time_entry.tags %>
     <% Tag.all.sort.each do |tag|  %>
-      <div id="<%= tag.id.to_s %>" class="<%= current_tags.include?(tag) %>_tag">
+      <div id="<%= "#{tag.id}_#{day}" %>" class="<%= "#{current_tags.include?(tag)}_tag" %>">
         <%= link_to_function image_tag( "/images/led-icons/#{tag.tag_type.icon}.png",
             :title => tag.tag_type.name) + " #{tag.name}",
-           "toggle_tag_select('#{tag.id}')" %>
+           "toggle_tag_select('#{tag.id}_#{day}', 'tags_#{tag.id}')" %>
         </div>
       <%= hidden_field_tag "tags[#{tag.id}]", current_tags.include?(tag) %>
     <% end %>

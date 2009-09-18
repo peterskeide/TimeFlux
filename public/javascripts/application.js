@@ -7,11 +7,11 @@ function enable_disable_year() {
   document.getElementById("holiday_date_1i_").disabled=!repeat;
 }
 
-function toggle_tag_select(tag_id) {
+function toggle_tag_select(tag_id, hidden_id) {
     a = document.getElementById(tag_id);
     if (a.getAttribute('class') == 'false_tag') {set_to = true} else {set_to = false};
     a.setAttribute('class', set_to + '_tag');
-    hidden = document.getElementById('tags_' + tag_id);
+    hidden = document.getElementById(hidden_id);
     hidden.setAttribute('value', set_to);
 }
 
