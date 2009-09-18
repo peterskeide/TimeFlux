@@ -78,7 +78,7 @@ class Activity < ActiveRecord::Base
       if project.name.size > max_characters
         "#{project.name.first(max_characters).strip}.. > #{self.name}"
       else
-        "#{project.name} > #{self.name}"
+        "#{project.name} > #{self.name.first(22)}"
       end
     else
       self.name
