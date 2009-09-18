@@ -188,11 +188,15 @@ class ReportsController < ApplicationController
   end
 
   def create_search_report
-    activities = Activity.search(params[:tag_type],params[:tag],params[:customer], params[:project])
-
-    unless  activities.empty?
-      @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
+    if @tag_type || @tag
+      activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
+    else
+      activities = nil
     end
+
+    @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
+
+    #TODO add tagged time_entries with the same criterias as before...
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

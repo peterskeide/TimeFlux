@@ -29,7 +29,7 @@ class TimeEntriesController < ApplicationController
     
   def create
     @time_entry = @user.time_entries.build(params[:time_entry])
-    if params[:tags].class == Array
+    if params[:tags].respond_to? :each
       params[:tags].each { |id, value| @time_entry.tags << Tag.find(id.to_i) if value == 'true'}
     end
     if @time_entry.save
@@ -63,7 +63,8 @@ class TimeEntriesController < ApplicationController
     
   def update
     @time_entry = @user.time_entries.find(params[:id])
-    if params[:tags].class == Array
+
+    if params[:tags].respond_to? :each
       tags = []
       params[:tags].each { |id, value| tags << Tag.find(id.to_i) if value == 'true'}
       @time_entry.tags = tags
