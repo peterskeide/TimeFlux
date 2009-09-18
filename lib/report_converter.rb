@@ -18,7 +18,6 @@
         puts "Conversion of class #{object.class} not supported"
         object
       end
-      
     end
   end
 

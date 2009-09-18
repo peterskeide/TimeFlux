@@ -41,7 +41,7 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :between, lambda { |*args|
-    {  :conditions => ['date between ? and ?', args.first, args.second] }
+    {  :conditions => { :date => (args.first..args.second) } }
   }
 
   named_scope :for_activity, lambda { |*activity_ids|
@@ -52,6 +52,9 @@ class TimeEntry < ActiveRecord::Base
     { :include => :activity, :conditions => ["activities.project_id = ?", project_id] }
   }
 
+
+  # Combining the distinct scopes with between will not return the expected result
+  # These are in general not really stable...
   named_scope :distinct_dates, :select => 'DISTINCT date'
 
   named_scope :distinct_activities, :select => 'DISTINCT activity_id'

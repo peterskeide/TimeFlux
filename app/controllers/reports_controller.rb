@@ -10,38 +10,25 @@ class ReportsController < ApplicationController
     redirect_to(:action => 'billing')
   end
 
-  # Remove?
   def user
     setup_calender
     if params[:status] then
       @users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] ).sort
     else
-      @users = User.find(:all).sort
+      @users = User.all.sort
     end
 
     start = Date.today.beginning_of_week
     @weeks = []
     1..8.times { |i| @weeks << start - (i * 7) }
 
-    user_data = @users.collect do |user|
-      [user.fullname] + @weeks.collect do |day|
-        TimeEntry.for_user(user).between(day, (day + 6)).sum(:hours)
-      end
-    end
-
     @expected = @weeks.collect do |day|
       Holiday.expected_hours_between( day, (day + 5) )
     end
-    user_data << ["Expected"] + @expected
 
     @totals = @weeks.collect do |day|
       TimeEntry.between(day, (day + 6)).sum(:hours)
     end
-    user_data << ["Total"] + @totals
-
-    table = Ruport::Data::Table.new( :data => user_data,
-      :column_names => ['Full name'] + @weeks.collect { |d| "Week #{d.cweek}" } )
-    respond_with_formatter table, TestController, "User report"
   end
 
   def billing
@@ -94,16 +81,10 @@ class ReportsController < ApplicationController
     setup_calender
     parse_search_params
 
-    time_entries = TimeEntry.search( @from_day, @to_day, @activities )
-
-    data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
+    time_entries = TimeEntry.between(@from_day, @to_day)
+    @activities_hours = time_entries.group_by(&:activity).map do |activity, time_entries|
       [activity.customer_project_name, time_entries.sum(&:hours)]
     end
-
-    table = Ruport::Data::Table.new( :data => data_set,
-      :column_names => ['Activity', 'hours'])
-
-    respond_with_formatter table, TestController, @activities
   end
 
   def search
@@ -196,7 +177,7 @@ class ReportsController < ApplicationController
 
     @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
 
-    #TODO add tagged time_entries with the same criterias as before...
+    #TODO add tagged time_entries with the other given criterias and merge the results
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

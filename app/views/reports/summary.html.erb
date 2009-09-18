@@ -24,10 +24,24 @@
 
 <% end -%>
 
-<hr/>
+<br/>
 
-<%= render_table @table -%>
+    <table class="regular">
+      <tr>
+        <th>Activity name</th>
+        <th>Total hours</th>
+      </tr>
+      <% @activities_hours.each do |activity, hours| %>
+      <tr>
+        <td><%= activity %></td>
+        <td><%= hours %></td>
+      </tr>
+      <% end %>
 
 
-<%= render :partial => 'download', :locals => { :params => params, :action => 'summary' } -%>
+    </table>
+
+
+<%#= render_table @table -%>
+<%#= render :partial => 'download', :locals => { :params => params, :action => 'summary' } -%>
 
