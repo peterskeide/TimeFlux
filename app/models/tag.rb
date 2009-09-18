@@ -11,7 +11,8 @@ class Tag < ActiveRecord::Base
   end
 
   def to_s
-    "#{self.tag_type.to_s}: #{self.name}"
+    #"#{self.tag_type.to_s}: #{self.name}"
+    name
   end
 
   def <=>(other)

@@ -3,6 +3,8 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :user
   belongs_to :activity
   belongs_to :hour_type
+
+  has_and_belongs_to_many :tags
   
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
   validates_presence_of :user, :activity, :hour_type

@@ -3,11 +3,31 @@
 	<td><%= collection_select(:time_entry, :hour_type_id, HourType.all(:order => "default_hour_type DESC"), :id, :name) %></td>
 	<td><%= f.text_field :hours, :size => 3 %></td>
 	<td><%= f.text_field :notes, :size => 47 %></td>
-	<td><%= image_submit_tag("disk.png", :title => 'Save') %></td>
-	<td><%= link_to_function image_tag("cancel.png", :title => 'Cancel') do |page|
+        <td class="actions"><%= link_to_function(image_tag("tag_blue.png", :title => 'Show/Hide tags'), "Effect.toggle('#{day}_tags', 'blind', { duration: 0 })")%>
+	<%= image_submit_tag("disk.png", :title => 'Save') %>
+	<%= link_to_function image_tag("cancel.png", :title => 'Cancel') do |page|
 			page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day } 
 			end %></td>
 </tr>
+<tr id="<%= "#{day}_tags"%>" style="display:none;">
+  <td></td>
+  <td colspan="6">
+    <div style="width:90%">
+      <% current_tags = @time_entry.tags %>
+    <% Tag.all.sort.each do |tag|  %>
+      <div id="<%= tag.id.to_s %>" class="<%= current_tags.include?(tag) %>_tag">
+        <%= link_to_function image_tag( "/images/led-icons/#{tag.tag_type.icon}.png",
+            :title => tag.tag_type.name) + " #{tag.name}",
+           "toggle_tag_select('#{tag.id}')" %>
+        </div>
+      <%= hidden_field_tag "tags[#{tag.id}]", current_tags.include?(tag) %>
+    <% end %>
+    </div>
+  </td>
+</tr>
+
+
+
 <tr>
 	<td colspan="6"><div id='<%= "#{day}_time_entry_error_messages" %>'></div></td>
 </tr>

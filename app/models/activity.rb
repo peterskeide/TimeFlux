@@ -15,6 +15,9 @@ class Activity < ActiveRecord::Base
   named_scope :shared, lambda { |shared| { :conditions => { :shared => shared } } }
   named_scope :default, lambda { |default| { :conditions => { :default_activity => default } } }
 
+  named_scope :for_tag, lambda { |tag_id| { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } }
+  named_scope :for_tag_type, lambda { |tag_type_id| { :joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id] } }
+  
   named_scope :for_project, lambda { |project_id| { :conditions => { :project_id => project_id } } }
 
   named_scope :for_customer, lambda { |customer_id|
@@ -23,8 +26,13 @@ class Activity < ActiveRecord::Base
 
   named_scope :templates, :conditions => { :template => true }
 
-  def self.search(customer_id, project_id)
+  def self.search(tag_type_id, tag_id, customer_id, project_id)
     search = ["Activity"]
+    unless tag_id.blank?
+      search << "for_tag(#{tag_id})"
+    else
+      search << "for_tag_type(#{tag_type_id})" unless tag_type_id.blank?
+    end
 
     unless project_id.blank?
       search << "for_project(#{project_id})"

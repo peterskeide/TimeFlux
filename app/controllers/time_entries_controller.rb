@@ -1,6 +1,7 @@
 class TimeEntriesController < ApplicationController
     
-  before_filter :check_authentication, :find_user
+  before_filter :check_authentication
+  before_filter :find_user, :except => :add_tag
   
   WEEKDAYS = %w{ Monday Tuesday Wednesday Thursday Friday Saturday Sunday }
        
@@ -27,7 +28,8 @@ class TimeEntriesController < ApplicationController
   end
     
   def create
-    @time_entry = @user.time_entries.build(params[:time_entry])    
+    @time_entry = @user.time_entries.build(params[:time_entry])
+    params[:tags].each { |id, value| @time_entry.tags << Tag.find(id.to_i) if value == 'true'}
     if @time_entry.save
       respond_to do |format|
         format.html {
@@ -59,6 +61,9 @@ class TimeEntriesController < ApplicationController
     
   def update
     @time_entry = @user.time_entries.find(params[:id])
+    tags = []
+    params[:tags].each { |id, value| tags << Tag.find(id.to_i) if value == 'true'}
+    @time_entry.tags = tags
     if @time_entry.update_attributes(params[:time_entry])
       respond_to do |format|
         format.html {
@@ -102,7 +107,7 @@ class TimeEntriesController < ApplicationController
     @user.time_entries.between(@start, @end).each { |te| te.update_attribute(:locked, true) }
     redirect_to user_month_review_url(:user_id => params[:user_id], :id => :calendar)
   end
-  
+
   private
   
   def find_user
