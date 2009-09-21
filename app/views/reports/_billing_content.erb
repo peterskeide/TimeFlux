@@ -5,7 +5,7 @@
 
   <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
     <table class="regular">
-      <% Customer.all.each do |customer| %>
+      <% Customer.billable(true).each do |customer| %>
         
         <tr>
           <td colspan="99"> <h3 class="compact"><%= customer.name %></h3></td>

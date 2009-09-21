@@ -5,6 +5,11 @@ class Customer < ActiveRecord::Base
   has_many :projects
   has_many :activities,     :through => :projects
 
+  named_scope :billable, lambda { |billable|
+    { :conditions => { :billable => billable } }
+  }
+
+
   def <=>(other)
     name <=> other.name
   end
