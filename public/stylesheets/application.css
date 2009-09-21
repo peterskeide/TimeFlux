@@ -9,6 +9,24 @@ table {
         text-align: left;
 }
 
+/* tester*/
+div.tag_symbol { z-index: 20 }
+div.tag_symbol .alt { display: none }
+
+div.tag_symbol:hover { color: #FF3300;  display: inline;  }
+div.tag_symbol:hover span.alt {
+  display: inline; position: absolute; z-index: 30;
+  margin: 2em 0 0 -4em;  padding: 0.2em 0.3em;
+  border: 1px solid gray;
+  text-decoration:none;
+  background-color: #FFFFCC;
+  color: black;
+  font-size: 10px;
+}
+
+
+
+
 h3.compact {
     margin-bottom:6px;
     margin-top:10px

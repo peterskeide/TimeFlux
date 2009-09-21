@@ -5,10 +5,15 @@
 	<td><%=h time_entry.notes %></td>
 	<td width="10%" class="actions">
                 <% unless time_entry.tags.empty? %>
-                  <%= image_tag("tag_gray.png", :title => time_entry.tags.join(', ')) %>
+                  <div class="tag_symbol" style="display:inline">
+                    <%= image_tag("tag_gray.png") %>
+                    <span class="alt"><%= time_entry.tags.join(', ') %> </span>
+                  </div>
                 <% end %>
 
-		<% unless time_entry.locked %>
+		<% if time_entry.locked %>
+                    <%= image_tag("pencil_gray.png", :title => "Locked") %>
+                <% else %>
 			<%= link_to_remote(image_tag("pencil.png", :title => "Edit"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
 			:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %>
 		<% end -%>
