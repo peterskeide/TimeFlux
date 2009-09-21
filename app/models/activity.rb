@@ -51,13 +51,17 @@ class Activity < ActiveRecord::Base
     name <=> other.name
   end
 
-  def customer_project_name
+  def customer_project_name(max_length=999)
     if template
       "#{name} (Template)"
     elsif project == nil
       name
     else
-      "#{customer.name} > #{project.name} > #{name}"
+      if customer.name.length + project.name.length + self.name.length < max_length
+        "#{customer.name} > #{project.name} > #{name}"
+      else
+        "#{project.name} > #{name}"
+      end
     end
   end
 

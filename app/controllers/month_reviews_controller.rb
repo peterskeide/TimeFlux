@@ -25,7 +25,7 @@ class MonthReviewsController < ApplicationController
   def create_activity_summary
     activities = @period.activities
     activities.collect do |activity|
-      { :name => activity.customer_project_name,
+      { :name => activity.customer_project_name(50),
         :hours => activity.time_entries.for_user(@user).between(@period.start, @period.end).sum(:hours) }
     end
   end
