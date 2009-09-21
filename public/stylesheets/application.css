@@ -9,7 +9,17 @@ table {
         text-align: left;
 }
 
-/* tester*/
+A:link {text-decoration: none;color: blue;}
+A:visited {text-decoration: none;color: blue;}
+A:active {text-decoration: none;color: red;}
+A:hover {text-decoration: none; color: red;}
+
+.sub_menu a:link {;color: black;}
+.sub_menu a:visited {color: black;}
+.sub_menu a:active {color: black;}
+.sub_menu a:hover {text-decoration: none; color: red;}
+
+
 div.tag_symbol { z-index: 20 }
 div.tag_symbol .alt { display: none }
 
@@ -23,9 +33,6 @@ div.tag_symbol:hover span.alt {
   color: black;
   font-size: 10px;
 }
-
-
-
 
 h3.compact {
     margin-bottom:6px;
