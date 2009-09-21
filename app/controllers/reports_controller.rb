@@ -75,13 +75,12 @@ class ReportsController < ApplicationController
     end
   end
 
-  # Remove?
   def summary
     setup_calender
     parse_search_params
 
     time_entries = TimeEntry.between(@from_day, @to_day)
-    @activities_hours = time_entries.group_by(&:activity).map do |activity, time_entries|
+    @activities_hours = time_entries.group_by(&:activity).sort.map do |activity, time_entries|
       [activity.customer_project_name, time_entries.sum(&:hours)]
     end
   end

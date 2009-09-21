@@ -29,15 +29,22 @@
     <table class="regular">
       <tr>
         <th>Activity name</th>
-        <th>Total hours</th>
+        <th>Hours</th>
       </tr>
+      <% sum = 0 %>
       <% @activities_hours.each do |activity, hours| %>
       <tr>
         <td><%= activity %></td>
-        <td><%= hours %></td>
+        <td style="text-align:right"><%= hours %></td>
+        <% sum += hours %>
       </tr>
       <% end %>
 
+      <tr style="text-align:right">
+        <th style="border-width: 1px; border-top-style: solid;">Total</th>
+        <th style="border-width: 1px; border-top-style: solid;"><%= sum %></th>
+
+      </tr>
 
     </table>
 
