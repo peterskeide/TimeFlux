@@ -14,6 +14,25 @@ h3.compact {
     margin-top:10px
 }
 
+div.false_tag {
+    margin: 2px;
+    border:2px solid silver;
+    font-size:9px;
+    display:inline;
+    white-space: nowrap;
+}
+div.true_tag {
+    margin: 2px;
+    border:2px solid red;
+    font-size:10px;
+    display:inline;
+    white-space: nowrap;
+}
+div.false_tag a, div.true_tag a {
+    color:black;
+    text-decoration:none;
+}
+
 .calender {
     font-size : 120%;
     margin-bottom: 30px;
@@ -143,6 +162,14 @@ a img {
 
 .time_entry {
 	padding-left: 1em;
+}
+
+td.actions {
+        text-align:right
+}
+
+td.actions img, td.actions input{
+        padding-left: 0.5em;
 }
 
 .time_entry td a{

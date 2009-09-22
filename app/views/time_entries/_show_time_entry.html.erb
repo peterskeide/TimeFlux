@@ -3,13 +3,16 @@
 	<td width="10%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td>
 	<td width="5%"><%= time_entry.hours %></td> 
 	<td><%=h time_entry.notes %></td>
-	<td width="3%">
+	<td width="10%" class="actions">
+                <% unless time_entry.tags.empty? %>
+                  <%= image_tag("tag_gray.png", :title => time_entry.tags.join(', ')) %>
+                <% end %>
+
 		<% unless time_entry.locked %>
 			<%= link_to_remote(image_tag("pencil.png", :title => "Edit"), { :url => { :action => :edit, :user_id => @user.id, :id => time_entry.id }, :method => :get }, 
 			:href => edit_user_time_entry_path(@user, time_entry), :method => :get) %>
 		<% end -%>
-	</td>	
-	<td width="1%">
+
 		<% unless defined? in_form or time_entry.locked -%>
 			<% form_remote_tag :url => user_time_entry_path(@user, time_entry), :confirm => "Are you sure?",
 			:html => { :action => confirm_destroy_user_time_entry_path(@user, time_entry, :date => @date), :method => :delete, :class => "inline_form" }  do %>

@@ -21,10 +21,9 @@
               <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
             </tr>
 
-            <% project.users.each do |user| %>
+            <% User.all.each do |user| %>
               <% time_entries =  user.time_entries.billed(false).between(day,day.at_end_of_month).for_project(project) %>
-              <% hours = time_entries.sum(:hours) %>
-              <% if hours > 0 %>
+              <% if time_entries.sum(:hours) > 0 %>
                 <% types = time_entries.map{|e| e.hour_type}.uniq %>
                 <% types.each do |type| %>
                   <% hours_for_type = time_entries.for_type(type).sum(:hours) %>

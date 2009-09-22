@@ -1,29 +1,42 @@
-<h1><%= @activity.name %></h1>
+<h1><%= @activity %></h1>
 
 <p>
   <%= @activity.description %>
 </p>
 
-<table class="regular">
-  <tr>
-    <td>Project</td>
-    <td><b><%= @activity.project ? @activity.project.name : 'none' %></b></td>
-  </tr>
-  <tr><td></td></tr>
-  <tr>
-    <td>Customer</td>
-    <td><b><%= @activity.project ? @activity.project.customer.name : 'none' %></b></td>
-  </tr>
-</table>
+<% if @activity.template %>
 
-<br/>
-<p>
-  This activity is assigned to
-  <% if  @activity.default_activity %>
-    all users
-  <% else %>
-    <b><%= @activity.project.users.map{|u|u.name}.join(', ') %></b>
+  Status: <b><%= @activity.active ? 'Active' : 'Disabled'  %> <%= @activity.shared ? 'Assigned to all' : ''  %> </b>
 
-  <% end %>
-</p>
+  <h3>Tags</h3>
+  <ul>
+    <% @activity.tags.each do |tag|%>
+    <li><%= link_to tag, tag_url(tag) %> </li>
+    <% end %>
+  </ul>
 
+<% else %>
+
+  <table class="regular">
+    <tr>
+      <td>Project</td>
+      <td><b><%= @activity.project ? @activity.project.name : 'none' %></b></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>Customer</td>
+      <td><b><%= @activity.project ? @activity.project.customer.name : 'none' %></b></td>
+    </tr>
+  </table>
+
+  <br/>
+  <p>
+    This activity is assigned to
+    <% if  @activity.default_activity %>
+      all users
+    <% else %>
+      <b><%= @activity.project.users.map{|u|u.name}.join(', ') %></b>
+    <% end %>
+  </p>
+
+<% end %>

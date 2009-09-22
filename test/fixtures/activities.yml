@@ -2,6 +2,7 @@ vacation:
     name: Vacation
     shared: true
     description: Normal vacation
+    project: internal
     default_activity: true
 
 timeflux_development:

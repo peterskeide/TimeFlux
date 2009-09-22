@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090907110148) do
+ActiveRecord::Schema.define(:version => 20090918072113) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                                :null => false
@@ -77,6 +77,13 @@ ActiveRecord::Schema.define(:version => 20090907110148) do
     t.string   "name"
     t.string   "description"
     t.integer  "tag_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tags_time_entries", :id => false, :force => true do |t|
+    t.integer  "time_entry_id"
+    t.integer  "tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

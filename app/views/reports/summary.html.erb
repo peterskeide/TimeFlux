@@ -24,10 +24,31 @@
 
 <% end -%>
 
-<hr/>
+<br/>
 
-<%= render_table @table -%>
+    <table class="regular">
+      <tr>
+        <th>Activity name</th>
+        <th>Hours</th>
+      </tr>
+      <% sum = 0 %>
+      <% @activities_hours.each do |activity, hours| %>
+      <tr>
+        <td><%= activity %></td>
+        <td style="text-align:right"><%= hours %></td>
+        <% sum += hours %>
+      </tr>
+      <% end %>
+
+      <tr style="text-align:right">
+        <th style="border-width: 1px; border-top-style: solid;">Total</th>
+        <th style="border-width: 1px; border-top-style: solid;"><%= sum %></th>
+
+      </tr>
+
+    </table>
 
 
-<%= render :partial => 'download', :locals => { :params => params, :action => 'summary' } -%>
+<%#= render_table @table -%>
+<%#= render :partial => 'download', :locals => { :params => params, :action => 'summary' } -%>
 

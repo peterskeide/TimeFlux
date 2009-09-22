@@ -12,7 +12,7 @@
       :url => {:action => 'update_search_content'},
       :update => 'search_content' %>
   <% else %>
-    <%= render :partial => 'search_advanced_form', :locals => { :params => params, :customer => @customer, :years => @years, :months => @months } -%>
+    <%= render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months } -%>
   <% end %>
 </div>
 

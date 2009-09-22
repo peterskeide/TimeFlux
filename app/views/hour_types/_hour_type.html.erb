@@ -1,9 +1,12 @@
 <% form_for @hour_type do |f| %>
+        <p>
 	<%= f.label :name %>
 	<%= f.text_field :name %>
-	<br />
+	</p>
+        <p>
 	<%= f.label :default_hour_type %>
 	<%= f.check_box :default_hour_type %>
+        </p>
 	<p>
 		<%= f.submit "Save" %>
 	</p>

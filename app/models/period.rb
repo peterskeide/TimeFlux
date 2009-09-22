@@ -40,8 +40,8 @@ class Period
     if Date.today > @end
       @total_hours - @expected_hours
     elsif (@start..@end).include?(Date.today)
-      expected = find_expected_hours(@start,Date.today)
-      actual = @user.time_entries.between(@start, Date.today).sum(:hours)
+      expected = find_expected_hours(@start,(Date.today -1))
+      actual = @user.time_entries.between(@start, (Date.today-1)).sum(:hours)
       actual - expected
     else
       0

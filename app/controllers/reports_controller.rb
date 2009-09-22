@@ -1,4 +1,3 @@
-require 'ruport'
 
 class ReportsController < ApplicationController
   
@@ -10,38 +9,25 @@ class ReportsController < ApplicationController
     redirect_to(:action => 'billing')
   end
 
-  # Remove?
   def user
     setup_calender
     if params[:status] then
       @users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] ).sort
     else
-      @users = User.find(:all).sort
+      @users = User.all.sort
     end
 
     start = Date.today.beginning_of_week
     @weeks = []
     1..8.times { |i| @weeks << start - (i * 7) }
 
-    user_data = @users.collect do |user|
-      [user.fullname] + @weeks.collect do |day|
-        TimeEntry.for_user(user).between(day, (day + 6)).sum(:hours)
-      end
-    end
-
     @expected = @weeks.collect do |day|
       Holiday.expected_hours_between( day, (day + 5) )
     end
-    user_data << ["Expected"] + @expected
 
     @totals = @weeks.collect do |day|
       TimeEntry.between(day, (day + 6)).sum(:hours)
     end
-    user_data << ["Total"] + @totals
-
-    table = Ruport::Data::Table.new( :data => user_data,
-      :column_names => ['Full name'] + @weeks.collect { |d| "Week #{d.cweek}" } )
-    respond_with_formatter table, TestController, "User report"
   end
 
   def billing
@@ -89,21 +75,14 @@ class ReportsController < ApplicationController
     end
   end
 
-  # Remove?
   def summary
     setup_calender
     parse_search_params
 
-    time_entries = TimeEntry.search( @from_day, @to_day, @activities )
-
-    data_set = time_entries.group_by(&:activity).collect do |activity, time_entries|
+    time_entries = TimeEntry.between(@from_day, @to_day)
+    @activities_hours = time_entries.group_by(&:activity).sort.map do |activity, time_entries|
       [activity.customer_project_name, time_entries.sum(&:hours)]
     end
-
-    table = Ruport::Data::Table.new( :data => data_set,
-      :column_names => ['Activity', 'hours'])
-
-    respond_with_formatter table, TestController, @activities
   end
 
   def search
@@ -122,6 +101,8 @@ class ReportsController < ApplicationController
         @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
         @parameters << ["Kunde",@customer.name] if @customer
         @parameters << ["Prosjekt",@project.name]  if @project
+        @parameters << ["Kategori",@tag_type.name] if @tag_type
+        @parameters << ["Tag",@tag.name] if @tag
 
         prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
         render :search, :layout=>false
@@ -134,7 +115,7 @@ class ReportsController < ApplicationController
     if request.xhr?
       setup_calender
       parse_search_params
-      render :partial => 'search_advanced_form', :locals => { :params => params, :customer => @customer, :years => @years, :months => @months }
+      render :partial => 'search_advanced_form', :locals => { :params => params, :tag_type => @tag_type, :customer => @customer, :years => @years, :months => @months }
     end
   end
 
@@ -180,15 +161,21 @@ class ReportsController < ApplicationController
     @customer = param_instance(:customer)
     @project = param_instance(:project)    
     @user = param_instance(:user)
+    @tag_type = param_instance(:tag_type)
+    @tag = param_instance(:tag)
 
   end
 
   def create_search_report
-    activities = Activity.search(params[:customer], params[:project])
-
-    unless  activities.empty?
-      @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
+    if @tag_type || @tag
+      activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
+    else
+      activities = nil
     end
+
+    @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
+
+    #TODO add tagged time_entries with the other given criterias and merge the results
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

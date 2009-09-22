@@ -1,10 +1,21 @@
-<p>
-  <b>Tag Name</b>
+<h1><%=h @tag.tag_type.name %> tag: 
   <%=h @tag.name %>
-</p>
+</h1>
 
-<p>
-  <b>Type</b>
-  <%=h @tag.tag_type.name %>
-</p>
+
+  <h3>Activities tagged </h3>
+  <% if @tag.activities.count > 0 %>
+    <ul>
+      <% @tag.activities.each do |activity| %>
+        <li> <%= link_to activity.customer_project_name, activity_path(activity) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <ul><li>None</li></ul>
+  <% end %>
+
+  <h3>Time entry taggings</h3>
+  <p><b><%=h @tag.time_entries.count %></b> time entries contain this tag with a total of <b><%=h @tag.time_entries.sum(:hours) %></b> hours</p>
+
+
 

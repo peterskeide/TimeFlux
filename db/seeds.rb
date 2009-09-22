@@ -20,20 +20,14 @@ HourType.create :name => "Overtime 100%"
 financial = TagType.create(:name => "Financial", :icon => "money_dollar")
 financial.tags << Tag.create(:name => "Bonus")
 
-customer = TagType.create(:name => "Customer", :icon => "user")
-customer.tags << Tag.create(:name => "Customer 1")
-
-internal = TagType.create(:name => "Internal", :icon => "tag_blue")
+internal = TagType.create(:name => "Internal", :icon => "house")
 internal.tags << Tag.create(:name => "Sales")
 internal.tags << Tag.create(:name => "Marketing")
-internal.tags << Tag.create(:name => "Marketing")
+internal.tags << Tag.create(:name => "Administration")
 
-location = TagType.create(:name => "Location", :icon => "house")
+location = TagType.create(:name => "Location", :icon => "direction")
 location.tags << Tag.create(:name => "Oslo")
 location.tags << Tag.create(:name => "Stockholm")
-
-project = TagType.create(:name => "Project", :icon => "chart_curve")
-project.tags << Tag.create(:name => "Project 1")
 
 Activity.create(:template => true, :name => 'Meeting', :description => 'General meeting activity' )
 Activity.create(:template => true, :name => 'Travel', :description => 'General travel activity' )

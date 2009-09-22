@@ -15,6 +15,9 @@ class Activity < ActiveRecord::Base
   named_scope :shared, lambda { |shared| { :conditions => { :shared => shared } } }
   named_scope :default, lambda { |default| { :conditions => { :default_activity => default } } }
 
+  named_scope :for_tag, lambda { |tag_id| { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } }
+  named_scope :for_tag_type, lambda { |tag_type_id| { :joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id] } }
+  
   named_scope :for_project, lambda { |project_id| { :conditions => { :project_id => project_id } } }
 
   named_scope :for_customer, lambda { |customer_id|
@@ -23,8 +26,13 @@ class Activity < ActiveRecord::Base
 
   named_scope :templates, :conditions => { :template => true }
 
-  def self.search(customer_id, project_id)
+  def self.search(tag_type_id, tag_id, customer_id, project_id)
     search = ["Activity"]
+    unless tag_id.blank?
+      search << "for_tag(#{tag_id})"
+    else
+      search << "for_tag_type(#{tag_type_id})" unless tag_type_id.blank?
+    end
 
     unless project_id.blank?
       search << "for_project(#{project_id})"
@@ -44,11 +52,17 @@ class Activity < ActiveRecord::Base
   end
 
   def customer_project_name
-    if project == nil
+    if template
+      "#{name} (Template)"
+    elsif project == nil
       name
     else
       "#{customer.name} > #{project.name} > #{name}"
     end
+  end
+
+  def to_s
+    customer_project_name
   end
 
   def status
@@ -59,10 +73,10 @@ class Activity < ActiveRecord::Base
   end
 
   def truncated_name_path(max_characters=29)
-    max_characters -= self.name.size;
+    project_characters = max_characters - self.name.size;
     if project != nil
-      if project.name.size > max_characters
-        "#{project.name.first(max_characters).strip}.. > #{self.name}"
+      if project.name.size > project_characters
+        "#{project.name.first(project_characters).strip}.. > #{self.name.first(22)}"
       else
         "#{project.name} > #{self.name}"
       end
