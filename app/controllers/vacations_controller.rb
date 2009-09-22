@@ -4,8 +4,8 @@ class VacationsController < ApplicationController
   before_filter :check_admin, :except => [:index, :set_vacation]
 
   def index
-    @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date])
-
+    @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date]).at_beginning_of_month
+    
     @is_holiday = {}
     @day.at_beginning_of_month.upto @day.at_end_of_month do |d|
       @is_holiday.merge!({d => Holiday.expected_on_day(d) == 0})

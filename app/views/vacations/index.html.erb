@@ -17,8 +17,20 @@
 
 <br/>
 
+<% first_monday = Date.commercial(@day.year,@day.cweek+1,1) %>
+
 <table class="vacation">
 
+  <tr>
+    <td></td>
+    
+    <% (@day...first_monday).each do |day| -%>
+      <td></td>
+    <% end %>
+    <% first_monday.step(@day.at_end_of_month, 7) do |d| %>
+      <th colspan="5" class="sidelines overline" style="background:silver">Week <%= d.cweek -%></th><td></td><td></td>
+      <% end %>
+  </tr>
   <tr>
     <td></td>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
