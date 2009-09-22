@@ -15,6 +15,16 @@ class ReportsControllerTest < ActionController::TestCase
       should_redirect_to("Billing report") { "/reports/billing" }
     end
 
+    context "on GET to :user" do
+      setup { get :user }
+      should_respond_with :success
+    end
+
+    context "on GET to :summary" do
+      setup { get :summary }
+      should_respond_with :success
+    end
+
     context "GET to :search with search criteria" do
 
       should "find all time_entries in current month if all search criteria are empty" do

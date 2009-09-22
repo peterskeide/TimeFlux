@@ -41,26 +41,6 @@ class Activity < ActiveRecord::Base
 
   named_scope :templates, :conditions => { :template => true }
 
-  def self.search(tag_type_id, tag_id, customer_id, project_id)
-    search = ["Activity"]
-    unless tag_id.blank?
-      search << "for_tag(#{tag_id})"
-    else
-      search << "for_tag_type(#{tag_type_id})" unless tag_type_id.blank?
-    end
-
-    unless project_id.blank?
-      search << "for_project(#{project_id})"
-    else
-      search << "for_customer(#{customer_id})" unless customer_id.blank?
-    end
-
-    search << "all" if search.size == 1
-
-    query = search.join(".")
-    logger.debug("Activity filter Query: #{query}")
-    eval query
-  end
   
   def <=>(other)
     name <=> other.name

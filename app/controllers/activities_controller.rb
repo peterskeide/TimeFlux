@@ -97,17 +97,5 @@ class ActivitiesController < ApplicationController
     flash[:error] = "The requested resource does not exist"
     redirect_to activities_url
   end
-
-  def update_form
-
-    customer = Customer.find(params[:customer_id]) if params[:customer_id] && params[:customer_id] != ""
-    render :partial => 'form', :locals => { :customer => customer, :params => params }
-  end
-
-  def update_activities
-
-    activities = Activity.search(params[:active], params[:default], 1)
-    render :partial => 'activities', :locals => { :activities => activities }
-  end
   
 end

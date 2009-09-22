@@ -102,8 +102,8 @@ class TimeEntry < ActiveRecord::Base
       end
     end
 
-    logger.debug(debug)
-    puts debug
+    logger.debug("Search results: #{debug}")
+    
     tagged_entries ? (time_entries | tagged_entries) : time_entries
   end
   

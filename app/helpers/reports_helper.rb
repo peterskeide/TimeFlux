@@ -1,16 +1,5 @@
 module ReportsHelper
 
-  def render_table(table)
-    if not table
-      "please select"
-    elsif is_empty? table
-      "No data"
-    else
-      table.to_html()
-    end
-  end
-
-
   def render_hidden_hours_tags(params)
     " #{hidden_field_tag 'grouping',  params[:grouping]} \n
      #{hidden_field_tag 'sort_by',  params[:grouping]} \n
@@ -29,16 +18,5 @@ module ReportsHelper
       'calendar[date(3i)]' => 1
     }
   end
-
-  def is_empty?(table)
-    if not table
-      true
-    elsif table.is_a? Ruport::Data::Grouping then
-      table.none?
-    elsif table.is_a? Ruport::Data::Table then
-      table.empty?
-    end
-  end
-
 
 end
