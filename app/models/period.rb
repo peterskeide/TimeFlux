@@ -50,9 +50,9 @@ class Period
   def find_ballance
     if Date.today > @end
       @total_hours - @expected_hours
-    elsif (@start..@end).include?(Date.today)
-      expected = find_expected_hours(@start,(Date.today -1))
-      actual = @user.time_entries.between(@start, (Date.today-1)).sum(:hours)
+    elsif (@start...@end).include?(Date.today)
+      expected = find_expected_hours(@start, (Date.today -2))
+      actual = @user.time_entries.between(@start, (Date.today-2)).sum(:hours)
       actual - expected
     else
       0
