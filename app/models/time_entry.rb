@@ -25,31 +25,35 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :for_user, lambda { |user_id|
-    { :conditions => { :user_id => user_id } }
+    user_id ? { :conditions => { :user_id => user_id } } : {}
   }
 
   named_scope :for_type, lambda { |hour_type_id|
-    { :conditions => { :hour_type_id => hour_type_id } }
+    hour_type_id ? { :conditions => { :hour_type_id => hour_type_id } } : {}
   }
 
   named_scope :billed, lambda { |billed|
-    { :conditions => { :billed => billed } }
+    billed ? { :conditions => { :billed => billed } } : {}
   }
 
   named_scope :locked, lambda { |locked|
-    { :conditions => { :locked => locked } }
+    locked ? { :conditions => { :locked => locked } } : {}
   }
 
   named_scope :between, lambda { |*args|
     {  :conditions => { :date => (args.first..args.second) } }
   }
 
-  named_scope :for_activity, lambda { |*activity_ids|
-    {  :conditions =>  ["activity_id IN (?)", activity_ids ] }
+  named_scope :for_activity, lambda { |activity|
+    activity ? {  :conditions =>  { :activity_id => activity } } : {}
+  }
+
+  named_scope :for_activities, lambda { |activities|
+    activities ? {  :conditions =>  { :activity_id => activities } } : {}
   }
 
   named_scope :for_project, lambda { |project_id|
-    { :include => :activity, :conditions => ["activities.project_id = ?", project_id] }
+    project_id ? { :include => :activity, :conditions => ["activities.project_id = ?", project_id] } : {}
   }
 
 
@@ -65,16 +69,56 @@ class TimeEntry < ActiveRecord::Base
     Date::DAYNAMES[date.wday]
   end
   
-  def self.search(from_date, to_date, activities=nil, user=nil, billed=nil)
-    search = ["TimeEntry"]
-    search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
-    search << "for_user(#{user.id})" unless user.blank?
-    search << "billed(#{billed})" unless billed.blank?
-    query = search.join(".")
+#  def self.search(from_date, to_date, activities=nil, user=nil, billed=nil)
+#    search = ["TimeEntry"]
+#    search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
+#    search << "for_user(#{user.id})" unless user.blank?
+#    search << "billed(#{billed})" unless billed.blank?
+#    query = search.join(".")
+#
+#    logger.debug("Time entry Search Query: #{query}")
+#    (eval query).between(from_date,to_date)
+#  end
+  
+  def self.search(from_day,to_day,customer,project,tag,tag_type,user,billed)
+    debug = ""
 
-    logger.debug("Time entry Search Query: #{query}")
-    (eval query).between(from_date,to_date)
+    # Search Time entries for matches
+    #if customer || project || tag_type
+      if tag
+        activities = Activity.for_tag(tag).for_customer(customer).for_project(project)
+      else
+        activities = Activity.for_tag_type(tag_type).for_customer(customer).for_project(project)
+      end
+      time_entries = TimeEntry.between(from_day, to_day).for_activities(activities).for_user(user).billed(billed)
+      
+    #else
+    #  time_entries = TimeEntry.between(from_day, to_day).for_user(user).billed(billed)
+    #end
+
+    debug += "#{time_entries.size} Entries from #{activities ? activities.size : 'all'} activities"
+
+    # Add explicidly tagged time entries to the result
+    if tag_type || tag
+
+      if tag
+        tagged_entries = tag.time_entries.between(from_day, to_day).for_user(user).billed(billed)
+        debug += "+  #{tagged_entries.size} Entries with Tag"
+      else
+        tagged_entries = []
+        tag_type.tags.each do |the_tag|
+          tagged_entries += the_tag.time_entries.between(from_day, to_day).for_user(user).billed(billed)
+        end
+        tagged_entries.uniq!
+        debug += "+  #{tagged_entries.size} Entries with tags from category"
+      end
+    end
+
+    logger.debug(debug)
+    puts debug
+    tagged_entries ? (time_entries | tagged_entries) : time_entries
   end
+  
 
   def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|

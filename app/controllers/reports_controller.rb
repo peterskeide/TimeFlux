@@ -98,13 +98,13 @@ class ReportsController < ApplicationController
         @parameters = []
         @parameters << ["Periode","#{@from_day} to #{@to_day}"]
         @parameters << ["Bruker",@user.fullname] if @user
-        @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
+        @parameters << ["Fakturert",@billed ? "Ja" : "Nei"] if @billed
         @parameters << ["Kunde",@customer.name] if @customer
         @parameters << ["Prosjekt",@project.name]  if @project
         @parameters << ["Kategori",@tag_type.name] if @tag_type
         @parameters << ["Tag",@tag.name] if @tag
 
-        prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
+        prawnto :prawn => prawn_params, :filename=>"search_report.pdf"
         render :search, :layout=>false
       end
     end
@@ -163,19 +163,45 @@ class ReportsController < ApplicationController
     @user = param_instance(:user)
     @tag_type = param_instance(:tag_type)
     @tag = param_instance(:tag)
-
+    @billed = param_boolean(:billed)
   end
 
   def create_search_report
-    if @tag_type || @tag
-      activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
+    @debug = ""
+
+    #@time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@billed)
+    # Search Time entries for matches
+    if @customer || @project || @tag_type
+      if @tag
+        activities = Activity.for_tag(@tag).for_customer(@customer).for_project(@project)
+      else
+        activities = Activity.for_tag_type(@tag_type).for_customer(@customer).for_project(@project)
+      end
+      time_entries = TimeEntry.between(@from_day, @to_day).for_activities(activities).for_user(@user).billed(@billed)
     else
-      activities = nil
+      time_entries = TimeEntry.between(@from_day, @to_day).for_user(@user).billed(@billed)
     end
 
-    @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
+    # Add explicidly tagged time entries to the result
+    if @tag_type || @tag
 
-    #TODO add tagged time_entries with the other given criterias and merge the results
+      if @tag
+        tagged_entries = @tag.time_entries.between(@from_day, @to_day).for_user(@user).billed(@billed)
+        @debug += "+  #{tagged_entries.size} Entries with Tag"
+      else
+        tagged_entries = []
+        @tag_type.tags.each do |tag|
+          tagged_entries += tag.time_entries.between(@from_day, @to_day).for_user(@user).billed(@billed)
+        end
+        tagged_entries.uniq!
+        @debug += "+  #{tagged_entries.size} Entries with tags from category"
+      end
+
+      @time_entries = time_entries | tagged_entries
+
+    else
+      @time_entries = time_entries
+    end
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

@@ -34,7 +34,6 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
     if pdf.cursor < 200 && entry_data.size * 50 > (pdf.cursor-50)
         pdf.start_new_page
-      end
     end
 
     pdf.move_down(30)
