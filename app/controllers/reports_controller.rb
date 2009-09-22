@@ -108,7 +108,6 @@ class ReportsController < ApplicationController
         render :search, :layout=>false
       end
     end
-
   end
 
   def update_search_advanced_form
@@ -167,41 +166,7 @@ class ReportsController < ApplicationController
   end
 
   def create_search_report
-    @debug = ""
-
-    #@time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@billed)
-    # Search Time entries for matches
-    if @customer || @project || @tag_type
-      if @tag
-        activities = Activity.for_tag(@tag).for_customer(@customer).for_project(@project)
-      else
-        activities = Activity.for_tag_type(@tag_type).for_customer(@customer).for_project(@project)
-      end
-      time_entries = TimeEntry.between(@from_day, @to_day).for_activities(activities).for_user(@user).billed(@billed)
-    else
-      time_entries = TimeEntry.between(@from_day, @to_day).for_user(@user).billed(@billed)
-    end
-
-    # Add explicidly tagged time entries to the result
-    if @tag_type || @tag
-
-      if @tag
-        tagged_entries = @tag.time_entries.between(@from_day, @to_day).for_user(@user).billed(@billed)
-        @debug += "+  #{tagged_entries.size} Entries with Tag"
-      else
-        tagged_entries = []
-        @tag_type.tags.each do |tag|
-          tagged_entries += tag.time_entries.between(@from_day, @to_day).for_user(@user).billed(@billed)
-        end
-        tagged_entries.uniq!
-        @debug += "+  #{tagged_entries.size} Entries with tags from category"
-      end
-
-      @time_entries = time_entries | tagged_entries
-
-    else
-      @time_entries = time_entries
-    end
+    @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@billed).sort
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

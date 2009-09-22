@@ -69,32 +69,20 @@ class TimeEntry < ActiveRecord::Base
     Date::DAYNAMES[date.wday]
   end
   
-#  def self.search(from_date, to_date, activities=nil, user=nil, billed=nil)
-#    search = ["TimeEntry"]
-#    search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
-#    search << "for_user(#{user.id})" unless user.blank?
-#    search << "billed(#{billed})" unless billed.blank?
-#    query = search.join(".")
-#
-#    logger.debug("Time entry Search Query: #{query}")
-#    (eval query).between(from_date,to_date)
-#  end
-  
   def self.search(from_day,to_day,customer,project,tag,tag_type,user,billed)
     debug = ""
 
     # Search Time entries for matches
-    #if customer || project || tag_type
+    if customer || project || tag_type
       if tag
         activities = Activity.for_tag(tag).for_customer(customer).for_project(project)
       else
         activities = Activity.for_tag_type(tag_type).for_customer(customer).for_project(project)
       end
-      time_entries = TimeEntry.between(from_day, to_day).for_activities(activities).for_user(user).billed(billed)
-      
-    #else
-    #  time_entries = TimeEntry.between(from_day, to_day).for_user(user).billed(billed)
-    #end
+      time_entries = TimeEntry.between(from_day, to_day).for_activities(activities).for_user(user).billed(billed)  
+    else
+      time_entries = TimeEntry.between(from_day, to_day).for_user(user).billed(billed)
+    end
 
     debug += "#{time_entries.size} Entries from #{activities ? activities.size : 'all'} activities"
 

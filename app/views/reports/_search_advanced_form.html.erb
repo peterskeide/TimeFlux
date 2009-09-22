@@ -92,7 +92,7 @@
             </tr>
             <tr>
               <td><%= label_tag "remove_comments","Remove comments" %></td>
-              <td><%= check_box_tag "remove_comments", 1, params[:remove_comments] %></td>
+              <td><%= check_box_tag "remove_comments", 1, params[:remove_comments], {:disabled => true} %></td>
             </tr>
        </table></td>
 

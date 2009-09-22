@@ -9,7 +9,7 @@
         when :user then group.name
         else group.to_s end %>
     </h3>
-    <table class="regular">
+    <table width="100%" class="regular">
       <tr>
         <% columns = %w{Date User Activity Type Status Hours Notes};
            columns.delete(@group_by.to_s.capitalize) %>
@@ -23,9 +23,9 @@
           <% unless @group_by == :user %><td style="white-space:nowrap;"><%= entry.user.name -%></td><% end %>
           <% unless @group_by == :activity %><td style="white-space:nowrap;"><%= entry.activity.name -%></td><% end %>
           <td style="white-space:nowrap;"><%= entry.hour_type.name -%></td>
-          <td><%= entry.billed ? 'billed' : (entry.locked ? 'locked' : '' ) -%></td>
+          <td><%= entry.billed ? 'billed' : (entry.locked ? 'locked' : 'unlocked' ) -%></td>
           <td><%= entry.hours -%></td>
-          <td><%=h entry.notes -%></td>
+          <td width="50%"><%=h entry.notes -%></td>
         </tr>
       <% end %>
     </table>
