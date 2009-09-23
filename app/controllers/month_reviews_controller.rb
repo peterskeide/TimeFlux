@@ -16,17 +16,16 @@ class MonthReviewsController < ApplicationController
     
   def load_calendar_report_data
     @period = Period.new(@user, @beginning_of_month.year, @beginning_of_month.month)
-    @activities_summary = create_activity_summary
+    @activities_summary = create_activity_summary(@user, @period)
     respond_to do |format|
       format.html { render :template => "month_reviews/calendar.html.erb" }
     end
   end
   
-  def create_activity_summary
-    activities = @period.activities
-    activities.collect do |activity|
+  def create_activity_summary(user,period)
+    period.activities.collect do |activity|
       { :name => activity.customer_project_name(50),
-        :hours => activity.time_entries.for_user(@user).between(@period.start, @period.end).sum(:hours) }
+        :hours => activity.time_entries.for_user(user).between(period.start, period.end).sum(:hours) }
     end
   end
     

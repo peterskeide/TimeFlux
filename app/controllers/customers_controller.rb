@@ -21,7 +21,6 @@ class CustomersController < ApplicationController
 
   def create
     @customer = Customer.new(params[:customer])
-
     if @customer.save
       flash[:notice] = 'Customer was successfully created.'
       redirect_to(@customer)
@@ -42,8 +41,8 @@ class CustomersController < ApplicationController
 
   def destroy
     @customer = Customer.find(params[:id])
-    if @customer.projects.empty?
-    @customer.destroy
+    if @customer.destroy
+      flash[:notice] = "Customer removed"
     else
       flash[:error] = "Cannot remove customer with active projects"
     end
