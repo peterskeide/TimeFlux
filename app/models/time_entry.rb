@@ -78,7 +78,7 @@ class TimeEntry < ActiveRecord::Base
   end
 
   def locked
-    status == LOCKED
+    status == LOCKED || status == BILLED
   end
 
   def billed
