@@ -17,7 +17,7 @@
 
 <br/>
 
-<% first_monday = Date.commercial(@day.year,@day.cweek+1,1) %>
+<% first_monday = nil; @day.upto(@day + 6){|day| first_monday = day if day.cwday == 1 } %>
 
 <table class="vacation">
 
@@ -28,8 +28,10 @@
       <td></td>
     <% end %>
     <% first_monday.step(@day.at_end_of_month, 7) do |d| %>
-      <th colspan="5" class="sidelines overline" style="background:silver">Week <%= d.cweek -%></th><td></td><td></td>
+      <% unless (@day.at_end_of_month - d) < 4 %>
+        <th colspan="5" class="sidelines overline" style="background:silver">Week <%= d.cweek -%></th><td></td><td></td>
       <% end %>
+    <% end %>
   </tr>
   <tr>
     <td></td>
