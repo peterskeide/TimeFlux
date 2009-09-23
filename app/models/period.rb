@@ -33,8 +33,6 @@ class Period
     @user.time_entries.between(@start, @end).distinct_activities.map { |e| e.activity }
   end
 
-
-  
   private
 
   def find_billing_degree
@@ -51,8 +49,8 @@ class Period
     if Date.today > @end
       @total_hours - @expected_hours
     elsif (@start...@end).include?(Date.today)
-      expected = find_expected_hours(@start, (Date.today -2))
-      actual = @user.time_entries.between(@start, (Date.today-2)).sum(:hours)
+      expected = find_expected_hours(@start, (Date.today-1))
+      actual = @user.time_entries.between(@start, (Date.today-1)).sum(:hours)
       actual - expected
     else
       0
@@ -87,6 +85,7 @@ class Period
     repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
     one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
 
+    # generate plain hash, and overwrite days with repeating and one time holidays
     period = {}
     (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : 7.5 ) }
     repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
