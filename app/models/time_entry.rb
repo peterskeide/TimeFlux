@@ -36,6 +36,10 @@ class TimeEntry < ActiveRecord::Base
     hour_type_id ? { :conditions => { :hour_type_id => hour_type_id } } : {}
   }
 
+  named_scope :status, lambda { |status|
+    status ? { :conditions => { :status => status } } : {}
+  }
+
   named_scope :billed, lambda { |billed|
     billed ? { :conditions => { :status => billed ? 2 : [0,1] } } : {}
   }
@@ -78,22 +82,25 @@ class TimeEntry < ActiveRecord::Base
   end
 
   def billed
-    status = BILLED
+    status == BILLED
   end
   
-  def self.search(from_day,to_day,customer,project,tag,tag_type,user,billed)
+  def self.search(from_day,to_day,customer,project,tag,tag_type,user,status)
     debug = ""
 
+    time_entry_scope = TimeEntry.between(from_day, to_day).for_user(user).status(status)
+      
     # Search Time entries for matches
     if customer || project || tag_type
+      activity_scope = Activity.for_customer(customer).for_project(project)
       if tag
-        activities = Activity.for_tag(tag).for_customer(customer).for_project(project)
+        activities = activity_scope.for_tag(tag)
       else
-        activities = Activity.for_tag_type(tag_type).for_customer(customer).for_project(project)
+        activities = activity_scope.for_tag_type(tag_type)
       end
-      time_entries = TimeEntry.between(from_day, to_day).for_activities(activities).for_user(user).billed(billed)  
+      time_entries = time_entry_scope.for_activities(activities)
     else
-      time_entries = TimeEntry.between(from_day, to_day).for_user(user).billed(billed)
+      time_entries = time_entry_scope
     end
 
     debug += "#{time_entries.size} Entries from #{activities ? activities.size : 'all'} activities"
@@ -102,12 +109,12 @@ class TimeEntry < ActiveRecord::Base
     if tag_type || tag
 
       if tag
-        tagged_entries = tag.time_entries.between(from_day, to_day).for_user(user).billed(billed)
+        tagged_entries = tag.time_entries.between(from_day, to_day).for_user(user).status(status)
         debug += "+  #{tagged_entries.size} Entries with Tag"
       else
         tagged_entries = []
         tag_type.tags.each do |the_tag|
-          tagged_entries += the_tag.time_entries.between(from_day, to_day).for_user(user).billed(billed)
+          tagged_entries += the_tag.time_entries.between(from_day, to_day).for_user(user).status(status)
         end
         tagged_entries.uniq!
         debug += "+  #{tagged_entries.size} Entries with tags from category"
@@ -122,8 +129,10 @@ class TimeEntry < ActiveRecord::Base
 
   def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|
-      if value || t.billed == false
-        t.status = TimeEntry::LOCKED
+      unless t.billed
+        t = TimeEntry.find(t.id) if t.readonly?
+
+        t.status = value ? TimeEntry::LOCKED : TimeEntry::OPEN
         t.save
       end
     end
@@ -132,7 +141,8 @@ class TimeEntry < ActiveRecord::Base
   # Billed time entries are always locked
   def self.mark_as_billed(time_entries, value=true)
     time_entries.each do |t|
-      t.status = TimeEntry::BILLED
+      t = TimeEntry.find(t.id) if t.readonly?
+      t.status = value ? TimeEntry::BILLED : TimeEntry::LOCKED
       t.save
     end
   end

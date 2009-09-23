@@ -141,7 +141,7 @@ class ReportsController < ApplicationController
         TimeEntry.mark_as_locked(@time_entries, value)
       end
     end
-    redirect_to( params.merge( {:action => 'search'}) )
+    redirect_to( {:action => 'search'}.merge(params) )
   end
 
   private
@@ -149,7 +149,7 @@ class ReportsController < ApplicationController
   def parse_search_params
     params[:month] ||= @day.month
     
-    if params[:from_day]
+    if params[:from_day] && params[:from_day] != ""
       @from_day = set_date(params[:from_year].to_i, params[:from_month].to_i, params[:from_day].to_i)
       @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
     else
@@ -162,11 +162,11 @@ class ReportsController < ApplicationController
     @user = param_instance(:user)
     @tag_type = param_instance(:tag_type)
     @tag = param_instance(:tag)
-    @billed = param_boolean(:billed)
+    @status = params[:status].to_i if params[:status] && params[:status] != "" 
   end
 
   def create_search_report
-    @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@billed).sort
+    @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

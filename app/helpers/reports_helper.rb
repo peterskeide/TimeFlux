@@ -1,14 +1,16 @@
 module ReportsHelper
 
   def render_hidden_hours_tags(params)
-    " #{hidden_field_tag 'grouping',  params[:grouping]} \n
-     #{hidden_field_tag 'sort_by',  params[:grouping]} \n
-     #{hidden_field_tag 'page_break',  params[:page_break]} \n
-     #{hidden_field_tag 'year',  params[:year]} \n
-     #{hidden_field_tag 'month',  params[:month]} \n
-     #{hidden_field_tag 'billed',  params[:billed]} \n
-     #{hidden_field_tag 'user',  params[:user]} \n
-     #{hidden_field_tag 'type',  params[:type]} "
+
+    if params[:type] == "advanced"
+      fields = %w{from_year to_year from_day from_month to_month to_day status user customer tag tag_type type}
+    else
+      fields = %w{year month customer}
+    end
+
+    hidden_fields = ""
+    fields.each { |field| hidden_fields += hidden_field_tag(field, params[field.to_sym]) }
+    hidden_fields
   end
 
   def date_to_url(date)

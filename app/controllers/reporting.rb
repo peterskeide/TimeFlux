@@ -22,6 +22,7 @@ module Reporting
   # Example 2009,2,31 returns Date.civil(2009,2,28)
   #
   def set_date(year, month, day)
+    puts "Setting date: #{year}-#{month}-#{day}"
     max_day = Date.civil(year,month,1).at_end_of_month.mday
     Date.civil(year,month, day > max_day ? max_day : day)
   end
@@ -31,14 +32,6 @@ module Reporting
   #
   def param_instance(symbol)
     Kernel.const_get(symbol.to_s.camelcase).find(params[symbol])  if params[symbol] && params[symbol] != ""
-  end
-  
-  def param_boolean(symbol)
-    case params[symbol]
-      when "true" then true
-      when "false" then false
-      else nil
-    end
   end
 
   # Prawnto arguments for creating a plain A4 page with sensible margins
