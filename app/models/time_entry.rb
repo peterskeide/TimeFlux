@@ -6,6 +6,10 @@ class TimeEntry < ActiveRecord::Base
 
   has_and_belongs_to_many :tags
   
+  OPEN = 0
+  LOCKED = 1
+  BILLED = 2
+
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
   validates_presence_of :user, :activity, :hour_type
 
@@ -33,11 +37,11 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :billed, lambda { |billed|
-    billed ? { :conditions => { :billed => billed } } : {}
+    billed ? { :conditions => { :status => billed ? 2 : [0,1] } } : {}
   }
 
   named_scope :locked, lambda { |locked|
-    locked ? { :conditions => { :locked => locked } } : {}
+    locked ? { :conditions => { :status => locked ? [1,2] : 0 } } : {}
   }
 
   named_scope :between, lambda { |*args|
@@ -67,6 +71,14 @@ class TimeEntry < ActiveRecord::Base
   
   def weekday
     Date::DAYNAMES[date.wday]
+  end
+
+  def locked
+    status >= LOCKED
+  end
+
+  def billed
+    status = BILLED
   end
   
   def self.search(from_day,to_day,customer,project,tag,tag_type,user,billed)
@@ -111,7 +123,7 @@ class TimeEntry < ActiveRecord::Base
   def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|
       if value || t.billed == false
-        t.locked = value
+        t.status = TimeEntry::LOCKED
         t.save
       end
     end
@@ -120,8 +132,7 @@ class TimeEntry < ActiveRecord::Base
   # Billed time entries are always locked
   def self.mark_as_billed(time_entries, value=true)
     time_entries.each do |t|
-      t.billed = value
-      t.locked = true if value
+      t.status = TimeEntry::BILLED
       t.save
     end
   end
@@ -143,7 +154,7 @@ class TimeEntry < ActiveRecord::Base
   # Halt changes to locked time entries unless the dirty state
   # includes changes to the locked attribute itself or the billed status.
   def validate_changes_on_locked_entry
-    if locked && !(changed.include?("locked") || changed.include?("billed"))
+    if locked && !(changed.include?("status"))
       errors.add_to_base("Editing of locked time entries is not allowed")
       return false
     end
