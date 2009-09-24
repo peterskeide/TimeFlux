@@ -8,25 +8,27 @@ assosiated with an activity and an hour type.
 Features
 --------
 
-#### For users
 
-* Simple hour registration
-* Month overview
-* Public vacation overview
+#### For users:
 
-#### For admins
+>> * Simple hour registration
+>> * Month overview
+>> * Public vacation overview
 
-* Billing and other reports
-* Categorized tags for grouping activities
-* Activities are placed in a hiearchy of *customer->project->activity*
-* Easy management of project assignments
-* Easy management of project activities by templates
+
+#### For admins:
+
+>> * Billing and other reports
+>> * Categorized tags for grouping activities
+>> * Activities are placed in a hiearchy of *customer->project->activity*
+>> * Easy management of project assignments
+>> * Easy management of project activities by templates
 
 
 On the TODO list
 ----------------
 
-* Reports are currently in norwegian (we use it internally)
+* Reports are in norwegian (we use it internally)
 * Gui doesn´t scale to hundreds of users and projects
 
 
@@ -36,7 +38,7 @@ Install (short)
 0. Intall ruby and rails
 1. Pull the code from git
 2. %> rake gems:install
-3. %> rake db:reset
+3. %> rake db:setup
 4. %> ruby script/server
 
 
