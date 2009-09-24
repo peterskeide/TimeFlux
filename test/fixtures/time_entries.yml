@@ -6,7 +6,7 @@ user = "bob"
 
 <% 
 date = Date.new(2009, 6, 15)
-week = date.cweek
+week = date.cweek # week 25
 7.times do |i| %>
 <%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
     hours: 7.5
@@ -18,7 +18,7 @@ week = date.cweek
 
 <% 
 date = Date.new(2009, 6, 22)
-week = date.cweek
+week = date.cweek # week 26
 7.times do |i| %>
 <%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
     hours: 7.5
@@ -30,7 +30,7 @@ week = date.cweek
 
 <% 
 date = Date.new(2009, 6, 29)
-week = date.cweek
+week = date.cweek # week 27
 7.times do |i| %>
 <%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
     hours: 7.5
@@ -43,7 +43,7 @@ week = date.cweek
 <%
 # Locked time entries 
 date = Date.new(2009, 6, 8)
-week = date.cweek
+week = date.cweek # week 24
 7.times do |i| %>
 <%= "#{user}_#{activity}_#{week}_#{weekdays[i]}:" %>
     hours: 7.5

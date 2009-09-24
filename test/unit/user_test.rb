@@ -47,7 +47,39 @@ class UserTest < ActiveSupport::TestCase
       assert !@user.destroy
       assert_equal 'User is assigned to one or more projects', @user.errors.entries[0][1]
     end
-
+    
+  end
+  
+  context "current_activities method" do
+    
+    setup do
+      @user = User.create(:firstname => "Fred", :lastname => "Olsen", :login => "fredo", :email => "fredo@timeflux.com", 
+      :admin => false, :password => "secret", :password_confirmation => "secret")
+      p = Project.create(:name => "TestProject")
+      hour_type = HourType.create!(:name => "TestHourType")
+      p.users << @user
+      @a1 = Activity.create(:name => "TestOne", :project_id => p.id)
+      @a2 = Activity.create(:name => "TestTwo", :project_id => p.id)
+      @a3 = Activity.create(:name => "TestThree", :project_id => p.id)
+      @date = Date.today
+      @user.time_entries.create!(:hours => 7.5, :hour_type_id => hour_type.id, :notes => "", :activity_id => @a1.id, :date => @date.-(5).to_s)
+      @user.time_entries.create!(:hours => 7.5, :hour_type_id => hour_type.id, :notes => "", :activity_id => @a1.id, :date => @date.-(4).to_s)
+      @user.time_entries.create!(:hours => 7.5, :hour_type_id => hour_type.id, :notes => "", :activity_id => @a1.id, :date => @date.-(3).to_s)
+      @user.time_entries.create!(:hours => 7.5, :hour_type_id => hour_type.id, :notes => "", :activity_id => @a2.id, :date => @date.-(2).to_s)
+      @user.time_entries.create!(:hours => 7.5, :hour_type_id => hour_type.id, :notes => "", :activity_id => @a2.id, :date => @date.-(1).to_s)
+      @user.time_entries.create!(:hours => 7.5, :hour_type_id => hour_type.id, :notes => "", :activity_id => @a3.id, :date => @date.to_s)
+    end
+    
+    should "return an array of unique activities" do
+       assert !@user.current_activities(@date).uniq! # uniq! returns nil if no duplicated are removed    
+    end
+    
+    should "sort activities by most used in the previous week" do
+      activities = @user.current_activities(@date)
+      assert_equal(@a1.id, activities.shift.id)
+      assert_equal(@a2.id, activities.shift.id)
+      assert_equal(@a3.id, activities.shift.id)
+    end
   end
   
 end

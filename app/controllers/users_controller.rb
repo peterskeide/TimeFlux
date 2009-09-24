@@ -21,13 +21,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])   
-    if TimeFlux::CONFIG.use_ldap
-       @user.crypted_password = 'not_in_use'
-       @user.password_salt = 'not_in_use'
-    end
     if @user.save
       flash[:notice] = "New user was created"
-      redirect_to user_path(@user)
+      redirect_to user_url(@user)
     else
       render :action => "new"
     end
@@ -52,7 +48,7 @@ class UsersController < ApplicationController
     
     if @user.save
       flash[:notice] = 'User was successfully updated.'
-      redirect_to user_path(@user)
+      redirect_to user_url(@user)
     else
       render :action => "edit"
     end
@@ -65,6 +61,6 @@ class UsersController < ApplicationController
     else
       flash[:error] = "Could not remove user due to error(s): #{@user.errors.entries[0][1]}"
     end
-    redirect_to(users_url)
+    redirect_to users_url
   end
 end

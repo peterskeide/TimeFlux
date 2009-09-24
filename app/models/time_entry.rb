@@ -71,8 +71,6 @@ class TimeEntry < ActiveRecord::Base
     search << "for_user(#{user.id})" unless user.blank?
     search << "billed(#{billed})" unless billed.blank?
     query = search.join(".")
-
-    logger.debug("Time entry Search Query: #{query}")
     (eval query).between(from_date,to_date)
   end
 

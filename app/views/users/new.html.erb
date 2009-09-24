@@ -15,7 +15,6 @@
     <%= f.label :login %><br />
     <%= f.text_field :login %>
   </p>
-  <% unless TimeFlux::CONFIG.use_ldap %>
   <p>
     <%= f.label :password %><br />
     <%= f.password_field :password %>
@@ -24,7 +23,6 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
-  <% end %>
   <p>
     <%= f.label :email %><br />
     <%= f.text_field :email %>

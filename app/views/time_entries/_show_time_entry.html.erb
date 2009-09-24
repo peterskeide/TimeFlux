@@ -2,7 +2,7 @@
 	<td width="28%"><%= link_to time_entry.activity.truncated_name_path, activity_path(time_entry.activity) %></td>
 	<td width="10%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td>
 	<td width="5%"><%= time_entry.hours %></td> 
-	<td><%=h time_entry.notes %></td>
+	<td title='<%=h time_entry.notes %>'><%=h truncate(time_entry.notes, :length => 60) %></td>
 	<td width="10%" class="actions">
                 <% unless time_entry.tags.empty? %>
                   <%= image_tag("tag_gray.png", :title => time_entry.tags.join(', ')) %>

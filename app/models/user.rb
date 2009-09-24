@@ -2,6 +2,8 @@ require 'net/ldap'
 
 class User < ActiveRecord::Base
   
+  acts_as_authentic    
+  
   has_many :time_entries
   has_and_belongs_to_many :projects
      
@@ -9,25 +11,6 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :login
   
   before_destroy :validate_not_last_admin, :validate_has_no_projects, :validate_has_no_time_entries
-  
-  if TimeFlux::CONFIG.use_ldap
-        
-    acts_as_authentic { |c| c.validate_password_field = false }
-
-    def valid_ldap_credentials?(password_plaintext)
-      ldap = Net::LDAP.new
-      ldap.host = TimeFlux::CONFIG.ldap_host
-      base = TimeFlux::CONFIG.ldap_base
-      auth_str = "uid=" + self.login + ",#{base}"
-      ldap.auth auth_str, password_plaintext
-      ldap.bind # will return false if authentication is NOT successful
-    end
-
-    private :valid_ldap_credentials?
-    
-  else
-    acts_as_authentic    
-  end
 
   def fullname
     "#{self.firstname} #{self.lastname}"
@@ -74,13 +57,24 @@ class User < ActiveRecord::Base
   
   # Returns a list of shared activities +
   # the activities assigned to the user
-  def current_activities
-    current  = self.projects.map{|project| project.activities }.flatten
+  def current_activities(date)
+    current = self.projects.map{ |project| project.activities }.flatten
+    current = sort_by_most_used_activity(date, current.uniq)
     current += Activity.active(true).default(true)
-    current.uniq
+    current
   end
-  
+    
   private
+  
+  def sort_by_most_used_activity(date, activities)
+    start_date = date - 7
+    activity_count = Hash.new(0)
+    activities.each do |a|
+      count = time_entries.between(start_date, date).all(:conditions => ["activity_id = :aid", { :aid => a.id }]).length
+      activity_count[a] = count
+    end
+    activity_count.sort { |a,b| a[1] <=> b[1] }.collect { |ac| ac[0] }.reverse
+  end
   
   def validate_not_last_admin
     if admin && User.find_all_by_admin(true).size == 1 then

@@ -19,8 +19,9 @@ class TimeEntriesController < ApplicationController
   end
   
   def new
-    @time_entry = TimeEntry.new(:date => params[:date])
-    @activities = @user.current_activities
+    date = Date.parse(params[:date])
+    @time_entry = TimeEntry.new(:date => date)
+    @activities = @user.current_activities(date)
     respond_to do |format|
       format.html {}
       format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
@@ -41,7 +42,7 @@ class TimeEntriesController < ApplicationController
         format.js { render :template => "/time_entries/time_entries.rjs" }
       end
     else
-      @activities = @user.current_activities
+      @activities = @user.current_activities(@time_entry.date)
       respond_to do |format|
         format.html {
           flash[:error] = "Unable to create time entry"
@@ -54,7 +55,7 @@ class TimeEntriesController < ApplicationController
   
   def edit
     @time_entry = @user.time_entries.find(params[:id])
-    @activities = @user.current_activities
+    @activities = @user.current_activities(@time_entry.date)
     respond_to do |format|
       format.html { }
       format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
@@ -78,7 +79,7 @@ class TimeEntriesController < ApplicationController
         format.js { render :template => "/time_entries/time_entries.rjs" }
       end     
     else
-      @activities = @user.current_activities
+      @activities = @user.current_activities(@time_entry.date)
       respond_to do |format|
         format.html {
           flash[:error] = "Unable to update time entry"

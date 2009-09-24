@@ -61,7 +61,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_not_set_the_flash
       should_assign_to :time_entry, :activities, :user
       should_render_template :new
-           
+                 
     end
     
     context "GET to :new with javascript" do
