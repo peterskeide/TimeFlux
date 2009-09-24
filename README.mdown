@@ -41,6 +41,23 @@ Install (short)
 3. %> rake db:setup
 4. %> ruby script/server
 
+Install (long)
+--------------
+
+On Ubuntu linux:
+
+0. Install git: sudo apt-get git-core
+1. Install ruby: sudo apt-get install ruby-full build-essential
+2. Install rubygems:
+2.1 Download latest version from rubyforge (http://rubyforge.org/frs/?group_id=126)
+2.2 Decompress into suitable directory and, in same directory, execute command: ruby setup.rb
+2.3 Create softlink: sudo ln -s /usr/bin/gem1.8 /usr/bin/gem
+2.4 Verify installation: gem -v
+3. Install sqlite3 as your development database: sudo apt-get install sqlite3 libsqlite3-dev
+4. Install rails++: sudo gem install rails rake sqlite3-ruby prawn
+5. Clone the code from GitHub
+6. Install required dependencies (cd to TimeFlux root-directory): sudo rake gems:install 
+7. Install test dependencies: sudo rake gems:install RAILS_ENV=test
 
 Getting started
 ---------------
