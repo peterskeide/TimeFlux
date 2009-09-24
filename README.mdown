@@ -31,6 +31,7 @@ On the TODO list
 * Reports are in norwegian (we use it internally)
 * Gui doesn´t scale to hundreds of users and projects
 
+For developers:
 
 Install (short)
 ---------------
@@ -66,3 +67,6 @@ The seeded data contains two users:
 
 * user=admin, password=admin
 * user=user, password=user
+
+For operations/admins:
+
