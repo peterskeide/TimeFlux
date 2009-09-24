@@ -17,23 +17,29 @@
 
 <br/>
 
-<% first_monday = nil; @day.upto(@day + 6){|day| first_monday = day if day.cwday == 1 } %>
-
 <table class="vacation">
 
-  <tr>
+  <tr id="week_numbers">
+    <% iterator = @day %>
     <td></td>
-    <% (@day...first_monday).each do |day| -%>
-      <td></td>
-    <% end %>
-    <% first_monday.step(@day.at_end_of_month, 7) do |d| %>
-      <% unless (@day.at_end_of_month - d) < 4 %>
-        <th colspan="5" class="sidelines overline" style="background:silver">Week <%= d.cweek -%></th><td></td><td></td>
+
+    <% if iterator.cwday > 5 %>
+      <% (8 - iterator.cwday).times do %>
+        <% iterator = iterator + 1 %><td></td>
       <% end %>
+    <% end %>
+
+    <% days_in_first_week = 8-iterator.cwday %>
+    <th colspan="<%= days_in_first_week - 2 %>" class="week"><%= iterator.cweek -%></th><td></td><td></td>
+    <% iterator = iterator + days_in_first_week %>
+
+    <% iterator.step( @day.at_end_of_month, 7) do |d| %>
+      <% days_left = @day.at_end_of_month - d %>
+      <th colspan="<%= days_left >= 5 ? 5 : days_left + 1 %>" class="week"><%= d.cweek -%></th><td></td><td></td>
     <% end %>
   </tr>
 
-  <tr>
+  <tr id="day_numbers">
     <td></td>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
       <th <%= 'class="error"' if @is_holiday[d] -%> ><%= d.day -%><%='</th>'-%>

@@ -34,10 +34,12 @@ div.tag_symbol:hover span.alt {
   font-size: 10px;
 }
 
-tr .sidelines {
+tr .week {
     border-left-style: solid;
     border-right-style: solid;
-    border-width: 1px
+    border-top-style: solid;
+    border-width: 1px;
+    background:silver;
 }
 
 tr .overline {
