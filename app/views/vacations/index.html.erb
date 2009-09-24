@@ -19,7 +19,27 @@
 
 <table class="vacation">
 
-  <tr>
+  <tr id="week_numbers">
+    <% iterator = @day %>
+    <td></td>
+
+    <% if iterator.cwday > 5 %>
+      <% (8 - iterator.cwday).times do %>
+        <% iterator = iterator + 1 %><td></td>
+      <% end %>
+    <% end %>
+
+    <% days_in_first_week = 8-iterator.cwday %>
+    <th colspan="<%= days_in_first_week - 2 %>" class="week"><%= iterator.cweek -%></th><td></td><td></td>
+    <% iterator = iterator + days_in_first_week %>
+
+    <% iterator.step( @day.at_end_of_month, 7) do |d| %>
+      <% days_left = @day.at_end_of_month - d %>
+      <th colspan="<%= days_left >= 5 ? 5 : days_left + 1 %>" class="week"><%= d.cweek -%></th><td></td><td></td>
+    <% end %>
+  </tr>
+
+  <tr id="day_numbers">
     <td></td>
     <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
       <th <%= 'class="error"' if @is_holiday[d] -%> ><%= d.day -%><%='</th>'-%>
@@ -43,7 +63,6 @@
         <%= submit_tag 'Update' %>
       </td>
     <% end %>
-
 
     <% @others.each do |user| %>
     <tr><td class="user"><%=  user.fullname %></td>

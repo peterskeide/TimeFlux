@@ -98,17 +98,16 @@ class ReportsController < ApplicationController
         @parameters = []
         @parameters << ["Periode","#{@from_day} to #{@to_day}"]
         @parameters << ["Bruker",@user.fullname] if @user
-        @parameters << ["Fakturert",params[:billed] == "true" ? "Ja" : "Nei" ] if params[:billed] && params[:billed] != ""
+        @parameters << ["Fakturert",@billed ? "Ja" : "Nei"] if @billed
         @parameters << ["Kunde",@customer.name] if @customer
         @parameters << ["Prosjekt",@project.name]  if @project
         @parameters << ["Kategori",@tag_type.name] if @tag_type
         @parameters << ["Tag",@tag.name] if @tag
 
-        prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
+        prawnto :prawn => prawn_params, :filename=>"search_report.pdf"
         render :search, :layout=>false
       end
     end
-
   end
 
   def update_search_advanced_form
@@ -142,7 +141,7 @@ class ReportsController < ApplicationController
         TimeEntry.mark_as_locked(@time_entries, value)
       end
     end
-    redirect_to( params.merge( {:action => 'search'}) )
+    redirect_to( {:action => 'search'}.merge(params) )
   end
 
   private
@@ -150,7 +149,7 @@ class ReportsController < ApplicationController
   def parse_search_params
     params[:month] ||= @day.month
     
-    if params[:from_day]
+    if params[:from_day] && params[:from_day] != ""
       @from_day = set_date(params[:from_year].to_i, params[:from_month].to_i, params[:from_day].to_i)
       @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
     else
@@ -163,19 +162,11 @@ class ReportsController < ApplicationController
     @user = param_instance(:user)
     @tag_type = param_instance(:tag_type)
     @tag = param_instance(:tag)
-
+    @status = params[:status].to_i if params[:status] && params[:status] != "" 
   end
 
   def create_search_report
-    if @tag_type || @tag
-      activities = Activity.search(params[:tag_type], params[:tag], params[:customer], params[:project])
-    else
-      activities = nil
-    end
-
-    @time_entries = TimeEntry.search( @from_day, @to_day, activities, @user, params[:billed] )
-
-    #TODO add tagged time_entries with the other given criterias and merge the results
+    @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
 
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user

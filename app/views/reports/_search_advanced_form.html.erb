@@ -43,8 +43,8 @@
         <td>
           <table>
             <tr>
-              <td><%= label_tag "billed" %></td>
-              <td><%= select_tag "billed", options_for_select(boolean_options, params[:billed]) %></td>
+              <td><%= label_tag "status" %></td>
+              <td><%= select_tag "status", empty_option("All") +  options_for_select( [['Open',TimeEntry::OPEN],['Locked',TimeEntry::LOCKED],['Billed',TimeEntry::BILLED]], @status ) %></td>
             </tr>
             <tr>
               <td><%= label_tag "user" %></td>
@@ -92,7 +92,7 @@
             </tr>
             <tr>
               <td><%= label_tag "remove_comments","Remove comments" %></td>
-              <td><%= check_box_tag "remove_comments", 1, params[:remove_comments] %></td>
+              <td><%= check_box_tag "remove_comments", 1, params[:remove_comments], {:disabled => true} %></td>
             </tr>
        </table></td>
 

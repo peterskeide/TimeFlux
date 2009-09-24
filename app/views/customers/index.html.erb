@@ -6,12 +6,13 @@
 
 <table class="regular">
   <tr>
-    <th>Name</th><th>Show</th><th>Edit</th><th>Delete</th>
+    <th>Name</th><th>Billable</th><th>Show</th><th>Edit</th><th>Delete</th>
   </tr>
 
 <% @customers.each do |customer| %>
   <tr>
     <td><%=h customer.name %></td>
+    <td><%=h customer.billable %></td>
     <td>
       <%= link_to image_tag("application_add.png", :title => "Manage"), customer %>
     </td><td>

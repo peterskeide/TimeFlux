@@ -42,7 +42,7 @@ class CustomersControllerTest < ActionController::TestCase
 
     context "update customer" do
       setup { put :update, :id => customers(:cupido).id, :name => "New fancy name goes here!" }
-      should_redirect_to("show") { customer_url(customers(:cupido)) }
+      should_redirect_to("show") { customers_url() }
     end
     
     context "call to destroy" do

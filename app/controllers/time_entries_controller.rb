@@ -110,7 +110,7 @@ class TimeEntriesController < ApplicationController
   def lock
     @start = Date.parse(params[:start_date])
     @end = Date.parse(params[:end_date])
-    @user.time_entries.between(@start, @end).each { |te| te.update_attribute(:locked, true) }
+    @user.time_entries.between(@start, @end).each { |te| te.update_attribute(:status, TimeEntry::LOCKED) }
     redirect_to user_month_review_url(:user_id => params[:user_id], :id => :calendar)
   end
 

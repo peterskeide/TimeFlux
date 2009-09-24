@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :ballance, :time_entries
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :ballance, :billing_degree, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -12,6 +12,7 @@ class Period
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
     @ballance = find_ballance
+    @billing_degree = find_billing_degree
     @locked = is_period_locked?
   end
   
@@ -32,15 +33,23 @@ class Period
     @user.time_entries.between(@start, @end).distinct_activities.map { |e| e.activity }
   end
 
-
-  
   private
+
+  def find_billing_degree
+    sum_billable = 0
+    Customer.billable(true).each do |customer|
+      customer.projects.each do |project|
+        sum_billable += @user.time_entries.between(@start, @end).for_project(project).sum(:hours)
+      end
+    end
+    sum_billable / @expected_hours
+  end
   
   def find_ballance
     if Date.today > @end
       @total_hours - @expected_hours
-    elsif (@start..@end).include?(Date.today)
-      expected = find_expected_hours(@start,(Date.today -1))
+    elsif (@start...@end).include?(Date.today)
+      expected = find_expected_hours(@start, (Date.today-1))
       actual = @user.time_entries.between(@start, (Date.today-1)).sum(:hours)
       actual - expected
     else
@@ -48,7 +57,6 @@ class Period
     end
   end  
 
-  
   def find_expected_hours(from=@start, to=@end)
     period = expected_between_hash(from, to)
     sum = 0
@@ -77,6 +85,7 @@ class Period
     repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
     one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
 
+    # generate plain hash, and overwrite days with repeating and one time holidays
     period = {}
     (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : 7.5 ) }
     repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }

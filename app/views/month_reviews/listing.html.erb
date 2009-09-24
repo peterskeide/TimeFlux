@@ -19,12 +19,12 @@
   <% @time_entries.each do |activity, te| %>
     <h3><%= activity.customer_project_name %></h3>
     <% total = 0 %>
-    <table class="regular">
+    <table width="100%" class="regular">
       <tr>
         <th>Date</th>
 		<th>Hour Type</th>
 		<th>Hours</th>
-		<th>Notes</th>
+		<th width="70%">Notes</th>
       </tr>
       <% te.sort { |te1, te2| te1 <=> te2 }.each do |entry| %>
         <% total += entry.hours -%>

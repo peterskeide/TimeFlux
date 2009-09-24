@@ -6,6 +6,10 @@ class TimeEntry < ActiveRecord::Base
 
   has_and_belongs_to_many :tags
   
+  OPEN = 0
+  LOCKED = 1
+  BILLED = 2
+
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
   validates_presence_of :user, :activity, :hour_type
 
@@ -25,31 +29,39 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :for_user, lambda { |user_id|
-    { :conditions => { :user_id => user_id } }
+    user_id ? { :conditions => { :user_id => user_id } } : {}
   }
 
   named_scope :for_type, lambda { |hour_type_id|
-    { :conditions => { :hour_type_id => hour_type_id } }
+    hour_type_id ? { :conditions => { :hour_type_id => hour_type_id } } : {}
+  }
+
+  named_scope :status, lambda { |status|
+    status ? { :conditions => { :status => status } } : {}
   }
 
   named_scope :billed, lambda { |billed|
-    { :conditions => { :billed => billed } }
+    billed ? { :conditions => { :status => billed ? 2 : [0,1] } } : {}
   }
 
   named_scope :locked, lambda { |locked|
-    { :conditions => { :locked => locked } }
+    locked ? { :conditions => { :status => locked ? [1,2] : 0 } } : {}
   }
 
   named_scope :between, lambda { |*args|
     {  :conditions => { :date => (args.first..args.second) } }
   }
 
-  named_scope :for_activity, lambda { |*activity_ids|
-    {  :conditions =>  ["activity_id IN (?)", activity_ids ] }
+  named_scope :for_activity, lambda { |activity|
+    activity ? {  :conditions =>  { :activity_id => activity } } : {}
+  }
+
+  named_scope :for_activities, lambda { |activities|
+    activities ? {  :conditions =>  { :activity_id => activities } } : {}
   }
 
   named_scope :for_project, lambda { |project_id|
-    { :include => :activity, :conditions => ["activities.project_id = ?", project_id] }
+    project_id ? { :include => :activity, :conditions => ["activities.project_id = ?", project_id] } : {}
   }
 
 
@@ -64,20 +76,63 @@ class TimeEntry < ActiveRecord::Base
   def weekday
     Date::DAYNAMES[date.wday]
   end
-  
-  def self.search(from_date, to_date, activities=nil, user=nil, billed=nil)
-    search = ["TimeEntry"]
-    search << "for_activity(#{activities.collect { |a| a.id }.join(',')})" unless activities.blank?
-    search << "for_user(#{user.id})" unless user.blank?
-    search << "billed(#{billed})" unless billed.blank?
-    query = search.join(".")
-    (eval query).between(from_date,to_date)
+
+  def locked
+    status == LOCKED || status == BILLED
   end
+
+  def billed
+    status == BILLED
+  end
+  
+  def self.search(from_day,to_day,customer,project,tag,tag_type,user,status)
+    debug = ""
+
+    time_entry_scope = TimeEntry.between(from_day, to_day).for_user(user).status(status)
+      
+    # Search Time entries for matches
+    if customer || project || tag_type
+      activity_scope = Activity.for_customer(customer).for_project(project)
+      if tag
+        activities = activity_scope.for_tag(tag)
+      else
+        activities = activity_scope.for_tag_type(tag_type)
+      end
+      time_entries = time_entry_scope.for_activities(activities)
+    else
+      time_entries = time_entry_scope
+    end
+
+    debug += "#{time_entries.size} Entries from #{activities ? activities.size : 'all'} activities"
+
+    # Add explicidly tagged time entries to the result
+    if tag_type || tag
+
+      if tag
+        tagged_entries = tag.time_entries.between(from_day, to_day).for_user(user).status(status)
+        debug += "+  #{tagged_entries.size} Entries with Tag"
+      else
+        tagged_entries = []
+        tag_type.tags.each do |the_tag|
+          tagged_entries += the_tag.time_entries.between(from_day, to_day).for_user(user).status(status)
+        end
+        tagged_entries.uniq!
+        debug += "+  #{tagged_entries.size} Entries with tags from category"
+      end
+    end
+
+    logger.debug("Search results: #{debug}")
+    
+    tagged_entries ? (time_entries | tagged_entries) : time_entries
+  end
+  
 
   def self.mark_as_locked(time_entries, value=true)
     time_entries.each do |t|
-      if value || t.billed == false
-        t.locked = value
+      unless t.billed
+        t = TimeEntry.find(t.id) if t.readonly?
+
+        t.status = value ? TimeEntry::LOCKED : TimeEntry::OPEN
         t.save
       end
     end
@@ -86,8 +141,8 @@ class TimeEntry < ActiveRecord::Base
   # Billed time entries are always locked
   def self.mark_as_billed(time_entries, value=true)
     time_entries.each do |t|
-      t.billed = value
-      t.locked = true if value
+      t = TimeEntry.find(t.id) if t.readonly?
+      t.status = value ? TimeEntry::BILLED : TimeEntry::LOCKED
       t.save
     end
   end
@@ -109,7 +164,7 @@ class TimeEntry < ActiveRecord::Base
   # Halt changes to locked time entries unless the dirty state
   # includes changes to the locked attribute itself or the billed status.
   def validate_changes_on_locked_entry
-    if locked && !(changed.include?("locked") || changed.include?("billed"))
+    if locked && !(changed.include?("status"))
       errors.add_to_base("Editing of locked time entries is not allowed")
       return false
     end

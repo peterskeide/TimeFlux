@@ -13,46 +13,49 @@ pdf.footer [pdf.margin_box.left, pdf.margin_box.bottom + 25] do
   end
 end
 
-pdf.move_down(60)
-  
-pdf.font "Helvetica" do
-  pdf.pad_bottom(3) do
-    pdf.text "Periode: #{@beginning_of_month} - #{@end_of_month}", :size => 11
-  end
-end
+pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 120, :width => pdf.bounds.width do
 
-@time_entries.each do |activity, te|
-
-  entry_data = te.map do |t|
-    [
-      t.date,
-      t.hour_type.name,
-      t.hours,
-      t.notes
-    ]
+  pdf.font "Helvetica" do
+    pdf.pad_bottom(3) do
+      pdf.text "Periode: #{@beginning_of_month} - #{@end_of_month}", :size => 11
+    end
   end
 
-  if pdf.cursor < 150
-    pdf.start_new_page unless entry_data.size < 5
+  @time_entries.each do |activity, te|
+
+    entry_data = te.map do |t|
+      [
+        t.date,
+        t.hour_type.name,
+        t.hours,
+        t.notes
+      ]
+    end
+
+    if pdf.cursor < 200 && entry_data.size * 50 > (pdf.cursor-50)
+        pdf.start_new_page
+    end
+
+    pdf.move_down(30)
+    pdf.font "Helvetica", :style => :bold do
+      pdf.text activity.customer_project_name
+    end
+    pdf.move_down(5)
+
+    pdf.table entry_data,
+      :row_colors => ["FFFFFF","f0f0f0"],
+      :headers => ['Dato', 'Type','Timer', 'Kommentar' ],
+      :align => { 0 => :left, 1 => :left, 2 => :center},
+      :column_widths => {0 => 70, 1 => 70, 2 => 40},
+      :width      => pdf.margin_box.width,
+      :border_style => :underline_header,
+      :font_size => 10,
+      :padding => 2
+
+    pdf.stroke_horizontal_rule
+    pdf.move_down(10)
+    pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
+
+
   end
-
-  pdf.move_down(30)
-  pdf.font "Helvetica", :style => :bold do
-    pdf.text activity.customer_project_name
-  end
-  pdf.move_down(5)
-
-  pdf.table entry_data,
-    :row_colors => ["FFFFFF","f0f0f0"],
-    :headers => ['Dato', 'Type','Timer', 'Kommentar' ],
-    :align => { 0 => :left, 1 => :left, 2 => :center},
-    :column_widths => {0 => 70, 1 => 70, 2 => 40},
-    :width      => pdf.margin_box.width,
-    :border_style => :underline_header,
-    :font_size => 10,
-    :padding => 2
-
-  pdf.stroke_horizontal_rule
-  pdf.move_down(10)
-  pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
 end

@@ -16,7 +16,7 @@
   <br/>
   <hr/>
 
-  <table>
+  <table class="regular">
     <tr>
       <th></th>
       <% @weeks.each do |date| %>
@@ -25,11 +25,13 @@
     </tr>
 
     <tr class="grayed">
-      <td>Normal working hours</td>
+      <td class="underline overline">Normal working hours</td>
       <% @expected.each do |hours| %>
-      <td><%= hours %> </td>
+      <td class="underline overline"><%= hours %> </td>
       <% end %>
     </tr>
+
+    <tr><td colspan="99"></td></tr>
 
     <% @users.each do |user| %>
       <tr>
@@ -37,8 +39,9 @@
         <% @weeks.each_with_index do |date, index| %>
           <% hours = TimeEntry.for_user(user).between(date, (date + 6)).sum(:hours) %>
           <% color_code = case hours
-              when 0..(@expected[index] -1): "warn"
-              when (@expected[index])..(@expected[index] * 1.4): "ok"
+              when 0 : "grayed"
+              when 0..(@expected[index] -1): ""
+              when (@expected[index])..(@expected[index] * 1.3): "ok"
               else "error"
           end %>
 
@@ -49,9 +52,9 @@
     <% end %>
 
     <tr>
-      <th>Total</th>
+      <th class="overline">Total</th>
       <% @totals.each do |total| %>
-      <th><%= total %></th>
+      <th class="overline"><%= total %></th>
       <% end %>
     </tr>
     

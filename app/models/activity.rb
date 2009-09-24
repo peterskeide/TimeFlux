@@ -11,53 +11,52 @@ class Activity < ActiveRecord::Base
   
   before_destroy :verify_no_time_entries
   
-  named_scope :active, lambda { |active| { :conditions => { :active => active } } }
-  named_scope :shared, lambda { |shared| { :conditions => { :shared => shared } } }
-  named_scope :default, lambda { |default| { :conditions => { :default_activity => default } } }
-
-  named_scope :for_tag, lambda { |tag_id| { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } }
-  named_scope :for_tag_type, lambda { |tag_type_id| { :joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id] } }
+  named_scope :active, lambda { |active| 
+    active ? { :conditions => { :active => active } } : {}
+  }
   
-  named_scope :for_project, lambda { |project_id| { :conditions => { :project_id => project_id } } }
+  named_scope :shared, lambda { |shared| 
+    shared ? { :conditions => { :shared => shared } } : {}
+  }
+  
+  named_scope :default, lambda { |default| 
+    default ? { :conditions => { :default_activity => default } }  : {}
+  }
+
+  named_scope :for_tag, lambda { |tag_id| 
+    tag_id ? { :joins => :tags, :conditions => ["tags.id = ?", tag_id] } : {}
+  }
+  
+  named_scope :for_tag_type, lambda { |tag_type_id| 
+    tag_type_id ? { :joins => :tags, :conditions => ["tags.tag_type_id = ?", tag_type_id] } : {}
+  }
+  
+  named_scope :for_project, lambda { |project_id| 
+    project_id ? { :conditions => { :project_id => project_id } } : {}
+  }
 
   named_scope :for_customer, lambda { |customer_id|
-    { :include => :project, :conditions => ["projects.customer_id = ?", customer_id] }
+    customer_id ? { :include => :project, :conditions => ["projects.customer_id = ?", customer_id] } : {}
   }
 
   named_scope :templates, :conditions => { :template => true }
 
-  def self.search(tag_type_id, tag_id, customer_id, project_id)
-    search = ["Activity"]
-    unless tag_id.blank?
-      search << "for_tag(#{tag_id})"
-    else
-      search << "for_tag_type(#{tag_type_id})" unless tag_type_id.blank?
-    end
-
-    unless project_id.blank?
-      search << "for_project(#{project_id})"
-    else
-      search << "for_customer(#{customer_id})" unless customer_id.blank?
-    end
-
-    search << "all" if search.size == 1
-
-    query = search.join(".")
-    logger.debug("Activity filter Query: #{query}")
-    eval query
-  end
   
   def <=>(other)
     name <=> other.name
   end
 
-  def customer_project_name
+  def customer_project_name(max_length=999)
     if template
       "#{name} (Template)"
     elsif project == nil
       name
     else
-      "#{customer.name} > #{project.name} > #{name}"
+      if customer.name.length + project.name.length + self.name.length < max_length
+        "#{customer.name} > #{project.name} > #{name}"
+      else
+        "#{project.name} > #{name}"
+      end
     end
   end
 

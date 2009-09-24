@@ -7,6 +7,11 @@ class Customer < ActiveRecord::Base
   
   before_destroy :validate_has_no_projects
 
+  named_scope :billable, lambda { |billable|
+    { :conditions => { :billable => billable } }
+  }
+
+
   def <=>(other)
     name <=> other.name
   end

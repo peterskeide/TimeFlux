@@ -9,6 +9,49 @@ table {
         text-align: left;
 }
 
+A:link {text-decoration: none;color: blue;}
+A:visited {text-decoration: none;color: blue;}
+A:active {text-decoration: none;color: red;}
+A:hover {text-decoration: none; color: red;}
+
+.sub_menu a:link {;color: black;}
+.sub_menu a:visited {color: black;}
+.sub_menu a:active {color: black;}
+.sub_menu a:hover {text-decoration: none; color: red;}
+
+
+div.tag_symbol { z-index: 20 }
+div.tag_symbol .alt { display: none }
+
+div.tag_symbol:hover { color: #FF3300;  display: inline;  }
+div.tag_symbol:hover span.alt {
+  display: inline; position: absolute; z-index: 30;
+  margin: 2em 0 0 -4em;  padding: 0.2em 0.3em;
+  border: 1px solid gray;
+  text-decoration:none;
+  background-color: #FFFFCC;
+  color: black;
+  font-size: 10px;
+}
+
+tr .week {
+    border-left-style: solid;
+    border-right-style: solid;
+    border-top-style: solid;
+    border-width: 1px;
+    background:silver;
+}
+
+tr .overline {
+    border-top-style: solid;
+    border-width: 1px
+}
+
+tr .underline {
+    border-bottom-style: solid;
+    border-width: 1px
+}
+
 h3.compact {
     margin-bottom:6px;
     margin-top:10px
