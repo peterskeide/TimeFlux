@@ -40,4 +40,20 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def check_user
+    unless current_user.admin || params[:id] == current_user.id.to_s
+      flash[:notice] = "You do not have access to this page"
+       redirect_to user_time_entries_url(current_user)
+       return false
+    end
+  end
+  
+  def check_parent_user
+    unless current_user.admin || params[:user_id] == current_user.id.to_s
+      flash[:notice] = "You do not have access to this page"
+       redirect_to new_user_session_url
+       return false
+    end
+  end
+  
 end

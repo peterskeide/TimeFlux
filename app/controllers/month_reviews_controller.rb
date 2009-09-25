@@ -1,6 +1,6 @@
 class MonthReviewsController < ApplicationController
   
-  before_filter :check_authentication
+  before_filter :check_authentication, :check_parent_user
   
   def show
     @user = User.find(params[:user_id])

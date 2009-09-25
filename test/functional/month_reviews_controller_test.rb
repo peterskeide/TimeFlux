@@ -41,4 +41,20 @@ class MonthReviewsControllerTest < ActionController::TestCase
     setup { get :show, :user_id => users(:bob).id, :id => "listing" }
     should_redirect_to("Login page") { new_user_session_url }
   end
+  
+  context "When logged in as Bill" do 
+    
+    setup { login_as :bill }
+    
+    context "a GET request to :show with a different user id" do
+      
+      setup { get :show, :id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+  end
+  
 end

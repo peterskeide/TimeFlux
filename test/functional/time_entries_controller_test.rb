@@ -303,6 +303,66 @@ class TimeEntriesControllerTest < ActionController::TestCase
     
   end
   
+  context "When logged in as Bill" do
+    
+    setup { login_as :bill }
+    
+    context "a GET request to TimeEntriesController :index with different user id" do
+      
+      setup { get :index, :user_id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+    context "a PUT request to TimeEntriesController :update with different user id" do
+      
+      setup { put :update, :user_id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+        
+    context "a POST request to TimeEntriesController :create with different user id" do
+      
+      setup { post :create, :user_id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+    context "a GET request to TimeEntriesController :new with different user id" do
+      
+      setup { get :new, :user_id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+    context "a DELETE request to TimeEntriesController :destroy with different user id" do
+      
+      setup { delete :destroy, :user_id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+    context "a POST request to TimeEntriesController :lock with different user id" do
+      
+      setup { post :lock, :user_id => users(:bob).id.to_s }
+      
+      should_redirect_to("Login page") { new_user_session_url }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+  end
+  
   context "User not logged in: " do
     
     context "GET to :index" do            

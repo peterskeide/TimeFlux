@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   before_filter :check_authentication
   before_filter :check_admin, :only => [:new, :create, :destroy, :index]
+  before_filter :check_user, :only => [:show, :edit, :update]
 
   def index
     @users = User.paginate :page => params[:page] || 1, :per_page => 15, :order => 'lastname'

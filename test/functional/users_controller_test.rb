@@ -90,6 +90,43 @@ class UsersControllerTest < ActionController::TestCase
   context "Not logged in on GET to :index" do
     setup { get :index }
     should_redirect_to("Login page") { new_user_session_url }
-  end    
+  end
+  
+  context "When logged in as Bill" do
+    
+    setup { 
+      login_as :bill
+      @user = users(:bill) 
+      }
+    
+    context "a GET request to UsersController :show with a different user id" do
+      
+      setup { get :show, :id => users(:bob).id.to_s }
+      
+      should_redirect_to("Time Entries index") { user_time_entries_url(@user) }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+    context "a GET request to UsersController :edit with a different user id" do
+      
+      setup { get :edit, :id => users(:bob).id.to_s }
+      
+      should_redirect_to("Time Entries index") { user_time_entries_url(@user) }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+    context "a PUT request to UsersController :update with a different user id" do
+      
+      setup { put :update, :id => users(:bob).id.to_s }
+      
+      should_redirect_to("Time Entries index") { user_time_entries_url(@user) }
+      should_set_the_flash_to "You do not have access to this page"
+      
+    end
+    
+  end
+      
   
 end
