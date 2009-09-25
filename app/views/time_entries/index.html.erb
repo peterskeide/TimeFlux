@@ -1,8 +1,16 @@
+<div id="week_total">
+    Week total <b><%= TimeEntry.for_user(@user).between(@date, (@date + 6)).sum(:hours) %></b>
+    Expected <b><%= Holiday.expected_hours_between( @date, (@date + 4)) %></b>
+</div>
+
 <h1>Time Entries 
   <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
 </h1>
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
+
+
+
 <div class="navigation">
 	<h4>
 		<%= link_to "<<", user_time_entries_path(:user_id => params[:user_id], :date => @date.beginning_of_week.-(7)) %>

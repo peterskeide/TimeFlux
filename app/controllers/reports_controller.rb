@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
     1..8.times { |i| @weeks << start - (i * 7) }
 
     @expected = @weeks.collect do |day|
-      Holiday.expected_hours_between( day, (day + 5) )
+      Holiday.expected_hours_between( day, (day + 4) )
     end
 
     @totals = @weeks.collect do |day|

@@ -110,6 +110,11 @@ div.false_tag a, div.true_tag a {
     color:#444444
 }
 
+div#week_total {
+    float:right;
+    margin-top: 20px;
+    padding: 3px;
+}
 
 .center {
     margin-left: auto;
