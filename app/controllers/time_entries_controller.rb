@@ -7,7 +7,7 @@ class TimeEntriesController < ApplicationController
   WEEKDAYS = %w{ Monday Tuesday Wednesday Thursday Friday Saturday Sunday }
        
   def index 
-    @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date])
+    @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date]).beginning_of_week
   end
   
   def change_user
