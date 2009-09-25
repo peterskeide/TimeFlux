@@ -39,7 +39,11 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project = Project.find(params[:id])
-    @project.destroy
+    if @project.destroy
+      flash[:notice] = "Project was removed"
+    else
+      flash[:error] = @project.errors.entries[0][1]
+    end
     redirect_to  customer_url(:id => @project.customer.id)
   end
 

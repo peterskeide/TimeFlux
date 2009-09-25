@@ -2,8 +2,10 @@
 
 <p><%= @customer.billable ? 'Billable' : 'Not billable' %></p>
 
-
 <h3>Projects</h3>
+
+<p class="error"><%=h flash[:error] %></p>
+<p class="notice"><%=h flash[:notice] %></p>
 
 <table>
   <tr>

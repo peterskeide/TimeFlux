@@ -3,7 +3,7 @@
 <p><%= link_to @project.customer.name, customer_url(:id => @project.customer.id) %> >> <%= @project.name %></p>
 
 <p class="error"><%=h flash[:error] %></p>
-
+<p class="notice"><%=h flash[:notice] %></p>
 <hr/>
 
 <div style="float:left; width:70%">
