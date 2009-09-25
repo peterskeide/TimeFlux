@@ -20,8 +20,8 @@ class ReportsControllerTest < ActionController::TestCase
       should_respond_with :success
     end
 
-    context "on GET to :summary" do
-      setup { get :summary }
+    context "on GET to :customer" do
+      setup { get :customer }
       should_respond_with :success
     end
 

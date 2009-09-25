@@ -11,11 +11,7 @@ class ReportsController < ApplicationController
 
   def user
     setup_calender
-    if params[:status] then
-      @users = User.find(:all, :conditions => ["operative_status=? ", params[:status]] ).sort
-    else
-      @users = User.all.sort
-    end
+    @users = User.paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
 
     start = Date.today.beginning_of_week
     @weeks = []
@@ -32,6 +28,7 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
+    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 12, :order => 'name'
   end
 
   # With the selected project this method will either mark entries as billed,
@@ -75,13 +72,30 @@ class ReportsController < ApplicationController
     end
   end
 
-  def summary
+  def customer
     setup_calender
     parse_search_params
 
-    time_entries = TimeEntry.between(@from_day, @to_day)
-    @activities_hours = time_entries.group_by(&:activity).sort.map do |activity, time_entries|
-      [activity.customer_project_name, time_entries.sum(&:hours)]
+    @customers = Customer.all
+
+    @project_hours = []
+    @customers.each do |customer| 
+      customer.projects.each do |project|
+        @project_hours << [customer,project, TimeEntry.between(@from_day, @to_day).for_project(project).sum(:hours)]
+      end
+    end
+  end
+
+  def project
+    setup_calender
+    parse_search_params
+
+    @project_hours = []
+    @project.activities.each do |activity|
+      User.all.each do |user|
+        hours = TimeEntry.between(@from_day, @to_day).for_user(user).for_activity(activity).sum(:hours)
+        @project_hours << [user,activity, hours] if hours > 0
+      end
     end
   end
 

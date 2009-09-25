@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :check_admin, :only => [:new, :create, :destroy, :index]
 
   def index
-    @users = User.paginate :page => params[:page] || 1, :per_page => 15, :order => 'lastname'
+    @users = User.paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
   end
 
   def show
