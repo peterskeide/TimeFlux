@@ -15,12 +15,12 @@ class ProjectsControllerTest < ActionController::TestCase
     context "call to create" do
       should "create project" do
         assert_difference('Project.count', 1) do
-          post :create, :project => { :name => "Kaffedrikkerprosjektet", :customer => customers(:telenor) }
+          post :create, :project => { :name => "Kaffedrikkerprosjektet", :customer => customers(:global_corp) }
         end
       end
       
       context "creating a project for a customer that already has a project with the given name" do
-        setup { post :create, :project => { :name => projects(:pacman).name, :customer => customers(:telenor) } }
+        setup { post :create, :project => { :name => projects(:pacman).name, :customer => customers(:global_corp) } }
         should_render_template :new
       end
     end
@@ -44,14 +44,14 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     context "updating a project for a customer that already has a project with the given name" do
-      setup { post :update, :id => projects(:fri99).id, :project => { :name => projects(:pacman).name, :customer => customers(:telenor) } }
+      setup { post :update, :id => projects(:fri99).id, :project => { :name => projects(:pacman).name, :customer => customers(:global_corp) } }
       should_render_template :edit
     end
 
     context "call to destroy" do
       should "remove project" do
         assert_difference('Project.count', -1) do
-          delete :destroy, :id => projects(:pacman).id
+          delete :destroy, :id => projects(:unused).id
         end
       end
     end

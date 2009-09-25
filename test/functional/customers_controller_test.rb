@@ -26,29 +26,29 @@ class CustomersControllerTest < ActionController::TestCase
     end
 
     context "call to create with an existing name" do
-      setup { post :create, :customer => { :name => customers(:telenor).name } }
+      setup { post :create, :customer => { :name => customers(:global_corp).name } }
       should_not_change("the number of customers") { Customer.count }
     end
 
     context "show customer" do
-      setup { get :show, :id => customers(:telenor).to_param }
+      setup { get :show, :id => customers(:global_corp).to_param }
       should_respond_with :success
     end
 
     context " get edit" do
-      setup { get :edit, :id => customers(:telenor).to_param }
+      setup { get :edit, :id => customers(:global_corp).to_param }
       should_respond_with :success
     end
 
     context "update customer" do
-      setup { put :update, :id => customers(:cupido).id, :name => "New fancy name goes here!" }
+      setup { put :update, :id => customers(:global_corp).id, :name => "New fancy name goes here!" }
       should_redirect_to("show") { customers_url() }
     end
     
     context "call to destroy" do
       should "remove customer" do
         assert_difference('Customer.count', -1) do
-          delete :destroy, :id => customers(:nsb).id
+          delete :destroy, :id => customers(:sokadu).id
         end
       end
     end

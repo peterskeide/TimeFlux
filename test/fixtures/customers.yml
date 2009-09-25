@@ -3,11 +3,11 @@
 conduct:
   name: Conduct
 
-telenor:
-  name: Telenor
+global_corp:
+  name: Global Corporation
 
-nsb:
-  name: NSB
+enterprise_ltd:
+  name: Enterprise Limited
 
-cupido:
-  name: Cupido
+sokadu:
+  name: Sokadu

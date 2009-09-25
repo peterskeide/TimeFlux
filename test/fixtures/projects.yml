@@ -10,12 +10,12 @@ community:
 
 pacman:
   name: Pacman
-  customer: telenor
+  customer: global_corp
 
 fri99:
   name: fri99
-  customer: telenor
-
-snuskete:
-  name: Ny Cupido portal
-  customer: cupido
+  customer: global_corp
+  
+unused:
+  name: unused
+  customer: conduct
