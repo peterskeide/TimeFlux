@@ -141,7 +141,11 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should "refresh time entries for the relevant day" do
         assert_select_rjs :replace_html, "Monday_time_entries_container"
       end
-      
+
+      should "refresh week total" do
+        assert_select_rjs :replace_html, "week_total"
+      end
+
       should "update the day total hours field" do 
         assert_select_rjs :replace_html, "Monday_total" do
           assert_select "b", "10.5"
@@ -211,6 +215,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
       
       should "refresh time entries for the relevant day" do
         assert_select_rjs :replace_html, "Monday_time_entries_container"
+      end
+
+      should "refresh week total" do
+        assert_select_rjs :replace_html, "week_total"
       end
       
       should "update the day total hours field" do 
