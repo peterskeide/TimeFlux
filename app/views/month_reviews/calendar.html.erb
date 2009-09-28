@@ -76,9 +76,9 @@
 
 
 <p>
-Balance: <span class="<%= case @period.ballance when (0..9999) then "ok" when (-9999..0) then "red" end %>">
+Balance: <span class="<%= case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end %>">
 
-  <%= "%+.1f" % @period.ballance %></span> hours
+  <%= "%+.1f" % @period.balance %></span> hours
 <%= ((@period.start...@period.end).include? Date.today) ? "in the first #{(Date.today.mday) -1} days" : '' %>
 </p>
 <p>
@@ -103,9 +103,3 @@ Billing degree: <%= (@period.billing_degree * 100).round %> %
     <input type="submit" value="Not ready for submission" disabled="true">
   <% end -%>
 </div>
-
-
-
-
-
-

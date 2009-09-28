@@ -1,40 +1,24 @@
-
 <h1>Configure</h1>
 <%= render :partial => 'admin/menu' -%>
 
-<p>(GUI only)</p>
-
 <br/>
-<table>
-  <tr>
-    <td>Timezone</td>
-    <td><%= time_zone_select( "user", "time_zone") %></td>
-  </tr>
-    <tr>
-    <td>Authentication</td>
-    <td><%= radio_button_tag 'default', "Built in"%>Built in
-<%= radio_button_tag 'default', "Ldap"%>Ldap</td>
-  </tr>
-    <tr>
-      <td></td>
-    <td>Ldap host <%= text_field_tag 'ident', 'your.host.here' %></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td>Ldap base <%= text_field_tag 'ident', 'ou=people,dc=foobar,dc=com' %></td>
-  </tr>
-    <tr>
-    <td>Vacation activity</td>
-    <td><%= select_tag "activity", options_from_collection_for_select(Activity.all, :id, :customer_project_name, nil) %></td>
-  </tr>
-    <tr>
-    <td>Work hours per day</td>
-    <td><%= text_field_tag 'hours', '7.5', :size => 6 %></td>
-  </tr>
-</table>
-
+<% form_tag("configurations/update", :method => :put) do %>
+	<table>
+	  <tr>
+	    <td>Time zone</td>
+	    <td><%= select_tag("time_zone", time_zone_options_for_select(TIMEFLUX_CONFIG["time_zone"])) %></td>
+	  </tr>
+	  <tr>
+	    <td>Vacation activity</td>
+	    <td><%= select_tag "vacation_activity_id", options_from_collection_for_select(Activity.all, :id, :customer_project_name, TIMEFLUX_CONFIG["vacation_activity_id"]) %></td>
+	  </tr>
+	  <tr>
+	    <td>Work hours per day</td>
+	    <td><%= text_field_tag "work_hours", TIMEFLUX_CONFIG["work_hours"], :size => 6 %></td>
+	  </tr>
+	</table>
+	<%= submit_tag "Save" %>
+<% end -%>
 <br/>
-
-<input name="write_to_file" type="submit" value="Save" />
 
 <br/>

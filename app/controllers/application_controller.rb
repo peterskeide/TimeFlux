@@ -7,8 +7,14 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   
   helper_method :current_user_session, :current_user
+  
+  before_filter :set_time_zone
 
   private
+  
+  def set_time_zone
+    Time.zone = TIMEFLUX_CONFIG["time_zone"]
+  end
 
   def redirect_to_ssl
     redirect_to :protocol => "https://" unless (request.ssl? or local_request?)

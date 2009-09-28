@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :ballance, :billing_degree, :time_entries
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :balance, :billing_degree, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -11,7 +11,7 @@ class Period
     @expected_hours = find_expected_hours
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
-    @ballance = find_ballance
+    @balance = find_balance
     @billing_degree = find_billing_degree
     @locked = is_period_locked?
   end
@@ -45,7 +45,7 @@ class Period
     sum_billable / @expected_hours
   end
   
-  def find_ballance
+  def find_balance
     if Date.today > @end
       @total_hours - @expected_hours
     elsif (@start...@end).include?(Date.today)

@@ -85,9 +85,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.vacation
-    vacation = Activity.find_by_name('Vacation')
-    vacation ||= Activity.find_by_name('Ferie')
-    vacation ||= Activity.first
+    vacation = Activity.find_by_id(TIMEFLUX_CONFIG["vacation_activity_id"])
   end
 
   private
