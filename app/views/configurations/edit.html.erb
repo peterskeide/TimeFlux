@@ -10,7 +10,7 @@
 	  </tr>
 	  <tr>
 	    <td>Vacation activity</td>
-	    <td><%= f.collection_select(:activity_id, Activity.all, :id, :name) %></td>
+	    <td><%= f.collection_select(:activity_id, Activity.all, :id, :customer_project_name) %></td>
 	  </tr>
 	  <tr>
 	    <td>Work hours per day</td>
