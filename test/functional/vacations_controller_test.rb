@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class VacationsControllerTest < ActionController::TestCase
+  
+  def setup
+    Configuration.instance.update_attribute(:activity_id, activities(:vacation).id)
+  end
 
   context "Logged in as user Bob" do
     setup do

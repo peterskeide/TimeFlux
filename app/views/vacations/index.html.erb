@@ -2,7 +2,7 @@
 <p class="notice"><%= flash[:notice] %></p>
 <p class="error"><%= flash[:error] %></p>
 
-<% activity_vacation = Activity.vacation %>
+<% activity_vacation = Configuration.instance.vacation_activity %>
 
 <h1>Vacation</h1>
 <%= render :partial => 'holidays/sub_menu' -%>
@@ -87,5 +87,5 @@
 
 	</table>
 <% else %>
- <b>No vacation activity has been configured. Select one <%= link_to "here", :controller => "configurations" %></b>
+ <b>No vacation activity has been configured. Select one <%= link_to "here", edit_configuration_path %></b>
 <% end -%>

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   private
   
   def set_time_zone
-    Time.zone = TIMEFLUX_CONFIG["time_zone"]
+    Time.zone = Configuration.instance.time_zone
   end
 
   def redirect_to_ssl

@@ -1,0 +1,22 @@
+<h1>Configure</h1>
+<%= render :partial => 'admin/menu' -%>
+
+<br/>
+<% form_for(@config) do |f| %>
+	<table>
+	  <tr>
+	    <td>Time zone</td>
+	    <td><%= f.time_zone_select("time_zone") %></td>
+	  </tr>
+	  <tr>
+	    <td>Vacation activity</td>
+	    <td><%= f.collection_select(:activity_id, Activity.all, :id, :name) %></td>
+	  </tr>
+	  <tr>
+	    <td>Work hours per day</td>
+	    <td><%= f.text_field :work_hours, :size => 6 %></td>
+	  </tr>
+	</table>
+	<%= f.submit "Save" %>
+<% end -%>
+<br/>

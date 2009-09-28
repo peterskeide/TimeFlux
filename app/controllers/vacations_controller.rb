@@ -26,7 +26,7 @@ class VacationsController < ApplicationController
     if user == current_user_session.user || current_user_session.user.admin
       month = Date.parse( params[:month])
 
-      activity = Activity.vacation
+      activity = Configuration.instance.vacation_activity
       hour_type = HourType.find_by_default_hour_type(true)
       month.upto((month >> 1) - 1) do |day|
         if params[:date].try("[]".to_sym, day.to_s)

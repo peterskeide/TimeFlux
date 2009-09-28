@@ -84,10 +84,6 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def self.vacation
-    vacation = Activity.find_by_id(TIMEFLUX_CONFIG["vacation_activity_id"])
-  end
-
   private
 
   def verify_no_time_entries
