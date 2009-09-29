@@ -2,7 +2,10 @@ require 'test_helper'
 
 class ConfigurationTest < ActiveSupport::TestCase
   
-  should_validate_presence_of :work_hours, :time_zone
+  context "A Configuration instance" do
+    subject { Configuration.instance }
+    should_validate_presence_of :work_hours, :time_zone
+  end
   
   context "When no configuration exists" do
     
