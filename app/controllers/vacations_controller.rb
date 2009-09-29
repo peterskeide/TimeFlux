@@ -1,7 +1,6 @@
 class VacationsController < ApplicationController
 
   before_filter :check_authentication
-  before_filter :check_admin, :except => [:index, :set_vacation]
 
   def index
     @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date]).at_beginning_of_month

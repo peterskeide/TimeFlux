@@ -1,8 +1,6 @@
 <div class="sub_menu" id="nav">
   <%= link_to "Vacation", :controller => :vacations %> |
-  <% if @current_user.admin -%>
-    <%= link_to "Vacation Overview", :controller => :vacations, :action => :vacation_overview %> |
-  <% end %>
+  <%= link_to "Vacation Overview", :controller => :vacations, :action => :vacation_overview %> |
   <%= link_to "Public Holidays", :controller => :holidays %>
 </div>
 <br/><br/>
