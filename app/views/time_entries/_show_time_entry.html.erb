@@ -1,9 +1,9 @@
 <tr class="time_entry">						
-	<td width="28%"><%= link_to time_entry.activity.truncated_name_path, activity_path(time_entry.activity) %></td>
-	<td width="10%"><%= truncate(time_entry.hour_type.name, :length => 15) %></td>
-	<td width="5%"><%= time_entry.hours %></td> 
-	<td title='<%=h time_entry.notes %>'><%=h truncate(time_entry.notes, :length => 60) %></td>
-	<td width="10%" class="actions">
+	<td class="time_entry_activity"><%= link_to time_entry.activity.customer_project_name, activity_path(time_entry.activity) %></td>
+	<td class="time_entry_hour_type"><%=h truncate(time_entry.hour_type.name, :length => 15) %></td>
+	<td class="time_entry_hours"><%= time_entry.hours %></td> 
+	<td class="time_entry_notes" title='<%=h time_entry.notes %>'><%=h truncate(time_entry.notes, :length => 60) %></td>
+	<td class="time_entry_actions">
                 <% unless time_entry.tags.empty? %>
                   <div class="tag_symbol" style="display:inline">
                     <%= image_tag("tag_gray.png") %>

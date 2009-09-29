@@ -1,7 +1,6 @@
 body {
 	font-family: arial, helvetica, sans-serif;
 	font-size: 14px;
-	text-align: center;
 	margin: 0;
 }
 
@@ -120,9 +119,7 @@ div#week_total {
     margin-left: auto;
     margin-right: auto;
     width: 6em;
-
 }
-
 
 .activity_header {
 background:#EEEEFF none repeat scroll 0 0;
@@ -138,7 +135,6 @@ select#activity_name {width:140px}
 .action_icons img, .action_icons input{
     padding-right: 6px;
 }
-
 
 div#hours_form select{
   width: 100px;
@@ -212,8 +208,28 @@ a img {
 	padding-left: 1em;
 }
 
-td.actions {
-        text-align:right
+td.time_entry_actions {
+	text-align:right;
+	min-width: 5em;
+}
+
+td.time_entry_activity {
+	min-width: 30em;
+}
+
+td.time_entry_hour_type {
+	min-width: 8em; 
+	max-width: 8em;
+}
+
+td.time_entry_hours {
+	max-width: 3em; 
+	max-width: 8em;
+}
+
+td.time_entry_notes {
+	min-width: 30em; 
+	max-width: 30em;
 }
 
 td.actions img, td.actions input{
@@ -304,18 +320,13 @@ td.week_entries_hours {
 }
 
 #container {
-	margin-left: auto;
-	margin-right: auto;
-	width: 900px;
-	text-align: left;
+	min-width: 1110px;
 }
 
 #logo {
 	width: 100%;
 	background-color: #dfe5d7;
 	border-bottom: 1px solid;
-	border-left: 1px solid;
-	border-right: 1px solid;
 }
 
 #menu {
@@ -323,15 +334,11 @@ td.week_entries_hours {
 	width: 100%;
 	background-color: #003a8d;
 	border-bottom: 1px solid;
-	border-left: 1px solid;
-	border-right: 1px solid;
 }
 
 #main {
 	float: left;
 	width: 100%;
-	border-left: 1px dotted;
-	border-right: 1px dotted;
 	border-bottom: 1px dotted;
 }
 
@@ -350,4 +357,3 @@ td.week_entries_hours {
 #new_entry_form {
 	padding-left: 1em;
 }
-

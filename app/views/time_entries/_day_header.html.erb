@@ -7,16 +7,16 @@
       </span>
     </td>
     <td>
-<%= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
-      :href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
+		<%= link_to_remote( image_tag("add.png", :title => "Add"), { :url => { :action => :new, :user_id => @user.id, :date => date, :day => day }, :method => :get },
+      	:href => new_user_time_entry_path(@user, :date => date), :id => "#{day}_new_time_entry_link" ,  :class => "new_time_entry_link") %>
     </td>
     <td width="80%" style="text-align: right; color:gray;">
-      <label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>
-    <span id='<%= "#{day}_total" %>'>
-      <b><%= TimeEntry.for_user(@user).on_day(date).sum(:hours) %></b>
-    </span>
-    <label id='<%= "#{day}_expected_label" %>' for='<%= "#{day}_expected" %>'>Expected</label>
-    <b><%= Holiday.expected_on_day(date) %></b>
+    	<label id='<%= "#{day}_total_label" %>' for='<%= "#{day}_total" %>'>Total</label>
+    	<span id='<%= "#{day}_total" %>'>
+    		<b><%= TimeEntry.for_user(@user).on_day(date).sum(:hours) %></b>
+    	</span>
+    	<label id='<%= "#{day}_expected_label" %>' for='<%= "#{day}_expected" %>'>Expected</label>
+    	<b><%= Holiday.expected_on_day(date) %></b>
     </td>
   </tr>
 </table>
