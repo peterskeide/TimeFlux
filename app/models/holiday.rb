@@ -51,6 +51,14 @@ class Holiday < ActiveRecord::Base
     period.each_value { |value| days += 1 if value > 0}
     return days
   end
+  
+  def self.holidays_in_range(from_date, to_date)
+    holidays = []
+    from_date.upto to_date do |d|
+      holidays << d if self.expected_on_day(d) == 0
+    end
+    holidays     
+  end
 
   private
 

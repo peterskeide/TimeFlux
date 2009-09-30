@@ -1,5 +1,3 @@
-require 'net/ldap'
-
 class User < ActiveRecord::Base
   
   acts_as_authentic    
@@ -22,9 +20,9 @@ class User < ActiveRecord::Base
   end
 
   def status_for_period(from_date, to_date, expected_days, expected_hours)
-    hours = TimeEntry.for_user(self).between(from_date, to_date).sum(:hours)
-    days = TimeEntry.for_user(self).between(from_date, to_date).distinct_dates.count
-    unlocked_count = TimeEntry.for_user(self).between(from_date, to_date).locked(false).count
+    hours = time_entries.between(from_date, to_date).sum(:hours)
+    days = time_entries.between(from_date, to_date).distinct_dates.count
+    unlocked_count = time_entries.between(from_date, to_date).locked(false).count
 
     if hours >= expected_hours && days >= expected_days && unlocked_count == 0
       return "ok"
@@ -56,10 +54,29 @@ class User < ActiveRecord::Base
     firstname <=> other.firstname
   end
   
+  def update_vacation!(start_of_month, vacation_dates)
+    end_of_month = start_of_month.end_of_month    
+    activity = Configuration.instance.vacation_activity
+    hour_type = HourType.find_by_default_hour_type(true)
+    start_of_month.upto(end_of_month) do |day|
+      if vacation_dates.try("[]".to_sym, day.to_s)
+        current = time_entries.for_activity(activity).on_day(day)
+        if current.empty?
+          t = time_entries.create(:activity => activity, :hour_type => hour_type, :date => day, :hours => Configuration.instance.work_hours)
+        end
+      else
+        current = time_entries.for_activity(activity).on_day(day)
+        unless current.empty?
+          current.first.destroy
+        end
+      end
+    end
+  end
+  
   # Returns a list of shared activities +
   # the activities assigned to the user
   def current_activities(date)
-    current = self.projects.map{ |project| project.activities }.flatten
+    current = projects.map{ |project| project.activities }.flatten
     current = sort_by_most_used_activity(date, current.uniq)
     current += Activity.active(true).default(true)
     current

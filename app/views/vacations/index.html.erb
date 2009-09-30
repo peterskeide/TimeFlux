@@ -31,12 +31,12 @@
 	      <% 1.upto(12) do |month| %>
 
 	        <td>
-	          <% day_from = Date.civil(@year, month,1) %>
+	          <% day_from = Date.civil(@year, month, 1) %>
 	          <% days = user.time_entries.for_activity(activity_vacation).between(day_from, day_from.at_end_of_month).count %>
 	          <%= days > 0 ? days : '-' %>
 	        </td>
 	      <% end %>
-	      <td><%= user.time_entries.for_activity(activity_vacation).between(Date.civil(@year, 1,1), Date.civil(@year + 1, 1,1) -1).count %></td>
+	      <td><%= user.time_entries.for_activity(activity_vacation).between(Date.civil(@year, 1,1), Date.civil(@year + 1, 1, 1) -1).count %></td>
 	    </tr>
 	  <% end %>
 

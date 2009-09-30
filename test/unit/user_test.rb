@@ -50,11 +50,34 @@ class UserTest < ActiveSupport::TestCase
     
   end
   
+  context "update_vacation! method" do
+    
+    setup do
+      Configuration.instance.update_attribute(:activity_id, activities(:vacation).id)
+      @user = User.create(:firstname => "Fred", :lastname => "Olsen", :login => "fredo", :email => "fredo@timeflux.com", 
+                          :admin => false, :password => "secret", :password_confirmation => "secret")
+      @vacation_dates = { "2009-09-01" => 1,  "2009-09-02" => 1, "2009-09-03" => 1 }
+      @start_of_month = Date.new(2009, 9, 1)
+      @end_of_month = @start_of_month.end_of_month
+      @user.update_vacation!(@start_of_month, @vacation_dates)           
+    end
+    
+    should "create new time_entries for the vacation activity for the month of the given date" do      
+      assert_equal(3, @user.time_entries.between(@start_of_month, @end_of_month).for_activity(activities(:vacation).id).count)
+    end
+    
+    should "remove time_entries for dates that are not included in the vacation_dates argument" do
+      @user.update_vacation!(@start_of_month, { "2009-09-03" => 1 })      
+      assert_equal(1, @user.time_entries.between(@start_of_month, @end_of_month).for_activity(activities(:vacation).id).count)
+    end
+        
+  end
+  
   context "current_activities method" do
     
     setup do
       @user = User.create(:firstname => "Fred", :lastname => "Olsen", :login => "fredo", :email => "fredo@timeflux.com", 
-      :admin => false, :password => "secret", :password_confirmation => "secret")
+                          :admin => false, :password => "secret", :password_confirmation => "secret")
       p = Project.create(:name => "TestProject")
       hour_type = HourType.create!(:name => "TestHourType")
       p.users << @user

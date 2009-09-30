@@ -19,7 +19,7 @@ class VacationsControllerTest < ActionController::TestCase
     context "PUT to :update with new vacation entries" do
       setup { put :update, :month => "2009-08-1", :user_id =>  users(:bob).id,
         :date => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }
-      should_redirect_to("vacation index") { vacations_url(:date => "2009-08-01") }
+      should_redirect_to("vacation index") { vacations_url(:year => 2009) }
       should "create vacation time_entries on the checked dates" do
         entry = TimeEntry.on_day(Date.civil(2009,8,18))
         assert_equal entry[0].hours, 7.5
@@ -31,7 +31,7 @@ class VacationsControllerTest < ActionController::TestCase
         TimeEntry.create(:user => users(:bob), :hours => 4, :date => Date.parse("2009-08-3"), :activity => activities(:vacation))
         put :update, :month => "2009-08-1", :user_id =>  users(:bob).id, :date => { }
       end
-      should_redirect_to("vacation index") { vacations_url(:date => "2009-08-01") }
+      should_redirect_to("vacation index") { vacations_url(:year => 2009) }
       should "remove unchecked vacation dates" do
         assert TimeEntry.on_day(Date.civil(2009,8,3)).empty?
       end
@@ -41,7 +41,7 @@ class VacationsControllerTest < ActionController::TestCase
   context "Logged in as user Bill, trying to update bob´s vacations" do
     setup do
       login_as(:bill)
-      post :set_vacation, :month => "2009-08-1", :user_id =>  users(:bob).id,
+      put :update, :month => "2009-08-1", :user_id =>  users(:bob).id,
         :date => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"}
       should_set_the_flash_to(/No permission/i)
     end
