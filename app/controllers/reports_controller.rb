@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    redirect_to(:action => 'billing')
+    #redirect_to(:action => 'billing')
   end
 
   def user
@@ -28,7 +28,7 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
-    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 12, :order => 'name'
+    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 8, :order => 'name'
   end
 
   # With the selected project this method will either mark entries as billed,

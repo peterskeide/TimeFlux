@@ -31,7 +31,7 @@ class VacationsController < ApplicationController
         if params[:date].try("[]".to_sym, day.to_s)
           current = TimeEntry.for_user(user).for_activity(activity).on_day(day)
           if current.empty?
-            t = TimeEntry.create(:activity => activity, :hour_type => hour_type, :date => day, :user_id => user.id, :hours => 7.5)
+            t = TimeEntry.create(:activity => activity, :hour_type => hour_type, :date => day, :user_id => user.id, :hours => Configuration.instance.work_hours)
           end
         else
           current = TimeEntry.for_user(user).for_activity(activity).on_day(day)

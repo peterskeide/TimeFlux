@@ -12,7 +12,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "on GET report index" do
       setup { get :index }
-      should_redirect_to("Billing report") { "/reports/billing" }
+      should_respond_with :success
     end
 
     context "on GET to :user" do

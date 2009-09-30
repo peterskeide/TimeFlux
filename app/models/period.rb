@@ -87,7 +87,7 @@ class Period
 
     # generate plain hash, and overwrite days with repeating and one time holidays
     period = {}
-    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : 7.5 ) }
+    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : Configuration.instance.work_hours ) }
     repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
     one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
 
