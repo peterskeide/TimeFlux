@@ -23,7 +23,7 @@ class TimeEntry < ActiveRecord::Base
       return false
     end
   end
-
+  
   named_scope :on_day, lambda { |day|
     {  :conditions => ['date = ?', day ] }
   }

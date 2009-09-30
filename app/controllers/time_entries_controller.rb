@@ -3,9 +3,7 @@ class TimeEntriesController < ApplicationController
   before_filter :check_authentication
   before_filter :check_parent_user, :except => :change_user
   before_filter :find_user, :except => :add_tag
-  
-  WEEKDAYS = %w{ Monday Tuesday Wednesday Thursday Friday Saturday Sunday }
-       
+         
   def index 
     @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date]).beginning_of_week
   end

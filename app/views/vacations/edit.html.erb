@@ -1,0 +1,56 @@
+<h1>Vacation</h1>
+
+<%= render :partial => 'holidays/sub_menu' -%>
+<%= render :partial => "shared/flash_output" %>
+
+<% if Configuration.instance.vacation_activity %>
+
+	<div class="navigation">
+		<h3 class="compact">
+		<%= link_to '<<', edit_user_vacation_path(@current_user, :date => @day << 1) %>
+		<span><%= @day.strftime('%B %Y') %></span>
+		<%= link_to '>>', edit_user_vacation_path(@current_user, :date => @day >> 1) %>
+	</h3>
+	</div>
+
+	<br/>
+
+	<table class="vacation">
+		<tr id="week numbers">
+			<%= week_headings %>
+		</tr>
+		<tr id="day_numbers">
+			<%= day_headings %>
+		</tr>
+		<tr>
+			<td class="user">
+				<%=h @user.name %>
+			</td>
+			<% form_tag(user_vacation_path(@user), :method => 'put', :id => 'holidays_select_form') do %>
+				<% days_of_month_for_user(@user).each do |d| %>
+					<td>
+						<%= check_box_tag_unless_holiday_or_weekend(d) %>
+					</td>
+				<% end %>
+				<td>
+					<%= hidden_field_tag 'month', @day %>
+					<%= hidden_field_tag 'user_id', @user.id %>
+					<%= submit_tag 'Update' %>
+				</td>
+			<% end %>
+		</tr>
+		<% @others.each do |user| %>
+			<tr>
+				<td class="user"><%= user.fullname %></td>
+				<% days_of_month_for_user(user).each do |d| %>
+					<td>
+						<%= disabled_check_box_or_dash_unless_holiday_or_weekend(d) %>
+					</td>
+				<% end %>
+			</tr>
+		<% end %>
+	</table>
+	
+<% else %>
+	<b>No vacation activity has been configured. Select one <%= link_to "here", edit_configuration_path %>.</b>
+<% end -%>

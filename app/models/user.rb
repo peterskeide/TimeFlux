@@ -6,12 +6,13 @@ class User < ActiveRecord::Base
   
   has_many :time_entries
   has_and_belongs_to_many :projects
+  has_many :activities, :through => :projects
      
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
   
   before_destroy :validate_not_last_admin, :validate_has_no_projects, :validate_has_no_time_entries
-
+  
   def fullname
     "#{self.firstname} #{self.lastname}"
   end

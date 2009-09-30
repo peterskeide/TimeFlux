@@ -1,91 +1,47 @@
-
-<p class="notice"><%= flash[:notice] %></p>
-<p class="error"><%= flash[:error] %></p>
-
 <% activity_vacation = Configuration.instance.vacation_activity %>
 
-<h1>Vacation</h1>
-<%= render :partial => 'holidays/sub_menu' -%>
+<h1>Vacation overview</h1>
+<%= render :partial => 'holidays/sub_menu' -%> 
+<%= render :partial => "shared/flash_output" %>
 
 <% if activity_vacation %>
 
 	<div class="navigation">
 		<h3 class="compact">
-			<%= link_to '<<', :action => 'index', :date => @day << 1 %>
-			<span><%= @day.strftime('%B %Y') %></span>
-			<%= link_to '>>', :action => 'index', :date => @day >> 1 %>
+			<%= link_to '<<', :action => 'vacation_overview', :year => @year - 1 %>
+			<span><%= @year %></span>
+			<%= link_to '>>', :action => 'vacation_overview', :year => @year + 1 %>
 		</h3>
 	</div>
 
 	<br/>
 
-	<table class="vacation">
+	<table class="vacation regular" width="100%">
 
-	  <tr id="week_numbers">
-	    <% iterator = @day %>
-	    <td></td>
-
-	    <% if iterator.cwday > 5 %>
-	      <% (8 - iterator.cwday).times do %>
-	        <% iterator = iterator + 1 %><td></td>
-	      <% end %>
+	  <tr>
+	    <% Date::ABBR_MONTHNAMES.each do |month_name| %>
+	      <th><%= month_name -%></th>
 	    <% end %>
-
-	    <% days_in_first_week = 8-iterator.cwday %>
-	    <th colspan="<%= days_in_first_week - 2 %>" class="week"><%= iterator.cweek -%></th><td></td><td></td>
-	    <% iterator = iterator + days_in_first_week %>
-
-	    <% iterator.step( @day.at_end_of_month, 7) do |d| %>
-	      <% days_left = @day.at_end_of_month - d %>
-	      <th colspan="<%= days_left >= 5 ? 5 : days_left + 1 %>" class="week"><%= d.cweek -%></th><td></td><td></td>
-	    <% end %>
+	      <th>TOTAL</th>
 	  </tr>
 
-	  <tr id="day_numbers">
-	    <td></td>
-	    <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
-	      <th <%= 'class="error"' if @is_holiday[d] -%> ><%= d.day -%><%='</th>'-%>
-	      <% end %>
-	  </tr>
-
-	  <tr><td class="user"><%=h  @user.name %></td>
-
-	    <% form_tag 'set_vacation', :method => 'post', :id => 'holidays_select_form' do %>
-	      <% vacation_dates = TimeEntry.for_user(@user).for_activity(activity_vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
-	    <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
-	        <td>
-	          <% unless @is_holiday[d]  %>
-	            <%= check_box_tag  "date[#{d}]", '1',  vacation_dates.include?(d) -%>
-	          <% end %>
-	        </td>
-	      <% end %>
-	      <td>
-	        <%= hidden_field_tag 'month', @day %>
-	        <%= hidden_field_tag 'user_id', @user.id %>
-	        <%= submit_tag 'Update' %>
-	      </td>
-	    <% end %>
-
-	    <% @others.each do |user| %>
-	    <tr><td class="user"><%=  user.fullname %></td>
+	    <% User.all.sort.each do |user| %>
+	    <tr><td class="user"><%=  user.name %></td>
       
-	      <% vacation_dates = TimeEntry.for_user(user).for_activity(activity_vacation).between(@day.at_beginning_of_month, @day.at_end_of_month).collect{|entry| entry.date} %>
-	      <% @day.at_beginning_of_month.upto @day.at_end_of_month do |d| %>
+	      <% 1.upto(12) do |month| %>
 
 	        <td>
-	          <% if vacation_dates.include?(d) %>
-	            <input type="checkbox" checked="1" disabled="true"/>
-	          <% else %>
-	            <% unless @is_holiday[d] %>
-	              <span class="disabled">-</span>
-	            <% end %>
-	          <% end %>
+	          <% day_from = Date.civil(@year, month,1) %>
+	          <% days = TimeEntry.for_user(user).for_activity(activity_vacation).between(day_from, day_from.at_end_of_month).count %>
+	          <%= days > 0 ? days : '-' %>
 	        </td>
 	      <% end %>
+	      <td><%= TimeEntry.for_user(user).for_activity(activity_vacation).between(Date.civil(@year, 1,1), Date.civil(@year + 1, 1,1) -1).count %></td>
 	    </tr>
 	  <% end %>
 
 	</table>
+
 <% else %>
  <b>No vacation activity has been configured. Select one <%= link_to "here", edit_configuration_path %>.</b>
 <% end -%>
