@@ -53,5 +53,11 @@ module VacationsHelper
       content_tag(:span, "-", :class => "disabled")
     end
   end
+  
+  def user_vacation_overview(user, &block)
+    concat("<tr style='background-color: #{ user == @current_user ? '#BBCCFF' : cycle('#FFFFFF', '#DDDDDD') }'>")
+    yield
+    concat("</tr>")
+  end
 
 end

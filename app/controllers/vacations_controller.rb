@@ -5,12 +5,13 @@ class VacationsController < ApplicationController
 
   def index
     @year = params[:year].blank? ? Date.today.year : params[:year].to_i
+    @users = User.all_except(@current_user).sort.unshift(@current_user)
   end
   
   def edit
     @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date]).at_beginning_of_month    
     @holidays = Holiday.holidays_between(@day, @day.end_of_month)
-    @others = User.all(:conditions => ["id != ?", @current_user.id]).sort!
+    @others = User.all_except(@current_user).sort
   end
 
   def update
