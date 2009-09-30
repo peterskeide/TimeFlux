@@ -6,7 +6,7 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<% form_tag 'summary', :method => 'get', :id => 'hours_form' do %>
+<% form_tag 'project', :method => 'get', :id => 'hours_form' do %>
 
     <table>
       <tr>
@@ -19,6 +19,7 @@
       </tr>
 
       <tr><td></td></tr>
+      <%= hidden_field_tag 'project', @project.id %>
       <tr><td></td><td><%= submit_tag "Apply Filter" %></td> </tr>
     </table>
 

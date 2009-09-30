@@ -7,5 +7,9 @@ module ActivityHelper
   def empty_option(text = "")
     "<option value=''>#{text}</option>"
   end
+
+  def option(text = "", value = "")
+    "<option value='#{value}'>#{text}</option>"
+  end
   
 end                  

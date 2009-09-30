@@ -171,7 +171,9 @@ class ReportsController < ApplicationController
       @to_day = @day.at_end_of_month
     end
 
-    @customer = param_instance(:customer)
+    unless params[:customer] == "*"
+      @customer = param_instance(:customer)
+    end
     @project = param_instance(:project)    
     @user = param_instance(:user)
     @tag_type = param_instance(:tag_type)
@@ -180,8 +182,11 @@ class ReportsController < ApplicationController
   end
 
   def create_search_report
-    @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
 
+    if params[:customer] && params[:customer] != ""
+      @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
+    end
+    
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user
   end
