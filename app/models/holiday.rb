@@ -52,7 +52,7 @@ class Holiday < ActiveRecord::Base
     return days
   end
   
-  def self.holidays_in_range(from_date, to_date)
+  def self.holidays_between(from_date, to_date)
     holidays = []
     from_date.upto to_date do |d|
       holidays << d if self.expected_on_day(d) == 0

@@ -9,7 +9,7 @@ class VacationsController < ApplicationController
   
   def edit
     @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date]).at_beginning_of_month    
-    @holidays = Holiday.holidays_in_range(@day, @day.end_of_month)
+    @holidays = Holiday.holidays_between(@day, @day.end_of_month)
     @others = User.all(:conditions => ["id != ?", @current_user.id]).sort!
   end
 

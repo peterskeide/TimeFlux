@@ -73,6 +73,15 @@ class User < ActiveRecord::Base
     end
   end
   
+  def vacation_total_for_month_of_year(month, year)
+    month_start = Date.civil(year, month, 1)
+    time_entries.for_activity(Configuration.instance.vacation_activity).between(month_start, month_start.at_end_of_month).count
+  end
+  
+  def vacation_total_for_year(year)
+    time_entries.for_activity(Configuration.instance.vacation_activity).between(Date.civil(year, 1,1), Date.civil(year + 1, 1, 1) -1).count
+  end
+  
   # Returns a list of shared activities +
   # the activities assigned to the user
   def current_activities(date)

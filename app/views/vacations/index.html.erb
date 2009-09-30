@@ -1,10 +1,8 @@
-<% activity_vacation = Configuration.instance.vacation_activity %>
-
 <h1>Vacation overview</h1>
 <%= render :partial => 'holidays/sub_menu' -%> 
 <%= render :partial => "shared/flash_output" %>
 
-<% if activity_vacation %>
+<% if Configuration.instance.vacation_activity %>
 
 	<div class="navigation">
 		<h3 class="compact">
@@ -29,14 +27,13 @@
 	    <tr><td class="user"><%=  user.name %></td>
       
 	      <% 1.upto(12) do |month| %>
-
-	        <td>
-	          <% day_from = Date.civil(@year, month, 1) %>
-	          <% days = user.time_entries.for_activity(activity_vacation).between(day_from, day_from.at_end_of_month).count %>
-	          <%= days > 0 ? days : '-' %>
+	        <td>	          
+	          <%= user.vacation_total_for_month_of_year(month, @year) > 0 ? user.vacation_total_for_month_of_year(month, @year) : '-' %>
 	        </td>
 	      <% end %>
-	      <td><%= user.time_entries.for_activity(activity_vacation).between(Date.civil(@year, 1,1), Date.civil(@year + 1, 1, 1) -1).count %></td>
+	      <td>
+			<%= user.vacation_total_for_year(@year) %>
+		  </td>
 	    </tr>
 	  <% end %>
 
