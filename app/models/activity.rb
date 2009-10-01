@@ -43,7 +43,11 @@ class Activity < ActiveRecord::Base
 
   
   def <=>(other)
-    name <=> other.name
+    if project && other.project
+      [customer.name,project.name,name] <=> [other.customer.name,other.project.name,other.name]
+    else
+      name <=> other.name
+    end
   end
 
   def customer_project_name(max_length=999)
