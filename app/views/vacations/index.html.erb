@@ -17,12 +17,12 @@
 	<table class="vacation regular" width="100%">
 
 	  <tr>
-	    <% Date::ABBR_MONTHNAMES.each do |month_name| %>
-	      <th><%= month_name -%></th>
+	    <% Date::ABBR_MONTHNAMES.each_with_index do |month_name, i| %>
+	      <th><%= i > 0 ? link_to(month_name, edit_user_vacation_path(@current_user, :date => Date.civil(@year, i, 1) ) ) : ''-%></th>
 	    <% end %>
 	      <th>TOTAL</th>
 	  </tr>
-
+          <tr>
 	    <% @users.each do |user| %>
 			<% user_vacation_overview(user) do %>
 				<td class="user">
@@ -38,7 +38,7 @@
 				</td>
 			<% end -%>
 	  	<% end %>
-
+          </tr>
 	</table>
 
 <% else %>
