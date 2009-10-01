@@ -10,7 +10,7 @@ class Activity < ActiveRecord::Base
   validates_presence_of :name
   
   before_destroy :verify_no_time_entries
-  
+    
   named_scope :active, lambda { |active| 
     active ? { :conditions => { :active => active } } : {}
   }

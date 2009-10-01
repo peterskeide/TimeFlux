@@ -2,13 +2,8 @@
   <%= render :partial => "week_total", :locals => { :user => @user, :date => @date } %>
 </div>
 
-<h1>Time Entries 
-  <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
-</h1>
-<p class="notice"><%= flash[:notice] %></p>
-<p class="error"><%= flash[:error] %></p>
-
-
+<%= time_entries_heading %>
+<%= render :partial => "shared/flash_output" %>
 
 <div class="navigation">
 	<h4>
@@ -19,8 +14,7 @@
 </div>
 
 <p>
-	<% 7.times do |index| %>
-		<% day = TimeEntriesController::WEEKDAYS[index] %>
+	<% weekdays.each_with_index do |day, index| %>
 		<div id="<%= day %>">
 			<p>
 				<div id='<%= "#{day}_header" %>'>

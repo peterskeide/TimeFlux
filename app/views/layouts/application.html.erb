@@ -21,7 +21,7 @@
 						<span class="menu_item"><%= link_to "Reports", reports_path, :class => "menu_link" %></span>                                                
 						<span class="menu_item"><%= link_to "Admin", users_path, :class => "menu_link" %></span>
 					<% end -%>
-          <span class="menu_item"><%= link_to "Holidays", {:controller => :vacations}, :class => "menu_link" %></span>
+          <span class="menu_item"><%= link_to "Holidays", vacations_path, :class => "menu_link" %></span>
 					<span class="menu_item"><%= link_to "Profile", user_path(@current_user), :class => "menu_link" %></span> 
 					<span class="menu_item"><%= link_to "Logout", {:controller => "user_sessions", :action => "destroy"}, :method => :delete, :class => "menu_link" %></span>
 			    <% else -%>

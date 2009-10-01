@@ -13,5 +13,13 @@ module TimeEntriesHelper
   def select_by_activity(time_entries, activity)
     time_entries.select { |te| te.activity == activity }.sort
   end
+  
+  def time_entries_heading 
+      content_tag(:h1, @current_user.admin ? "Time Entries for #{h @user.fullname}" : "Time Entries")
+  end
+  
+  def weekdays
+    Weekdays
+  end      
     
 end
