@@ -1,0 +1,23 @@
+<table class="regular">
+  <tr>
+    <th>Consultant</th>
+    <th>Activity</th>
+    <th>Hours</th>
+  </tr>
+  
+  <% sum = 0 %>
+  <% project_hours.each do |user, activity, hours| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= activity.name %></td>
+    <td style="text-align:right"><%= hours %></td>
+    <% sum += hours %>
+  </tr>
+  <% end %>
+
+  <tr style="text-align:right">
+    <th colspan="2" style="border-width: 1px; border-top-style: solid;">Total</th>
+    <th style="border-width: 1px; border-top-style: solid;"><%= sum %></th>
+
+  </tr>
+</table>

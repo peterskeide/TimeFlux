@@ -6,55 +6,12 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<% form_tag 'customer', :method => 'get', :id => 'hours_form' do %>
-
-    <table>
-      <tr>
-        <td><%= label_tag "year" %></td>
-        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-      </tr>
-      <tr>
-        <td><%= label_tag "month" %></td>
-        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month].to_i  ) %></td>
-      </tr>
-
-      <tr><td></td></tr>
-      <tr><td></td><td><%= submit_tag "Apply Filter" %></td> </tr>
-    </table>
-
-<% end -%>
+<div>
+ <%= render :partial => 'month_year_picker', :locals => { :action => 'customer', :day => @day, :years => @years, :months => @months} %>
+</div>
 
 <br/>
 
-  <%#= will_paginate @activities %>
-
-    <table class="regular">
-      <tr>
-        <th>Customer</th>
-        <th>Project</th>
-        <th>Hours</th>
-      </tr>
-      <% sum = 0 %>
-      <% @project_hours.each do |customer,project, hours| %>
-      <tr>
-        <td><%= customer.name%></td>
-        <td><%= link_to project.name, :action => "project", :project => project %></td>
-        <td style="text-align:right"><%= hours %></td>
-        <% sum += hours %>
-      </tr>
-      <% end %>
-
-      <tr style="text-align:right">
-
-        <th colspan="2" style="border-width: 1px; border-top-style: solid;">Total</th>
-        <th style="border-width: 1px; border-top-style: solid;"><%= sum %></th>
-
-      </tr>
-
-    </table>
-
-<%#= will_paginate @activities %>
-
-<%#= render_table @table -%>
-<%#= render :partial => 'download', :locals => { :params => params, :action => 'summary' } -%>
-
+<div id="customer_content">
+  <%= render :partial => 'customer_content', :locals => { :project_hours => @project_hours} %>
+</div>

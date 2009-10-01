@@ -5,24 +5,14 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<% form_tag 'billing', :method => 'get', :id => 'billing_form' do %>
-  <div>
-    <table>
-      <tr>
-        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
-        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-      <td><noscript><%= submit_tag "View" %></noscript></td>
-    </table>
-  </div>
-<% end -%>
+<div>
+ <%= render :partial => 'month_year_picker', :locals => { :action => 'billing', :day => @day, :years => @years, :months => @months} %>
+</div>
 
-<%= observe_form 'billing_form',
-      :url => {:action => 'update_billing_content'},
-      :update => 'billing_content' %>
 <hr/>
 
 <div id="billing_content">
-  <%= render :partial => 'billing_content', :locals => { :day => @day, :expected_days => @expected_days, :expected_hours => @expected_hours} %>
+  <%= render :partial => 'billing_content', :locals => { :day => @day, :billable_customers => @billable_customers} %>
 </div>
 
 

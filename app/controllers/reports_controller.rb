@@ -67,8 +67,8 @@ class ReportsController < ApplicationController
 
   def update_billing_content
     if request.xhr?
-      setup_calender
-      render :partial => 'billing_content', :locals => { :day => @day}
+      billing()
+      render :partial => 'billing_content', :locals => { :day => @day, :billable_customers => @billable_customers}
     end
   end
 
@@ -86,6 +86,13 @@ class ReportsController < ApplicationController
     end
   end
 
+  def update_customer_content
+    if request.xhr?
+      customer()
+      render :partial => 'customer_content', :locals => { :project_hours => @project_hours}
+    end
+  end
+
   def project
     setup_calender
     parse_search_params
@@ -96,6 +103,13 @@ class ReportsController < ApplicationController
         hours = TimeEntry.between(@from_day, @to_day).for_user(user).for_activity(activity).sum(:hours)
         @project_hours << [user,activity, hours] if hours > 0
       end
+    end
+  end
+
+  def update_project_content
+    if request.xhr?
+      project()
+      render :partial => 'project_content', :locals => { :project_hours => @project_hours}
     end
   end
 
@@ -134,9 +148,7 @@ class ReportsController < ApplicationController
 
   def update_search_content
     if request.xhr?
-      setup_calender
-      parse_search_params
-      create_search_report
+      search()
       render :partial => 'search_content', :locals => { :table => @billing_report}
     end
   end
