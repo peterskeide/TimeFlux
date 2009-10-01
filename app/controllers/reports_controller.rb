@@ -6,7 +6,6 @@ class ReportsController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    #redirect_to(:action => 'billing')
   end
 
   def user
@@ -158,7 +157,7 @@ class ReportsController < ApplicationController
 
   def parse_search_params
     params[:month] ||= @day.month
-    
+
     if params[:from_day] && params[:from_day] != ""
       @from_day = set_date(params[:from_year].to_i, params[:from_month].to_i, params[:from_day].to_i)
       @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
@@ -170,28 +169,19 @@ class ReportsController < ApplicationController
     unless params[:customer] == "*"
       @customer = param_instance(:customer)
     end
-    @project = param_instance(:project)    
+    @project = param_instance(:project)
     @user = param_instance(:user)
     @tag_type = param_instance(:tag_type)
     @tag = param_instance(:tag)
-    @status = params[:status].to_i if params[:status] && params[:status] != "" 
+    @status = params[:status].to_i if params[:status] && params[:status] != ""
   end
 
   def create_search_report
     if params[:customer] && params[:customer] != ""
       @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
-    end  
+    end
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user
   end
-
-  def project_hours_for_customers(customers)
-    project_hours = []
-    customers.each do |customer|
-      customer.projects.each do |project|
-        project_hours << [customer,project, TimeEntry.between(@from_day, @to_day).for_project(project).sum(:hours), customer.billable]
-      end
-    end
-    project_hours
-  end
+  
 end

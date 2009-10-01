@@ -1,8 +1,8 @@
-<table class="regular">
+<table class="regular" style="min-width: 50%">
   <tr>
-    <th>Customer</th>
+    <th style="min-width: 40%">Customer</th>
     <th>Project</th>
-    <th>Hours</th>
+    <th style="text-align:right; max-width: 5%">Hours</th>
   </tr>
 
   <% sum = 0 %>
@@ -15,7 +15,6 @@
     </tr>
   <% end %>
   <tr style="text-align:right">
-    <th colspan="2" style="border-width: 1px; border-top-style: solid;">Total</th>
-    <th style="border-width: 1px; border-top-style: solid;"><%= sum %></th>
+    <th colspan="3" style="border-width: 1px; border-top-style: solid;"><%= "Total #{sum}" %></th>
   </tr>
 </table>

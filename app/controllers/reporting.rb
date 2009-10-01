@@ -54,5 +54,15 @@ module Reporting
         :hours => activity.time_entries.for_user(user).between(day,day.at_end_of_month).sum(:hours) }
     end
   end
+
+  def project_hours_for_customers(customers)
+    project_hours = []
+    customers.each do |customer|
+      customer.projects.each do |project|
+        project_hours << [customer,project, TimeEntry.between(@from_day, @to_day).for_project(project).sum(:hours), customer.billable]
+      end
+    end
+    project_hours
+  end
   
 end
