@@ -15,10 +15,11 @@ class VacationsController < ApplicationController
   end
 
   def update
-    month = Date.parse(params.delete(:month))
-    @current_user.update_vacation!(month, params[:date])
+    start_of_month = Date.parse(params[:start_of_month])
+    end_of_month = start_of_month.end_of_month
+    @current_user.update_vacation!(start_of_month, end_of_month, params[:dates])
     flash[:notice] = "Vacation updated"
-    redirect_to vacations_url(:year => month.year)
+    redirect_to vacations_url(:year => start_of_month.year)
   end
   
 end

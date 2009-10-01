@@ -64,15 +64,16 @@ class User < ActiveRecord::Base
     firstname <=> other.firstname
   end
   
-  def update_vacation!(start_of_month, vacation_dates)
-    end_of_month = start_of_month.end_of_month    
-    activity = Configuration.instance.vacation_activity
+  def update_vacation!(start_date, end_date, vacation_dates)
+    configuration = Configuration.instance
+    activity = configuration.vacation_activity
+    work_hours = configuration.work_hours
     hour_type = HourType.find_by_default_hour_type(true)
-    start_of_month.upto(end_of_month) do |day|
+    start_date.upto(end_date) do |day|
       if vacation_dates.try("[]".to_sym, day.to_s)
         current = time_entries.for_activity(activity).on_day(day)
         if current.empty?
-          t = time_entries.create(:activity => activity, :hour_type => hour_type, :date => day, :hours => Configuration.instance.work_hours)
+          t = time_entries.create(:activity => activity, :hour_type => hour_type, :date => day, :hours => work_hours)
         end
       else
         current = time_entries.for_activity(activity).on_day(day)

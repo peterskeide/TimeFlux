@@ -42,7 +42,7 @@ module VacationsHelper
   
   def check_box_tag_unless_holiday_or_weekend(day)
     unless @holidays.include? day
-      check_box_tag  "date[#{ day }]", '1', @vacation_dates.include?(day)
+      check_box_tag "dates[#{ day }]", '1', @vacation_dates.include?(day)
     end
   end
   
