@@ -11,16 +11,16 @@ class VacationsControllerTest < ActionController::TestCase
       login_as(:bob)
     end
 
-    context "get index" do
-      setup{ get :index }
-      should_render_template :index
+    context "GET to :show" do
+      setup{ get :show, :user_id => users(:bob).id, :id => 2009 }
+      should_render_template :show
     end
 
     context "PUT to :update with new vacation entries" do
-      setup { put :update, :start_of_month => "2009-08-1", :user_id => users(:bob).id,
+      setup { put :update, :start_of_month => "2009-08-1", :user_id => users(:bob).id, :id => 2009,
         :dates => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }
         
-      should_redirect_to("vacation index") { vacations_url(:year => 2009) }
+      should_redirect_to("vacation index") { user_vacation_url(users(:bob), :year => 2009) }
       
       should "create vacation time_entries on the checked dates" do
         entry = TimeEntry.on_day(Date.civil(2009,8,18))
@@ -31,10 +31,10 @@ class VacationsControllerTest < ActionController::TestCase
     context "PUT to :update with removed vacation entries" do
       setup do
         TimeEntry.create(:user => users(:bob), :hours => 4, :date => Date.parse("2009-08-3"), :activity => activities(:vacation))
-        put :update, :start_of_month => "2009-08-1", :user_id =>  users(:bob).id, :dates => { }
+        put :update, :start_of_month => "2009-08-1", :user_id => users(:bob).id, :id => 2009, :dates => { }
       end
       
-      should_redirect_to("vacation index") { vacations_url(:year => 2009) }
+      should_redirect_to("vacation index") { user_vacation_url(users(:bob), :year => 2009) }
       
       should "remove unchecked vacation dates" do
         assert TimeEntry.on_day(Date.civil(2009,8,3)).empty?
@@ -45,7 +45,7 @@ class VacationsControllerTest < ActionController::TestCase
   context "Logged in as user Bill, trying to update bob´s vacations" do
     setup do
       login_as(:bill)
-      put :update, :start_of_month => "2009-08-1", :user_id =>  users(:bob).id,
+      put :update, :start_of_month => "2009-08-1", :user_id =>  users(:bob).id, :id => 2009,
         :dates => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"}
         
       should_set_the_flash_to(/No permission/i)

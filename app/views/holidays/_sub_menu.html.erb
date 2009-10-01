@@ -1,6 +1,6 @@
 <div class="sub_menu" id="nav">
-  <%= link_to "Edit Vacation", edit_user_vacation_path(@current_user) %> |
-  <%= link_to "Vacation Overview", vacations_path %> |
+  <%= link_to "Edit Vacation", edit_user_vacation_path(@current_user, :id => Date.today.year) %> |
+  <%= link_to "Vacation Overview", user_vacation_path(@current_user, :id => Date.today.year ) %> |
   <%= link_to "Public Holidays", :controller => :holidays %>
 </div>
 <br/><br/>

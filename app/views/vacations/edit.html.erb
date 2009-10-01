@@ -7,9 +7,9 @@
 
 	<div class="navigation">
 		<h3 class="compact">
-			<%= link_to '<<', edit_user_vacation_path(@current_user, :date => @day << 1) %>
+			<%= link_to '<<', edit_user_vacation_path(@user, :id => (@day << 1).year, :date => @day << 1) %>
 			<span><%= @day.strftime('%B %Y') %></span>
-			<%= link_to '>>', edit_user_vacation_path(@current_user, :date => @day >> 1) %> 
+			<%= link_to '>>', edit_user_vacation_path(@user, :id => (@day >> 1).year, :date => @day >> 1) %> 
 		</h3>
 	</div>
 
@@ -26,8 +26,8 @@
 			<td class="user">
 				<%=h @current_user.name %>
 			</td>
-			<% form_tag(user_vacation_path(@current_user), :method => 'put', :id => 'holidays_select_form') do %>
-				<% days_of_month_for_user(@current_user).each do |d| %>
+			<% form_tag(user_vacation_path(@user), :method => 'put', :id => 'holidays_select_form') do %>
+				<% days_of_month_for_user(@user).each do |d| %>
 					<td>
 						<%= check_box_tag_unless_holiday_or_weekend(d) %>
 					</td>

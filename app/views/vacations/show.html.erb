@@ -6,9 +6,9 @@
 
 	<div class="navigation">
 		<h3 class="compact">
-			<%= link_to '<<', vacations_path(:year => @year - 1 ) %>
+			<%= link_to '<<', user_vacation_path(@user, :id => @year - 1 ) %>
 			<span><%= @year %></span>
-			<%= link_to '>>', vacations_path(:year => @year + 1) %>
+			<%= link_to '>>', user_vacation_path(@user, :id => @year + 1) %>
 		</h3>
 	</div>
 
@@ -22,19 +22,19 @@
 	    <% end %>
 	      <th>TOTAL</th>
 	  </tr>
-
-	    <% @users.each do |user| %>
-			<% user_vacation_overview(user) do %>
+        
+	    <% @vacation_overview.each_user_with_month_and_year_totals do |user, month_totals, year_total| %>
+			<% vacation_overview_for_user(user) do %>
 				<td class="user">
 					<%= user.name %>
 				</td>
-				<% 1.upto(12) do |month| %>
+				<%  (1..12).each do |month| %>
 					<td style="border-left: 1 solid">
-					<%= user.vacation_total_for_month_of_year(month, @year) > 0 ? user.vacation_total_for_month_of_year(month, @year) : '-' %>
-					</td>
+						<%= month_totals[month] > 0 ? month_totals[month] : '-' %>
+					</td> 
 				<% end %>
 				<td>
-					<%= user.vacation_total_for_year(@year) %>
+					<%= year_total %>
 				</td>
 			<% end -%>
 	  	<% end %>

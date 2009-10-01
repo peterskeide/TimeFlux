@@ -66,31 +66,18 @@ class User < ActiveRecord::Base
   
   def update_vacation!(start_date, end_date, vacation_dates)
     configuration = Configuration.instance
-    activity = configuration.vacation_activity
+    vacation = configuration.vacation_activity
     work_hours = configuration.work_hours
     hour_type = HourType.find_by_default_hour_type(true)
-    start_date.upto(end_date) do |day|
-      if vacation_dates.try("[]".to_sym, day.to_s)
-        current = time_entries.for_activity(activity).on_day(day)
-        if current.empty?
-          t = time_entries.create(:activity => activity, :hour_type => hour_type, :date => day, :hours => work_hours)
-        end
-      else
-        current = time_entries.for_activity(activity).on_day(day)
-        unless current.empty?
-          current.first.destroy
-        end
+    vacation_dates = vacation_dates.collect { |d| d.is_a?(Date) ? d : Date.parse(d) }
+    vacation_entries = time_entries.for_activity(vacation).between(start_date, end_date)
+    vacation_entries.each { |te| te.destroy unless vacation_dates.include? te.date }
+    remaining_vacation_dates = vacation_entries.collect { |te| te.date unless te.frozen? } # destroying an activerecord model will freeze it
+    vacation_dates.each do |date|
+      unless remaining_vacation_dates.include? date
+        time_entries.create(:activity => vacation, :hour_type => hour_type, :date => date, :hours => work_hours)
       end
     end
-  end
-  
-  def vacation_total_for_month_of_year(month, year)
-    month_start = Date.civil(year, month, 1)
-    time_entries.for_activity(Configuration.instance.vacation_activity).between(month_start, month_start.at_end_of_month).count
-  end
-  
-  def vacation_total_for_year(year)
-    time_entries.for_activity(Configuration.instance.vacation_activity).between(Date.civil(year, 1,1), Date.civil(year + 1, 1, 1) -1).count
   end
   
   # Returns a list of shared activities +

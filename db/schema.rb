@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090928120714) do
+ActiveRecord::Schema.define(:version => 20091001074020) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                                :null => false
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(:version => 20090928120714) do
   create_table "activities_tags", :id => false, :force => true do |t|
     t.integer  "activity_id"
     t.integer  "tag_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "activities_users", :id => false, :force => true do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -78,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20090928120714) do
   create_table "tag_types", :force => true do |t|
     t.string   "name"
     t.string   "icon"
+    t.boolean  "mutually_exclusive", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -109,6 +117,9 @@ ActiveRecord::Schema.define(:version => 20090928120714) do
     t.datetime "updated_at"
     t.integer  "status",       :default => 0
   end
+
+  add_index "time_entries", ["date"], :name => "index_time_entries_on_date"
+  add_index "time_entries", ["user_id"], :name => "index_time_entries_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "firstname",                            :null => false

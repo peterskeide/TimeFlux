@@ -2,24 +2,31 @@ class VacationsController < ApplicationController
 
   before_filter :check_authentication
   before_filter :check_parent_user, :only => [:edit, :update]
+  before_filter :find_user
 
-  def index
-    @year = params[:year].blank? ? Date.today.year : params[:year].to_i
-    @users = User.all_except(@current_user).sort.unshift(@current_user)
+  def show
+    @year = params[:id].blank? ? Date.today.year : params[:id].to_i    
+    @vacation_overview = VacationOverview.for_year_and_user(@year, @user)
   end
   
   def edit
-    @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date]).at_beginning_of_month    
+    @day = params[:date].blank? ? Date.today.beginning_of_month : Date.parse(params[:date]).at_beginning_of_month
     @holidays = Holiday.holidays_between(@day, @day.end_of_month)
-    @others = User.all_except(@current_user).sort
+    @others = User.all_except(@user).sort
   end
 
-  def update
+  def update    
     start_of_month = Date.parse(params[:start_of_month])
     end_of_month = start_of_month.end_of_month
-    @current_user.update_vacation!(start_of_month, end_of_month, params[:dates])
+    @user.update_vacation!(start_of_month, end_of_month, params[:dates].keys)
     flash[:notice] = "Vacation updated"
-    redirect_to vacations_url(:year => start_of_month.year)
+    redirect_to user_vacation_url(@user, :year => start_of_month.year)
+  end
+  
+  private
+  
+  def find_user
+    @user = User.find(params[:user_id])
   end
   
 end

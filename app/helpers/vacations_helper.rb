@@ -54,7 +54,7 @@ module VacationsHelper
     end
   end
   
-  def user_vacation_overview(user, &block)
+  def vacation_overview_for_user(user, &block)
     concat("<tr style='background-color: #{ user == @current_user ? '#BBCCFF' : cycle('#FFFFFF', '#DDDDDD') }'>")
     yield
     concat("</tr>")
