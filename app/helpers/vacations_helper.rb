@@ -42,7 +42,7 @@ module VacationsHelper
   
   def check_box_tag_unless_holiday_or_weekend(day)
     unless @holidays.include? day
-      check_box_tag  "date[#{ day }]", '1', @vacation_dates.include?(day)
+      check_box_tag "dates[#{ day }]", '1', @vacation_dates.include?(day)
     end
   end
   
@@ -54,7 +54,7 @@ module VacationsHelper
     end
   end
   
-  def user_vacation_overview(user, &block)
+  def vacation_overview_for_user(user, &block)
     concat("<tr style='background-color: #{ user == @current_user ? '#BBCCFF' : cycle('#FFFFFF', '#DDDDDD') }'>")
     yield
     concat("</tr>")

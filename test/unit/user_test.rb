@@ -58,33 +58,13 @@ class UserTest < ActiveSupport::TestCase
                           :admin => false, :password => "secret", :password_confirmation => "secret")
     end
   
-    context "the vacation_total_for_year method" do
-      
-      should "return the total number of registered time entries for the vacation activity in the given year" do
-        @user.update_vacation!(Date.new(2009, 1, 1), "2009-01-01" => 1, "2009-01-12" => 1)
-        @user.update_vacation!(Date.new(2009, 6, 1), "2009-06-15" => 1)
-        @user.update_vacation!(Date.new(2009, 12, 1), "2009-12-31" => 1)
-        assert_equal(4, @user.vacation_total_for_year(2009))
-      end
-      
-    end
-    
-    context "the vacation_total_for_month_of_year method" do
-      
-      should "return the total number of registered time entries for the vacation activity in the given month of year" do
-        @user.update_vacation!(Date.new(2009, 1, 1), "2009-01-01" => 1, "2009-01-15" => 1, "2009-01-31" => 1)
-        assert_equal(3, @user.vacation_total_for_month_of_year(1, 2009))
-      end
-      
-    end
-  
     context "the update_vacation! method" do
     
       setup do        
-        @vacation_dates = { "2009-09-01" => 1,  "2009-09-02" => 1, "2009-09-03" => 1 }
+        @vacation_dates = ["2009-09-01",  "2009-09-02", "2009-09-03"]
         @start_of_month = Date.new(2009, 9, 1)
         @end_of_month = @start_of_month.end_of_month
-        @user.update_vacation!(@start_of_month, @vacation_dates)           
+        @user.update_vacation!(@start_of_month, @end_of_month, @vacation_dates)           
       end
     
       should "create new time_entries for the vacation activity for the month of the given date" do      
@@ -92,12 +72,12 @@ class UserTest < ActiveSupport::TestCase
       end
     
       should "remove time_entries for dates that are not included in the vacation_dates argument" do
-        @user.update_vacation!(@start_of_month, { "2009-09-03" => 1 })      
+        @user.update_vacation!(@start_of_month, @end_of_month, ["2009-09-03"])      
         assert_equal(1, @user.time_entries.between(@start_of_month, @end_of_month).for_activity(activities(:vacation).id).count)
       end
       
       should "not create duplicates for previously created vacation dates" do
-        @user.update_vacation!(@start_of_month, @vacation_dates)     
+        @user.update_vacation!(@start_of_month, @end_of_month, @vacation_dates)     
         assert_equal(3, @user.time_entries.between(@start_of_month, @end_of_month).for_activity(activities(:vacation).id).count)
       end
         
