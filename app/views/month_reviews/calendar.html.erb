@@ -18,31 +18,31 @@
 <h4 class=""><%= @period.month_name -%></h4>
 
 <div class="calender_activities">
-    <table style="border-collapse: collapse;">
-      <% @activities_summary.each do |entry| %>
-        <tr>
-          <td><%= entry[:name] -%></td>
-          <td style="text-align:right"><%= entry[:hours] -%></td>
-        </tr>
-      <% end %>
+  <table style="border-collapse: collapse;">
+    <% @activities_summary.each do |entry| %>
       <tr>
-        <td class="overline">
-          <b>Total:</b>
-        </td>
-        <td class="overline" style="text-align:right; min-width:3em;">
-          <b> <%= @period.total_hours -%></b>
-        </td>
+        <td><%= entry[:name] -%></td>
+        <td style="text-align:right"><%= entry[:hours] -%></td>
       </tr>
-    </table>
-    <br/><br/>
-    <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing) %> </div>
+    <% end %>
+    <tr>
+      <td class="overline">
+        <b>Total:</b>
+      </td>
+      <td class="overline" style="text-align:right; min-width:3em;">
+        <b> <%= @period.total_hours -%></b>
+      </td>
+    </tr>
+  </table>
+  <br/><br/>
+  <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing) %> </div>
 </div>
 
 <div class="calender" style="width:450px">
- 
+
   <table width="100%" class="regular">
     <tr>
-      <th></th>
+      <th style="min-width: 5%"></th>
       <th>Mon</th>
       <th>Tue</th>
       <th>Wed</th>
@@ -50,22 +50,30 @@
       <th>Fri</th>
       <th>Sat</th>
       <th>Sun</th>
+      <td class="leftline underline">Week total</td>
     </tr>
+    <% week_sum = 0 %>
     <% @period.start.beginning_of_week.upto(@period.end.end_of_week) do |d| %>
       <% if d.wday == 1 %>
         <tr>
           <td>
-            &nbsp;&nbsp;<b><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></b>&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;<b><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></b>
           </td>
         <% end %>
         <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
-            <%= d == Date.today ? "<u>#{@user.hours_on_day d}</u>" : "#{@user.hours_on_day d}" -%>
+          <% day_hours = @user.hours_on_day d; week_sum = week_sum + day_hours%>
+          <% day_hours_as_s = day_hours > 0 ? day_hours : '-' %>
+          <%= d == Date.today ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
         </td>
         <% if d.wday == 0 %>
+        <td class="leftline" style="color:gray">
+          <%= week_sum %><% week_sum = 0 %>
+        </td>
         </tr>
       <% end -%>
     <% end %>
   </table>
+
   <div class="footer">
     <% hours_color = @period.total_hours >= @period.expected_hours ? '' : 'warn' %>
     <% days_color = @period.total_days >= @period.expected_days ? '' : 'warn' %>
@@ -76,10 +84,10 @@
 
 
 <p>
-Balance:  <%= balance(@period) %>
+  Balance:  <%= balance(@period) %>
 </p>
 <p>
-Billing degree: <%= (@period.billing_degree * 100).round %> %
+  Billing degree: <%= (@period.billing_degree * 100).round %> %
 </p>
 <hr/>
 <br/>

@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
   def hours_on_day(day)
     entries = self.time_entries.on_day day
     hours = entries.collect{|t| t.hours}.sum
-    if hours > 0 then hours.to_s else '-' end
+    #if hours > 0 then hours.to_s else '-' end
   end
 
   def <=>(other)

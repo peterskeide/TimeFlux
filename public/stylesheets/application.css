@@ -41,6 +41,17 @@ tr .week {
     background:silver;
 }
 
+
+tr .leftline {
+    border-left-style: solid;
+    border-width: 1px
+}
+
+tr .rightline {
+    border-right-style: solid;
+    border-width: 1px
+}
+
 tr .overline {
     border-top-style: solid;
     border-width: 1px
