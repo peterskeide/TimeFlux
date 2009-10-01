@@ -54,7 +54,7 @@
 
             <tr>
               <td><%= label_tag "customer"%></td>
-              <td><%= select_tag "customer", empty_option("All") + options_from_collection_for_select( Customer.all.sort, 'id', 'name', params[:customer].to_i  ) %></td>
+              <td><%= select_tag "customer", option("All", "*") + options_from_collection_for_select( Customer.all.sort, 'id', 'name', params[:customer].to_i  ) %></td>
             </tr>
             <tr>
               <% if customer %>

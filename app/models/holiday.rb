@@ -34,7 +34,7 @@ class Holiday < ActiveRecord::Base
     if holiday.size > 0
       return holiday[0].working_hours
     else
-      return 7.5
+      return Configuration.instance.work_hours
     end
   end  
 
@@ -72,7 +72,7 @@ class Holiday < ActiveRecord::Base
     one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
 
     period = {}
-    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : 7.5 ) }
+    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : Configuration.instance.work_hours ) }
     repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
     one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
 

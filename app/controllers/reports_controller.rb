@@ -6,16 +6,17 @@ class ReportsController < ApplicationController
   before_filter :check_authentication, :check_admin
 
   def index
-    redirect_to(:action => 'billing')
+    #redirect_to(:action => 'billing')
   end
 
   def user
     setup_calender
-    @users = User.paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
+    @users = User.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
 
-    start = Date.today.beginning_of_week
-    @weeks = []
-    1..8.times { |i| @weeks << start - (i * 7) }
+    date_iterator = @day.at_beginning_of_month.beginning_of_week
+    @weeks = [date_iterator]
+    @weeks << date_iterator until (date_iterator = date_iterator + 7).month != @day.month
+  
 
     @expected = @weeks.collect do |day|
       Holiday.expected_hours_between( day, (day + 4) )
@@ -28,7 +29,7 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
-    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 12, :order => 'name'
+    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 8, :order => 'name'
   end
 
   # With the selected project this method will either mark entries as billed,
@@ -67,35 +68,34 @@ class ReportsController < ApplicationController
 
   def update_billing_content
     if request.xhr?
-      setup_calender
-      render :partial => 'billing_content', :locals => { :day => @day}
+      billing()
+      render :partial => 'billing_content', :locals => { :day => @day, :billable_customers => @billable_customers}
     end
   end
 
   def customer
     setup_calender
     parse_search_params
-
-    @customers = Customer.all
-
-    @project_hours = []
-    @customers.each do |customer| 
-      customer.projects.each do |project|
-        @project_hours << [customer,project, TimeEntry.between(@from_day, @to_day).for_project(project).sum(:hours)]
-      end
-    end
+    @billable_project_hours = project_hours_for_customers(Customer.billable(true))
+    @internal_project_hours = project_hours_for_customers(Customer.billable(false))
   end
 
   def project
     setup_calender
     parse_search_params
-
-    @project_hours = []
+    @user_activity_hours = []
     @project.activities.each do |activity|
       User.all.each do |user|
         hours = TimeEntry.between(@from_day, @to_day).for_user(user).for_activity(activity).sum(:hours)
-        @project_hours << [user,activity, hours] if hours > 0
+        @user_activity_hours << [user,activity, hours] if hours > 0
       end
+    end
+  end
+
+  def update_project_content
+    if request.xhr?
+      project()
+      render :partial => 'project_content', :locals => { :user_activity_hours => @user_activity_hours}
     end
   end
 
@@ -105,9 +105,7 @@ class ReportsController < ApplicationController
     create_search_report
     
     respond_to do |format|
-      format.html do
-        
-      end
+      format.html { }
       format.pdf  do
         @parameters = []
         @parameters << ["Periode","#{@from_day} to #{@to_day}"]
@@ -134,9 +132,7 @@ class ReportsController < ApplicationController
 
   def update_search_content
     if request.xhr?
-      setup_calender
-      parse_search_params
-      create_search_report
+      search()
       render :partial => 'search_content', :locals => { :table => @billing_report}
     end
   end
@@ -171,7 +167,9 @@ class ReportsController < ApplicationController
       @to_day = @day.at_end_of_month
     end
 
-    @customer = param_instance(:customer)
+    unless params[:customer] == "*"
+      @customer = param_instance(:customer)
+    end
     @project = param_instance(:project)    
     @user = param_instance(:user)
     @tag_type = param_instance(:tag_type)
@@ -180,11 +178,20 @@ class ReportsController < ApplicationController
   end
 
   def create_search_report
-    @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
-
+    if params[:customer] && params[:customer] != ""
+      @time_entries = TimeEntry.search(@from_day,@to_day,@customer,@project,@tag,@tag_type,@user,@status).sort
+    end  
     @group_by = params[:group_by].to_sym if params[:group_by] && params[:group_by] != ""
     @group_by ||= :user
   end
 
-
+  def project_hours_for_customers(customers)
+    project_hours = []
+    customers.each do |customer|
+      customer.projects.each do |project|
+        project_hours << [customer,project, TimeEntry.between(@from_day, @to_day).for_project(project).sum(:hours), customer.billable]
+      end
+    end
+    project_hours
+  end
 end

@@ -6,8 +6,17 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-
-  <%= will_paginate @users %>
+<% form_tag 'user', :method => 'get', :id => "user_form" do %>
+  <div>
+    <table>
+      <tr>
+        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
+        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
+      <td><%= submit_tag "View" %></td>
+    </table>
+  </div>
+<% end -%>
+<br/>
 
   <table class="regular">
     <tr>
@@ -28,7 +37,7 @@
 
     <% @users.each do |user| %>
       <tr>
-        <td><%=h user.name %> </td>
+        <td><%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(Date.today) ) ) %> </td>
         <% @weeks.each_with_index do |date, index| %>
           <% hours = TimeEntry.for_user(user).between(date, (date + 6)).sum(:hours) %>
           <% color_code = case hours

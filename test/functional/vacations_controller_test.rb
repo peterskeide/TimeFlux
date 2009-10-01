@@ -20,7 +20,7 @@ class VacationsControllerTest < ActionController::TestCase
       setup { put :update, :start_of_month => "2009-08-1", :user_id => users(:bob).id, :id => 2009,
         :dates => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }
         
-      should_redirect_to("vacation index") { user_vacation_url(users(:bob), :year => 2009) }
+      should_redirect_to("vacation index") { user_vacation_url(users(:bob), :id => 2009) }
       
       should "create vacation time_entries on the checked dates" do
         entry = TimeEntry.on_day(Date.civil(2009,8,18))
@@ -34,7 +34,7 @@ class VacationsControllerTest < ActionController::TestCase
         put :update, :start_of_month => "2009-08-1", :user_id => users(:bob).id, :id => 2009, :dates => { }
       end
       
-      should_redirect_to("vacation index") { user_vacation_url(users(:bob), :year => 2009) }
+      should_redirect_to("vacation index") { user_vacation_url(users(:bob), :id => 2009) }
       
       should "remove unchecked vacation dates" do
         assert TimeEntry.on_day(Date.civil(2009,8,3)).empty?

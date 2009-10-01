@@ -1,13 +1,13 @@
-  <% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
-  <% expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month) -%>
+  <% expected_days = Holiday.expected_days_between(day,day.at_end_of_month) -%>
+  <% expected_hours = Holiday.expected_hours_between(day,day.at_end_of_month) -%>
 
   <p class="error"><%= flash[:error] %></p>
 
-  <%= will_paginate @billable_customers %>
+  <%= will_paginate billable_customers %>
 
   <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
     <table class="regular">
-      <% @billable_customers.each do |customer| %>
+      <% billable_customers.each do |customer| %>
         
         <tr>
           <td colspan="99"> <h3 class="compact"><%= customer.name %></h3></td>
@@ -54,7 +54,7 @@
       <% end %>
     </table>
 
-    <%= will_paginate @billable_customers %>
+    <%= will_paginate billable_customers %>
 
     <br/>
     <hr/>

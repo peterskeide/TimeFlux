@@ -1,6 +1,8 @@
 
 <% if @time_entries != nil %>
 
+<% unless @time_entries.empty? %>
+
   <% user_entries = @time_entries.group_by(&@group_by) %>
   <% user_entries.each do |group, te| %>
     <h3>
@@ -64,7 +66,8 @@
   <br/><hr/>
   Download report:<%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => 'search'})%>
 
-<% else %>
-  <p>No hits to display</p>
+  <% else %>
+    <p>No hits.</p>
+  <% end %>
 <% end %>
 

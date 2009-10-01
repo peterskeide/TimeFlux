@@ -12,7 +12,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "on GET report index" do
       setup { get :index }
-      should_redirect_to("Billing report") { "/reports/billing" }
+      should_respond_with :success
     end
 
     context "on GET to :user" do
@@ -28,13 +28,13 @@ class ReportsControllerTest < ActionController::TestCase
     context "GET to :search with search criteria" do
 
       should "find all time_entries in current month if all search criteria are empty" do
-        get :search, :project_id => "", :user_id => "", :billed => "", :customer_id => ""
+        get :search, :project_id => "", :user_id => "", :billed => "", :customer => "*"
         time_entries = assigns(:time_entries)
         assert_equal(TimeEntry.between(@date.at_beginning_of_month, @date.at_end_of_month).count, time_entries.size )
       end
 
       context "render the result in pdf" do
-        setup { get :search, :project_id => "", :user_id => "", :billed => "", :customer_id => "", :format => 'pdf' }
+        setup { get :search, :project_id => "", :user_id => "", :billed => "", :customer => "*", :format => 'pdf' }
         should_respond_with :success
         should_assign_to  :parameters
       end
@@ -63,7 +63,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     context "marking hours as billed from search page" do
       setup do
-        post :mark_time_entries, :mark_as => 'billed', :value => 'true',:month=>7, :year=>2009, :method => 'post'
+        post :mark_time_entries, :mark_as => 'billed', :value => 'true',:month=>7, :year=>2009, :customer => '*',:method => 'post'
       end
       should_change("the number of billed time entries") { TimeEntry.billed(true).count }
     end

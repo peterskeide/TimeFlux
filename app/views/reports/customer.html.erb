@@ -1,60 +1,33 @@
 
-<h1>Summary Report</h1>
+<h1>Customer Report</h1>
 
 <%= render :partial => 'sub_menu' -%>
 
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<% form_tag 'summary', :method => 'get', :id => 'hours_form' do %>
-
+<% form_tag 'customer', :method => 'get', :id => "customer_form" do %>
+  <div>
     <table>
       <tr>
-        <td><%= label_tag "year" %></td>
+        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-      </tr>
-      <tr>
-        <td><%= label_tag "month" %></td>
-        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month].to_i  ) %></td>
-      </tr>
-
-      <tr><td></td></tr>
-      <tr><td></td><td><%= submit_tag "Apply Filter" %></td> </tr>
+      <td><%= submit_tag "View" %></td>
     </table>
-
+  </div>
 <% end -%>
-
 <br/>
 
-  <%#= will_paginate @activities %>
+<h3>Billable Customers</h3>
 
-    <table class="regular">
-      <tr>
-        <th>Customer</th>
-        <th>Project</th>
-        <th>Hours</th>
-      </tr>
-      <% sum = 0 %>
-      <% @project_hours.each do |customer,project, hours| %>
-      <tr>
-        <td><%= customer.name%></td>
-        <td><%= link_to project.name, :action => "project", :project => project %></td>
-        <td style="text-align:right"><%= hours %></td>
-        <% sum += hours %>
-      </tr>
-      <% end %>
+<div id="customer_content">
+  <%= render :partial => 'customer_content', :locals => { :project_hours => @billable_project_hours} %>
+</div>
 
-      <tr style="text-align:right">
 
-        <th colspan="2" style="border-width: 1px; border-top-style: solid;">Total</th>
-        <th style="border-width: 1px; border-top-style: solid;"><%= sum %></th>
+<br><br>
+<h3>Internal</h3>
 
-      </tr>
-
-    </table>
-
-<%#= will_paginate @activities %>
-
-<%#= render_table @table -%>
-<%#= render :partial => 'download', :locals => { :params => params, :action => 'summary' } -%>
-
+<div id="internal_content">
+  <%= render :partial => 'customer_content', :locals => { :project_hours => @internal_project_hours} %>
+</div>

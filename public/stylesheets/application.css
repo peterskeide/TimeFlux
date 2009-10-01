@@ -118,7 +118,8 @@ div#week_total {
 .center {
     margin-left: auto;
     margin-right: auto;
-    width: 6em;
+    width: 20em;
+    text-align:center;
 }
 
 .activity_header {
@@ -338,8 +339,8 @@ td.week_entries_hours {
 
 #main {
 	float: left;
-	width: 100%;
-	border-bottom: 1px dotted;
+	width: 98%;
+        margin: 1%;
 }
 
 #footer {

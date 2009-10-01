@@ -7,9 +7,9 @@
 
 	<div class="navigation">
 		<h3 class="compact">
-			<%= link_to '<<', edit_user_vacation_path(@user, :id => (@day << 1).year, :date => @day << 1) %>
+			<%= link_to '<<', edit_user_vacation_path(@user, :id => (@day << 1).year, :month => (@day << 1).month) %>
 			<span><%= @day.strftime('%B %Y') %></span>
-			<%= link_to '>>', edit_user_vacation_path(@user, :id => (@day >> 1).year, :date => @day >> 1) %> 
+			<%= link_to '>>', edit_user_vacation_path(@user, :id => (@day >> 1).year, :month => (@day >> 1).month) %> 
 		</h3>
 	</div>
 
