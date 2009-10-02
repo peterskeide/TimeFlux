@@ -18,8 +18,7 @@ class Period
   end
   
   def ready_for_approval?
-    @total_hours >= @expected_hours &&
-     @total_days >= @expected_days
+    (@total_hours >= @expected_hours) && (@total_days >= @expected_days)
   end
   
   def locked?

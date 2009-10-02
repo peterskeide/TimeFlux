@@ -86,7 +86,7 @@ class UserTest < ActiveSupport::TestCase
     context "the current_activities method" do
     
       setup do
-        p = Project.create(:name => "TestProject")
+        p = Project.create(:name => "TestProject", :customer_id => customers(:conduct).id)
         hour_type = HourType.create!(:name => "TestHourType")
         p.users << @user
         @a1 = Activity.create(:name => "TestOne", :project_id => p.id)
@@ -105,12 +105,11 @@ class UserTest < ActiveSupport::TestCase
          assert !@user.current_activities(@date).uniq! # uniq! returns nil if no duplicated are removed    
       end
     
-      should "sort activities by most used in the previous week" do
+      should "place last used activity first in list" do
         activities = @user.current_activities(@date)
-        assert_equal(@a1.id, activities.shift.id)
-        assert_equal(@a2.id, activities.shift.id)
-        assert_equal(@a3.id, activities.shift.id)
+        assert_equal(@a1.id, activities.first.id)
       end
+
     end
   
   end

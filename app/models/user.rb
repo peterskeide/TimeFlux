@@ -88,22 +88,18 @@ class User < ActiveRecord::Base
   # the activities assigned to the user
   def current_activities(date)
     current = projects.map{ |project| project.activities }.flatten
-    current = sort_by_most_used_activity(date, current.uniq)
     current += Activity.active(true).default(true)
+    current.uniq!
+    current.sort! { |a, b| a.customer_project_name <=> b.customer_project_name }
+    last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first.activity
+    if last_used
+      current = current.delete_if { |activity| activity.id == last_used.id }
+      current = current.unshift(last_used)
+    end
     current
   end
     
   private
-  
-  def sort_by_most_used_activity(date, activities)
-    start_date = date - 7
-    activity_count = Hash.new(0)
-    activities.each do |a|
-      count = time_entries.between(start_date, date).all(:conditions => ["activity_id = :aid", { :aid => a.id }]).length
-      activity_count[a] = count
-    end
-    activity_count.sort { |a,b| a[1] <=> b[1] }.collect { |ac| ac[0] }.reverse
-  end
   
   def validate_not_last_admin
     if admin && User.find_all_by_admin(true).size == 1 then

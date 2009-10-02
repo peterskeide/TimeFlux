@@ -1,4 +1,3 @@
-
 <h1>Review Month
   <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
 </h1>
@@ -35,7 +34,7 @@
     </tr>
   </table>
   <br/><br/>
-  <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing) %> </div>
+  <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing, :calendar => @beginning_of_month) %> </div>
 </div>
 
 <div class="calender" style="width:450px">
