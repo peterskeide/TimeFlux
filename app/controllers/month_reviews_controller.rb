@@ -39,8 +39,12 @@ class MonthReviewsController < ApplicationController
   end
   
   def parse_or_create_date
-    if params[:calendar]
-      return Date.new(params[:calendar]["date(1i)"].to_i, params[:calendar]["date(2i)"].to_i, 1)
+    if date = params[:calendar]
+      if date.is_a?(String)
+        return Date.parse(date)
+      else
+        return Date.new(params[:calendar]["date(1i)"].to_i, params[:calendar]["date(2i)"].to_i, 1)
+      end
     else
       return Date.today.beginning_of_month    
     end
