@@ -1,66 +1,62 @@
-  <% expected_days = Holiday.expected_days_between(day,day.at_end_of_month) -%>
-  <% expected_hours = Holiday.expected_hours_between(day,day.at_end_of_month) -%>
+<% expected_days = Holiday.expected_days_between(day,day.at_end_of_month) -%>
+<% expected_hours = Holiday.expected_hours_between(day,day.at_end_of_month) -%>
 
-  <p class="error"><%= flash[:error] %></p>
+<p class="error"><%= flash[:error] %></p>
 
-  <%= will_paginate billable_customers %>
+<%= will_paginate billable_customers %>
 
-  <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
-    <table class="regular">
-      <% billable_customers.each do |customer| %>
-        
-        <tr>
-          <td colspan="99"> <h3 class="compact"><%= customer.name %></h3></td>
-        </tr>
-        <% customer.projects.each do |project| %>
-          <% total= TimeEntry.billed(false).between(day,day.at_end_of_month).for_project(project).sum(:hours) %>
-          <% if total == 0 %>
+
+<% billing_data = Billing.new(billable_customers,day).billing_report_data %>
+
+<% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
+  <table class="regular">
+    <% billing_data.each do |customer_name, total_hours, projects_data| %>
+
+      <tr>
+        <td colspan="99"> <h3 class="compact"><%= customer_name %></h3></td>
+      </tr>
+      <% projects_data.each do |project, project_total, project_data| %>
+
+        <% if project_total == 0 %>
+          <tr>
+            <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
+          </tr>
+
+          <% project_data.each do |user,type_name,hours| %>
             <tr>
-              <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
-            </tr>
-          <% else %>
-            <tr>
-              <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
-            </tr>
-
-            <% User.all.each do |user| %>
-              <% time_entries =  user.time_entries.billed(false).between(day,day.at_end_of_month).for_project(project) %>
-              <% if time_entries.sum(:hours) > 0 %>
-                <% types = time_entries.map{|e| e.hour_type}.uniq %>
-                <% types.each do |type| %>
-                  <% hours_for_type = time_entries.for_type(type).sum(:hours) %>
-                <tr>
-                  <td>
-                    <% if type == types.first %>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="<%= user.status_for_month(day, expected_days, expected_hours)%>">
-                      <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(day) ) ) %>
-                    </span>
-                    <% end %>
-                  </td>
-                  <td><%= type.name %></td>
-                  <td><%= hours_for_type %> t </td>
-                  <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => day %></td>
-                </tr>
-              <% end %>
-<% end %>
-            <% end %>
-            <tr>
-              <td></td><td><b>total</b></td><td><b><%= total %> t</b></td>
-              
+              <td>
+                <%# if type == types.first %>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span class="<%#= user.status_for_month(day, expected_days, expected_hours)%><%= user.month_status(day)%>">
+                    <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(day) ) ) %>
+                  </span>
+                <%# end %>
+              </td>
+              <td><%= type_name %></td>
+              <td><%= hours %> t </td>
+              <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => day %></td>
             </tr>
           <% end %>
         <% end %>
+        <tr>
+          <td></td><td><b>total</b></td><td><b><%= project_total %> t</b></td>
+        </tr>
       <% end %>
-    </table>
+    <% end %>
 
-    <%= will_paginate billable_customers %>
+  </table>
 
-    <br/>
-    <hr/>
-    <%= hidden_field_tag 'year',  params[:year] %>
-    <%= hidden_field_tag 'month',  params[:month] %>
-    <%= hidden_field_tag 'format',  "pdf" %>
-    <%= submit_tag "Report (PDF)", :name => 'report' %>
-    <%= submit_tag "Mark as billed", :name => 'bill' %>
-  <% end -%>
+  <%= will_paginate billable_customers %>
+
+  <br/>
+  <hr/>
+  <%= hidden_field_tag 'year',  params[:year] %>
+  <%= hidden_field_tag 'month',  params[:month] %>
+  <%= hidden_field_tag 'format',  "pdf" %>
+  <%= submit_tag "Report (PDF)", :name => 'report' %>
+  <%= submit_tag "Mark as billed", :name => 'bill' %>
+<% end -%>

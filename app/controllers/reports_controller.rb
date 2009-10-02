@@ -12,17 +12,22 @@ class ReportsController < ApplicationController
     setup_calender
     @users = User.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
 
-    date_iterator = @day.at_beginning_of_month.beginning_of_week
-    @weeks = [date_iterator]
-    @weeks << date_iterator until (date_iterator = date_iterator + 7).month != @day.month
-  
+    date_iterator = @day.at_beginning_of_month
+    @weeks = [[date_iterator, date_iterator.end_of_week]]
+    date_iterator = date_iterator + (8 - date_iterator.wday)
+    
+    until (date_iterator + 7).month != @day.month
+        @weeks << [date_iterator, date_iterator + 6] 
+        date_iterator = date_iterator + 7
+    end
+    @weeks << [date_iterator, date_iterator.at_end_of_month]
 
-    @expected = @weeks.collect do |day|
-      Holiday.expected_hours_between( day, (day + 4) )
+    @expected = @weeks.collect do |from, to|
+      Holiday.expected_hours_between( from,to )
     end
 
-    @totals = @weeks.collect do |day|
-      TimeEntry.between(day, (day + 6)).sum(:hours)
+    @totals = @weeks.collect do |day, to|
+      TimeEntry.between(day, to).sum(:hours)
     end
   end
 

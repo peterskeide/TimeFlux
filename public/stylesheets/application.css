@@ -281,9 +281,11 @@ td.actions img, td.actions input{
 	width: 9em;
 }
 
-.ok, .ok a { color: green; }
-.warn, .warn a { color: orange; }
-.error, .error a { color: red; }
+.ok, .ok a, .green, .green a { color: green; }
+.warn, .warn a, .orange, .orange a { color: orange; }
+.error, .error a, .red, .red a { color: red; }
+.normal, .normal a, .black, .black a { color: black; }
+.high, .high a { font-weight: bold; }
 
 .error, .red {
 	color: #c80000;

@@ -21,19 +21,25 @@ class User < ActiveRecord::Base
 
   def status_for_period(from_date, to_date, expected_days, expected_hours)
     hours = time_entries.between(from_date, to_date).sum(:hours)
-    days = time_entries.between(from_date, to_date).distinct_dates.count
+    days = TimeEntry.distinct_dates.between(from_date, to_date).for_user(self).all.size
     unlocked_count = time_entries.between(from_date, to_date).locked(false).count
 
+    puts "#{fullname}: Hours -> #{hours} >= #{expected_hours}, Days -> #{days} >= #{expected_days}, Unlocked = #{unlocked_count}"
+
     if hours >= expected_hours && days >= expected_days && unlocked_count == 0
-      return "ok"
+      return "green"
     end
 
-    if hours >= expected_hours
-      return "warn"
-    elsif days >= expected_days
-      return "warn"
+    if hours >= expected_hours && days >= expected_days
+      return "normal"
     end
-    return "error"
+
+    return "red"
+  end
+
+  def month_status(date)
+    period = Period.new(self,date.year,date.month)
+    period.locked? ? "green" : (period.ready_for_approval? ? "normal" : "red")
   end
   
   def self.all_except(user_or_user_id)
@@ -55,9 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def hours_on_day(day)
-    entries = self.time_entries.on_day day
-    hours = entries.collect{|t| t.hours}.sum
-    #if hours > 0 then hours.to_s else '-' end
+    time_entries.on_day(day).sum(:hours)
   end
 
   def <=>(other)

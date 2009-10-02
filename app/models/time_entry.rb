@@ -41,11 +41,17 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :billed, lambda { |billed|
-    billed ? { :conditions => { :status => billed ? 2 : [0,1] } } : {}
+    if billed == nil then {}
+    else
+      { :conditions => { :status => billed ? BILLED : [OPEN,LOCKED] } }
+    end
   }
 
   named_scope :locked, lambda { |locked|
-    locked ? { :conditions => { :status => locked ? [1,2] : 0 } } : {}
+    if locked == nil then {}
+    else
+      { :conditions =>  { :status => locked ? [LOCKED,BILLED] : OPEN } }
+    end
   }
 
   named_scope :between, lambda { |*args|

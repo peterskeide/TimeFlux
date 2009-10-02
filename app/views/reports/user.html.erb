@@ -18,16 +18,16 @@
 <% end -%>
 <br/>
 
-  <table class="regular">
+  <table class="regular" style="text-align:right">
     <tr>
       <th></th>
       <% @weeks.each do |date| %>
-      <th>Week <%= date.cweek %> </th>
+      <th>Week <%= date[0].cweek %> </th>
       <% end %>
     </tr>
 
     <tr class="grayed">
-      <td class="underline overline">Normal working hours</td>
+      <td class="underline overline" style="text-align:left">Normal working hours</td>
       <% @expected.each do |hours| %>
       <td class="underline overline"><%= hours %> </td>
       <% end %>
@@ -37,14 +37,16 @@
 
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %> </td>
-        <% @weeks.each_with_index do |date, index| %>
-          <% hours = TimeEntry.for_user(user).between(date, (date + 6)).sum(:hours) %>
+        <td style="text-align:left"><span class="<%= user.month_status(@day) %>">
+          <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %>
+        </span></td>
+        <% @weeks.each_with_index do |range, index| %>
+          <% hours = TimeEntry.for_user(user).between(range[0], range[1]).sum(:hours) %>
           <% color_code = case hours
               when 0 : "grayed"
-              when 0..(@expected[index] -1): ""
-              when (@expected[index])..(@expected[index] * 1.3): "ok"
-              else "error"
+              when 0..(@expected[index] -1): "red"
+              when (@expected[index] - 1)..(@expected[index] * 1.3): "black"
+              else "high"
           end %>
 
             <td class="<%= color_code -%>"><%= hours %></td>

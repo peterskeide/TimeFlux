@@ -8,7 +8,7 @@ class Period
     @user = user
     @time_entries = @user.time_entries.between(@start, @end)
     @total_hours = @time_entries.collect { |te| te.hours }.sum
-    @expected_hours_per_day_in_period = expected_between_hash(@start, @end)
+    @expected_hours_per_day_in_period = Holiday.expected_between_hash(@start, @end)
     @expected_hours = find_expected_hours
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
@@ -77,36 +77,36 @@ class Period
   	locked_status.size == 1 and not locked_status.include? false
   end
   
-  # Cannot span multiple years with current hack...
-  def expected_between_hash(from_date, to_date)
-    #HACK Repeating holidays have year set to 1992 (avoids database specific SQL)
-    repeating_from = Date.civil(1992,from_date.month,from_date.mday)
-    repeating_to   = Date.civil(1992,to_date.month,to_date.mday)
-
-    repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
-    one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
-
-    # generate plain hash, and overwrite days with repeating and one time holidays
-    vacaition_activity = Configuration.instance.work_hours
-    period = {}
-    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : vacaition_activity ) }
-    repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
-    one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
-
-    period
-  end
-
-  def date_for_repeating(holiday, from_date, to_date)
-    in_from_date = Date.civil(from_date.year, holiday.date.month, holiday.date.mday)
-    in_to_date = Date.civil(to_date.year, holiday.date.month, holiday.date.mday)
-
-    if (from_date .. to_date).include? in_from_date
-      return in_from_date
-    elsif (from_date .. to_date).include? in_to_date
-      return in_to_date
-    else
-      raise "Could not find date in either year "
-    end
-  end
+#  # Cannot span multiple years with current hack...
+#  def expected_between_hash(from_date, to_date)
+#    #HACK Repeating holidays have year set to 1992 (avoids database specific SQL)
+#    repeating_from = Date.civil(1992,from_date.month,from_date.mday)
+#    repeating_to   = Date.civil(1992,to_date.month,to_date.mday)
+#
+#    repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
+#    one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
+#
+#    # generate plain hash, and overwrite days with repeating and one time holidays
+#    vacaition_activity = Configuration.instance.work_hours
+#    period = {}
+#    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : vacaition_activity ) }
+#    repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
+#    one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
+#
+#    period
+#  end
+#
+#  def date_for_repeating(holiday, from_date, to_date)
+#    in_from_date = Date.civil(from_date.year, holiday.date.month, holiday.date.mday)
+#    in_to_date = Date.civil(to_date.year, holiday.date.month, holiday.date.mday)
+#
+#    if (from_date .. to_date).include? in_from_date
+#      return in_from_date
+#    elsif (from_date .. to_date).include? in_to_date
+#      return in_to_date
+#    else
+#      raise "Could not find date in either year "
+#    end
+#  end
     
 end
