@@ -9,7 +9,7 @@ pdf.footer [pdf.margin_box.left, pdf.margin_box.bottom + 25] do
   pdf.font "Helvetica" do
     pdf.stroke_horizontal_rule
     pdf.move_down(10)
-    pdf.text "conduct 2009", :align => :center, :size => 12
+    pdf.text "Conduct 2009", :align => :center, :size => 12
   end
 end
 
@@ -53,7 +53,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
       end
       pdf.move_down(5)
 
-      pdf.table entry_data,
+      pdf.table entry_data.sort,
         :row_colors => ["FFFFFF","f0f0f0"],
         :headers => ['Dato', 'Type','Timer', 'Kommentar' ],
         :align => { 0 => :left, 1 => :left, 2 => :center},

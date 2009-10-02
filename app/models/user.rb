@@ -24,8 +24,6 @@ class User < ActiveRecord::Base
     days = TimeEntry.distinct_dates.between(from_date, to_date).for_user(self).all.size
     unlocked_count = time_entries.between(from_date, to_date).locked(false).count
 
-    puts "#{fullname}: Hours -> #{hours} >= #{expected_hours}, Days -> #{days} >= #{expected_days}, Unlocked = #{unlocked_count}"
-
     if hours >= expected_hours && days >= expected_days && unlocked_count == 0
       return "green"
     end
