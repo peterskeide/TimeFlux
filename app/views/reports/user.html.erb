@@ -1,3 +1,5 @@
+<% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
+<% expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month) -%>
 
 <h1>User Report</h1>
 
@@ -37,7 +39,7 @@
 
     <% @users.each do |user| %>
       <tr>
-        <td style="text-align:left"><span class="<%= user.month_status(@day) %>">
+        <td style="text-align:left"><span class="<%= user.status_for_month(@day, expected_days, expected_hours)%><%#= user.month_status(@day) %>">
           <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %>
         </span></td>
         <% @weeks.each_with_index do |range, index| %>

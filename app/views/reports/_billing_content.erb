@@ -31,7 +31,7 @@
               <td>
                 <%# if type == types.first %>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span class="<%#= user.status_for_month(day, expected_days, expected_hours)%><%= user.month_status(day)%>">
+                  <span class="<%= user.status_for_month(day, expected_days, expected_hours)%><%#= user.month_status(day)%>">
                     <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(day) ) ) %>
                   </span>
                 <%# end %>
