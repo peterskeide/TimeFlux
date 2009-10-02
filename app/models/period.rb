@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :balance, :billing_degree, :time_entries
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :balance, :balance_workdays, :billing_degree, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -11,7 +11,7 @@ class Period
     @expected_hours = find_expected_hours
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
-    @balance = find_balance
+    @balance, @balance_workdays = find_balance
     @billing_degree = find_billing_degree
     @locked = is_period_locked?
   end
@@ -47,15 +47,17 @@ class Period
   
   def find_balance
     if Date.today > @end
-      @total_hours - @expected_hours
+      [@total_hours - @expected_hours, nil]
     elsif (@start...@end).include?(Date.today)
-      expected = find_expected_hours(@start, (Date.today-1))
-      actual = @user.time_entries.between(@start, (Date.today-1)).sum(:hours)
-      actual - expected
+      balance_upto_day = TimeEntry.for_user(@user).on_day(Date.today).empty? ? Date.today - 1: Date.today
+      balance_workdays = find_expected_days(@start, balance_upto_day)
+      expected = find_expected_hours(@start, balance_upto_day)
+      actual = @user.time_entries.between(@start, balance_upto_day).sum(:hours)
+      [actual - expected, balance_workdays]
     else
-      0
+      [0,nil]
     end
-  end  
+  end
 
   def find_expected_hours(from=@start, to=@end)
     period = expected_between_hash(from, to)
@@ -64,8 +66,8 @@ class Period
     sum
   end
   
-  def find_expected_days
-    period = expected_between_hash(@start, @end)
+  def find_expected_days(from=@start, to=@end)
+    period = expected_between_hash(from, to)
     days = 0
     period.each_value { |value| days += 1 if value > 0}
     days
