@@ -8,6 +8,7 @@ class Period
     @user = user
     @time_entries = @user.time_entries.between(@start, @end)
     @total_hours = @time_entries.collect { |te| te.hours }.sum
+    @expected_hours_per_day_in_period = expected_between_hash(@start, @end)
     @expected_hours = find_expected_hours
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
@@ -49,7 +50,7 @@ class Period
     if Date.today > @end
       [@total_hours - @expected_hours, nil]
     elsif (@start...@end).include?(Date.today)
-      balance_upto_day = TimeEntry.for_user(@user).on_day(Date.today).empty? ? Date.today - 1: Date.today
+      balance_upto_day = @user.time_entries.on_day(Date.today).empty? ? Date.today - 1: Date.today
       balance_workdays = find_expected_days(@start, balance_upto_day)
       expected = find_expected_hours(@start, balance_upto_day)
       actual = @user.time_entries.between(@start, balance_upto_day).sum(:hours)
@@ -60,16 +61,14 @@ class Period
   end
 
   def find_expected_hours(from=@start, to=@end)
-    period = expected_between_hash(from, to)
     sum = 0
-    period.each_value { |value| sum = sum + value }
+    @expected_hours_per_day_in_period.each { |date, value| sum = sum + value if (from..to).include?(date) }
     sum
   end
   
   def find_expected_days(from=@start, to=@end)
-    period = expected_between_hash(from, to)
     days = 0
-    period.each_value { |value| days += 1 if value > 0}
+    @expected_hours_per_day_in_period.each { |date, value| days += 1 if value > 0 && (from..to).include?(date) }
     days
   end
   
@@ -77,7 +76,7 @@ class Period
     locked_status = @time_entries.map { |te| te.locked }.uniq
   	locked_status.size == 1 and not locked_status.include? false
   end
-
+  
   # Cannot span multiple years with current hack...
   def expected_between_hash(from_date, to_date)
     #HACK Repeating holidays have year set to 1992 (avoids database specific SQL)
@@ -88,8 +87,9 @@ class Period
     one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
 
     # generate plain hash, and overwrite days with repeating and one time holidays
+    vacaition_activity = Configuration.instance.work_hours
     period = {}
-    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : Configuration.instance.work_hours ) }
+    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : vacaition_activity ) }
     repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
     one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
 

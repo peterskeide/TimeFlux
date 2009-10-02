@@ -60,8 +60,6 @@ class Holiday < ActiveRecord::Base
     holidays     
   end
 
-  private
-
   # Cannot span multiple years with current hack...
   def self.expected_between_hash(from_date, to_date)
     #HACK Repeating holidays have year set to 1992 (avoids database specific SQL)
@@ -71,12 +69,14 @@ class Holiday < ActiveRecord::Base
     repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
     one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
 
+    # generate plain hash, and overwrite days with repeating and one time holidays
+    vacaition_activity = Configuration.instance.work_hours
     period = {}
-    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : Configuration.instance.work_hours ) }
+    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : vacaition_activity ) }
     repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
     one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
 
-    return period
+    period
   end
 
   def self.date_for_repeating(holiday, from_date, to_date)
