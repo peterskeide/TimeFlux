@@ -172,6 +172,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
         end
       end
       
+      should "re-enable image_sumit_tag" do
+        assert @response.body.match(Regexp.escape('$("Monday_submit").disabled = false;'))        
+      end
+      
     end
             
     context "successful PUT to :update without javascript" do
@@ -202,7 +206,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_assign_to :time_entry, :user
       should_render_template :edit
       should_set_the_flash_to "Unable to update time entry"
-      
+            
     end
     
     context "successful PUT to :update with javascript" do
@@ -230,7 +234,7 @@ class TimeEntriesControllerTest < ActionController::TestCase
           assert_select "b", "3.0"
         end
       end
-      
+            
     end
     
     context "unsuccessful PUT to :update with javascript" do
@@ -247,6 +251,10 @@ class TimeEntriesControllerTest < ActionController::TestCase
         assert_select_rjs :replace_html, "Monday_time_entry_error_messages" do
           assert_select "p.error", assigns(:time_entry).errors.full_messages.to_s 
         end
+      end
+      
+      should "re-enable image_sumit_tag" do
+        assert @response.body.match(Regexp.escape('$("Monday_submit").disabled = false;'))        
       end
     
     end

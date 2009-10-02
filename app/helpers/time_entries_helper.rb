@@ -20,6 +20,6 @@ module TimeEntriesHelper
   
   def weekdays
     Weekdays
-  end      
-    
+  end
+      
 end

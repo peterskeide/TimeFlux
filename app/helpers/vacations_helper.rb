@@ -37,21 +37,21 @@ module VacationsHelper
   
   def days_of_month_for_user(user)
     vacation_entries = user.time_entries.for_activity(Configuration.instance.vacation_activity).between(@day, @day.at_end_of_month)
-    @entries_and_dates = {}
+    @dates_and_entries = {}
     vacation_entries.each do |te|
-      @entries_and_dates[te.date] = te
+      @dates_and_entries[te.date] = te
     end
     @days_of_month ||= (@day..@day.at_end_of_month)
   end
   
   def check_box_tag_unless_holiday_or_weekend(day)
     unless @holidays.include? day
-      check_box_tag "dates[#{ day }]", '1', @entries_and_dates.keys.include?(day), :disabled => @entries_and_dates[day] && @entries_and_dates[day].locked
+      check_box_tag "dates[#{ day }]", '1', @dates_and_entries.keys.include?(day), :disabled => @dates_and_entries[day] && @dates_and_entries[day].locked
     end
   end
   
   def disabled_check_box_or_dash_unless_holiday_or_weekend(day)
-    if @entries_and_dates.keys.include?(day)
+    if @dates_and_entries.keys.include?(day)
       tag(:input, {:type => "checkbox", :checked => "1", :disabled => "true"})
     elsif !@holidays.include? day
       content_tag(:span, "-", :class => "disabled")
