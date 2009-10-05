@@ -14,16 +14,21 @@
 <% time_entries = TimeEntry.for_user(@user).for_project(@project).between(@day, @day.at_end_of_month).sort %>
 
 <table width="100%" class="regular">
-  <tr><th>Date</th><th>Activity</th><th>Type</th><th>Hours</th><th>Notes</th></tr>
-<% time_entries.each do |e|%>
-  <tr>
-<td><%= e.date %></td>
-<td><%= e.activity.name %></td>
-<td><%= e.hour_type.name %></td>
-<td><%= e.hours %></td>
-<td width="60%"><%= e.notes %></td>
-  </tr>
-<% end %>
+  <tr><th>Date</th><th>Activity</th><th>Type</th><th>Status</th><th style="text-align:right">Hours</th><th>Notes</th></tr>
+  <% total = 0 %>
+  <% time_entries.each do |e|%>
+    <tr>
+      <td><%= e.date %></td>
+      <td><%= e.activity.name %></td>
+      <td><%= e.hour_type.name %></td>
+      <td><%= e.status_str %></td>
+      <td width="2%" style="text-align:right"><%= e.hours %></td>
+      <td width="60%"><%= e.notes %></td>
+
+    </tr>
+    <% total += e.hours %>
+  <% end %>
+    <tr><th colspan="5" class="overline" style="text-align:right">Total <%= total -%></th><th class="overline"></th></tr>
 </table>
 
 <br/>

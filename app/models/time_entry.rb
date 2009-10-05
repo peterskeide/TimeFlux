@@ -90,6 +90,15 @@ class TimeEntry < ActiveRecord::Base
   def billed
     status == BILLED
   end
+
+  def status_str
+    case status
+    when   OPEN then "Open"
+    when LOCKED then "Locked"
+    when BILLED then "Billed"
+    else "ERROR: status not set!"
+    end
+  end
   
   def self.search(from_day,to_day,customer,project,tag,tag_type,user,status)
     debug = ""

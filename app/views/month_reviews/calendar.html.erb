@@ -18,23 +18,45 @@
 
 <div class="calender_activities">
   <table style="border-collapse: collapse;">
-    <% @activities_summary.each do |entry| %>
+    <% sum = 0 %>
+    <% @activities_summary[:billable].each do |entry| %>
       <tr>
         <td><%= entry[:name] -%></td>
         <td style="text-align:right"><%= entry[:hours] -%></td>
+        <% sum += entry[:hours] %>
       </tr>
     <% end %>
+    <tr>
+      <th class="overline">
+        Total:
+      </th>
+      <th class="overline" style="text-align:right; min-width:3em;">
+        <%= sum -%>
+      </th>
+    </tr>
+
+    <tr><td>&nbsp;</td></tr>
+    <% sum = 0 %>
+    <% @activities_summary[:unbillable].each do |entry| %>
+      <tr>
+        <td><%= entry[:name] -%></td>
+        <td style="text-align:right"><%= entry[:hours] -%></td>
+        <% sum += entry[:hours] %>
+      </tr>
+    <% end %>
+
     <tr>
       <td class="overline">
         <b>Total:</b>
       </td>
       <td class="overline" style="text-align:right; min-width:3em;">
-        <b> <%= @period.total_hours -%></b>
+        <b> <%= sum -%></b>
       </td>
     </tr>
   </table>
   <br/><br/>
   <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing, :calendar => @beginning_of_month) %> </div>
+  <br/>
 </div>
 
 <div class="calender" style="width:450px">
@@ -65,9 +87,9 @@
           <%= d == Date.today ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
         </td>
         <% if d.wday == 0 %>
-        <td class="leftline" style="color:gray">
-          <%= week_sum %><% week_sum = 0 %>
-        </td>
+          <td class="leftline" style="color:gray">
+            <%= week_sum %><% week_sum = 0 %>
+          </td>
         </tr>
       <% end -%>
     <% end %>
@@ -88,7 +110,8 @@
 <p>
   Billing degree: <%= (@period.billing_degree * 100).round %> %
 </p>
-<hr/>
+
+<hr style="clear:both"/>
 <br/>
 
 <div class="center">

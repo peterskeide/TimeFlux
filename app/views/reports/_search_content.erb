@@ -25,7 +25,7 @@
           <% unless @group_by == :user %><td style="white-space:nowrap;"><%= entry.user.name -%></td><% end %>
           <% unless @group_by == :activity %><td style="white-space:nowrap;"><%= entry.activity.name -%></td><% end %>
           <td style="white-space:nowrap;"><%= entry.hour_type.name -%></td>
-          <td><%= entry.billed ? 'billed' : (entry.locked ? 'locked' : 'open' ) -%></td>
+          <td><%= entry.status_str -%></td>
           <td><%= entry.hours -%></td>
           <td width="50%"><%=h entry.notes -%></td>
         </tr>
