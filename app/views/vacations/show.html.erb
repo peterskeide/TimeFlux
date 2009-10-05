@@ -14,7 +14,7 @@
 
 	<br/>
 
-	<table class="vacation regular" width="100%">
+	<table class="vacation " width="100%">
 
 	  <tr>
 	    <% Date::ABBR_MONTHNAMES.each_with_index do |month_name, i| %>
@@ -29,13 +29,13 @@
 					<%= user.name %>
 				</td>
 				<%  (1..12).each do |month| %>
-					<td style="border-left: 1 solid">
+					<td style="border-left-style: solid; border-right-style: solid; border-width:1px;">
 						<%= month_totals[month] > 0 ? month_totals[month] : '-' %>
 					</td> 
 				<% end %>
-				<td>
+				<th>
 					<%= year_total %>
-				</td>
+				</th>
 			<% end -%>
 	  	<% end %>
           </tr>
