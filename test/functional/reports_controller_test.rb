@@ -25,6 +25,11 @@ class ReportsControllerTest < ActionController::TestCase
       should_respond_with :success
     end
 
+    context "on GET to :project" do
+      setup { get :project, :project => projects(:community).id }
+      should_respond_with :success
+    end
+
     context "GET to :search with search criteria" do
 
       should "find all time_entries in current month if all search criteria are empty" do
@@ -44,6 +49,14 @@ class ReportsControllerTest < ActionController::TestCase
       setup { post :billing }
       should_assign_to  :day
       should_respond_with :success
+    end
+
+    context "rendering details" do
+      setup { get :details, :project => projects(:community).id, :user => users(:bob).id, :day => Date.today.to_s}
+      should_assign_to  :time_entries
+      should "show 9 entries" do
+        assert_equal 9, assigns(:time_entries).size
+      end
     end
 
     context "POST to :billing_action" do

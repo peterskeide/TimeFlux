@@ -41,6 +41,13 @@ tr .week {
     background:silver;
 }
 
+tr .day {
+    border-left-style: solid;
+    border-right-style: solid;
+    border-width: 1px;
+    border-color: silver;
+    min-width: 1.2em;
+}
 
 tr .leftline {
     border-left-style: solid;

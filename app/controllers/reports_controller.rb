@@ -68,13 +68,7 @@ class ReportsController < ApplicationController
     @user = User.find(params[:user])
     @project = Project.find(params[:project])
     @day = Date.parse(params[:day])
-  end
-
-  def update_billing_content
-    if request.xhr?
-      billing()
-      render :partial => 'billing_content', :locals => { :day => @day, :billable_customers => @billable_customers}
-    end
+    @time_entries = TimeEntry.for_user(@user).for_project(@project).between(@day, @day.at_end_of_month).sort
   end
 
   def customer

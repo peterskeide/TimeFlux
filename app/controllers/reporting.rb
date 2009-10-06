@@ -45,16 +45,6 @@ module Reporting
       :bottom_margin => 24 }
   end
 
-  def create_activity_summary(day, user=current_user_session.user)
-    activities = user.time_entries.between(day,day.at_end_of_month).distinct_activities.map do |t|
-      t.activity
-    end
-    activities.collect do |activity|
-      { :name => activity.name,
-        :hours => activity.time_entries.for_user(user).between(day,day.at_end_of_month).sum(:hours) }
-    end
-  end
-
   def project_hours_for_customers(customers)
     project_hours = []
     customers.each do |customer|
