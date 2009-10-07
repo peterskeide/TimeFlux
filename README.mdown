@@ -12,18 +12,19 @@ At the end of a month admins can view an overview over users to check that all r
 Features
 --------
 
-- For users:
- - Simple hour registration
- - Month overview
- - Public vacation overview
+For users:
 
+- Simple hour registration
+- Month overview
+- Public vacation overview
 
-- For admins:
- - Billing and statistics reports
- - Simple and advanced search
- - Categorized tags for grouping activities
- - Easy management of project assignments
- - Easy management of project activities by templates
+For admins:
+
+- Billing, user, companies and project reports
+- Simple and advanced search
+- Tagging of activities (for grouping purposes)
+- Easy management of project assignments
+- Easy management of project activities by templates
 
 
 Install
@@ -34,10 +35,10 @@ On Ubuntu linux:
 1. Install git: sudo apt-get install git-core
 2. Install ruby: sudo apt-get install ruby-full build-essential
 3. Install Rubygems
-  1. Download latest version of rubygems from rubyforge (http://rubyforge.org/frs/?group_id=126)
-  2. Decompress into suitable directory and, in same directory, execute command: ruby setup.rb
-  3. Create softlink: sudo ln -s /usr/bin/gem1.8 /usr/bin/gem
-  4. Verify installation: gem -v
+	1. Download latest version of rubygems from rubyforge (http://rubyforge.org/frs/?group_id=126)
+	2. Decompress into suitable directory and, in same directory, execute command: ruby setup.rb
+	3. Create softlink: sudo ln -s /usr/bin/gem1.8 /usr/bin/gem
+	4. Verify installation: gem -v
 4. Install sqlite3 as your development database: sudo apt-get install sqlite3 libsqlite3-dev
 5. Install rails++: sudo gem install rails rake sqlite3-ruby prawn
 6. Clone the code from GitHub
