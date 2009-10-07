@@ -4,7 +4,7 @@
 	<td class="time_entry_hours"><%= f.text_field :hours, :size => 3 %></td>
 	<td class="time_entry_notes"><%= f.text_field :notes, :size => 47 %></td>
     <td class="time_entry_actions">
-		<%= image_submit_tag("disk.png", :title => 'Save', :onclick => 'this.disabled=true', :id => "#{day}_submit") %>
+		<%= image_submit_tag("disk.png", :title => 'Save', :id => "#{day}_submit") %>
 		<%= link_to_function image_tag("cancel.png", :title => 'Cancel') do |page|
 				page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day } 
 			end %>
