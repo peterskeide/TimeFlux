@@ -89,10 +89,10 @@ class User < ActiveRecord::Base
     current += Activity.active(true).default(true)
     current.uniq!
     current.sort! { |a, b| a.customer_project_name <=> b.customer_project_name }
-    last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first.activity
+    last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first
     if last_used
-      current = current.delete_if { |activity| activity.id == last_used.id }
-      current = current.unshift(last_used)
+      current = current.delete_if { |activity| activity.id == last_used.activity.id }
+      current = current.unshift(last_used.activity)
     end
     current
   end
