@@ -9,7 +9,6 @@ table {
 }
 
 A:link {text-decoration: none;color: blue;}
-A:visited {text-decoration: none;color: blue;}
 A:active {text-decoration: none;color: red;}
 A:hover {text-decoration: none; color: red;}
 

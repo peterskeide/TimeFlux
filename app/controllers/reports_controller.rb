@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
       if params[:report]
         @from_day = @day
         @to_day = @day.at_end_of_month
-        prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
+        initialize_pdf_download("billing_report.pdf")
         render :billing_report, :layout=>false
       else
         @projects.each do |p|
@@ -114,7 +114,7 @@ class ReportsController < ApplicationController
         @parameters << ["Kategori",@tag_type.name] if @tag_type
         @parameters << ["Tag",@tag.name] if @tag
 
-        prawnto :prawn => prawn_params, :filename=>"search_report.pdf"
+        initialize_pdf_download("search_report.pdf")
         render :search, :layout=>false
       end
     end

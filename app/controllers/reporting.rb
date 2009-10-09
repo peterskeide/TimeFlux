@@ -34,15 +34,13 @@ module Reporting
     Kernel.const_get(symbol.to_s.camelcase).find(params[symbol])  if params[symbol] && params[symbol] != ""
   end
 
-  # Prawnto arguments for creating a plain A4 page with sensible margins
-  #
-  def prawn_params
-    {
-      :page_size => 'A4',
-      :left_margin => 50,
-      :right_margin => 50,
-      :top_margin => 24,
-      :bottom_margin => 24 }
+  # Sets prawn arguments, and disables cache for explorer (prior to v. 6.0) 
+  # so that it too can download pdf documents
+  def initialize_pdf_download(filename)
+    prawnto :prawn => prawn_params, :filename=> filename
+    if request.env["HTTP_USER_AGENT"] =~ /MSIE/
+      response.headers['Cache-Control'] = ""
+    end
   end
 
   def project_hours_for_customers(customers)
@@ -54,5 +52,19 @@ module Reporting
     end
     project_hours
   end
+
+  private
+
+  # Prawnto arguments for creating a plain A4 page with sensible margins
+  #
+  def prawn_params
+    {
+      :page_size => 'A4',
+      :left_margin => 50,
+      :right_margin => 50,
+      :top_margin => 24,
+      :bottom_margin => 24 }
+  end
+
   
 end
