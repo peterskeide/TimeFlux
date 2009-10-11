@@ -39,7 +39,7 @@ Rails::Initializer.run do |config|
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
   # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/extras )
+  config.load_paths += %W( #{RAILS_ROOT}/app/aggregates #{RAILS_ROOT}/app/services )
 
   # !!!!! Add date_extensions require path here instead of in controller
 
