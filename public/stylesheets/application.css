@@ -17,7 +17,6 @@ A:hover {text-decoration: none; color: red;}
 .sub_menu a:active {color: black;}
 .sub_menu a:hover {text-decoration: none; color: red;}
 
-
 div.tag_symbol { z-index: 20 }
 div.tag_symbol .alt { display: none }
 
@@ -242,7 +241,7 @@ a img {
 
 td.time_entry_actions {
 	text-align:right;
-	min-width: 5em;
+	min-width: 6em;
 }
 
 td.time_entry_activity {
