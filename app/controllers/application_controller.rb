@@ -61,5 +61,15 @@ class ApplicationController < ActionController::Base
        return false
     end
   end
-  
+
+  private
+
+  # Updated to also handle IPv6
+  # See - https://rails.lighthouseapp.com/projects/8994/tickets/3257-local_request-does-not-detect-local-ipv6-connections
+  #
+  def local_request?
+    request.remote_addr == LOCALHOST && request.remote_ip == LOCALHOST ||
+    request.remote_addr == "::1" && request.remote_ip == "::1"
+  end
+ 
 end
