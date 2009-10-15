@@ -8,6 +8,32 @@ table {
         text-align: left;
 }
 
+fieldset { 
+    border:1px solid gray;
+    width:430px;
+    background-color:#F9F9F9;
+}
+
+legend {
+  padding: 0.2em 0.5em;
+  border:1px solid gray;
+  font-size:90%;
+  text-align:right;
+  color:#444444;
+}
+
+label.info {
+  float:left;
+  width:25%;
+  margin-right:1em;
+  text-align:right;
+  font-weight:bold;
+  
+  color:#444444;
+}
+
+
+
 A:link {text-decoration: none;color: blue;}
 A:active {text-decoration: none;color: red;}
 A:hover {text-decoration: none; color: red;}
@@ -118,7 +144,8 @@ div.false_tag a, div.true_tag a {
     border-collapse: collapse;
     border-style: solid;
     border-width: 1px;
-    border-color:gray
+    border-color:gray;
+    background-color:#F9F9F9;
 }
 
 .calender table tr th {

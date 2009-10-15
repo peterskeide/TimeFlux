@@ -34,11 +34,6 @@ class User < ActiveRecord::Base
 
     return "red"
   end
-
-  def month_status(date)
-    period = Period.new(self,date.year,date.month)
-    period.locked? ? "green" : (period.ready_for_approval? ? "normal" : "red")
-  end
   
   def self.all_except(user_or_user_id)
     if user_or_user_id.is_a? User 
@@ -50,8 +45,8 @@ class User < ActiveRecord::Base
     User.all(:conditions => ["id != ?", user_id])
   end
 
-   def status_for_month(date, expected_days, expected_hours)
-     status_for_period(date, date.at_end_of_month, expected_days, expected_hours)
+  def status_for_month(date, expected_days, expected_hours)
+    status_for_period(date, date.at_end_of_month, expected_days, expected_hours)
   end
 
   def self.status_values

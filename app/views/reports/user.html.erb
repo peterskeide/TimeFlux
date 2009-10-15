@@ -39,7 +39,7 @@
 
     <% @users.each do |user| %>
       <tr>
-        <td style="text-align:left"><span class="<%= user.status_for_month(@day, expected_days, expected_hours)%><%#= user.month_status(@day) %>">
+        <td style="text-align:left"><span class="<%= user.status_for_month(@day, expected_days, expected_hours)%>">
           <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %>
         </span></td>
         <% @weeks.each_with_index do |range, index| %>

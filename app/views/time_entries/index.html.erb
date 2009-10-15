@@ -36,7 +36,7 @@
     <% form_tag "/time_entries/change_user" do %>
       <%= hidden_field_tag :user_id, @user.id %>
       <%= hidden_field_tag :date, @date %>
-      <%= select_tag "new_user_id", options_from_collection_for_select(User.all, :id, :fullname) %>
+      <%= select_tag "new_user_id", options_from_collection_for_select(User.all.sort, :id, :fullname) %>
       <%= submit_tag "View for selected user" %>
     <% end -%>
   </p>
