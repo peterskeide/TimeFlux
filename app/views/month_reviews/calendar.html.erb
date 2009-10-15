@@ -54,7 +54,7 @@
         <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
           <% day_hours = @user.hours_on_day d; week_sum = week_sum + day_hours%>
           <% day_hours_as_s = day_hours > 0 ? day_hours : '-' %>
-          <%= d == Date.today ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
+          <%= d.mday == Time.zone.now.day ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
         </td>
         <% if d.wday == 0 %>
           <td class="leftline" style="color:gray">
@@ -87,6 +87,7 @@
     <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
   </p>
 </fieldset>
+<br />
 
 <hr style="clear:both"/>
 <br/>

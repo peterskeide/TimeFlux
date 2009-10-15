@@ -253,7 +253,7 @@ a.menu_link {
 	color: #ffffff;
 }
 
-a:hover.menu_link {
+a:hover.menu_link, a:link.menu_link, a:visited.menu_link, a:active.menu_link {
 	text-decoration:none;
 	color: #c80000;
 }
