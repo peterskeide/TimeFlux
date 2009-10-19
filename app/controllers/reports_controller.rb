@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
 
   def user
     setup_calender
-    @users = User.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
+    @users = User.active.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
 
     date_iterator = @day.at_beginning_of_month
     @weeks = [[date_iterator, date_iterator.end_of_week]]

@@ -248,13 +248,12 @@ table.regular tbody tr th, table.regular tbody tr td  {
         padding-right: 10px;
 }
 
-a.menu_link {
+a.menu_link, a:link.menu_link, a:visited.menu_link, a:active.menu_link {
 	text-decoration:none;
 	color: #ffffff;
 }
 
-a:hover.menu_link, a:link.menu_link, a:visited.menu_link, a:active.menu_link {
-	text-decoration:none;
+a:hover.menu_link {
 	color: #c80000;
 }
 

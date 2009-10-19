@@ -10,7 +10,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :login
   
   before_destroy :validate_not_last_admin, :validate_has_no_projects, :validate_has_no_time_entries
-  
+
+  named_scope :active, :conditions => { :operative_status => "active" }
+
+
   def fullname
     "#{self.firstname} #{self.lastname}"
   end
