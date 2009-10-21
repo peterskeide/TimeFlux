@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
 
   named_scope :active, :conditions => { :operative_status => "active" }
 
-
   def fullname
     "#{self.firstname} #{self.lastname}"
   end
