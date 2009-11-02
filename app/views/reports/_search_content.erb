@@ -3,21 +3,28 @@
 
 <% unless @time_entries.empty? %>
 
+<p>Found <%=  @time_entries.size %> entries / <%= @time_entries.sum(&:hours) %> hours</p>
+
   <% user_entries = @time_entries.group_by(&@group_by) %>
   <% user_entries.each do |group, te| %>
-    <h3>
-    <%= case @group_by
+    
+    <% group_header = case @group_by
         when :activity then group.customer_project_name
         when :user then group.name
         else group.to_s end %>
-    </h3>
+
+    <h3><%= "#{group_header}, #{te.sum(&:hours)} hours"%></h3>
+
     <table width="100%" class="regular">
       <tr>
-        <% columns = %w{Date User Activity Type Status Hours Notes};
+        <% columns = %w{Date User Activity Type Status };
            columns.delete(@group_by.to_s.capitalize) %>
         <% columns.each do |column| %>
           <th><%= column %></th>
         <% end %>
+        <th width="2%" style="text-align:right">Hours</th>
+        <th width="55%">Notes</th>
+
       </tr>
       <%te.each do |entry| %>
         <tr>
@@ -26,14 +33,17 @@
           <% unless @group_by == :activity %><td style="white-space:nowrap;"><%= entry.activity.name -%></td><% end %>
           <td style="white-space:nowrap;"><%= entry.hour_type.name -%></td>
           <td><%= entry.status_str -%></td>
-          <td><%= entry.hours -%></td>
-          <td width="50%"><%=h entry.notes -%></td>
+          <td style="text-align:right"><%= entry.hours -%></td>
+          <td><%=h entry.notes -%></td>
         </tr>
       <% end %>
     </table>
  <br/>
-  <% end %>
 
+
+  <% end %>
+<hr/>
+ <br/>
   <table>
     <tr>
       <td>
@@ -60,12 +70,14 @@
           <%= submit_tag 'Unlock' %>
         <% end %>
       </td>
+      <td style="padding-left:50px">
+        <%= link_to "Download report:" + image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => 'search'})%>
+      </td>
     </tr>
   </table>
 
-  <br/><hr/>
-  Download report:<%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({:format => "pdf",:action => 'search'})%>
-
+  <br/>
+  
   <% else %>
     <p>No hits.</p>
   <% end %>

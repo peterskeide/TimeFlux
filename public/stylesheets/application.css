@@ -8,7 +8,7 @@ table {
         text-align: left;
 }
 
-fieldset { 
+fieldset.statistics {
     border:1px solid gray;
     width:430px;
     background-color:#F9F9F9;
