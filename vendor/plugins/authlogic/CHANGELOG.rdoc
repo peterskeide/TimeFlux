@@ -1,6 +1,25 @@
-== 2.0.14
+== 2.1.2
 
-* Fixed issue with using brute force protection AND generalize_credentials_error_messages. Brute force protection was looking to see if there were password errors, which generalize_credentials_error_messages was obfuscating. This is all fixed now though thanks to a handy article on Microsoft (http://support.microsoft.com/kb/168702), method #2, it works every time.
+* Return the newly create object for the class level create method, instead of a boolean
+* Add a model_name class method for Authlogic::Session for rails 3 compatibility. Will be using ActiveModel eventually, but this should be a quick fix.
+
+== 2.1.1 released 2009-7-04
+
+* Use mb_chars when downcasing the login string to support international characters.
+* Check for the existence of the :remember_me key before setting remember_me off of a hash.
+* Added check to make sure Authlogic is not loaded too late, causing a NotActivated error.
+
+== 2.1.0 released 2009-6-27
+
+* Fixed bug when using act_like_restful_authentication and setting passwords, needed to add a 2nd parameter to tell if to check against the database or not.
+* Don't save record if they are read only.
+
+== 2.0.14 released 2009-6-13
+
+* Fixed issue with using brute force protection AND generalize_credentials_error_messages. Brute force protection was looking to see if there were password errors, which generalize_credentials_error_messages was obfuscating.
+* Added db_setup? method to avoid errors during rake tasks where the db might not be set up. Ex: migrations
+* Stop using errors.on(key) since that is now deprecated in Rails. Use errors[key] instead.
+* Use valid_password? for the method name to validate a password instead of valid_#{password_field}?.
 
 == 2.0.13 released 2009-5-13
 

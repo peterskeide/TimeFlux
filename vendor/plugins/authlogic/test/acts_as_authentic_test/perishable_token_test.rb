@@ -26,7 +26,7 @@ module ActsAsAuthenticTest
       u = User.new
       u.perishable_token = users(:ben).perishable_token
       assert !u.valid?
-      assert u.errors.on(:perishable_token)
+      assert u.errors[:perishable_token].size > 0
     end
     
     def test_before_save_reset_perishable_token
@@ -79,6 +79,12 @@ module ActsAsAuthenticTest
       assert_nil User.find_using_perishable_token(ben.perishable_token, 5.minutes)
       assert_equal ben, User.find_using_perishable_token(ben.perishable_token, 20.minutes)
       User.perishable_token_valid_for = 10.minutes
+    end
+
+    def test_find_perishable_token_with_bang
+      assert_raises ActiveRecord::RecordNotFound do
+        User.find_using_perishable_token!('some_bad_value')
+      end
     end
   end
 end

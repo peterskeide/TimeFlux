@@ -1,6 +1,6 @@
 pdf.header pdf.margin_box.top_left do
   pdf.font "Helvetica" do
-    pdf.text "Søkeresultat", :size => 20, :align => :center
+    pdf.text t('search.title'), :size => 20, :align => :center
     pdf.image "public/images/conduct-logo.png", :width => 100, :position => :right,  :vposition => 4
   end
 end
@@ -16,9 +16,13 @@ end
 pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 120, :width => pdf.bounds.width do
   
   pdf.font "Helvetica" do
-    pdf.text "Søkekriterier", :size => 11
+    pdf.text t('search.criteria'), :size => 11
     pdf.move_down(10)
-    pdf.table @parameters,
+
+    styled_parameters = @parameters.map { |name,value|
+      [name, { :text => value, :font_style => :bold }] }
+
+    pdf.table styled_parameters,
       :border_style => :underline_header,
       :padding => 2,
       :font_size => 10
@@ -27,7 +31,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
   if @time_entries.empty?
     pdf.move_down(40)
-    pdf.text "No hours registered."
+    pdf.text t('search.empty_result')
   else
   
     user_entries = @time_entries.group_by(&@group_by)
@@ -56,7 +60,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
       pdf.table entry_data,
         :row_colors => ["FFFFFF","f0f0f0"],
-        :headers => ['Dato', 'Timer', 'Kommentar' ],
+        :headers => [t('common.date'),t('common.hours'), t('common.notes') ],
         :align => { 0 => :left, 1 => :center},
         :column_widths => {0 => 70, 1 => 40},
         :width      => pdf.margin_box.width,
@@ -66,7 +70,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
       pdf.stroke_horizontal_rule
       pdf.move_down(10)
-      pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
+      pdf.text "#{t('common.total_hours')}: #{te.sum(&:hours)}", :align => :right
     end
 
   end

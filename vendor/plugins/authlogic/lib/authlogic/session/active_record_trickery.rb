@@ -33,9 +33,15 @@ module Authlogic
           [self]
         end
         
-        # For Rails >2.3, fix mispelling
+        # For rails >= 2.3, mispelling fixed
         def self_and_descendants_from_active_record
           [self]
+        end
+        
+        # For rails >= 3.0
+        def model_name
+          clazz = defined?(::ActiveModel) ? ::ActiveModel::Name : ::ActiveSupport::ModelName
+          clazz.new(self.to_s)
         end
       end
       
@@ -43,6 +49,11 @@ module Authlogic
         # Don't use this yourself, this is to just trick some of the helpers since this is the method it calls.
         def new_record?
           new_session?
+        end
+        
+        # For rails >= 3.0
+        def to_model
+          self
         end
       end
     end

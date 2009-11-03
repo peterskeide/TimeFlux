@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
       if params[:report]
         @from_day = @day
         @to_day = @day.at_end_of_month
-        initialize_pdf_download("billing_report.pdf")
+        initialize_pdf_download("#{t'invoice.filename'}.pdf")
         render :billing_report, :layout=>false
       else
         @projects.each do |p|
@@ -106,13 +106,13 @@ class ReportsController < ApplicationController
       format.html { }
       format.pdf  do
         @parameters = []
-        @parameters << ["Periode","#{@from_day} to #{@to_day}"]
-        @parameters << ["Bruker",@user.fullname] if @user
-        @parameters << ["Fakturert",@billed ? "Ja" : "Nei"] if @billed
-        @parameters << ["Kunde",@customer.name] if @customer
-        @parameters << ["Prosjekt",@project.name]  if @project
-        @parameters << ["Kategori",@tag_type.name] if @tag_type
-        @parameters << ["Tag",@tag.name] if @tag
+        @parameters << [t('common.period'),"#{@from_day} to #{@to_day}"]
+        @parameters << [t('common.person'),@user.fullname] if @user
+        @parameters << [t('common.billable'),@billed ? "Ja" : "Nei"] if @billed
+        @parameters << [t('common.customer'),@customer.name] if @customer
+        @parameters << [t('common.project'),@project.name]  if @project
+        @parameters << [t('common.category'),@tag_type.name] if @tag_type
+        @parameters << [t('common.tag'),@tag.name] if @tag
 
         initialize_pdf_download("search_report.pdf")
         render :search, :layout=>false

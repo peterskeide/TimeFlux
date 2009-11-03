@@ -8,9 +8,13 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_user_session, :current_user
   
-  before_filter :set_time_zone
+  before_filter :set_time_zone, :set_language
 
   private
+
+  def set_language
+    I18n.locale = Configuration.instance.locale
+  end
   
   def set_time_zone
     Time.zone = Configuration.instance.time_zone
