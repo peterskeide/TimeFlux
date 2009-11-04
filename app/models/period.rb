@@ -40,10 +40,11 @@ class Period
   private
 
   def find_reported_upto_day
-    if Date.today > @end
+    today = Time.zone.now.to_date
+    if today > @end
       @end
-    elsif (@start...@end).include?(Date.today)
-      @user.time_entries.on_day(Date.today).empty? ? Date.today - 1: Date.today
+    elsif (@start...@end).include?(today)
+      @user.time_entries.on_day(today).empty? ? today - 1: today
     else
       @start - 1
     end
@@ -65,9 +66,10 @@ class Period
   end
   
   def find_balance(from=@start, to=@end)
-    if Date.today > @end
+    today = Time.zone.now.to_date
+    if today > @end
       @total_hours - @expected_hours
-    elsif (from...@end).include?(Date.today)
+    elsif (from...@end).include?(today)
       expected = find_expected_hours(from, to)
       actual = @user.time_entries.between(from, to).sum(:hours)
       actual - expected
@@ -92,37 +94,5 @@ class Period
     locked_status = @time_entries.map { |te| te.locked }.uniq
   	locked_status.size == 1 and not locked_status.include? false
   end
-  
-#  # Cannot span multiple years with current hack...
-#  def expected_between_hash(from_date, to_date)
-#    #HACK Repeating holidays have year set to 1992 (avoids database specific SQL)
-#    repeating_from = Date.civil(1992,from_date.month,from_date.mday)
-#    repeating_to   = Date.civil(1992,to_date.month,to_date.mday)
-#
-#    repeating = Holiday.find(:all, :conditions => { :date => (repeating_from .. repeating_to) })
-#    one_time =  Holiday.find(:all, :conditions => { :date => (from_date .. to_date) })
-#
-#    # generate plain hash, and overwrite days with repeating and one time holidays
-#    vacaition_activity = Configuration.instance.work_hours
-#    period = {}
-#    (from_date .. to_date).each{ |day| period.merge!( day => day.cwday >= 6 ? 0 : vacaition_activity ) }
-#    repeating.each{|holiday| period.merge!( Holiday.date_for_repeating(holiday, from_date, to_date)  => holiday.working_hours ) }
-#    one_time.each{|holiday| period.merge!( holiday.date => holiday.working_hours ) }
-#
-#    period
-#  end
-#
-#  def date_for_repeating(holiday, from_date, to_date)
-#    in_from_date = Date.civil(from_date.year, holiday.date.month, holiday.date.mday)
-#    in_to_date = Date.civil(to_date.year, holiday.date.month, holiday.date.mday)
-#
-#    if (from_date .. to_date).include? in_from_date
-#      return in_from_date
-#    elsif (from_date .. to_date).include? in_to_date
-#      return in_to_date
-#    else
-#      raise "Could not find date in either year "
-#    end
-#  end
-    
+
 end
