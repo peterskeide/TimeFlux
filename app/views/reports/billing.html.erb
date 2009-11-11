@@ -11,12 +11,26 @@
       <tr>
         <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
+        <%= hidden_field_tag 'from_letter',  params[:from_letter] %>
+        <%= hidden_field_tag 'to_letter',  params[:to_letter] %>
       <td><%= submit_tag "View" %></td>
     </table>
   </div>
 <% end -%>
 
+<br/>
+
+<% @intervals.each do |from,to| %>
+    [ <%= link_to "#{(from..to).to_a.join("-")}" , :action => "billing", :from_letter => from, :to_letter => to, :year => @day.year, :month => @day.month %> ]
+<% end %>    
+[ <%= link_to "All" , :action => "billing", :from_letter => "*", :to_letter => "*", :year => @day.year, :month => @day.month %> ]
 <hr/>
+
+<% if @billable_customers.empty? %> <p>
+  Total unbilled hours in <%= Date::MONTHNAMES[@day.month] %>:
+  <%= TimeEntry.billed(false).between(@day,@day.at_end_of_month).sum(:hours) %>
+</p>
+<% end %>
 
 <div id="billing_content">
 <% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
@@ -25,7 +39,6 @@
 <p class="error"><%= flash[:error] %></p>
 
 <%= will_paginate @billable_customers %>
-
 
 <% billing_data = Billing.new(@billable_customers,@day).billing_report_data %>
 

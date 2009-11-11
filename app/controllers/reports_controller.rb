@@ -12,15 +12,19 @@ class ReportsController < ApplicationController
     setup_calender
     @users = User.active.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
 
-    date_iterator = @day.at_beginning_of_month
-    @weeks = [[date_iterator, date_iterator.end_of_week]]
-    date_iterator = date_iterator + (8 - date_iterator.wday)
-    
-    until (date_iterator + 7).month != @day.month
-        @weeks << [date_iterator, date_iterator + 6] 
-        date_iterator = date_iterator + 7
+    first_day = @day.at_beginning_of_month
+    last_day = @day.at_end_of_month
+    first_week = [first_day,first_day.end_of_week]
+    last_week = [last_day.beginning_of_week,last_day]
+
+    date_iterator = first_day.end_of_week + 1 #monday in the second week of the month
+    middle_weeks = []
+    until date_iterator == last_day.beginning_of_week
+      middle_weeks << [date_iterator, date_iterator + 6]
+      date_iterator += 7
     end
-    @weeks << [date_iterator, date_iterator.at_end_of_month]
+
+    @weeks = [first_week] + middle_weeks + [last_week]
 
     @expected = @weeks.collect do |from, to|
       Holiday.expected_hours_between( from,to )
@@ -33,7 +37,15 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
-    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 8, :order => 'name'
+
+    #@billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 8, :order => 'name'
+
+    @intervals = [["A","E"],["F","J"],["K","O"],["P","T"],["U","Z"]]
+
+    params[:from_letter] ||= "A"
+    params[:to_letter] ||= "E"
+
+    @billable_customers = Customer.find_by_letter_range(params[:from_letter],  params[:to_letter], :page => params[:page], :per_page => 100)
   end
 
   # With the selected project this method will either mark entries as billed,
