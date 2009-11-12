@@ -1,6 +1,7 @@
 module Reporting
-   
-  #Used in review and report and holiday controller
+
+  private
+
   def setup_calender
     if params[:calender]
       year = params[:calender]["date(1i)"].to_i
@@ -38,9 +39,9 @@ module Reporting
   # so that it too can download pdf documents
   def initialize_pdf_download(filename)
     prawnto :prawn => prawn_params, :filename=> filename
-    if request.env["HTTP_USER_AGENT"] =~ /MSIE/
-      response.headers['Cache-Control'] = ""
-    end
+    #if request.env["HTTP_USER_AGENT"] =~ /MSIE/
+    #  response.headers['Cache-Control'] = ""
+    #end
   end
 
   def project_hours_for_customers(customers)
@@ -53,7 +54,26 @@ module Reporting
     project_hours
   end
 
-  private
+  # Takes a list of customers, and a date representing a month
+  # Returns 1. a list in the format ["what to display", "what to select", empty?, has_hours?]
+  #         2. a list of customers that doesnt start on any of the letters between A and Z.
+  def extract_customers_by_letter( customers, day )
+    letters = []
+    ('A'..'Z').each do |letter|
+      customers_on_letter = customers.select { |customer| customer.name.index(letter) == 0  }
+      customers -= customers_on_letter
+      if customers_on_letter
+        unbilled_hours = customers_on_letter.any? {|customer| customer.has_unbilled_hours_between(day,day.at_end_of_month) }
+      end
+      letters << [letter, letter, customers_on_letter.empty?, unbilled_hours ]
+    end
+
+    other_hours = customers.any? {|customer| customer.has_unbilled_hours_between(day,day.at_end_of_month) }
+    other = ['Other', '#', customers.empty?, other_hours ]
+    all = ['All', '*', false, letters.any?{|letter| letter[3] == true} || other[3] == true ]
+
+    return [all] + letters + [other], customers
+  end
 
   # Prawnto arguments for creating a plain A4 page with sensible margins
   #

@@ -27,4 +27,6 @@
   .pagination .next_page {
     margin-left: 1em; }
 
+  .pagination a.has_hours { color:blue; font-weight:bold;}
+  .pagination a.no_hours { color:black;}
 

@@ -15,19 +15,8 @@ class Customer < ActiveRecord::Base
     { :conditions => ["name LIKE ?", letter+"%"] }
   }
 
-  named_scope :between_letters, lambda { |from,to|
-    { :conditions => { :name => (from..to)} }
-  }
-
-  def self.find_by_letter_range(from, to, options = {})
-    conditions = case from 
-      when "*" then {}
-      when nil then {:name => ('A'..'E')}
-      else {:name => (from..(to.next))}
-    end
-    paginate :per_page => options[:per_page], :page => options[:page],
-       :order => 'name',
-       :conditions => conditions.merge(:billable => true)
+  def has_unbilled_hours_between(from,to)
+     TimeEntry.between(from,to).for_activities(self.activities).billed(false).count > 0
   end
 
   def <=>(other)

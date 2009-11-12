@@ -36,7 +36,7 @@ class Activity < ActiveRecord::Base
   }
 
   named_scope :for_customer, lambda { |customer_id|
-    customer_id ? { :include => :project, :conditions => ["projects.customer_id = ?", customer_id] } : {}
+    customer_id ? { :joins => :project, :conditions => ["projects.customer_id = ?", customer_id] } : {}
   }
 
   named_scope :templates, :conditions => { :template => true }

@@ -11,8 +11,7 @@
       <tr>
         <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-        <%= hidden_field_tag 'from_letter',  params[:from_letter] %>
-        <%= hidden_field_tag 'to_letter',  params[:to_letter] %>
+        <%= hidden_field_tag 'letter',  params[:letter] %>
       <td><%= submit_tag "View" %></td>
     </table>
   </div>
@@ -20,17 +19,21 @@
 
 <br/>
 
-<% @intervals.each do |from,to| %>
-    [ <%= link_to "#{(from..to).to_a.join("-")}" , :action => "billing", :from_letter => from, :to_letter => to, :year => @day.year, :month => @day.month %> ]
-<% end %>    
-[ <%= link_to "All" , :action => "billing", :from_letter => "*", :to_letter => "*", :year => @day.year, :month => @day.month %> ]
-<hr/>
+<div class="pagination">
+  <% @letters.each do |to_display, letter, empty, has_hours| %>
+    <% if params[:letter] == letter %>
+      <span class="current"><%= to_display %> </span>
+    <% else %>
+      <% unless empty %>
+        <%= link_to to_display , {:action => "billing", :letter => letter, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
+      <% else %>
+        <span class="disabled"><%= to_display %> </span>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
 
-<% if @billable_customers.empty? %> <p>
-  Total unbilled hours in <%= Date::MONTHNAMES[@day.month] %>:
-  <%= TimeEntry.billed(false).between(@day,@day.at_end_of_month).sum(:hours) %>
-</p>
-<% end %>
+<hr/>
 
 <div id="billing_content">
 <% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
@@ -38,9 +41,9 @@
 
 <p class="error"><%= flash[:error] %></p>
 
-<%= will_paginate @billable_customers %>
+<%= will_paginate @customers %>
 
-<% billing_data = Billing.new(@billable_customers,@day).billing_report_data %>
+<% billing_data = Billing.new(@customers,@day).billing_report_data %>
 
 <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
   <table class="regular">
@@ -82,7 +85,7 @@
 
   </table>
 
-  <%= will_paginate @billable_customers %>
+  <%= will_paginate @customers %>
 
   <br/>
   <hr/>

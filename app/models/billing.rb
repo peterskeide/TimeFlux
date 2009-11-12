@@ -14,7 +14,7 @@ class Billing
     @customers.each do |customer|
       projects_data = []
       customer.projects.each do |project|
-        time_entries =  TimeEntry.billed(false).between(@from,@to).for_project(project).all
+        time_entries =  TimeEntry.billed(false).between(@from,@to).for_project(project).include_users.include_hour_types.all
         
         unless time_entries.empty?
           project_total = 0

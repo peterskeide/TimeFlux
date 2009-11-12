@@ -37,16 +37,23 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
+    params[:letter] ||= "A"
 
-    #@billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 8, :order => 'name'
+    billable_customers = Customer.billable(true).to_a
+    @letters, @other = extract_customers_by_letter( billable_customers, @day )
 
-    @intervals = [["A","E"],["F","J"],["K","O"],["P","T"],["U","Z"]]
+    @customers = case params[:letter]
+    when '*' then 
+      Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 100, :order => 'name'
+    when '#' then
+      @other.paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
+    else
+      Customer.billable(true).on_letter(params[:letter]).paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
+    end
 
-    params[:from_letter] ||= "A"
-    params[:to_letter] ||= "E"
-
-    @billable_customers = Customer.find_by_letter_range(params[:from_letter],  params[:to_letter], :page => params[:page], :per_page => 100)
   end
+
+
 
   # With the selected project this method will either mark entries as billed,
   # or display a pdf invoice depending on submit name.

@@ -67,9 +67,12 @@ class TimeEntry < ActiveRecord::Base
   }
 
   named_scope :for_project, lambda { |project_id|
-    project_id ? { :include => :activity, :conditions => ["activities.project_id = ?", project_id] } : {}
+    project_id ? { :joins => :activity, :conditions => ["activities.project_id = ?", project_id] } : {}
   }
 
+  named_scope :include_users, { :include => :user }
+
+  named_scope :include_hour_types, { :include => :hour_type }
 
   # Combining the distinct scopes with between will not return the expected result
   # These are in general not really stable...
