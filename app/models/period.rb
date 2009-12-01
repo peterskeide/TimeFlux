@@ -40,7 +40,7 @@ class Period
   private
 
   def find_reported_upto_day
-    today = Time.zone.now.to_date
+    today = Date.today
     if today > @end
       @end
     elsif (@start...@end).include?(today)
