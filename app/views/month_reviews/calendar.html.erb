@@ -73,22 +73,24 @@
   </div>
 </div>
 
-<br />
-<fieldset class="statistics">
-  <legend>
-    Statistics - <%= @period.balance_workdays ? "First #{@period.balance_workdays} working days" : @period.month_name  %>
-  </legend>
-  <p>
-    <label class="info">Balance</label>
-    <span class="<%=case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
-    <%= "%+.1f" % @period.balance -%> </span> hours
-  </p>
-  <p>
-    <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
-  </p>
-</fieldset>
-<br />
+<% if @period.has_statistics %>
+  <br />
+  <fieldset class="statistics">
+    <legend>
+      Statistics - <%= @period.balance_workdays ? "First #{@period.balance_workdays} working days" : @period.month_name  %>
+    </legend>
+    <p>
+      <label class="info">Balance</label>
+      <span class="<%=case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
+      <%= "%+.1f" % @period.balance -%> </span> hours
+    </p>
+    <p>
+      <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
+    </p>
+  </fieldset>
+<% end %>
 
+<br />
 <hr style="clear:both"/>
 <br/>
 

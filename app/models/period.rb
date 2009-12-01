@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :balance, :balance_workdays, :billing_degree, :time_entries
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :has_statistics, :balance, :balance_workdays, :billing_degree, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -14,9 +14,14 @@ class Period
     @expected_days = find_expected_days
 
     reported_upto_day = find_reported_upto_day
-    @balance_workdays = find_expected_days(@start, reported_upto_day) if reported_upto_day != @end
-    @balance = find_balance(@start,reported_upto_day)
-    @billing_degree = find_billing_degree(@start,reported_upto_day)
+    if reported_upto_day
+      @balance_workdays = find_expected_days(@start, reported_upto_day) if reported_upto_day != @end
+      @balance = find_balance(@start,reported_upto_day)
+      @billing_degree = find_billing_degree(@start,reported_upto_day)
+      @has_statistics = true
+    else
+      @has_statistics = false
+    end
 
     @locked = is_period_locked?
   end
@@ -46,7 +51,7 @@ class Period
     elsif today > @end
       @end
     else
-      @start - 1
+      nil
     end
   end
 
