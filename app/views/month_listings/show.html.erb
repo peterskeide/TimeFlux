@@ -5,7 +5,7 @@
 
 <br/>
 
-<% form_tag user_month_review_path(@user, :id => :listing), :method => :get do %>
+<% form_tag user_month_listing_path(@user), :method => :get do %>
   <p>
     <label for="date">Period</label>
     <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @beginning_of_month} %>
@@ -47,7 +47,7 @@
 <% end %>
     
 <br/>
-<p><%= link_to 'Back', user_month_review_path(@user, :id => :calendar, :calendar => @beginning_of_month) %></p>
+<p><%= link_to 'Back', user_month_review_path(@user, :calendar => @beginning_of_month) %></p>
 
 <hr/>
 Download report: <%= link_to image_tag("pdficon_small.gif", :alt => "pdf"), params.merge({ :format => "pdf", :action => "show" }) %>

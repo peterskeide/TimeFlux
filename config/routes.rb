@@ -42,7 +42,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users do |user|
     user.resources :time_entries, :member => { :confirm_destroy => :delete }, :collection => { :lock => :post }
-    user.resources :month_reviews, :only => [:show]
+    user.resource :month_review, :only => [:show]
+    user.resource :month_listing, :only => [:show]
     user.resources :vacations, :only => [:show, :edit, :update]
   end
   

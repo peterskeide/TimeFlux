@@ -1,0 +1,2 @@
+module MonthListingsHelper
+end

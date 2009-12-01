@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MonthReviewsControllerTest < ActionController::TestCase
+class MonthListingsControllerTest < ActionController::TestCase
 
   setup do
     @date = Date.new(2009, 6, 22) # monday in week 26, 2009
@@ -11,15 +11,22 @@ class MonthReviewsControllerTest < ActionController::TestCase
     setup do
       login_as(:bob)
     end
-    
-    context "on GET to :show for calendar report" do      
+      
+    context "on GET to :show for listing report" do
       setup { get :show, :user_id => users(:bob).id }
       
       should_render_template :show
       should_respond_with :success
-      should_assign_to :user, :period, :activities_summary
+      should_assign_to :user, :beginning_of_month, :end_of_month, :time_entries
     end
     
+    context "on GET to :show for listing report in pdf format" do
+      setup { get :show, :user_id => users(:bob).id, :format => "pdf" }
+      
+      should_render_template "month_listings/show.pdf.prawn"
+      should_respond_with :success
+      should_assign_to :user, :beginning_of_month, :end_of_month, :time_entries
+    end
   end
 
   context "Not logged in" do
@@ -41,5 +48,5 @@ class MonthReviewsControllerTest < ActionController::TestCase
     end
     
   end
-  
+
 end

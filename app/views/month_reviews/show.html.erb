@@ -4,7 +4,7 @@
 
 <br/>
 
-<% form_tag user_month_review_path(@user, :id => :calendar), :method => :get do %>
+<% form_tag user_month_review_path(@user), :method => :get do %>
   <p>
     <label for="date">Period</label>
     <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @period.start} %>
@@ -34,7 +34,7 @@
     </tr>
   </table>
   <br/><br/>
-  <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing, :calendar => @beginning_of_month) %> </div>
+  <div style="text-align:right"><%= link_to 'View details', user_month_listing_path(@user, :calendar => @beginning_of_month) %> </div>
 </div>
 
 <div class="calender" style="width:450px">
