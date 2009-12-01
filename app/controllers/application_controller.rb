@@ -8,9 +8,13 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_user_session, :current_user
   
-  before_filter :set_time_zone
+  before_filter :set_time_zone, :set_language
 
   private
+
+  def set_language
+    I18n.locale = Configuration.instance.locale
+  end
   
   def set_time_zone
     Time.zone = Configuration.instance.time_zone
@@ -74,4 +78,12 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  # Updated to also handle IPv6
+  # See - https://rails.lighthouseapp.com/projects/8994/tickets/3257-local_request-does-not-detect-local-ipv6-connections
+  #
+  def local_request?
+    request.remote_addr == LOCALHOST && request.remote_ip == LOCALHOST ||
+    request.remote_addr == "::1" && request.remote_ip == "::1"
+  end
+ 
 end

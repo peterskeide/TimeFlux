@@ -36,7 +36,7 @@ class Activity < ActiveRecord::Base
   }
 
   named_scope :for_customer, lambda { |customer_id|
-    customer_id ? { :include => :project, :conditions => ["projects.customer_id = ?", customer_id] } : {}
+    customer_id ? { :joins => :project, :conditions => ["projects.customer_id = ?", customer_id] } : {}
   }
 
   named_scope :templates, :conditions => { :template => true }
@@ -74,19 +74,19 @@ class Activity < ActiveRecord::Base
     list << "disabled" unless self.active
     return list.join(', ')
   end
-
-  def truncated_name_path(max_characters=29)
-    project_characters = max_characters - self.name.size;
-    if project != nil
-      if project.name.size > project_characters
-        "#{project.name.first(project_characters).strip}.. > #{self.name.first(22)}"
-      else
-        "#{project.name} > #{self.name}"
-      end
-    else
-      self.name
-    end
-  end
+#
+#  def truncated_name_path(max_characters=29)
+#    project_characters = max_characters - self.name.size;
+#    if project != nil
+#      if project.name.size > project_characters
+#        "#{project.name.first(project_characters).strip}.. > #{self.name.first(22)}"
+#      else
+#        "#{project.name} > #{self.name}"
+#      end
+#    else
+#      self.name
+#    end
+#  end
 
   private
 

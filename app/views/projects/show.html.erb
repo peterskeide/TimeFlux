@@ -9,7 +9,7 @@
 <div style="float:left; width:70%">
   <h2>Current Activities</h2>
 
-  <table>
+  <table class="regular">
     <tr><th>Name</th><th>Description</th><th>Status</th><th>Edit</th><th>Delete</th></tr>
 
     <% for activity in @project.activities do -%>
@@ -58,7 +58,7 @@
 <div style="float:left; width:70%">
   <h2>Current Assignments</h2>
 
-  <table>
+  <table class="regular">
     <tr><th>Assigned User</th><th>Remove</th></tr>
 
     <% for user in @project.users do -%>

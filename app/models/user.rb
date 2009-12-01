@@ -10,7 +10,9 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :login
   
   before_destroy :validate_not_last_admin, :validate_has_no_projects, :validate_has_no_time_entries
-  
+
+  named_scope :active, :conditions => { :operative_status => "active" }
+
   def fullname
     "#{self.firstname} #{self.lastname}"
   end
@@ -34,11 +36,6 @@ class User < ActiveRecord::Base
 
     return "red"
   end
-
-  def month_status(date)
-    period = Period.new(self,date.year,date.month)
-    period.locked? ? "green" : (period.ready_for_approval? ? "normal" : "red")
-  end
   
   def self.all_except(user_or_user_id)
     if user_or_user_id.is_a? User 
@@ -50,8 +47,8 @@ class User < ActiveRecord::Base
     User.all(:conditions => ["id != ?", user_id])
   end
 
-   def status_for_month(date, expected_days, expected_hours)
-     status_for_period(date, date.at_end_of_month, expected_days, expected_hours)
+  def status_for_month(date, expected_days, expected_hours)
+    status_for_period(date, date.at_end_of_month, expected_days, expected_hours)
   end
 
   def self.status_values
@@ -89,10 +86,10 @@ class User < ActiveRecord::Base
     current += Activity.active(true).default(true)
     current.uniq!
     current.sort! { |a, b| a.customer_project_name <=> b.customer_project_name }
-    last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first.activity
+    last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first
     if last_used
-      current = current.delete_if { |activity| activity.id == last_used.id }
-      current = current.unshift(last_used)
+      current = current.delete_if { |activity| activity.id == last_used.activity.id }
+      current = current.unshift(last_used.activity)
     end
     current
   end

@@ -1,75 +1,63 @@
 TimeFlux
 ========
 
-Timeflux is an hour reporting tool for consultants. An amount of work and a comment is registered as an entry
-assosiated with an activity and an hour type.
+Timeflux is an hour reporting tool built around a normal workflow for a consultant company. 
+
+Users register worked hours on activities. For each month they also need to confirm that they are finished registering hours. Registrations on the *vacation* activity are publicly visible to all users in the vacation view.
+
+Admins manage the activities a user can register on. Activities belong to a project, and projects belong to a customer.
+At the end of a month admins can view an overview over users to check that all registrations for the month are complete. They can then move on to the billing report where invoices are generated. 
 
 
 Features
 --------
 
+For users:
 
-#### For users:
+- Simple hour registration
+- Month overview
+- Public vacation overview
 
->> * Simple hour registration
->> * Month overview
->> * Public vacation overview
+For admins:
 
-
-#### For admins:
-
->> * Billing and other reports
->> * Categorized tags for grouping activities
->> * Activities are placed in a hiearchy of *customer->project->activity*
->> * Easy management of project assignments
->> * Easy management of project activities by templates
+- Billing, user, companies and project reports
+- Simple and advanced search
+- Tagging of activities (for grouping purposes)
+- Easy management of project assignments
+- Easy management of project activities by templates
 
 
-On the TODO list
-----------------
-
-* Reports are in norwegian (we use it internally)
-* Gui doesn´t scale to hundreds of users and projects
-
-#### For developers:
-
-Install (short)
----------------
-
-0. Intall ruby and rails
-1. Pull the code from git
-2. %> rake gems:install
-3. %> rake db:setup
-4. %> ruby script/server
-
-Install (long)
---------------
-
-Install (long)
---------------
+Install
+-------
 
 On Ubuntu linux:
 
 1. Install git: sudo apt-get install git-core
 2. Install ruby: sudo apt-get install ruby-full build-essential
 3. Install Rubygems
-  1. Download latest version of rubygems from rubyforge (http://rubyforge.org/frs/?group_id=126)
-  2. Decompress into suitable directory and, in same directory, execute command: ruby setup.rb
-  3. Create softlink: sudo ln -s /usr/bin/gem1.8 /usr/bin/gem
-  4. Verify installation: gem -v
+	1. Download latest version of rubygems from rubyforge (http://rubyforge.org/frs/?group_id=126)
+	2. Decompress into suitable directory and, in same directory, execute command: ruby setup.rb
+	3. Create softlink: sudo ln -s /usr/bin/gem1.8 /usr/bin/gem
+	4. Verify installation: gem -v
 4. Install sqlite3 as your development database: sudo apt-get install sqlite3 libsqlite3-dev
 5. Install rails++: sudo gem install rails rake sqlite3-ruby prawn
 6. Clone the code from GitHub
 7. Install required dependencies (cd to TimeFlux root-directory): sudo rake gems:install 
 8. Install test dependencies: sudo rake gems:install RAILS_ENV=test
 
+
 Getting started
 ---------------
+
+Before testing Timeflux you need to:
+
+1. Load initial data: rake db:setup
+2. Start the server: ruby script/server
+3. Go to url http://localhost:3000
 
 The seeded data contains two users:
 
 * user=admin, password=admin
 * user=user, password=user
 
-#### For operations/admins:
 

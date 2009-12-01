@@ -27,9 +27,9 @@ module VacationsHelper
     content = tag(:td)
     @day.upto @day.at_end_of_month do |d|
       if @holidays.include? d
-        content << content_tag(:th, d.day, :class => "error")
+        content << content_tag(:td, d.day, :class => "day red")
       else
-        content << content_tag(:th, d.day)
+        content << content_tag(:td, d.day, :class => "day")
       end
     end
     content

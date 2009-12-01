@@ -22,7 +22,7 @@
 		<tr id="day_numbers">
 			<%= day_headings %>
 		</tr>
-		<tr>
+		<tr class="highlight">
 			<td class="user">
 				<%=h @current_user.name %>
 			</td>
@@ -32,15 +32,15 @@
 						<%= check_box_tag_unless_holiday_or_weekend(d) %>
 					</td>
 				<% end %>
-				<td>
+				<td style="background-color:white;padding-left:10px;">
 					<%= hidden_field_tag 'start_of_month', @day %>
 					<%= hidden_field_tag 'user_id', @current_user.id %>
 					<%= submit_tag 'Update' %>
 				</td>
 			<% end %>
 		</tr>
-		<% @others.each do |user| %>
-			<tr>
+		<% @others.each_with_index do |user, index| %>
+			<tr <%= (index % 2 == 0) ? '' : 'class="odd"' -%>>
 				<td class="user"><%= user.fullname %></td>
 				<% days_of_month_for_user(user).each do |d| %>
 					<td>

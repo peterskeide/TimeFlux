@@ -17,24 +17,17 @@
 <h4 class=""><%= @period.month_name -%></h4>
 
 <div class="calender_activities">
+
   <table style="border-collapse: collapse;">
-    <% @activities_summary.each do |entry| %>
-      <tr>
-        <td><%= entry[:name] -%></td>
-        <td style="text-align:right"><%= entry[:hours] -%></td>
-      </tr>
-    <% end %>
-    <tr>
-      <td class="overline">
-        <b>Total:</b>
-      </td>
-      <td class="overline" style="text-align:right; min-width:3em;">
-        <b> <%= @period.total_hours -%></b>
-      </td>
-    </tr>
+    <%=  activities_list( @activities_summary[:billable] ) %>
+    <tr><td>&nbsp;</td></tr>
+    <%=  activities_list( @activities_summary[:unbillable] ) %>
   </table>
+
   <br/><br/>
-  <div style="text-align:right"><%= link_to 'View details', user_month_listing_path(@user, :calendar => @beginning_of_month) %> </div>
+
+  <div style="text-align:right"><%= link_to 'View details', user_month_review_path(@user, :id => :listing, :calendar => @beginning_of_month) %> </div>
+  <br/>
 </div>
 
 <div class="calender" style="width:450px">
@@ -62,12 +55,12 @@
         <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
           <% day_hours = @user.hours_on_day d; week_sum = week_sum + day_hours%>
           <% day_hours_as_s = day_hours > 0 ? day_hours : '-' %>
-          <%= d == Date.today ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
+          <%= d == Time.zone.now.to_date ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
         </td>
         <% if d.wday == 0 %>
-        <td class="leftline" style="color:gray">
-          <%= week_sum %><% week_sum = 0 %>
-        </td>
+          <td class="leftline" style="color:gray">
+            <%= week_sum %><% week_sum = 0 %>
+          </td>
         </tr>
       <% end -%>
     <% end %>
@@ -81,13 +74,25 @@
   </div>
 </div>
 
-<p>
-  Balance:  <%= balance(@period) %>
-</p>
-<p>
-  Billing degree: <%= (@period.billing_degree * 100).round %> %
-</p>
-<hr/>
+<% if @period.has_statistics %>
+  <br />
+  <fieldset class="statistics">
+    <legend>
+      Statistics - <%= @period.balance_workdays ? "First #{@period.balance_workdays} working days" : @period.month_name  %>
+    </legend>
+    <p>
+      <label class="info">Balance</label>
+      <span class="<%=case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
+      <%= "%+.1f" % @period.balance -%> </span> hours
+    </p>
+    <p>
+      <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
+    </p>
+  </fieldset>
+<% end %>
+
+<br />
+<hr style="clear:both"/>
 <br/>
 
 <div class="center">

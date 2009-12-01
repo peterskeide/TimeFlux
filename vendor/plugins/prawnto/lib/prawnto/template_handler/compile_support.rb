@@ -47,7 +47,9 @@ module Prawnto
       # TODO: kept around from railspdf-- maybe not needed anymore? should check.
       def set_cache_control
         if ssl_request? && ie_request?
-          @controller.headers['Cache-Control'] = 'maxage=1' # added to make ie ssl pdfs work (per naisayer)
+          #@controller.headers['Cache-Control'] = 'maxage=1' # added to make ie ssl pdfs work (per naisayer)
+          @controller.headers['Cache-Control'] = 'maxage=3600'
+          # Source: http://eirikhoem.wordpress.com/2007/06/15/generated-pdfs-over-https-with-internet-explorer/
         else
           @controller.headers['Cache-Control'] ||= ie_request? ? 'no-cache, must-revalidate' : ''
         end

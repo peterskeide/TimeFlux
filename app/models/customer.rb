@@ -11,6 +11,13 @@ class Customer < ActiveRecord::Base
     { :conditions => { :billable => billable } }
   }
 
+  named_scope :on_letter, lambda { |letter|
+    { :conditions => ["name LIKE ?", letter+"%"] }
+  }
+
+  def has_unbilled_hours_between(from,to)
+     TimeEntry.between(from,to).for_activities(self.activities).billed(false).count > 0
+  end
 
   def <=>(other)
     name <=> other.name

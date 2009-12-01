@@ -1,6 +1,6 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :balance, :balance_workdays, :billing_degree
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :has_statistics, :balance, :balance_workdays, :billing_degree, :time_entries
   
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
@@ -12,8 +12,17 @@ class Period
     @expected_hours = find_expected_hours
     @total_days = @time_entries.distinct_dates.length
     @expected_days = find_expected_days
-    @balance, @balance_workdays = find_balance
-    @billing_degree = find_billing_degree
+
+    reported_upto_day = find_reported_upto_day
+    if reported_upto_day
+      @balance_workdays = find_expected_days(@start, reported_upto_day) if reported_upto_day != @end
+      @balance = find_balance(@start,reported_upto_day)
+      @billing_degree = find_billing_degree(@start,reported_upto_day)
+      @has_statistics = true
+    else
+      @has_statistics = false
+    end
+
     @locked = is_period_locked?
   end
   
@@ -35,28 +44,42 @@ class Period
 
   private
 
-  def find_billing_degree
+  def find_reported_upto_day
+    today = Date.today
+    if today.month == @start.month
+      @user.time_entries.on_day(today).empty? ? today - 1: today
+    elsif today > @end
+      @end
+    else
+      nil
+    end
+  end
+
+  def find_billing_degree(from=@start, to=@end)
     sum_billable = 0
     Customer.billable(true).each do |customer|
       customer.projects.each do |project|
-        @time_entries.select { |te| te.project.id == project.id }.each { |te| sum_billable += te.hours }
+        sum_billable += @user.time_entries.between(from, to).for_project(project).sum(:hours)
       end
     end
-    sum_billable / @expected_hours
+
+    if sum_billable > 0 then
+      sum_billable / find_expected_hours(from, to)
+    else
+      0
+    end
   end
   
-  def find_balance
-    if Date.today > @end
-      [@total_hours - @expected_hours, nil]
-    elsif (@start...@end).include?(Date.today)
-      balance_upto_day = @time_entries.select { |te| te.date == Date.today }.empty? ? Date.today - 1: Date.today
-      balance_workdays = find_expected_days(@start, balance_upto_day)
-      expected = find_expected_hours(@start, balance_upto_day)
-      actual = 0
-      @time_entries.select { |te| te.date <= balance_upto_day }.each { |te| actual += te.hours }
-      [actual - expected, balance_workdays]
+  def find_balance(from=@start, to=@end)
+    today = Time.zone.now.to_date
+    if today > @end
+      @total_hours - @expected_hours
+    elsif (from...@end).include?(today)
+      expected = find_expected_hours(from, to)
+      actual = @user.time_entries.between(from, to).sum(:hours)
+      actual - expected
     else
-      [0,nil]
+      0
     end
   end
 
@@ -76,5 +99,5 @@ class Period
     locked_status = @time_entries.map { |te| te.locked }.uniq
   	locked_status.size == 1 and not locked_status.include? false
   end
-    
+
 end

@@ -1,8 +1,0 @@
-<h3>Are you sure you want to delete this time entry?</h3>
-<% form_for([@user, @time_entry], :html => { :method => :delete } ) do |f| %>
-	<%= f.hidden_field :id %>
-	<%= f.submit "Delete" %>
-<% end -%>
-<p>
-	<%= link_to "Cancel", user_time_entries_path(@user, @time_entry, :date => @date) %>
-</p>

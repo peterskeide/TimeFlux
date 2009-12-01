@@ -11,6 +11,11 @@ class VacationsControllerTest < ActionController::TestCase
       login_as(:bob)
     end
 
+    context "rendering edit" do
+      setup{ get :edit, :user_id => users(:bob).id, :id => 2009 }
+      should_render_template :edit
+    end
+
     context "GET to :show" do
       setup{ get :show, :user_id => users(:bob).id, :id => 2009 }
       should_render_template :show

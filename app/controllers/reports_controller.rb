@@ -10,17 +10,21 @@ class ReportsController < ApplicationController
 
   def user
     setup_calender
-    @users = User.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
+    @users = User.active.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
 
-    date_iterator = @day.at_beginning_of_month
-    @weeks = [[date_iterator, date_iterator.end_of_week]]
-    date_iterator = date_iterator + (8 - date_iterator.wday)
-    
-    until (date_iterator + 7).month != @day.month
-        @weeks << [date_iterator, date_iterator + 6] 
-        date_iterator = date_iterator + 7
+    first_day = @day.at_beginning_of_month
+    last_day = @day.at_end_of_month
+    first_week = [first_day,first_day.end_of_week]
+    last_week = [last_day.beginning_of_week,last_day]
+
+    date_iterator = first_day.end_of_week + 1 #monday in the second week of the month
+    middle_weeks = []
+    until date_iterator == last_day.beginning_of_week
+      middle_weeks << [date_iterator, date_iterator + 6]
+      date_iterator += 7
     end
-    @weeks << [date_iterator, date_iterator.at_end_of_month]
+
+    @weeks = [first_week] + middle_weeks + [last_week]
 
     @expected = @weeks.collect do |from, to|
       Holiday.expected_hours_between( from,to )
@@ -33,8 +37,23 @@ class ReportsController < ApplicationController
 
   def billing
     setup_calender
-    @billable_customers = Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 8, :order => 'name'
+    params[:letter] ||= "A"
+
+    billable_customers = Customer.billable(true).to_a
+    @letters, @other = extract_customers_by_letter( billable_customers, @day )
+
+    @customers = case params[:letter]
+    when '*' then 
+      Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 100, :order => 'name'
+    when '#' then
+      @other.paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
+    else
+      Customer.billable(true).on_letter(params[:letter]).paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
+    end
+
   end
+
+
 
   # With the selected project this method will either mark entries as billed,
   # or display a pdf invoice depending on submit name.
@@ -49,7 +68,7 @@ class ReportsController < ApplicationController
       if params[:report]
         @from_day = @day
         @to_day = @day.at_end_of_month
-        prawnto :prawn => prawn_params, :filename=>"billing_report.pdf"
+        initialize_pdf_download("#{t'invoice.filename'}.pdf")
         render :billing_report, :layout=>false
       else
         @projects.each do |p|
@@ -68,13 +87,7 @@ class ReportsController < ApplicationController
     @user = User.find(params[:user])
     @project = Project.find(params[:project])
     @day = Date.parse(params[:day])
-  end
-
-  def update_billing_content
-    if request.xhr?
-      billing()
-      render :partial => 'billing_content', :locals => { :day => @day, :billable_customers => @billable_customers}
-    end
+    @time_entries = TimeEntry.for_user(@user).for_project(@project).between(@day, @day.at_end_of_month).sort
   end
 
   def customer
@@ -112,15 +125,15 @@ class ReportsController < ApplicationController
       format.html { }
       format.pdf  do
         @parameters = []
-        @parameters << ["Periode","#{@from_day} to #{@to_day}"]
-        @parameters << ["Bruker",@user.fullname] if @user
-        @parameters << ["Fakturert",@billed ? "Ja" : "Nei"] if @billed
-        @parameters << ["Kunde",@customer.name] if @customer
-        @parameters << ["Prosjekt",@project.name]  if @project
-        @parameters << ["Kategori",@tag_type.name] if @tag_type
-        @parameters << ["Tag",@tag.name] if @tag
+        @parameters << [t('common.period'),"#{@from_day} to #{@to_day}"]
+        @parameters << [t('common.person'),@user.fullname] if @user
+        @parameters << [t('common.billable'),@billed ? "Ja" : "Nei"] if @billed
+        @parameters << [t('common.customer'),@customer.name] if @customer
+        @parameters << [t('common.project'),@project.name]  if @project
+        @parameters << [t('common.category'),@tag_type.name] if @tag_type
+        @parameters << [t('common.tag'),@tag.name] if @tag
 
-        prawnto :prawn => prawn_params, :filename=>"search_report.pdf"
+        initialize_pdf_download("search_report.pdf")
         render :search, :layout=>false
       end
     end

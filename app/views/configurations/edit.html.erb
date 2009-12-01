@@ -16,6 +16,10 @@
 	    <td>Work hours per day</td>
 	    <td><%= f.text_field :work_hours, :size => 6 %></td>
 	  </tr>
+	  <tr>
+	    <td>Report Language</td>
+	    <td><%= f.select(:locale, [["English","en"],["Norwegian","no-NB"]]) %></td>
+	  </tr>
 	</table>
 	<%= f.submit "Save" %>
 <% end -%>

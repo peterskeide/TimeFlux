@@ -2,8 +2,29 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
 
-# Uncomment to make authlogic produce an error :-)
-#no:
-#  hello: "Hei"
+  common:
+    customer: "Customer"
+    project: "Project"
+    period: "Period"
+    date: "Date"
+    type: "Type"
+    hours: "Hours"
+    notes: "Notes"
+    total_hours: "Total hours"
+    user: "User"
+    billable: "Billable"
+    category: "Category"
+    tag: "Tag"
+    person: "Person"
+
+  invoice:
+    filename: "billing_report"
+    title: "Invoice data"
+
+  search:
+    filename: "search_results"
+    title: "Search Results"
+    criteria: "Search criteria"
+    empty_result: "No hits"
+

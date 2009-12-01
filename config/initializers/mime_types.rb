@@ -5,4 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 # Is set by prawnto
-#Mime::Type.register 'application/pdf', :pdf
+Mime::Type.register 'application/pdf', :pdf

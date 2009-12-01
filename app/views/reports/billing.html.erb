@@ -5,14 +5,96 @@
 <p class="error"><%= flash[:error] %></p>
 <p class="notice"><%= flash[:notice] %></p>
 
-<div>
- <%= render :partial => 'month_year_picker', :locals => { :action => 'billing', :day => @day, :years => @years, :months => @months} %>
+<% form_tag 'billing', :method => 'get', :id => "billing_form" do %>
+  <div>
+    <table>
+      <tr>
+        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
+        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
+        <%= hidden_field_tag 'letter',  params[:letter] %>
+      <td><%= submit_tag "View" %></td>
+    </table>
+  </div>
+<% end -%>
+
+<br/>
+
+<div class="pagination">
+  <% @letters.each do |to_display, letter, empty, has_hours| %>
+    <% if params[:letter] == letter %>
+      <span class="current"><%= to_display %> </span>
+    <% else %>
+      <% unless empty %>
+        <%= link_to to_display , {:action => "billing", :letter => letter, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
+      <% else %>
+        <span class="disabled"><%= to_display %> </span>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>
 
 <hr/>
 
 <div id="billing_content">
-  <%= render :partial => 'billing_content', :locals => { :day => @day, :billable_customers => @billable_customers} %>
+<% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
+<% expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month) -%>
+
+<p class="error"><%= flash[:error] %></p>
+
+<%= will_paginate @customers %>
+
+<% billing_data = Billing.new(@customers,@day).billing_report_data %>
+
+<% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
+  <table class="regular">
+    <% billing_data.each do |customer_name, total_hours, projects_data| %>
+
+      <tr>
+        <td colspan="99"> <h3 class="compact"><%= customer_name %></h3></td>
+      </tr>
+      <% projects_data.each do |project, project_total, project_data| %>
+
+        <% if project_total == 0 %>
+          <tr>
+            <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
+          </tr>
+
+          <% project_data.each do |user,type_name,hours| %>
+            <tr>
+              <td>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span class="<%= user.status_for_month(@day, expected_days, expected_hours)%>">
+                    <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %>
+                  </span>
+              </td>
+              <td><%= type_name %></td>
+              <td><%= hours %> t </td>
+              <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
+            </tr>
+          <% end %>
+        <% end %>
+        <tr>
+          <td></td><td><b>total</b></td><td><b><%= project_total %> t</b></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+  </table>
+
+  <%= will_paginate @customers %>
+
+  <br/>
+  <hr/>
+  <%= hidden_field_tag 'year',  params[:year] %>
+  <%= hidden_field_tag 'month',  params[:month] %>
+  <%= hidden_field_tag 'format',  "pdf" %>
+  <%= submit_tag "Report (PDF)", :name => 'report' %>
+  <%= submit_tag "Mark as billed", :name => 'bill' %>
+<% end -%>
 </div>
 
 

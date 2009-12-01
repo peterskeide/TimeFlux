@@ -1,4 +1,4 @@
-<% remote_form_for [@user, @time_entry] do |f| -%>
+<% remote_form_for [@user, @time_entry], :type => :synchronous do |f| -%>
 	<%= f.hidden_field :date %>
 	<table width="100%" id='<%= "#{day}_time_entries" %>'>
 		<%= render :partial => "time_entries_table_header" %>   		
@@ -13,5 +13,4 @@
 			<%= render :partial => "time_entry", :locals => { :f => f, :time_entries => time_entries, :day => day } %>
 		<% end -%>
 	</table>
-
 <% end -%>

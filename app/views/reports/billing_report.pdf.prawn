@@ -1,6 +1,6 @@
 pdf.header pdf.margin_box.top_left do
   pdf.font "Helvetica" do
-    pdf.text "Fakturagrunnlag", :size => 20, :align => :center
+    pdf.text t('invoice.title'), :size => 20, :align => :center
     pdf.image "public/images/conduct-logo.png", :width => 100, :position => :right,  :vposition => 4
   end
 end
@@ -22,9 +22,9 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
     pdf.start_new_page unless project == @projects.first
   
     pdf.font "Helvetica" do
-      [ "Kunde: #{project.customer.name}",
-        "Prosjekt: #{project.name}",
-        "Periode: #{@day} - #{@day.at_end_of_month}"].each do |text_line|
+      [ "#{t('common.customer')}: #{project.customer.name}",
+        "#{t('common.project')}: #{project.name}",
+        "#{t('common.period')}: #{@day} - #{@day.at_end_of_month}"].each do |text_line|
 
         pdf.pad_bottom(3) do
           pdf.text text_line, :size => 11
@@ -55,7 +55,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
       pdf.table entry_data.sort,
         :row_colors => ["FFFFFF","f0f0f0"],
-        :headers => ['Dato', 'Type','Timer', 'Kommentar' ],
+        :headers => [t('common.date'), t('common.type'),t('common.hours'), t('common.notes') ],
         :align => { 0 => :left, 1 => :left, 2 => :center},
         :column_widths => {0 => 70, 1 => 70, 2 => 40},
         :width      => pdf.margin_box.width,
@@ -65,7 +65,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
       pdf.stroke_horizontal_rule
       pdf.move_down(10)
-      pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
+      pdf.text "#{t('common.total_hours')}: #{te.sum(&:hours)}", :align => :right
     end
 
   end
