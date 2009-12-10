@@ -123,6 +123,7 @@ class ReportsController < ApplicationController
     
     respond_to do |format|
       format.html { }
+      format.csv {}
       format.pdf  do
         @parameters = []
         @parameters << [t('common.period'),"#{@from_day} to #{@to_day}"]
