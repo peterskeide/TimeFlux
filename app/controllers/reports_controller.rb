@@ -93,8 +93,13 @@ class ReportsController < ApplicationController
   def customer
     setup_calender
     parse_search_params
+    @hide_inactive = params[:hide_inactive]
     @billable_project_hours = project_hours_for_customers(Customer.billable(true))
     @internal_project_hours = project_hours_for_customers(Customer.billable(false))
+    if @hide_inactive
+      @billable_project_hours = @billable_project_hours.find_all{|entry| entry[2] > 0 }
+      @internal_project_hours = @internal_project_hours.find_all{|project| project if project[2] > 0 }
+    end
   end
 
   def project
