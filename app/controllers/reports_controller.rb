@@ -189,9 +189,9 @@ class ReportsController < ApplicationController
       @to_day = @day.at_end_of_month
     end
 
-    @time_entries = TimeEntry.between(@from_day,@to_day).all(:select => "time_entries.user_id, time_entries.activity_id, SUM(time_entries.hours) AS sum_hours",
+    @time_entries = TimeEntry.between(@from_day,@to_day).all(:select => "time_entries.user_id, min(time_entries.activity_id) AS activity_id, SUM(time_entries.hours) AS sum_hours",
   :joins => :activity, :group => "time_entries.user_id   ,activities.project_id")
-    @time_entries.sort_by { |a| [ a.user.name, a.activity.customer.name, a.activity.project.name  ] }
+    @time_entries = @time_entries.sort_by { |a| [ a.user.lastname, a.activity.customer.name, a.activity.project.name  ] }
 
     respond_to do |format|
       format.html {}
