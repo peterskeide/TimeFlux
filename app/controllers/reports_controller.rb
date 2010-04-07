@@ -175,6 +175,34 @@ class ReportsController < ApplicationController
     redirect_to( {:action => 'search'}.merge(params) )
   end
 
+  def audit
+    setup_calender
+
+    if params[:from_day] && params[:from_day] != ""
+      @from_day = set_date(params[:from_year].to_i, params[:from_month].to_i, params[:from_day].to_i)
+      @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
+    elsif params[:from_date] && params[:from_date] != ""
+      @from_day = params[:from_date]
+      @to_day = params[:to_date]
+    else
+      @from_day = @day
+      @to_day = @day.at_end_of_month
+    end
+
+    @time_entries = TimeEntry.between(@from_day,@to_day).all(:select => "time_entries.user_id, time_entries.activity_id, SUM(time_entries.hours) AS sum_hours",
+  :joins => :activity, :group => "time_entries.user_id   ,activities.project_id")
+    @time_entries.sort_by { |a| [ a.user.name, a.activity.customer.name, a.activity.project.name  ] }
+
+    respond_to do |format|
+      format.html {}
+      format.csv {}
+      format.pdf  do
+        initialize_pdf_download("audit_report.pdf")
+        render :revisor, :layout=>false
+      end
+    end
+  end
+
   private
 
   def parse_search_params

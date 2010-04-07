@@ -1,0 +1,80 @@
+<h1>Audit</h1>
+
+<%= render :partial => 'sub_menu' -%>
+
+<p class="error"><%= flash[:error] %></p>
+<p class="notice"><%= flash[:notice] %></p>
+
+
+<% form_tag 'audit', :method => 'get' do %>
+  <div>
+    <table style="vertical-align:top;">
+      <tr>
+        <th>From</th><th>To</th>
+        <% days_in_from_month = @from_day.at_end_of_month.mday %>
+        <% days_in_to_month = @to_day.at_end_of_month.mday %>
+      </tr>
+      
+      <tr>
+
+        <td>
+          <table>
+            <tr>
+              <td><%= select_tag "from_year", options_for_select(@years, @from_day.year) %></td>
+            </tr>
+            <tr>
+
+              <td><%= select_tag "from_month", options_from_collection_for_select( @months, 'first', 'last', @from_day.month ) %></td>
+            </tr>
+            <tr>
+
+              <td><%= select_tag "from_day", options_for_select((1..days_in_from_month), @from_day.mday) %></td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td><%= select_tag "to_year", options_for_select(@years, @to_day.year) %></td>
+            </tr>
+            <tr>
+
+              <td><%= select_tag "to_month", options_from_collection_for_select( @months, 'first', 'last', @to_day.month  ) %></td>
+            </tr>
+            <tr>
+
+              <td><%= select_tag "to_day", options_for_select((1..days_in_to_month), @to_day.mday ) %></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    
+    <%= submit_tag "Generate report" %>
+    <%= link_to "CSV format", :action => 'revisor', :format => 'csv',
+      :from_date=>@from_day, :to_date=>@to_day%>
+
+  </div>
+<% end -%>
+
+<hr/>
+
+
+<div id="search_content">
+  <table>
+   <tr>
+        <th>Konsultant</th><th>Customer</th><th>Project</th><th>Hours</th>
+   </tr>
+   
+   <% @time_entries.each do |entry| %>
+   <tr>
+        <td><%= entry.user.name %>  </td>
+        <td><%= entry.activity.customer.name %>  </td>
+        <td><%= entry.activity.project.name %>  </td>
+        <td><%= entry.sum_hours %>  </td>
+   </tr>
+   <% end -%>
+        
+  </table>
+</div>
