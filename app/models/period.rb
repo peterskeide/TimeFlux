@@ -1,7 +1,8 @@
 class Period
       
   attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :has_statistics, :balance, :balance_workdays, :billing_degree, :time_entries
-  
+  attr_reader :expected_hours_per_day_in_period
+
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
     @end = @start.end_of_month

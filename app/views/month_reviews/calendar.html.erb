@@ -54,7 +54,7 @@
         <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
           <% day_hours = @user.hours_on_day d; week_sum = week_sum + day_hours%>
           <% day_hours_as_s = day_hours > 0 ? day_hours : '-' %>
-          <%= d == Time.zone.now.to_date ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
+          <%= calendar_day_formatted( day_hours_as_s, @period.expected_hours_per_day_in_period[d], d == Time.zone.now.to_date ) %>
         </td>
         <% if d.wday == 0 %>
           <td class="leftline" style="color:gray">

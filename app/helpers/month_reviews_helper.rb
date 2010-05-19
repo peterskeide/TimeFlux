@@ -23,4 +23,16 @@ module MonthReviewsHelper
     end
   end
 
+  def calendar_day_formatted(inner_tag, expected_hours, current_day)
+    html =  ""
+    if expected_hours == 0
+      html += '<span style="color: red;">'
+    else
+      html += '<span>'
+    end
+
+    html += current_day ?  "<u>#{inner_tag.to_s}</u>" : "#{inner_tag.to_s}"
+    html += '</span>'
+  end
+
 end

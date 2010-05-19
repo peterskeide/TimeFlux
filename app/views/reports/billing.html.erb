@@ -13,6 +13,7 @@
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
         <%= hidden_field_tag 'letter',  params[:letter] %>
       <td><%= submit_tag "View" %></td>
+      </tr>
     </table>
   </div>
 <% end -%>
@@ -53,7 +54,6 @@
         <td colspan="99"> <h3 class="compact"><%= customer_name %></h3></td>
       </tr>
       <% projects_data.each do |project, project_total, project_data| %>
-
         <% if project_total == 0 %>
           <tr>
             <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
@@ -82,7 +82,6 @@
         </tr>
       <% end %>
     <% end %>
-
   </table>
 
   <%= will_paginate @customers %>
@@ -96,6 +95,3 @@
   <%= submit_tag "Mark as billed", :name => 'bill' %>
 <% end -%>
 </div>
-
-
-
