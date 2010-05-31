@@ -75,7 +75,7 @@ class Period
     today = Time.zone.now.to_date
     if today > @end
       @total_hours - @expected_hours
-    elsif (from...@end).include?(today)
+    elsif (from..@end).include?(today)
       expected = find_expected_hours(from, to)
       actual = @user.time_entries.between(from, to).sum(:hours)
       actual - expected
