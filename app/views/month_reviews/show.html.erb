@@ -30,49 +30,7 @@
   <br/>
 </div>
 
-<div class="calender" style="width:450px">
-
-  <table width="100%" class="regular">
-    <tr>
-      <th style="min-width: 5%"></th>
-      <th>Mon</th>
-      <th>Tue</th>
-      <th>Wed</th>
-      <th>Thu</th>
-      <th>Fri</th>
-      <th>Sat</th>
-      <th>Sun</th>
-      <td class="leftline underline">Week total</td>
-    </tr>
-    <% week_sum = 0 %>
-    <% @period.start.beginning_of_week.upto(@period.end.end_of_week) do |d| %>
-      <% if d.wday == 1 %>
-        <tr>
-          <td>
-            &nbsp;&nbsp;<b><%= link_to d.cweek.to_s, user_time_entries_path(:user_id => @user, :date => d) %></b>
-          </td>
-        <% end %>
-        <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
-          <% day_hours = @user.hours_on_day d; week_sum = week_sum + day_hours%>
-          <% day_hours_as_s = day_hours > 0 ? day_hours : '-' %>
-          <%= d == Time.zone.now.to_date ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
-        </td>
-        <% if d.wday == 0 %>
-          <td class="leftline" style="color:gray">
-            <%= week_sum %><% week_sum = 0 %>
-          </td>
-        </tr>
-      <% end -%>
-    <% end %>
-  </table>
-
-  <div class="footer">
-    <% hours_color = @period.total_hours >= @period.expected_hours ? '' : 'warn' %>
-    <% days_color = @period.total_days >= @period.expected_days ? '' : 'warn' %>
-    Hours: <%= " <span class=\"#{hours_color}\"> #{@period.total_hours}</span> / #{@period.expected_hours}" %>,
-    days: <%= " <span class=\"#{days_color}\"> #{@period.total_days}</span> / #{@period.expected_days}" %>
-  </div>
-</div>
+<%= render :partial => "calendar_table", :locals => { :user_work_month => @month, :user => @user }%>
 
 <% if @period.has_statistics %>
   <br />

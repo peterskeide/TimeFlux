@@ -30,13 +30,6 @@ ActiveRecord::Schema.define(:version => 20091103102046) do
     t.datetime "updated_at"
   end
 
-  create_table "activities_users", :id => false, :force => true do |t|
-    t.integer  "activity_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "configurations", :force => true do |t|
     t.string   "time_zone"
     t.float    "work_hours"
@@ -86,7 +79,6 @@ ActiveRecord::Schema.define(:version => 20091103102046) do
   create_table "tag_types", :force => true do |t|
     t.string   "name"
     t.string   "icon"
-    t.boolean  "mutually_exclusive", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

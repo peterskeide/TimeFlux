@@ -1,10 +1,11 @@
 require 'action_controller'
 require 'action_view'
 
-require 'prawn'
-begin 
+begin
+  require 'prawn'
   require "prawn/layout" # give people what they probably want
 rescue LoadError
+  puts "prawn or prawn/layout failed to load. Did you install the prawn gem?"
 end
 
 require 'prawnto/action_controller'

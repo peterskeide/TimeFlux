@@ -7,7 +7,7 @@ christmas_eve:
   working_hours: 4.0
 
 national_day_norway:
-  date: 1992-6-17
+  date: 1992-5-17
   note: Hurra for 17 Mai!
   repeat: true
   working_hours: 0.0

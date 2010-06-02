@@ -18,7 +18,7 @@ class Holiday < ActiveRecord::Base
 
   # Note: a year specific holiday trumphs a repeating holiday
   def self.on_day(date)
-    holiday = Holiday.find(:all, :conditions => { :date => date})
+    holiday = Holiday.find(:all, :conditions => { :date => date })
     if holiday.empty?
       holiday = Holiday.find(:all, :conditions => { :date => Date.civil(1992, date.month, date.mday) })
     end

@@ -1,0 +1,36 @@
+<div class="calender" style="width:450px">
+	<table width="100%" class="regular">
+		<thead>
+		  <tr>
+		    <th style="min-width: 5%"></th>
+		    <th>Mon</th>
+		    <th>Tue</th>
+		    <th>Wed</th>
+		    <th>Thu</th>
+		    <th>Fri</th>
+		    <th>Sat</th>
+		    <th>Sun</th>
+		    <td class="leftline underline">Week total</td>
+		  </tr>
+	  </thead>
+	  <tbody>
+		  <% user_work_month.each_week do |week| %>
+		      <tr>
+		        <td>
+							<b><%= link_to week.number, user_time_entries_path(:user_id => user, :date => week.start_date) %></b>
+		        </td>
+						<% week.each_day do |day| %>
+			          <%= hours_for_day(day) %>
+		 				<% end -%>
+		        <td class="leftline" style="color:gray">
+		          <%= week.total_hours %>
+		        </td>
+		      </tr>
+			<% end %>
+			</tbody>
+	</table>
+	<div class="footer">
+		<%= registered_and_expected_hours(user_work_month) %>
+		<%= registered_and_expected_days(user_work_month) %>
+  </div>
+</div>

@@ -1,5 +1,4 @@
-module MonthReviewsHelper
-  
+module MonthReviewsHelper  
   def activities_list(activities_summary)
     sum = 0
     html = ""
@@ -22,5 +21,26 @@ module MonthReviewsHelper
     </tr>"
     end
   end
-
+  
+  def hours_for_day(workday)
+    total_hours = workday.total_hours
+    total_hours_or_dash = total_hours > 0 ? total_hours : '-'
+    result = workday.in_reported_month? ? "<td>" : "<td style='color: #E0E0E0;'>"
+    result << (workday.today? ? "<u>#{total_hours_or_dash}</u>" : "#{total_hours_or_dash}")
+    result << "</td>"
+  end
+   
+  def registered_and_expected_hours(user_work_month)
+    registered_hours = user_work_month.registered_hours
+    expected_hours = user_work_month.expected_hours
+    hours_color = registered_hours >= expected_hours ? '' : 'warn'
+    "Hours: <span class=\'#{hours_color}\'>#{registered_hours}</span> / #{expected_hours}"
+  end
+  
+  def registered_and_expected_days(user_work_month)
+    registered_days = user_work_month.registered_days
+    expected_days = user_work_month.expected_days
+    days_color = registered_days >= expected_days ? '' : 'warn'
+    "days: <span class=\'#{days_color}\'>#{registered_days}</span> / #{expected_days}"
+  end
 end

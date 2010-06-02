@@ -1,11 +1,11 @@
-pdf.header pdf.margin_box.top_left do
+pdf.repeat :all, :at => pdf.margin_box.top_left do
   pdf.font "Helvetica" do
     pdf.text t('search.title'), :size => 20, :align => :center
     pdf.image "public/images/conduct-logo.png", :width => 100, :position => :right,  :vposition => 4
   end
 end
 
-pdf.footer [pdf.margin_box.left, pdf.margin_box.bottom + 25] do
+pdf.repeat :all, :at => [pdf.margin_box.left, pdf.margin_box.bottom + 25] do
   pdf.font "Helvetica" do
     pdf.stroke_horizontal_rule
     pdf.move_down(10)

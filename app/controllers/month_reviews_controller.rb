@@ -5,6 +5,7 @@ class MonthReviewsController < ApplicationController
   def show
     @user = User.find(params[:user_id])
     @beginning_of_month = parse_or_create_date
+    @month = UserWorkMonth.new(@user, @beginning_of_month)
     @period = Period.new(@user, @beginning_of_month.year, @beginning_of_month.month)
     @activities_summary = create_activity_summary(@user, @period)   
   end
