@@ -1,15 +1,7 @@
-pdf.repeat :all, :at => pdf.margin_box.top_left do
+pdf.repeat :all do
   pdf.font "Helvetica" do
     pdf.text "Timer for #{@user.name}", :size => 20, :align => :center
     pdf.image "#{RAILS_ROOT}/public/images/conduct-logo.png", :width => 100, :position => :right,  :vposition => 4
-  end
-end
-
-pdf.repeat :all, :at => [pdf.margin_box.left, pdf.margin_box.bottom + 25] do
-  pdf.font "Helvetica" do
-    pdf.stroke_horizontal_rule
-    pdf.move_down(10)
-    pdf.text "conduct 2009", :align => :center, :size => 12
   end
 end
 
@@ -56,5 +48,13 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
     pdf.move_down(10)
     pdf.text "Total hours: #{te.sum(&:hours)}", :align => :right
     
+  end
+end
+
+pdf.repeat :all do
+  pdf.font "Helvetica" do
+    pdf.stroke_horizontal_rule
+    pdf.move_down(10)
+    pdf.text "conduct 2009", :align => :center, :size => 12
   end
 end
