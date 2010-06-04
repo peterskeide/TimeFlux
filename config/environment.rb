@@ -12,10 +12,10 @@ require File.join(File.dirname(__FILE__), 'boot')
  
 Rails::Initializer.run do |config|
 
-  config.gem 'authlogic', :version => '2.1.5'
+  config.gem 'authlogic',     :version => '2.1.5'
   config.gem 'will_paginate', :version => '2.3.14'
-  config.gem 'ruby-net-ldap', :lib => 'net/ldap'
-  config.gem 'prawn', :version => '0.8.4'
+  config.gem 'ruby-net-ldap', :lib => 'net/ldap', :version => '0.0.4'
+  config.gem 'prawn',         :version => '0.8.4'
   
   config.time_zone = 'UTC'
 

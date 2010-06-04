@@ -10,4 +10,5 @@ nbproject
 *.sqlite3
 *~
 vendor/plugins/authlogic
+.idea/
 
