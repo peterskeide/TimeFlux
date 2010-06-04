@@ -14,16 +14,16 @@
 		  </tr>
 	  </thead>
 	  <tbody>
-		  <% calendar.each_week do |week| %>
+		  <% calendar.weeks.each do |week| %>
 		      <tr>
 		        <td>
 							<b><%= link_to week.number, user_time_entries_path(:user_id => user, :date => week.start_date) %></b>
 		        </td>
-						<% week.each_day do |day| %>
+						<% week.days.each do |day| %>
 			          <%= hours_for_day(day) %>
 		 				<% end -%>
 		        <td class="leftline" style="color:gray">
-		          <%= week.total_hours %>
+		          <%= week.sum_hours %>
 		        </td>
 		      </tr>
 			<% end %>

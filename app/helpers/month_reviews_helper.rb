@@ -23,10 +23,10 @@ module MonthReviewsHelper
   end
   
   def hours_for_day(workday)
-    total_hours = workday.total_hours
-    total_hours_or_dash = total_hours > 0 ? total_hours : '-'
+    sum_hours = workday.sum_hours
+    sum_hours_or_dash = sum_hours > 0 ? sum_hours : '-'
     result = workday.in_reported_month? ? "<td>" : "<td style='color: #E0E0E0;'>"
-    result << (workday.today? ? "<u>#{total_hours_or_dash}</u>" : "#{total_hours_or_dash}")
+    result << (workday.today? ? "<u>#{sum_hours_or_dash}</u>" : "#{sum_hours_or_dash}")
     result << "</td>"
   end
    

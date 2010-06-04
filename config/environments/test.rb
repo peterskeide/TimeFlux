@@ -24,7 +24,7 @@ config.action_mailer.delivery_method = :test
 # Test unit must be loaded before mocha/shoulda or you will get a const_missing (NameError)
 # when running rake test tasks 
 # ref: http://floehopper.lighthouseapp.com/projects/22289-mocha/tickets/50
-config.gem 'test-unit',               :lib => 'test/unit'
-config.gem 'mocha'
-config.gem 'shoulda', :version => '2.10.3'
-#config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
+config.gem 'test-unit',    :lib => 'test/unit'
+config.gem 'mocha',        :version => '0.9.8'
+config.gem 'shoulda',      :version => '2.10.3'
+config.gem 'factory_girl', :version => '1.2.4'
