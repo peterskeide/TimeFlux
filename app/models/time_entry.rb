@@ -1,3 +1,5 @@
+# TODO: refactor the names scopes. Scopes that are designed to be used with null values
+# are not "a good thing".
 class TimeEntry < ActiveRecord::Base
   
   belongs_to :user
@@ -176,6 +178,10 @@ class TimeEntry < ActiveRecord::Base
 
   def hours_to_s
     if self.hours > 0 then self.hours.to_s else '-' end
+  end
+  
+  def billable?
+    self.activity.billable?
   end
 
   private

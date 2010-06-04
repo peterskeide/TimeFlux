@@ -1,0 +1,13 @@
+<div class="calender_activities">
+
+  <table style="border-collapse: collapse;">
+    <%=  activities_list(user_work_month.activity_summary.billable) %>
+    <tr><td>&nbsp;</td></tr>
+    <%=  activities_list(user_work_month.activity_summary.unbillable) %>
+  </table>
+
+  <br/><br/>
+
+  <div style="text-align:right"><%= link_to 'View details', user_month_listing_path(user, :calendar => beginning_of_month) %> </div>
+  <br/>
+</div>

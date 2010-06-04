@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
     end
     current
   end
-    
+          
   private
   
   def validate_not_last_admin

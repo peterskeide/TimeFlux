@@ -8,6 +8,10 @@ class Project < ActiveRecord::Base
    
    before_destroy :validate_has_no_activities
    
+   def billable?
+     customer.billable?
+   end
+   
    private
    
    def validate_has_no_activities

@@ -14,37 +14,24 @@
 
 <hr/>
 
-<h4 class=""><%= @period.month_name -%></h4>
+<h4 class=""><%= @month.name -%></h4>
 
-<div class="calender_activities">
-
-  <table style="border-collapse: collapse;">
-    <%=  activities_list( @activities_summary[:billable] ) %>
-    <tr><td>&nbsp;</td></tr>
-    <%=  activities_list( @activities_summary[:unbillable] ) %>
-  </table>
-
-  <br/><br/>
-
-  <div style="text-align:right"><%= link_to 'View details', user_month_listing_path(@user, :calendar => @beginning_of_month) %> </div>
-  <br/>
-</div>
-
+<%= render :partial => "activity_summary", :locals => { :user_work_month => @month, :user => @user, :beginning_of_month => @beginning_of_month } %>
 <%= render :partial => "calendar_table", :locals => { :user_work_month => @month, :user => @user }%>
 
-<% if @period.has_statistics %>
+<% if @month.has_statistics? %>
   <br />
   <fieldset class="statistics">
     <legend>
-      Statistics - <%= @period.balance_workdays ? "First #{@period.balance_workdays} working days" : @period.month_name  %>
+      Statistics - <%= @month.name  %>
     </legend>
     <p>
       <label class="info">Balance</label>
-      <span class="<%=case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
-      <%= "%+.1f" % @period.balance -%> </span> hours
+      <span class="<%=case @month.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
+      <%= "%+.1f" % @month.balance -%> </span> hours
     </p>
     <p>
-      <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
+      <label class="info">Billing degree</label> <%= @month.billing_degree %> %
     </p>
   </fieldset>
 <% end %>

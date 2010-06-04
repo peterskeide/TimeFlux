@@ -1,8 +1,8 @@
 class UserWorkMonth  
- 
-  attr_reader :registered_days, :registered_hours, :expected_days, :expected_hours   
+  attr_reader :registered_days, :registered_hours, :expected_days, :expected_hours, :activity_summary, :billing_degree, :balance   
  
   def initialize(user, month_start)
+    @user = user
     @month_start = month_start
     @month_end = @month_start.end_of_month
     @first_day_of_first_week_of_month = @month_start.beginning_of_week
@@ -11,6 +11,17 @@ class UserWorkMonth
     initialize_workdays
     initialize_weeks
     initialize_month_totals
+    initialize_activity_summary
+    @billing_degree = calculate_billing_degree
+    @balance = calculate_balance
+  end
+  
+  def name
+    Date::MONTHNAMES[@month_start.month]
+  end
+  
+  def has_statistics?
+    @balance != nil && @billing_degree != nil
   end
   
   def each_week(&block)
@@ -44,10 +55,63 @@ class UserWorkMonth
     @expected_hours = workdays_in_month.map { |wd| wd.date.work_hours }.sum
     @registered_days = workdays_in_month.select { |wd| wd.hours_reported? }.length
     @expected_days = workdays_in_month.select { |wd| wd.date.workday? }.length
-  end 
-      
-  private :initialize_workdays, :initialize_weeks, :initialize_month_totals
+  end
   
+  def initialize_activity_summary
+    time_entries_in_month = @time_entries.select { |te| te.date >= @month_start && te.date <= @month_end }
+    @activity_summary = ActivitySummary.new(time_entries_in_month)
+  end
+  
+  def calculate_billing_degree
+    registered_billable_hours = @time_entries.select { |te| te.billable? }.map { |te| te.hours }.sum
+    if registered_billable_hours > 0
+      expected_hours = WorkTimeCalculations.find_expected_workhours_between(@month_start, @month_end)
+      ((registered_billable_hours / expected_hours) * 100).round
+    else
+       0
+    end
+  end
+  
+  def calculate_balance
+    if today > @month_end
+      @registered_hours - @expected_hours
+    elsif current_month?
+      report_upto_date = find_report_upto_date
+      if report_upto_date
+        expected = WorkTimeCalculations.find_expected_workhours_between(@month_start, report_upto_date)
+        actual = @time_entries.select { |te| te.date >= @month_start && te.date <= report_upto_date }.map { |te| te.hours }.sum
+        actual - expected
+      else
+         0
+      end
+    else
+      0
+    end
+  end
+  
+  def current_month?
+    @current_month ||= begin
+      today.month == @month_start.month
+    end
+  end
+  
+  def find_report_upto_date
+    if current_month?
+      @workdays.select { |wd| today == wd.date }.first.hours_reported? ? today - 1 : today 
+    elsif today > @month_end
+      @month_end
+    else
+      nil
+    end
+  end
+  
+  def today
+    @today ||= Time.zone.now.to_date
+  end
+        
+  private :initialize_workdays, :initialize_weeks, :initialize_month_totals, :today, :current_month?,
+          :initialize_activity_summary, :calculate_billing_degree, :calculate_balance, :find_report_upto_date
+    
   class UserWorkDay    
     def initialize(date, time_entries, in_reported_month)
       @date = date
@@ -94,5 +158,29 @@ class UserWorkMonth
     def each_day(&block)
       @workdays.each { |workday| block.call workday }
     end  
-  end 
+  end
+  
+  class ActivitySummary  
+    attr_reader :billable, :unbillable
+    
+    def initialize(time_entries_in_month)
+      @time_entries = time_entries_in_month
+      @activities = @time_entries.map { |te| te.activity }.uniq.sort
+      @billable = []
+      @unbillable = []
+      initialize_billable_and_unbillable_activity_summaries
+    end
+    
+    private
+    
+    def initialize_billable_and_unbillable_activity_summaries
+      @activities.sort.each do |activity| 
+        entry = {
+          :name => activity.customer_project_name(50),
+          :hours => @time_entries.select { |te| activity == te.activity }.map { |te| te.hours }.sum
+          }
+        activity.billable? ? @billable << entry : @unbillable << entry
+      end
+    end       
+  end
 end

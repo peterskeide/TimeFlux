@@ -17,7 +17,7 @@ class MonthReviewsControllerTest < ActionController::TestCase
       
       should_render_template :show
       should_respond_with :success
-      should_assign_to :user, :period, :activities_summary
+      should_assign_to :user, :period
     end
     
   end

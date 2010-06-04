@@ -74,6 +74,15 @@ class Activity < ActiveRecord::Base
     list << "disabled" unless self.active
     return list.join(', ')
   end
+  
+  def billable?
+    if project
+     project.billable?
+   else
+     false
+   end
+  end
+  
 #
 #  def truncated_name_path(max_characters=29)
 #    project_characters = max_characters - self.name.size;
