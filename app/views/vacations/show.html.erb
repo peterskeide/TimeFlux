@@ -2,7 +2,7 @@
 <%= render :partial => 'holidays/sub_menu' -%> 
 <%= render :partial => "shared/flash_output" %>
 
-<% if Configuration.instance.vacation_activity %>
+<% if defined? @vacation_overview %>
 
 	<div class="navigation">
 		<h3 class="compact">

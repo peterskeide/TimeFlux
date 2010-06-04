@@ -18,9 +18,22 @@ class VacationsControllerTest < ActionController::TestCase
 
     context "GET to :show" do
       setup{ get :show, :user_id => users(:bob).id, :id => 2009 }
+      
       should_render_template :show
+      should_assign_to :vacation_overview
     end
-
+    
+    context "GET to :show with no vacation activity configured" do
+      setup{
+        config = Configuration.instance
+        config.expects(:vacation_activity).returns(nil)
+        Configuration.expects(:instance).at_least_once.returns(config)
+        get :show, :user_id => users(:bob).id, :id => 2009 
+      }
+      
+      should_not_assign_to :vacation_overview
+    end
+    
     context "PUT to :update with new vacation entries" do
       setup { put :update, :start_of_month => "2009-08-1", :user_id => users(:bob).id, :id => 2009,
         :dates => { "2009-08-17" => "1", "2009-08-18"=>"1", "2009-08-19"=>"1"} }

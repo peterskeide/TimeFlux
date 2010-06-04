@@ -5,8 +5,8 @@ class VacationsController < ApplicationController
   before_filter :find_user
 
   def show
-    @year = params[:id].blank? ? Date.today.year : params[:id].to_i    
-    @vacation_overview = VacationOverview.for_year_and_user(@year, @user)
+    @year = params[:id].blank? ? Date.today.year : params[:id].to_i
+    @vacation_overview = VacationOverview.for_year_and_user(@year, @user) if Configuration.instance.vacation_activity     
   end
   
   def edit
