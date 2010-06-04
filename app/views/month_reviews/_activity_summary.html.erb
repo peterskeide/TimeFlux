@@ -1,9 +1,9 @@
 <div class="calender_activities">
 
   <table style="border-collapse: collapse;">
-    <%=  activities_list(user_work_month.activity_summary.billable) %>
+    <%=  activities_list(activity_summary.billable) %>
     <tr><td>&nbsp;</td></tr>
-    <%=  activities_list(user_work_month.activity_summary.unbillable) %>
+    <%=  activities_list(activity_summary.unbillable) %>
   </table>
 
   <br/><br/>

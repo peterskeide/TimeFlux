@@ -14,7 +14,7 @@
 		  </tr>
 	  </thead>
 	  <tbody>
-		  <% user_work_month.each_week do |week| %>
+		  <% calendar.each_week do |week| %>
 		      <tr>
 		        <td>
 							<b><%= link_to week.number, user_time_entries_path(:user_id => user, :date => week.start_date) %></b>
@@ -30,7 +30,7 @@
 			</tbody>
 	</table>
 	<div class="footer">
-		<%= registered_and_expected_hours(user_work_month) %>
-		<%= registered_and_expected_days(user_work_month) %>
+		<%= registered_and_expected_hours(statistics) %>
+		<%= registered_and_expected_days(statistics) %>
   </div>
 </div>

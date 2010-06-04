@@ -30,16 +30,16 @@ module MonthReviewsHelper
     result << "</td>"
   end
    
-  def registered_and_expected_hours(user_work_month)
-    registered_hours = user_work_month.registered_hours
-    expected_hours = user_work_month.expected_hours
+  def registered_and_expected_hours(statistics)
+    registered_hours = statistics.registered_hours
+    expected_hours = statistics.expected_hours
     hours_color = registered_hours >= expected_hours ? '' : 'warn'
     "Hours: <span class=\'#{hours_color}\'>#{registered_hours}</span> / #{expected_hours}"
   end
   
-  def registered_and_expected_days(user_work_month)
-    registered_days = user_work_month.registered_days
-    expected_days = user_work_month.expected_days
+  def registered_and_expected_days(statistics)
+    registered_days = statistics.registered_days
+    expected_days = statistics.expected_days
     days_color = registered_days >= expected_days ? '' : 'warn'
     "days: <span class=\'#{days_color}\'>#{registered_days}</span> / #{expected_days}"
   end

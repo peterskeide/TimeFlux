@@ -7,31 +7,31 @@
 <% form_tag user_month_review_path(@user), :method => :get do %>
   <p>
     <label for="date">Period</label>
-    <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @period.start} %>
+    <%= date_select "month_start_date", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @period.start} %>
     <%= submit_tag 'View' %>
   </p>
 <% end %>
 
 <hr/>
 
-<h4 class=""><%= @month.name -%></h4>
+<h4 class=""><%= @calendar.month_name -%></h4>
 
-<%= render :partial => "activity_summary", :locals => { :user_work_month => @month, :user => @user, :beginning_of_month => @beginning_of_month } %>
-<%= render :partial => "calendar_table", :locals => { :user_work_month => @month, :user => @user }%>
+<%= render :partial => "activity_summary", :locals => { :activity_summary => @activity_summary, :user => @user, :beginning_of_month => @beginning_of_month } %>
+<%= render :partial => "calendar_table", :locals => { :calendar => @calendar, :statistics => @statistics, :user => @user }%>
 
-<% if @month.has_statistics? %>
+<% if @statistics.available? %>
   <br />
   <fieldset class="statistics">
     <legend>
-      Statistics - <%= @month.name  %>
+      Statistics - <%= @calendar.month_name  %>
     </legend>
     <p>
       <label class="info">Balance</label>
-      <span class="<%=case @month.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
-      <%= "%+.1f" % @month.balance -%> </span> hours
+      <span class="<%=case @statistics.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
+      <%= "%+.1f" % @statistics.balance -%> </span> hours
     </p>
     <p>
-      <label class="info">Billing degree</label> <%= @month.billing_degree %> %
+      <label class="info">Billing degree</label> <%= @statistics.billing_degree %> %
     </p>
   </fieldset>
 <% end %>
