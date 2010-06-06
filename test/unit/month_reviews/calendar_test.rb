@@ -62,6 +62,9 @@ class CalendarTest < ActiveSupport::TestCase
       assert_true(@day.in_reported_month?)
     end
     
+    # Regarding days outside the month of the calendar: The calendar
+    # includes all the days of the first and last weeks of the month, even
+    # if they technically belong to the previous and/or next month.
     should "return false if it represents a day outside the current month" do
       @day = MonthReview::Calendar::Day.new(@today, @time_entry_enumerable, false)
       assert_false(@day.in_reported_month?)
@@ -73,8 +76,41 @@ class CalendarTest < ActiveSupport::TestCase
     
     should "return true if it has any reported hours" do
        assert_true(@day.hours_reported?)
-    end
-    
-  end 
-       
+    end    
+  end
+  
+  context "An instance of MonthReview::Calendar::Week" do
+     setup do
+       @today = Date.today
+       @weekdays = []
+       (@today.beginning_of_week..@today.end_of_week).to_a.each do |date|
+         time_entries = []
+         3.times { |i| time_entries << Factory.create(:time_entry, :date => date, :hours => 7.5) }
+         time_entry_enumerable = MonthReview::TimeEntryEnumerable.new(time_entries)
+         @weekdays << MonthReview::Calendar::Day.new(date, time_entry_enumerable, true)
+       end
+       @week = MonthReview::Calendar::Week.new(@today.cweek, @weekdays) 
+      end
+      
+      should "return the week number" do
+        assert_equal(@today.cweek, @week.number)
+      end
+      
+      should "return the date of the first day of the week" do
+        assert_equal(@today.beginning_of_week, @week.start_date)
+      end
+      
+      should "return the sum total hours of all the contained time entries" do
+        expected_sum = @weekdays.map { |wd| wd.sum_hours }.sum
+        assert_equal(expected_sum, @week.sum_hours)
+      end
+      
+      should "return one instance of MonthReview::Calendar::Day per day of the week" do
+        expected_days = (@today.beginning_of_week..@today.end_of_week).to_a
+        @week.days.each do |day|
+          assert_equal(MonthReview::Calendar::Day, day.class)
+          assert_equal(expected_days.shift, day.date)
+        end
+      end
+  end      
 end
