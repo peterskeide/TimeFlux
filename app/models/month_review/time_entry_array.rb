@@ -50,6 +50,12 @@ class MonthReview::TimeEntryArray < DelegateClass(Array)
   end
   
   # Returns *a new instance of TimeEntryArray* containing only
+  # TimeEntry instances that are locked.
+  def locked
+    self.class.new @time_entries.select { |te| te.locked }
+  end
+  
+  # Returns *a new instance of TimeEntryArray* containing only
   # TimeEntry instances that belong to the specified activity.
   # The activity argument must be an instance of the Activity model.
   def for_activity(activity)

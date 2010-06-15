@@ -14,6 +14,7 @@ class MonthReviewsController < ApplicationController
     @activity_summary = MonthReview::ActivitySummary.new(timeentryarray_excl_adjoining_weeks)
     today = Time.zone.now.to_date
     @statistics = MonthReview::Statistics.new(timeentryarray_excl_adjoining_weeks, @month_start, @month_end, today)
-    @period = Period.new(@user, @month_start.year, @month_start.month)
+    @locked = timeentryarray_excl_adjoining_weeks.length == timeentryarray_excl_adjoining_weeks.locked.length
+    @ready_for_approval = ((@statistics.registered_hours >= @statistics.expected_hours) && (@statistics.registered_days >= @statistics.expected_days))
   end  
 end

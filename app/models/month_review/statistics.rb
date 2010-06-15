@@ -40,13 +40,9 @@ class MonthReview::Statistics
       registered_hours - expected_hours
     elsif current_month?
       report_upto_date = find_report_upto_date
-      if report_upto_date
-        expected = WorkTimeCalculations.find_expected_workhours_between(@month_start, report_upto_date)
-        actual = @time_entries.sum_hours_between(@month_start, report_upto_date)
-        actual - expected
-      else
-         0
-      end
+      expected = WorkTimeCalculations.find_expected_workhours_between(@month_start, report_upto_date)
+      actual = @time_entries.sum_hours_between(@month_start, report_upto_date)
+      actual - expected
     else
       0
     end
@@ -61,11 +57,7 @@ class MonthReview::Statistics
   end
 
   def find_report_upto_date
-    if current_month?
-      @time_entries.sum_hours_on_date(@today) > 0 ? @today : @today - 1
-    else
-      nil
-    end
+    @time_entries.sum_hours_on_date(@today) > 0 ? @today : @today - 1
   end
        
 end
