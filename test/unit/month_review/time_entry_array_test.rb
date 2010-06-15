@@ -68,5 +68,35 @@ class TimeEntryArrayTest < ActiveSupport::TestCase
         assert_true(locked_entries.include?(result)) 
       }
     end
+    
+    should "return all time entries that are billable" do
+      original_length = @time_entries.length
+      5.times { @array << Factory.build(:unbillable_time_entry) }
+      billable = @array.billable
+      assert_equal(original_length, billable.length)
+      billable.each do |b|
+        assert_true(b.billable?)
+      end
+    end
+    
+    should "return all time entries between (and including) a given from and to date" do
+      monday = @weekdays[1]
+      wednesday = @weekdays[3]
+      assert_equal(9, @array.between(monday, wednesday).length) # Setup creates 3 time entries per day.
+    end
+    
+    should "return all time entries that belong to a given activity" do
+      activity = Factory.create(:billable_activity, :name => "Make more money")
+      5.times {
+        time_entry = Factory.build(:unbillable_time_entry)
+        time_entry.activity = activity  
+        @array << time_entry 
+       }
+       result = @array.for_activity(activity)
+       assert_equal(5, result.length)
+       result.each do |time_entry|
+         assert_equal(activity, time_entry.activity)
+       end
+    end
   end
 end
