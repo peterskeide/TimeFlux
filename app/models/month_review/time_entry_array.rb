@@ -2,7 +2,7 @@
 # of TimeEntry instances.
 class MonthReview::TimeEntryArray < DelegateClass(Array) 
   def initialize(time_entries)
-    time_entries.each { |te| raise "#{self.class} can only contain instances of TimeEntry" unless te.class == TimeEntry }
+    time_entries.each { |te| raise(ArgumentError, "#{self.class} can only contain instances of TimeEntry") unless te.class == TimeEntry }
     @time_entries = time_entries
     super(@time_entries)
   end
@@ -29,6 +29,18 @@ class MonthReview::TimeEntryArray < DelegateClass(Array)
   # on all contained TimeEntry instances.
   def sum_days
     @time_entries.map { |te| te.date }.uniq.length
+  end
+   
+  # Like Array +, this method returns a new instance of
+  # TimeEntryArray with the contents of the original + new array.
+  def +(array)
+    self.class.new(@time_entries + array)
+  end
+  
+  # Like Array -, this method returns a new instance of
+  # TimeEntryArray with the contents of the original - new array.
+  def -(array)
+    self.class.new(@time_entries - array)
   end
   
   # Returns *a new instance of TimeEntryArray* containing only

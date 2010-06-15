@@ -2,6 +2,7 @@ Factory.define :billable_time_entry, :class => TimeEntry do |f|
   f.hours 7.5
   f.notes 'Did some work'
   f.date Date.today
+  f.status TimeEntry::OPEN
   f.association :activity, :factory => :billable_activity
   f.association :hour_type
   f.association :user
@@ -11,6 +12,7 @@ Factory.define :unbillable_time_entry, :class => TimeEntry do |f|
   f.hours 7.5
   f.notes 'Did some work'
   f.date Date.today
+  f.status TimeEntry::OPEN
   f.association :activity, :factory => :unbillable_activity
   f.association :hour_type
   f.association :user
