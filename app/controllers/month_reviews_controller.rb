@@ -8,12 +8,12 @@ class MonthReviewsController < ApplicationController
     first_day_of_first_week_of_month = @month_start.beginning_of_week
     last_day_of_last_week_of_month = @month_end.end_of_week
     time_entries_incl_adjoining_weeks = @user.time_entries.between(first_day_of_first_week_of_month, last_day_of_last_week_of_month).all(:order => "date ASC")
-    enumerable_incl_adjoining_weeks = MonthReview::TimeEntryEnumerable.new(time_entries_incl_adjoining_weeks)
-    @calendar = MonthReview::Calendar.new(enumerable_incl_adjoining_weeks, @month_start, @month_end)
-    enumerable_excl_adjoining_weeks = enumerable_incl_adjoining_weeks.between(@month_start, @month_end)    
-    @activity_summary = MonthReview::ActivitySummary.new(enumerable_excl_adjoining_weeks)
+    timeentryarray_incl_adjoining_weeks = MonthReview::TimeEntryArray.new(time_entries_incl_adjoining_weeks)
+    @calendar = MonthReview::Calendar.new(timeentryarray_incl_adjoining_weeks, @month_start, @month_end)
+    timeentryarray_excl_adjoining_weeks = timeentryarray_incl_adjoining_weeks.between(@month_start, @month_end)    
+    @activity_summary = MonthReview::ActivitySummary.new(timeentryarray_excl_adjoining_weeks)
     today = Time.zone.now.to_date
-    @statistics = MonthReview::Statistics.new(enumerable_excl_adjoining_weeks, @month_start, @month_end, today)
+    @statistics = MonthReview::Statistics.new(timeentryarray_excl_adjoining_weeks, @month_start, @month_end, today)
     @period = Period.new(@user, @month_start.year, @month_start.month)
   end  
 end

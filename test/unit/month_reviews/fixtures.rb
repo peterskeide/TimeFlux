@@ -6,22 +6,16 @@ class MonthReviewFixtures
   #
   # No time entries will be generated for a date where date.work_hours
   # returns 0.0.
-  def self.time_entry_enumerable(options = {}) 
+  def self.time_entry_array(options = {}) 
     time_entries = []
     start_date = options[:start_date]
     end_date = options[:end_date]
-    time_entries_per_day = options[:per_day]   
+    time_entries_per_day = options[:per_day].to_i   
     (start_date..end_date).to_a.each do |date|
       unless 0.0 == date.work_hours
-        if time_entries_per_day.is_a?(Fixnum)
-          time_entries_per_day.times { |i| time_entries << Factory.create(:time_entry, :date => date, :hours => 7.5) }
-        elsif time_entries_per_day.is_a?(Proc)
-          time_entries_per_day.call(date, time_entries)
-        else
-          raise "Unknow format for :per_day option"
-        end
+        time_entries_per_day.times { |i| time_entries << Factory.create(:billable_time_entry, :date => date, :hours => 7.5) }
       end      
     end
-    MonthReview::TimeEntryEnumerable.new(time_entries)
+    MonthReview::TimeEntryArray.new(time_entries)
   end
 end

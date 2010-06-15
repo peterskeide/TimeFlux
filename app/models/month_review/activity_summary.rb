@@ -1,8 +1,8 @@
 class MonthReview::ActivitySummary  
   attr_reader :billable, :unbillable
   
-  def initialize(time_entry_enumerable)
-    @time_entries = time_entry_enumerable
+  def initialize(time_entry_array)
+    @time_entries = time_entry_array
     @activities = @time_entries.uniq_activities
     @billable = []
     @unbillable = []

@@ -8,8 +8,8 @@ class CalendarTest < ActiveSupport::TestCase
       today = Date.today
       @month_start = today.beginning_of_month
       @month_end = today.end_of_month
-      time_entry_enumerable = MonthReviewFixtures.time_entry_enumerable(:start_date => @month_start, :end_date => @month_end, :per_day => 1)
-      @calendar = MonthReview::Calendar.new(time_entry_enumerable, @month_start, @month_end)
+      time_entry_array = MonthReviewFixtures.time_entry_array(:start_date => @month_start, :end_date => @month_end, :per_day => 1)
+      @calendar = MonthReview::Calendar.new(time_entry_array, @month_start, @month_end)
     end
     
     context "days" do
@@ -42,8 +42,8 @@ class CalendarTest < ActiveSupport::TestCase
   context "An instance of MonthReview::Calendar::Day" do
     setup do
       @today = Date.today
-      time_entry_enumerable = MonthReviewFixtures.time_entry_enumerable(:start_date => @today, :end_date => @today, :per_day => 3)
-      @day = MonthReview::Calendar::Day.new(@today, time_entry_enumerable, true)
+      @time_entry_array = MonthReviewFixtures.time_entry_array(:start_date => @today, :end_date => @today, :per_day => 3)
+      @day = MonthReview::Calendar::Day.new(@today, @time_entry_array, true)
     end
     
     should "return true if it has a date that is equal to today" do
@@ -51,7 +51,7 @@ class CalendarTest < ActiveSupport::TestCase
     end
     
     should "return false if it has a date that is not equal to today" do
-      @day = MonthReview::Calendar::Day.new(@today - 1, @time_entry_enumerable, true)
+      @day = MonthReview::Calendar::Day.new(@today - 1, @time_entry_array, true)
       assert_false(@day.today?)
     end
     
@@ -63,7 +63,7 @@ class CalendarTest < ActiveSupport::TestCase
     # includes all the days of the first and last weeks of the month, even
     # if they technically belong to the previous and/or next month.
     should "return false if it represents a day outside the current month" do
-      @day = MonthReview::Calendar::Day.new(@today, @time_entry_enumerable, false)
+      @day = MonthReview::Calendar::Day.new(@today, @time_entry_array, false)
       assert_false(@day.in_reported_month?)
     end
     
@@ -81,8 +81,8 @@ class CalendarTest < ActiveSupport::TestCase
        @today = Date.today
        @weekdays = []
        (@today.beginning_of_week..@today.end_of_week).to_a.each do |date|
-         time_entry_enumerable = MonthReviewFixtures.time_entry_enumerable(:start_date => date, :end_date => date, :per_day => 3)
-         @weekdays << MonthReview::Calendar::Day.new(date, time_entry_enumerable, true)
+         time_entry_array = MonthReviewFixtures.time_entry_array(:start_date => date, :end_date => date, :per_day => 3)
+         @weekdays << MonthReview::Calendar::Day.new(date, time_entry_array, true)
        end
        @week = MonthReview::Calendar::Week.new(@today.cweek, @weekdays) 
       end
