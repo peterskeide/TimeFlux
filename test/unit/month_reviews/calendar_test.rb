@@ -1,16 +1,15 @@
 require 'test_helper'
+require "#{File.dirname(__FILE__)}/fixtures"
 
 class CalendarTest < ActiveSupport::TestCase
       
   context "For an instance of MonthReview::Calendar" do
     setup do
       today = Date.today
-      @time_entries = []
-      7.times { |i| @time_entries << Factory.create(:time_entry, :date => (today + i)) }
-      @time_entry_enumerable = MonthReview::TimeEntryEnumerable.new(@time_entries)
       @month_start = today.beginning_of_month
       @month_end = today.end_of_month
-      @calendar = MonthReview::Calendar.new(@time_entry_enumerable, @month_start, @month_end)
+      time_entry_enumerable = MonthReviewFixtures.time_entry_enumerable(:start_date => @month_start, :end_date => @month_end, :per_day => 1)
+      @calendar = MonthReview::Calendar.new(time_entry_enumerable, @month_start, @month_end)
     end
     
     context "days" do
@@ -43,10 +42,8 @@ class CalendarTest < ActiveSupport::TestCase
   context "An instance of MonthReview::Calendar::Day" do
     setup do
       @today = Date.today
-      @time_entries = []
-      3.times { |i| @time_entries << Factory.create(:time_entry, :date => @today, :hours => 7.5) }
-      @time_entry_enumerable = MonthReview::TimeEntryEnumerable.new(@time_entries)
-      @day = MonthReview::Calendar::Day.new(@today, @time_entry_enumerable, true)
+      time_entry_enumerable = MonthReviewFixtures.time_entry_enumerable(:start_date => @today, :end_date => @today, :per_day => 3)
+      @day = MonthReview::Calendar::Day.new(@today, time_entry_enumerable, true)
     end
     
     should "return true if it has a date that is equal to today" do
@@ -84,9 +81,7 @@ class CalendarTest < ActiveSupport::TestCase
        @today = Date.today
        @weekdays = []
        (@today.beginning_of_week..@today.end_of_week).to_a.each do |date|
-         time_entries = []
-         3.times { |i| time_entries << Factory.create(:time_entry, :date => date, :hours => 7.5) }
-         time_entry_enumerable = MonthReview::TimeEntryEnumerable.new(time_entries)
+         time_entry_enumerable = MonthReviewFixtures.time_entry_enumerable(:start_date => date, :end_date => date, :per_day => 3)
          @weekdays << MonthReview::Calendar::Day.new(date, time_entry_enumerable, true)
        end
        @week = MonthReview::Calendar::Week.new(@today.cweek, @weekdays) 

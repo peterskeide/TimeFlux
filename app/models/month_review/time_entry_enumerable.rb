@@ -17,6 +17,10 @@ class MonthReview::TimeEntryEnumerable
     @time_entries = time_entries
   end
   
+  def empty?
+    @time_entries.nil? || @time_entries.empty?
+  end
+  
   def each
     @time_entries.each { |te| yield te }
   end
@@ -25,6 +29,18 @@ class MonthReview::TimeEntryEnumerable
   # instances. The calculated value is memoized.
   def sum_hours
     @sum_hours ||= @time_entries.map { |te| te.hours }.sum
+  end
+  
+  def sum_billable_hours
+    self.billable.sum_hours
+  end
+  
+  def sum_hours_on_date(date)
+    self.for_date(date).sum_hours
+  end
+  
+  def sum_hours_between(from_date, to_date)
+    self.between(from_date, to_date).sum_hours
   end
   
   # Returns the total number of the days that have time entries based

@@ -12,7 +12,8 @@ class MonthReviewsController < ApplicationController
     @calendar = MonthReview::Calendar.new(enumerable_incl_adjoining_weeks, @month_start, @month_end)
     enumerable_excl_adjoining_weeks = enumerable_incl_adjoining_weeks.between(@month_start, @month_end)    
     @activity_summary = MonthReview::ActivitySummary.new(enumerable_excl_adjoining_weeks)
-    @statistics = MonthReview::Statistics.new(enumerable_excl_adjoining_weeks, @month_start, @month_end)
+    today = Time.zone.now.to_date
+    @statistics = MonthReview::Statistics.new(enumerable_excl_adjoining_weeks, @month_start, @month_end, today)
     @period = Period.new(@user, @month_start.year, @month_start.month)
   end  
 end
