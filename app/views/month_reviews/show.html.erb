@@ -1,6 +1,4 @@
-<h1>Review Month
-  <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
-</h1>
+<%= review_month_heading %>
 
 <br/>
 
@@ -27,8 +25,7 @@
     </legend>
     <p>
       <label class="info">Balance</label>
-      <span class="<%=case @statistics.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
-      <%= "%+.1f" % @statistics.balance -%> </span> hours
+      <%= balance_hours %>
     </p>
     <p>
       <label class="info">Billing degree</label> <%= @statistics.billing_degree %> %
@@ -41,18 +38,18 @@
 <br/>
 
 <div class="center">
-  <% if @locked -%>
+  <% if @locked %>
     <input type="submit" value="You have submitted this month" disabled="true">
-  <% elsif @ready_for_approval -%>
+  <% elsif @ready_for_approval %>
     <p>
-      <% form_tag lock_user_time_entries_path(@user) do -%>
+      <% form_tag lock_user_time_entries_path(@user) do %>
         <%= hidden_field_tag "user_id", @user.id %>
         <%= hidden_field_tag "start_date", @month_start %>
         <%= hidden_field_tag "end_date", @month_end %>
         <%= submit_tag "Submit for billing"%>
-      <% end -%>
+      <% end %>
     </p>
-  <% else -%>
+  <% else %>
     <input type="submit" value="Not ready for submission" disabled="true">
-  <% end -%>
+  <% end %>
 </div>

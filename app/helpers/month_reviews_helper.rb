@@ -43,4 +43,24 @@ module MonthReviewsHelper
     days_color = registered_days >= expected_days ? '' : 'warn'
     "days: <span class=\'#{days_color}\'>#{registered_days}</span> / #{expected_days}"
   end
+  
+  def balance_hours
+    case @statistics.balance 
+    when (0..9999): status = 'ok' 
+    when (-9999..0): status = 'red' 
+    end
+    html = ""
+    html << "<span class='#{status}'>"
+    html << "#{'%+.1f' % @statistics.balance}"
+    html << "</span>"
+    html << " hours"
+    html
+  end
+  
+  def review_month_heading
+    html = "<h1>Review Month"
+    html << " for #{@user.fullname}" if @current_user.admin
+    html << "</h1>"
+    html
+  end
 end
