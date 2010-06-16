@@ -67,11 +67,11 @@ class ApplicationController < ActionController::Base
   end
   
   def parse_or_create_date
-    if date = params[:calendar]
+    if date = params[:month_start_date]
       if date.is_a?(String)
         return Date.parse(date)
       else
-        return Date.new(params[:calendar]["date(1i)"].to_i, params[:calendar]["date(2i)"].to_i, 1)
+        return Date.new(params[:month_start_date]["date(1i)"].to_i, params[:month_start_date]["date(2i)"].to_i, 1)
       end
     else
       return Date.today.beginning_of_month    

@@ -8,7 +8,7 @@
 <% form_tag user_month_listing_path(@user), :method => :get do %>
   <p>
     <label for="date">Period</label>
-    <%= date_select "calendar", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @beginning_of_month} %>
+    <%= date_select "month_start_date", "date", {:start_year => Date.today.year - 5 , :end_year => Date.today.year + 1, :discard_day => true, :default => @beginning_of_month} %>
     <%= submit_tag 'View' %>
   </p>
 <% end %>
