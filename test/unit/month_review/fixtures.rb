@@ -18,4 +18,20 @@ class MonthReviewFixtures
     end
     MonthReview::TimeEntryArray.new(time_entries)
   end
+  
+  def self.create_n_time_entries_per_date(entries_per_date, date_or_array, options = {})
+    time_entries = []
+    if date_or_array.is_a?(Date)
+      options = options.merge({ :date => date_or_array })
+      entries_per_date.times { time_entries << Factory.build(:billable_time_entry, options) }
+    elsif date_or_array.is_a?(Array)
+      date_or_array.each do |date|
+        options = options.merge({ :date => date })
+        entries_per_date.times { time_entries << Factory.build(:billable_time_entry, options) }
+      end
+    else
+      raise ArgumentError, "An instance of date or an array of dates expected, but got #{date_or_array.class}"
+    end
+    time_entries
+  end
 end

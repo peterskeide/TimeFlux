@@ -43,6 +43,24 @@ class MonthReview::TimeEntryArray < DelegateClass(Array)
     self.class.new(@time_entries - array)
   end
   
+  def <<(time_entry)
+    raise ArgumentError, "#{self.class} can only contain instances of TimeEntry" unless time_entry.is_a?(TimeEntry)
+    @time_entries << time_entry
+  end
+  
+  def []=(index, time_entry)
+    raise ArgumentError, "#{self.class} can only contain instances of TimeEntry" unless time_entry.is_a?(TimeEntry)
+    @time_entries[index] = time_entry
+  end
+  
+  def *(times)
+    if times.is_a?(String)
+      @time_entries.join(times)
+    else
+      self.class.new(@time_entries * times)
+    end
+  end
+  
   # Returns *a new instance of TimeEntryArray* containing only
   # TimeEntry instances in the specified date interval.
   def between(from_date, to_date)
@@ -78,5 +96,9 @@ class MonthReview::TimeEntryArray < DelegateClass(Array)
   # TimeEntry instances belong to.
   def uniq_activities
     @time_entries.map { |te| te.activity }.uniq.sort
+  end
+  
+  def to_a
+    @time_entries
   end
 end
