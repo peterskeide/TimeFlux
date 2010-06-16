@@ -18,6 +18,12 @@ class TimeEntriesControllerTest < ActionController::TestCase
       should_not_set_the_flash
       should_assign_to :date, :user
       should_render_template :index
+      
+      should "assign an array with all the users time entries for the current week to @time_entries" do
+        expected_time_entries = users(:bob).time_entries.between(@date, @date.end_of_week)
+        time_entries = assigns(:time_entries)
+        assert_equal(expected_time_entries, time_entries)
+      end
                 
     end
     

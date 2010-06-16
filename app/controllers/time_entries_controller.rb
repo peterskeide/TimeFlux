@@ -6,6 +6,8 @@ class TimeEntriesController < ApplicationController
          
   def index 
     @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date]).beginning_of_week
+    time_entries_for_week = @user.time_entries.between(@date, @date.end_of_week)
+    @time_entries = MonthReview::TimeEntryArray.new(time_entries_for_week)
   end
   
   def change_user
