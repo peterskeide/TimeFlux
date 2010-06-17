@@ -1,0 +1,14 @@
+jQuery('#time_entry_dialog').html("<%= escape_javascript(render :partial => 'time_entries', 
+       :locals => { :user => @user, :activity => @activity, :time_entry => @time_entry, :time_entries => @time_entries })%>");
+
+enableAjaxFormSubmit('#new_time_entry');
+
+<% if @errors %>
+	jQuery('#time_entry_dialog_errors').html("<%= @errors %>");
+<% end %>
+
+<% unless @time_entries.empty? %>
+	jQuery('#existing_time_entries').show();
+<% end %>
+
+jQuery('#time_entry_dialog').dialog({ title: "Time Entries for <%= @date %>", width: 600 });

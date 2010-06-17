@@ -1,8 +1,24 @@
-<% unless time_entries.empty? %>
-	<table class="" width="100%" id='<%= "#{day}_time_entries" %>'>
-			<%= render :partial => "time_entries_table_header" %>
-		<% time_entries.each do |te| %>
-			<%= render :partial => "show_time_entry", :locals => { :time_entry => te } %>
-		<% end -%>
+<div id="time_entry_dialog_errors"></div>
+
+<div id="time_entry_form">
+	<%= render :partial => 'time_entry_form', :locals => { :user => user, :time_entry => time_entry, :activity => activity } %>
+</div>
+<div id="existing_time_entries" style="display: none">
+	<table>
+		<thead>
+			<tr>
+				<th>Hours</th>
+				<th>Notes</th>
+				<th>Hour type</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+		<tbody id="existing_time_entry_rows">
+			<% time_entries.each do |te| %>
+				<tr id="time_entry_row_<%= te.id %>">
+					<%= render :partial => 'existing_time_entry', :locals => { :user => user, :time_entry => te } %>
+				</tr>
+			<% end -%>
+		</tbody>
 	</table>
-<% end -%>
+</div>

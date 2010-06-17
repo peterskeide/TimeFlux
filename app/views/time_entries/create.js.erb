@@ -1,0 +1,20 @@
+<% if @errors %>
+  jQuery('#time_entry_dialog_errors').html('<%= escape_javascript(@errors) %>');
+<% else %>
+	// Update totals for day and week
+	jQuery('#<%= @day_name %>_sum').html('<%= @day_sum %>');
+	jQuery('#activity_<%= @time_entry.activity.id %>_week_sum').html('<%= @week_sum %>');
+  
+  jQuery('#existing_time_entries').show();
+
+  // Add a new row to the table with existing time entries for this activity and day
+	jQuery('#existing_time_entry_rows').append("<tr id='time_entry_row_<%= @time_entry.id %>'>" +
+	                                           "<%= escape_javascript(render :partial => 'existing_time_entry', :locals => { :user => @user, :time_entry => @time_entry }) %>" +
+	                                           "</tr>");
+	
+	// Update the time entry form to display a form for adding a new time entry
+	jQuery('#time_entry_form').html("<%= escape_javascript(render :partial => 'time_entry_form', 
+																	:locals => { :user => @user, :time_entry => @new_time_entry, :activity => @time_entry.activity }) %>")
+  
+  enableAjaxFormSubmit('#new_time_entry');
+<% end %>

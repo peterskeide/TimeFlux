@@ -1,0 +1,27 @@
+<% form_for([user, time_entry]) do |f| %>
+	<%= f.hidden_field :date %>
+	<%= f.hidden_field :activity_id %>
+	<p>
+		<b><%= activity.customer_project_name %></b>
+	<p>
+		<%= f.label :hours %>
+		<%= f.text_field :hours %>
+	</p>
+	<p>
+		<%= f.label :notes %>
+		<%= f.text_field :notes %>
+	</p>
+	<p>
+		<%= f.label :hour_type %>
+		<%= collection_select(:time_entry, :hour_type_id, HourType.all, :id, :name) %>
+	</p>
+	<p>
+		<% if time_entry.id %>
+			<%= f.submit 'Update' %>
+			<%= link_to_remote('Cancel', :url => cancel_edit_user_time_entry_path(user, time_entry, :date => time_entry.date, :activity_id => time_entry.activity_id),
+			                             :method => :get) %>
+		<% else %>
+			<%= f.submit 'Add' %>
+		<% end -%>
+	</p>
+<% end -%>

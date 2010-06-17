@@ -378,6 +378,14 @@ td.week_entries_hours {
 	width: 220px;
 }
 
+td.time_entries {
+	padding: 1em;
+}
+
+th.time_entries {
+	padding: 1em;
+} 
+
 #container {
 	min-width: 1110px;
 }

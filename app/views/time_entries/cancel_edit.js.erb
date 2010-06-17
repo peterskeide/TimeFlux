@@ -1,0 +1,4 @@
+jQuery('#time_entry_form').html("<%= escape_javascript(render :partial => 'time_entry_form', 
+                                 :locals => { :user => @user, :time_entry => @time_entry, :activity => @activity }) %>");
+
+enableAjaxFormSubmit('#new_time_entry');

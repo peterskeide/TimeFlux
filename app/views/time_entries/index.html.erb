@@ -1,7 +1,3 @@
-<div id="week_total">
-  <%= render :partial => "week_total", :locals => { :user => @user, :date => @date } %>
-</div>
-
 <%= time_entries_heading %>
 <%= render :partial => "shared/flash_output" %>
 
@@ -13,20 +9,33 @@
 	</h4>
 </div>
 
-<p>
-	<% weekdays.each_with_index do |day, index| %>
-		<div id="<%= day %>">
-			<p>
-				<div id='<%= "#{day}_header" %>'>
- 					<%= render :partial => "day_header", :locals => { :date => @date + index, :day => day} %>
-				</div>			    
-				<div id='<%= "#{day}_time_entries_container"%>'>
-	 				<%= render :partial => "time_entries", :locals => { :time_entries => @time_entries.for_date(@date + index), :day => day } %>
-				</div>
-			</p>
-		</div>
-	<% end %>
-</p>
+<div id="time_entries">
+	<table class="time_entries">
+		<tr>
+			<th class="time_entries">Activity</th>
+			<% each_weekday do |day, date| %>
+				<th class="time_entries"><%= day %></th>
+			<% end -%>
+			<th class="time_entries">Sum</th>
+		</tr>
+		<% each_activity do |activity, sum_per_day, week_total| %>
+		  <tr>
+				<td class="time_entries"><%= activity.customer_project_name %></td>
+				<% each_weekday do |day, date| %>
+					<td class="time_entries"><%= link_to_remote(sum_per_day[day], :url => new_user_time_entry_path(@user, :date => date, :activity_id => activity.id), 
+					                                                              :method => :get, :html => { :id => "#{day}_sum" }) %></td>
+				<% end -%>
+				<td class="time_entries" id="activity_<%= activity.id %>_week_sum"><%= week_total %></td>
+			</tr>
+		<% end -%>
+	</table>
+</div>
+
+<div id="time_entry_dialog" style="display: none">
+	<b>This is the dialog!</b>
+</div>
+
+
 <% if @current_user.admin %>
   <br />
   <hr />

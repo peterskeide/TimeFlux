@@ -15,3 +15,11 @@ function toggle_tag_select(tag_id, hidden_id) {
     hidden.setAttribute('value', set_to);
 }
 
+function enableAjaxFormSubmit(css_selector) {
+	jQuery(css_selector).submit(function() {
+		var url = jQuery(this).attr('action');
+		var data = jQuery(this).serialize();
+		jQuery.post(url, data, null, "script");
+		return false; 
+	});
+}

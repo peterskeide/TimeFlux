@@ -1,5 +1,0 @@
-day = @time_entry.weekday
-time_entries = TimeEntry.find_all_by_user_id_and_date(@user.id, @time_entry.date)
-page.replace_html "#{day}_time_entries_container", :partial => "time_entries", :locals => { :time_entries => time_entries, :day => day }
-page.replace_html "#{@time_entry.weekday}_total", "<b>#{TimeEntry.for_user(@user).on_day(@time_entry.date).sum(:hours)}</b>"
-page.replace_html "week_total", :partial => "week_total", :locals => { :user => @user, :date => @time_entry.date.at_beginning_of_week }

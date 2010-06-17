@@ -20,64 +20,63 @@ class TimeEntriesController < ApplicationController
   end
   
   def new
-    date = Date.parse(params[:date])
-    @time_entry = TimeEntry.new(:date => date)
-    @activities = @user.current_activities(date)
-    respond_to do |format|
-      format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
-    end
+    @date = Date.parse(params[:date])
+    hour_type = HourType.default
+    @activity = Activity.find(params[:activity_id])
+    @time_entry = TimeEntry.new(:date => @date, :activity_id => @activity.id, :hour_type_id => hour_type.id)
+    @time_entries = @user.time_entries.on_day(@date).for_activity(@activity)
   end
-    
+   
+  # TODO: implement support for tags 
   def create
     @time_entry = @user.time_entries.build(params[:time_entry])
-    if params[:tags].respond_to? :each
-      params[:tags].each { |id, value| @time_entry.tags << Tag.find(id.to_i) if value == 'true'}
-    end
+    #if params[:tags].respond_to? :each
+    #  params[:tags].each { |id, value| @time_entry.tags << Tag.find(id.to_i) if value == 'true'}
+    #end
     if @time_entry.save
-      respond_to do |format|
-        format.js { render :template => "/time_entries/time_entries.rjs" }
-      end
+      @date = @time_entry.date
+      calculate_day_and_week_totals
+      @day_name = Date::DAYNAMES[@date.wday]
+      @new_time_entry = TimeEntry.new(:date => @date, :activity_id => @time_entry.activity.id, :hour_type_id => HourType.default.id)
     else
-      @activities = @user.current_activities(@time_entry.date)
-      respond_to do |format|
-        format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
-      end           
-    end 
+      @errors = @time_entry.errors.full_messages.join(', ')         
+    end
   end
   
   def edit
     @time_entry = @user.time_entries.find(params[:id])
-    @activities = @user.current_activities(@time_entry.date)
-    respond_to do |format|
-      format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
-    end
   end
-    
+  
+  def cancel_edit
+    date = Date.parse(params[:date])
+    @activity = Activity.find(params[:activity_id])
+    @time_entry = TimeEntry.new(:date => date, :activity_id => @activity.id, :hour_type_id => HourType.default.id)
+  end
+  
+  # TODO: add support for tags  
   def update
     @time_entry = @user.time_entries.find(params[:id])
-    if params[:tags].respond_to? :each
-      tags = []
-      params[:tags].each { |id, value| tags << Tag.find(id.to_i) if value == 'true'}
-      @time_entry.tags = tags
-    end
+    #if params[:tags].respond_to? :each
+    #  tags = []
+    #  params[:tags].each { |id, value| tags << Tag.find(id.to_i) if value == 'true'}
+    #  @time_entry.tags = tags
+    #end
     if @time_entry.update_attributes(params[:time_entry])
-      respond_to do |format|
-        format.js { render :template => "/time_entries/time_entries.rjs" }
-      end     
+      @date = @time_entry.date
+      calculate_day_and_week_totals
+      @day_name = Date::DAYNAMES[@date.wday]
+      @new_time_entry = TimeEntry.new(:date => @date, :activity_id => @time_entry.activity.id, :hour_type_id => HourType.default.id)
     else
-      @activities = @user.current_activities(@time_entry.date)
-      respond_to do |format|
-        format.js { render :template => "/time_entries/time_entries_with_form.rjs" }
-      end
+      @errors = @time_entry.errors.full_messages.join(', ') 
     end
   end
   
   def destroy
     @time_entry = @user.time_entries.find(params[:id])
     @time_entry.destroy
-    respond_to do |format|
-      format.js { render :template => "/time_entries/time_entries.rjs" }
-    end
+    @date = @time_entry.date
+    calculate_day_and_week_totals
+    @day_name = Date::DAYNAMES[@date.wday]
   end 
   
   def lock
@@ -88,6 +87,13 @@ class TimeEntriesController < ApplicationController
   end
 
   private
+  
+  def calculate_day_and_week_totals
+    time_entries = @user.time_entries.for_activity(@time_entry.activity).between(@date.beginning_of_week, @date.end_of_week)
+    time_entry_array = MonthReview::TimeEntryArray.new(time_entries)
+    @day_sum = time_entry_array.for_date(@date).sum_hours
+    @week_sum = time_entry_array.sum_hours
+  end
   
   def find_user
     @user = User.find(params[:user_id])

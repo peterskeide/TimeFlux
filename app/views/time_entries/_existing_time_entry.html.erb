@@ -1,0 +1,7 @@
+<td><%= time_entry.hours %></td>
+<td><%= time_entry.notes %></td>
+<td><%= time_entry.hour_type.name %></td>
+<td>
+	<%= link_to_remote('Edit', :url => edit_user_time_entry_path(user, time_entry), :method => :get) %>
+	<%= link_to_remote('Remove', :url => user_time_entry_path(user, time_entry), :method => :delete)%>
+</td> 

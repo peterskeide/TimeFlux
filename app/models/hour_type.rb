@@ -1,10 +1,13 @@
 class HourType < ActiveRecord::Base
   
   has_many :time_entries
-  
   validates_presence_of :name
   
   before_save :reset_existing_default
+    
+  def self.default
+    self.find_by_default_hour_type(true)
+  end
   
   private
   
