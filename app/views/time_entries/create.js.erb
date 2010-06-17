@@ -1,10 +1,6 @@
 <% if @errors %>
   jQuery('#time_entry_dialog_errors').html('<%= escape_javascript(@errors) %>');
-<% else %>
-	// Update totals for day and week
-	jQuery('#<%= @day_name %>_sum').html('<%= @day_sum %>');
-	jQuery('#activity_<%= @time_entry.activity.id %>_week_sum').html('<%= @week_sum %>');
-  
+<% else %>  
   jQuery('#existing_time_entries').show();
 
   // Add a new row to the table with existing time entries for this activity and day

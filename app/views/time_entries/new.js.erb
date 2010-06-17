@@ -11,4 +11,11 @@ enableAjaxFormSubmit('#new_time_entry');
 	jQuery('#existing_time_entries').show();
 <% end %>
 
-jQuery('#time_entry_dialog').dialog({ title: "Time Entries for <%= @date %>", width: 600 });
+jQuery('#time_entry_dialog').dialog({ 
+	title: "Time Entries for <%= @date %>", 
+	width: 600,
+	close: function() {
+		var url = "<%= refresh_totals_user_time_entries_path(@user, :date => @date, :activity_id => @activity.id) %>"; 	
+		jQuery.get(url, null, null, "script");
+	} 
+	});

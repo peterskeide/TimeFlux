@@ -1,3 +1,5 @@
 jQuery('#time_entry_row_<%= @time_entry.id %>').remove();
-jQuery('#<%= @day_name %>_sum').html('<%= @day_sum %>');
-jQuery('#activity_<%= @time_entry.activity.id %>_week_sum').html('<%= @week_sum %>');
+
+<% if @no_more_time_entries %>
+  jQuery('#existing_time_entries').hide();
+<% end %>
