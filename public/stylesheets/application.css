@@ -378,13 +378,80 @@ td.week_entries_hours {
 	width: 220px;
 }
 
-td.time_entries {
-	padding: 1em;
+#hours_input {
+	width: 50px;
 }
 
-th.time_entries {
-	padding: 1em;
-} 
+#notes_input {
+	width: 450px;
+}
+
+.new_time_entry {
+	background-color: Azure;
+	padding: 10px;
+	border: 1px solid LightGrey;
+}
+
+.edit_time_entry {
+	background-color: LightYellow;
+	padding: 10px;
+	border: 1px solid LightGrey;
+}
+
+#existing_time_entries_table {
+	margin-top: 10px;
+	border-collapse:collapse;
+	border: 1px solid LightGray;
+	text-align: left; 
+}
+
+#existing_time_entries_table th {
+	background-color: #eeeeee;
+	padding: 5px;
+	border-bottom: 1px solid LightGrey;
+}
+
+#existing_time_entries_table td {
+	padding: 5px;
+}
+
+.existing_time_entry_options {
+	min-width: 50px;
+}
+
+.existing_time_entry_hour_type {
+	min-width: 75px;
+}
+
+.existing_time_entry_hours {
+	text-align: center;
+	min-width: 50px;
+}
+
+.existing_time_entry_notes {
+	text-align: left;
+	min-width: 350px;
+}
+
+#time_entries_table {
+	border-collapse:collapse;
+}
+
+#time_entries_table .sum {
+	background-color: #eeeeee;
+}
+
+#time_entries_table th {
+	min-width: 70px;
+	text-align: center;
+	padding: 10px;
+}
+
+#time_entries_table td {
+	padding: 10px;
+	text-align: right;
+	border: 1px solid LightGrey;
+}
 
 #container {
 	min-width: 1110px;

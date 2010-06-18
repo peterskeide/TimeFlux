@@ -1,2 +1,5 @@
-jQuery('#activity_<%= @activity.id %>_<%= @day_name %>_sum').html('<%= @day_sum %>');
-jQuery('#activity_<%= @activity.id %>_week_sum').html('<%= @week_sum %>');
+jQuery('#activity_<%= @activity.id %>_<%= @day_name %>_sum').html('<%= @activity_day_sum %>');
+jQuery('#activity_<%= @activity.id %>_week_sum').html('<%= @activity_week_sum %>');
+
+jQuery('#<%= @day_name %>_sum').html('<%= @day_sum %>');
+jQuery('#week_sum').html('<%= @week_sum %>');

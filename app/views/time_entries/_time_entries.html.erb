@@ -4,12 +4,12 @@
 	<%= render :partial => 'time_entry_form', :locals => { :user => user, :time_entry => time_entry, :activity => activity } %>
 </div>
 <div id="existing_time_entries" style="display: none">
-	<table>
+	<table id="existing_time_entries_table">
 		<thead>
 			<tr>
 				<th>Hours</th>
-				<th>Notes</th>
 				<th>Hour type</th>
+				<th>Notes</th>
 				<th>Options</th>
 			</tr>
 		</thead>

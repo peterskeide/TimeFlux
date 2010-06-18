@@ -32,7 +32,7 @@ class TimeEntriesController < ApplicationController
   def new_activity
     @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date]).beginning_of_week
     @activity = Activity.find(params[:activity_id])
-    @sum_per_day = { 'Monday' => 0, 'Tuesday' => 0, 'Wednesday' => 0, 'Thursday' => 0, 'Friday' => 0, 'Saturday' => 0, 'Sunday' => 0 }
+    @sum_per_day = { 'Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0, 'Fri' => 0, 'Sat' => 0, 'Sun' => 0 }
   end
    
   def create
@@ -65,11 +65,13 @@ class TimeEntriesController < ApplicationController
   
   def refresh_totals
     @date = Date.parse(params[:date])
-    @day_name = Date::DAYNAMES[@date.wday]
+    @day_name = Date::DAYNAMES[@date.wday][0..2]
     @activity = Activity.find(params[:activity_id])
-    time_entries = @user.time_entries.for_activity(@activity).between(@date.beginning_of_week, @date.end_of_week)
+    time_entries = @user.time_entries.between(@date.beginning_of_week, @date.end_of_week)
     time_entry_array = MonthReview::TimeEntryArray.new(time_entries)
+    @activity_day_sum = time_entry_array.for_date(@date).for_activity(@activity).sum_hours
     @day_sum = time_entry_array.for_date(@date).sum_hours
+    @activity_week_sum = time_entry_array.for_activity(@activity).sum_hours 
     @week_sum = time_entry_array.sum_hours
   end
   

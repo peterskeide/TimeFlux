@@ -1,6 +1,6 @@
 module TimeEntriesHelper
   
-  Weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  
+  Weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']  
   
   def date_label_for(object)
     "#{Weekdays[object.date.wday - 1]} #{object.date.mday}"

@@ -1,7 +1,7 @@
-<td><%= time_entry.hours %></td>
-<td><%= time_entry.notes %></td>
-<td><%= time_entry.hour_type.name %></td>
-<td>
-	<%= link_to_remote('Edit', :url => edit_user_time_entry_path(user, time_entry), :method => :get) %>
-	<%= link_to_remote('Remove', :url => user_time_entry_path(user, time_entry), :method => :delete)%>
+<td class="existing_time_entry_hours"><%= time_entry.hours %></td>
+<td class="existing_time_entry_hour_type"><%= time_entry.hour_type.name %></td>
+<td class="existing_time_entry_notes"><%= time_entry.notes %></td>
+<td class="existing_time_entry_options">
+	<%= link_to_remote(image_tag('pencil.png'), :url => edit_user_time_entry_path(user, time_entry), :method => :get) %>
+	<%= link_to_remote(image_tag('delete.png'), :url => user_time_entry_path(user, time_entry), :method => :delete, :confirm => 'Are you sure?')%>
 </td> 

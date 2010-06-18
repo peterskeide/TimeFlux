@@ -21,16 +21,23 @@
 <% end -%>
 
 <div id="time_entries">
-	<table class="time_entries">
+	<table id="time_entries_table">
 		<thead>
 			<tr>
-				<th class="time_entries">Activity</th>
+				<th>Activity</th>
 				<% each_weekday do |day, date| %>
-					<th class="time_entries"><%= day %></th>
+					<th><%= day %></th>
 				<% end -%>
-				<th class="time_entries">Sum</th>
+				<th>Sum</th>
 			</tr>
 		</thead>
+		<tfoot>
+			<td>Sum</td>
+			<% each_weekday do |day, date| %>
+				<td id="<%= day %>_sum" class="sum"><%= @time_entries.for_date(date).sum_hours %></td>
+			<% end -%>
+			<td id="week_sum" class="sum"><%= @time_entries.sum_hours %></td>
+		</tfoot>
 		<tbody id="week_activities">
 			<% each_activity do |activity, sum_per_day, week_total| %>
 				<%= render :partial => 'activity', :locals => { :activity => activity, :sum_per_day => sum_per_day, :week_total => week_total, :user => @user } %>

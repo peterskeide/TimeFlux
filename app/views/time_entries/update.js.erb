@@ -9,4 +9,6 @@
 	                                 :locals => { :user => @user, :time_entry => @new_time_entry, :activity => @time_entry.activity }) %>")
 
 	enableAjaxFormSubmit('#new_time_entry');
+	
+	jQuery('#time_entry_row_<%= @time_entry.id %>').effect('highlight');
 <% end %>

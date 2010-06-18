@@ -1,8 +1,8 @@
 <tr id="activity_<%= activity.id %>">
-	<td class="time_entries"><%= activity.customer_project_name %></td>
+	<td><%= activity.customer_project_name %></td>
 	<% each_weekday do |day, date| %>
-		<td class="time_entries"><%= link_to_remote(sum_per_day[day], :url => new_user_time_entry_path(user, :date => date, :activity_id => activity.id), 
+		<td><%= link_to_remote(sum_per_day[day], :url => new_user_time_entry_path(user, :date => date, :activity_id => activity.id), 
 		                                                              :method => :get, :html => { :id => "activity_#{activity.id}_#{day}_sum" }) %></td>
 	<% end -%>
-	<td class="time_entries" id="activity_<%= activity.id %>_week_sum"><%= week_total %></td>
+	<td id="activity_<%= activity.id %>_week_sum" class="sum"><%= week_total %></td>
 </tr>
