@@ -9,25 +9,33 @@
 	</h4>
 </div>
 
+<% unless @selectable_activities.empty? %>
+	<div id="add_activity">
+		<% form_tag(new_activity_user_time_entries_path(@user), :method => :get , :id => 'add_activity_form') do %>
+			<%= label_tag 'Activity' %>
+			<%= hidden_field_tag 'date', @date %>
+		  <%= select_tag('activity_id', options_from_collection_for_select(@selectable_activities, 'id', 'customer_project_name')) %>
+			<%= submit_tag 'Add to week' %>
+		<% end -%>
+	</div>
+<% end -%>
+
 <div id="time_entries">
 	<table class="time_entries">
-		<tr>
-			<th class="time_entries">Activity</th>
-			<% each_weekday do |day, date| %>
-				<th class="time_entries"><%= day %></th>
-			<% end -%>
-			<th class="time_entries">Sum</th>
-		</tr>
-		<% each_activity do |activity, sum_per_day, week_total| %>
-		  <tr>
-				<td class="time_entries"><%= activity.customer_project_name %></td>
+		<thead>
+			<tr>
+				<th class="time_entries">Activity</th>
 				<% each_weekday do |day, date| %>
-					<td class="time_entries"><%= link_to_remote(sum_per_day[day], :url => new_user_time_entry_path(@user, :date => date, :activity_id => activity.id), 
-					                                                              :method => :get, :html => { :id => "#{day}_sum" }) %></td>
+					<th class="time_entries"><%= day %></th>
 				<% end -%>
-				<td class="time_entries" id="activity_<%= activity.id %>_week_sum"><%= week_total %></td>
+				<th class="time_entries">Sum</th>
 			</tr>
-		<% end -%>
+		</thead>
+		<tbody id="week_activities">
+			<% each_activity do |activity, sum_per_day, week_total| %>
+				<%= render :partial => 'activity', :locals => { :activity => activity, :sum_per_day => sum_per_day, :week_total => week_total, :user => @user } %>
+			<% end -%>
+		<tbody>
 	</table>
 </div>
 

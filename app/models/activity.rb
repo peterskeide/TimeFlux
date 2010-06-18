@@ -1,10 +1,9 @@
 class Activity < ActiveRecord::Base
 
   has_many :time_entries
-
   has_and_belongs_to_many :tags
-
   belongs_to :project, :include => :customer
+  
   delegate :customer, :customer=, :to => :project
   
   validates_presence_of :name
@@ -82,7 +81,7 @@ class Activity < ActiveRecord::Base
      false
    end
   end
-  
+    
 #
 #  def truncated_name_path(max_characters=29)
 #    project_characters = max_characters - self.name.size;

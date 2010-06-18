@@ -23,3 +23,12 @@ function enableAjaxFormSubmit(css_selector) {
 		return false; 
 	});
 }
+
+jQuery(document).ready(function() {
+	jQuery('#add_activity_form').submit(function() {
+		var url = jQuery(this).attr('action');
+		var data = jQuery(this).serialize();
+		jQuery.get(url, data, null, "script");
+		return false; 
+	});
+})

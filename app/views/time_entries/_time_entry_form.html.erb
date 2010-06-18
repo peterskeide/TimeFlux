@@ -2,7 +2,12 @@
 	<%= f.hidden_field :date %>
 	<%= f.hidden_field :activity_id %>
 	<p>
-		<b><%= activity.customer_project_name %></b>
+		<% if activity %>
+			<b><%= activity.customer_project_name %></b>
+		<% else %>
+			<%= f.label :activity %>
+			<%= collection_select(:time_entry, :activity_id, user.current_activities, :id, :customer_project_name) %>
+		<% end -%>
 	<p>
 		<%= f.label :hours %>
 		<%= f.text_field :hours %>

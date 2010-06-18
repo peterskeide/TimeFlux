@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   
   has_many :time_entries
   has_and_belongs_to_many :projects
-  has_many :activities, :through => :projects
      
   validates_presence_of :firstname, :lastname, :login
   validates_uniqueness_of :login
@@ -79,19 +78,13 @@ class User < ActiveRecord::Base
     end
   end
   
-  # Returns a list of shared activities +
-  # the activities assigned to the user
-  def current_activities(date)
-    current = projects.map{ |project| project.activities }.flatten
-    current += Activity.active(true).default(true)
-    current.uniq!
-    current.sort! { |a, b| a.customer_project_name <=> b.customer_project_name }
-    last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first
-    if last_used
-      current = current.delete_if { |activity| activity.id == last_used.activity.id }
-      current = current.unshift(last_used.activity)
-    end
-    current
+  # Returns a list of activities the user currently has access too
+  # *excluding* the activities given as an argument.
+  def remaining_activities(activities)
+    excluded_activity_ids = activities.map { |a| a.id }
+    conditions = 'activities.project_id = projects.id and projects.id = projects_users.project_id and projects_users.user_id = ? and activities.id not in (?)'
+    assigned_activities = Activity.all(:joins => ', projects, projects_users', :conditions => [conditions, self.id, excluded_activity_ids])
+    assigned_activities + Activity.shared(true).all(:conditions => ['id not in (?)', excluded_activity_ids])
   end
           
   private

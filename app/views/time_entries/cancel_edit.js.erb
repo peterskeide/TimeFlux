@@ -1,3 +1,4 @@
+// Reload the time entry form with a new (unsaved) TimeEntry instance
 jQuery('#time_entry_form').html("<%= escape_javascript(render :partial => 'time_entry_form', 
                                  :locals => { :user => @user, :time_entry => @time_entry, :activity => @activity }) %>");
 

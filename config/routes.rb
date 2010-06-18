@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :customers, :user_sessions, :time_entries, :users, :activities, :hour_types, :configurations, :tags, :tag_types
 
   map.resources :users do |user|
-    user.resources :time_entries, :member => { :confirm_destroy => :delete, :cancel_edit => :get }, :collection => { :lock => :post, :refresh_totals => :get }
+    user.resources :time_entries, :member => { :confirm_destroy => :delete, :cancel_edit => :get }, :collection => { :lock => :post, :refresh_totals => :get, :new_activity => :get }
     user.resource :month_review, :only => [:show]
     user.resource :month_listing, :only => [:show]
     user.resources :vacations, :only => [:show, :edit, :update]

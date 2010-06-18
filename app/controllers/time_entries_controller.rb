@@ -1,3 +1,5 @@
+# TODO: add support for tags
+
 class TimeEntriesController < ApplicationController
     
   before_filter :check_authentication
@@ -8,6 +10,7 @@ class TimeEntriesController < ApplicationController
     @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date]).beginning_of_week
     time_entries_for_week = @user.time_entries.between(@date, @date.end_of_week)
     @time_entries = MonthReview::TimeEntryArray.new(time_entries_for_week)
+    @selectable_activities = @user.remaining_activities(@time_entries.uniq_activities)
   end
   
   def change_user
@@ -21,13 +24,17 @@ class TimeEntriesController < ApplicationController
   
   def new
     @date = Date.parse(params[:date])
-    hour_type = HourType.default
     @activity = Activity.find(params[:activity_id])
-    @time_entry = TimeEntry.new(:date => @date, :activity_id => @activity.id, :hour_type_id => hour_type.id)
-    @time_entries = @user.time_entries.on_day(@date).for_activity(@activity)
+    @time_entries = @user.time_entries.on_day(@date).for_activity(@activity) 
+    @time_entry = TimeEntry.new(:date => @date, :activity_id => @activity.id, :hour_type_id => HourType.default.id)
+  end
+  
+  def new_activity
+    @date = params[:date].blank? ? Date.today.beginning_of_week : Date.parse(params[:date]).beginning_of_week
+    @activity = Activity.find(params[:activity_id])
+    @sum_per_day = { 'Monday' => 0, 'Tuesday' => 0, 'Wednesday' => 0, 'Thursday' => 0, 'Friday' => 0, 'Saturday' => 0, 'Sunday' => 0 }
   end
    
-  # TODO: implement support for tags 
   def create
     @time_entry = @user.time_entries.build(params[:time_entry])
     if @time_entry.save
@@ -47,7 +54,6 @@ class TimeEntriesController < ApplicationController
     @time_entry = TimeEntry.new(:date => date, :activity_id => @activity.id, :hour_type_id => HourType.default.id)
   end
   
-  # TODO: add support for tags  
   def update
     @time_entry = @user.time_entries.find(params[:id])
     if @time_entry.update_attributes(params[:time_entry])
@@ -70,7 +76,7 @@ class TimeEntriesController < ApplicationController
   def destroy
     @time_entry = @user.time_entries.find(params[:id])
     @time_entry.destroy
-    @no_more_time_entries = @user.time_entries.on_day(@date).for_activity(@time_entry.activity).empty? # Optimize this!
+    @no_more_time_entries = @user.time_entries.on_day(@time_entry.date).for_activity(@time_entry.activity).empty? # Optimize this!
   end 
   
   def lock

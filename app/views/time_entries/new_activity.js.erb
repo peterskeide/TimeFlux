@@ -1,0 +1,16 @@
+// Add a new row for the selected activity to the week-overview table
+jQuery('#week_activities').append("<%= escape_javascript(render :partial => 'activity', 
+                                  :locals => { :activity => @activity, :sum_per_day => @sum_per_day, :week_total => 0, :user => @user }) %>");
+
+// Remove the option for the newcly added activity from the select menu.
+jQuery('#activity_id option').each(function(index) {
+	var option = jQuery(this);
+	if ("<%= @activity.id %>" == option.attr('value')) {
+		option.remove();
+	}
+});
+
+// Hide the select menu if there are no more options to select.
+if (jQuery('#activity_id option').length == 0) {
+	jQuery('#add_activity').hide();
+}
