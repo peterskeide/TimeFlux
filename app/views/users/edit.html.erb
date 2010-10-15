@@ -5,7 +5,7 @@
 
   <p>
     <%= f.label :department %><br />
-     <%= f.collection_select(:department_id, Department.all, :id, :name) %>
+     <%= f.collection_select(:department_id, Department.all, :id, :name, :include_blank => true) %>
   </p>
 
   <p>
