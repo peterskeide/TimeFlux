@@ -1,4 +1,7 @@
 class DepartmentsController < ApplicationController
+
+  before_filter :check_authentication, :check_admin
+
   # GET /departments
   # GET /departments.xml
   def index
