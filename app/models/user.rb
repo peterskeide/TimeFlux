@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   
   acts_as_authentic    
-  
+
+  belongs_to :department
   has_many :time_entries
   has_and_belongs_to_many :projects
   has_many :activities, :through => :projects

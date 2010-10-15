@@ -4,6 +4,11 @@
   <%= f.error_messages %>
 
   <p>
+    <%= f.label :department %><br />
+     <%= f.collection_select(:department_id, Department.all, :id, :name) %>
+  </p>
+
+  <p>
     <%= f.label :firstname %><br />
     <%= f.text_field :firstname %>
   </p>

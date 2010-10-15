@@ -12,6 +12,11 @@
     <td>Email</td>
     <td><b><%=h @user.email %></b></td>
   </tr>
+  <tr><td></td></tr>
+  <tr>
+    <td>Department</td>
+    <td><b><%=h @user.department.try(:name) %></b></td>
+  </tr>
 </table>
 
 <br/>
