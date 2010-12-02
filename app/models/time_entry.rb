@@ -16,6 +16,11 @@ class TimeEntry < ActiveRecord::Base
   attr_protected :locked, :billed
 
   before_save :validate_changes_on_locked_entry
+
+  def before_validatation
+    # Replace any comma that preceeds the final 1 or more digits with a period.
+    self.hours.gsub!(/\,(\d+)$/, '.\1')
+  end
   
   def before_destroy
     if locked
