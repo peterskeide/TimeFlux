@@ -63,7 +63,7 @@ class ReportsController < ApplicationController
 
     if params[:project]
       project_keys = params[:project].keys
-      @projects = project_keys.map{|key| Project.find(key.to_i)}
+      @projects = project_keys.map{|key| Project.find(key.to_i)}.sort
 
       if params[:report]
         @from_day = @day
