@@ -17,9 +17,9 @@ class TimeEntry < ActiveRecord::Base
 
   before_save :validate_changes_on_locked_entry
 
-  def hours=(hours)
-    write_attribute(:hours, hours.gsub(/\,(\d+)$/, '.\1'))
-  end
+  #def hours=(hours)
+  #  write_attribute(:hours, hours.gsub(/\,(\d+)$/, '.\1'))
+  #end
   
   def before_destroy
     if locked
