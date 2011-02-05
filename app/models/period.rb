@@ -47,7 +47,7 @@ class Period
 
   def find_reported_upto_day
     today = Date.today
-    if today.month == @start.month
+    if today.month == @start.month && today.year == @start.year
       @user.time_entries.on_day(today).empty? ? today - 1: today
     elsif today > @end
       @end
