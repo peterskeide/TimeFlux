@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
 
 
   def <=>(other)
-    customer.name <=> other.customer.name
+    [customer.name,name] <=> [other.customer.name,other.name]
   end
 
 
