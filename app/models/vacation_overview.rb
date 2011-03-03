@@ -1,7 +1,7 @@
 class VacationOverview
   
   def initialize(year, user)
-    @users = User.all(:select => "id, firstname, lastname", :order => "firstname", :conditions => ["id != ?", user.id]).unshift(user)
+    @users = User.all(:select => "id, firstname, lastname", :order => "firstname", :conditions => ["operative_status = 'active' AND id != ?", user.id]).unshift(user)
     activity_id = Configuration.instance.activity.id
     vacation_entries = TimeEntry.all(:select => "user_id, date", :conditions => ["activity_id = ? and date >= ? and date <= ?", activity_id, Date.new(year,1,1), Date.new(year,12,31)])
     create_users_totals(vacation_entries)    
