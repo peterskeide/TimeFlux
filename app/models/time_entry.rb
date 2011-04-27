@@ -12,6 +12,7 @@ class TimeEntry < ActiveRecord::Base
 
   validates_numericality_of :hours, :greater_than => 0.0, :less_than_or_equal_to => 24.0
   validates_presence_of :user, :activity, :hour_type
+  validates_length_of :notes, :maximum => 255
 
   attr_protected :locked, :billed
 
