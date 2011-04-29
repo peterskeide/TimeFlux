@@ -41,6 +41,7 @@ class UsersController < ApplicationController
     @user.lastname = params[:user][:lastname]
     @user.login = params[:user][:login]
     @user.email = params[:user][:email]
+    @user.department_id = params[:user][:department_id]
     
 
     if @current_user.admin

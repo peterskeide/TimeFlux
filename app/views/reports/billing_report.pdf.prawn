@@ -9,7 +9,7 @@ pdf.footer [pdf.margin_box.left, pdf.margin_box.bottom + 25] do
   pdf.font "Helvetica" do
     pdf.stroke_horizontal_rule
     pdf.move_down(10)
-    pdf.text "Conduct 2009", :align => :center, :size => 12
+    pdf.text "Conduct #{Date.today.year}", :align => :center, :size => 12
   end
 end
 

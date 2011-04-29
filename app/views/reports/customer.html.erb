@@ -12,7 +12,9 @@
       <tr>
         <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-      <td><%= submit_tag "View" %></td>
+        <td><%= check_box_tag 'hide_inactive', 'true', @hide_inactive %> Hide Inactive</td>
+        <td><%= submit_tag "View" %></td>
+      </tr>
     </table>
   </div>
 <% end -%>

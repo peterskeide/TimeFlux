@@ -1,7 +1,8 @@
 class Period
       
-  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :balance, :balance_workdays, :billing_degree, :time_entries
-  
+  attr_reader :expected_hours, :total_hours, :expected_days, :total_days, :start, :end, :has_statistics, :balance, :balance_workdays, :billing_degree, :time_entries
+  attr_reader :expected_hours_per_day_in_period
+
   def initialize(user, year, month)
     @start = Date.new(year, month, 1)
     @end = @start.end_of_month
@@ -14,9 +15,14 @@ class Period
     @expected_days = find_expected_days
 
     reported_upto_day = find_reported_upto_day
-    @balance_workdays = find_expected_days(@start, reported_upto_day) if reported_upto_day != @end
-    @balance = find_balance(@start,reported_upto_day)
-    @billing_degree = find_billing_degree(@start,reported_upto_day)
+    if reported_upto_day
+      @balance_workdays = find_expected_days(@start, reported_upto_day) if reported_upto_day != @end
+      @balance = find_balance(@start,reported_upto_day)
+      @billing_degree = find_billing_degree(@start,reported_upto_day)
+      @has_statistics = true
+    else
+      @has_statistics = false
+    end
 
     @locked = is_period_locked?
   end
@@ -40,13 +46,13 @@ class Period
   private
 
   def find_reported_upto_day
-    today = Time.zone.now.to_date
-    if today > @end
-      @end
-    elsif (@start...@end).include?(today)
+    today = Date.today
+    if today.month == @start.month && today.year == @start.year
       @user.time_entries.on_day(today).empty? ? today - 1: today
+    elsif today > @end
+      @end
     else
-      @start - 1
+      nil
     end
   end
 
@@ -69,7 +75,7 @@ class Period
     today = Time.zone.now.to_date
     if today > @end
       @total_hours - @expected_hours
-    elsif (from...@end).include?(today)
+    elsif (from..@end).include?(today)
       expected = find_expected_hours(from, to)
       actual = @user.time_entries.between(from, to).sum(:hours)
       actual - expected
