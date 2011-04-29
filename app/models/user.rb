@@ -75,7 +75,10 @@ class User < ActiveRecord::Base
     remaining_vacation_dates = vacation_entries.collect { |te| te.date unless te.frozen? } # destroying an activerecord model will freeze it
     vacation_dates.each do |date|
       unless remaining_vacation_dates.include? date
-        time_entries.create(:activity => vacation, :hour_type => hour_type, :date => date, :hours => work_hours)
+        new_entry = time_entries.create(:activity => vacation, :hour_type => hour_type, :date => date, :hours => work_hours, :notes => "")
+        #if new_entry.errors.size > 0
+
+        #end
       end
     end
   end
