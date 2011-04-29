@@ -1,0 +1,14 @@
+<% if @time_entries != nil %>
+  <% unless @time_entries.empty? %>
+    <% user_entries = @time_entries.group_by(&@group_by) %>
+    <% user_entries.each do |group, te| %>
+<%='"date","user","activity","hour_type","status","hours","note"'-%>
+      <%te.each do |entry| %>
+<%="#{entry.date},#{entry.user.name},#{entry.activity.name},#{entry.hour_type.name},#{entry.status_str},#{entry.hours},#{entry.notes}"-%>
+      <% end %>
+    <% end %>
+  <% else %>
+    No hits
+  <% end %>
+<% end %>
+

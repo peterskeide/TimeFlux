@@ -2,7 +2,7 @@
   <%= @current_user.admin ? "for #{h @user.fullname}" : '' %>
 </h1>
 
-<br/>
+<br/> 
 
 <% form_tag user_month_review_path(@user, :id => :calendar), :method => :get do %>
   <p>
@@ -54,7 +54,7 @@
         <td <%= 'style="color: #E0E0E0;"' if d.month != @period.start.month %>>
           <% day_hours = @user.hours_on_day d; week_sum = week_sum + day_hours%>
           <% day_hours_as_s = day_hours > 0 ? day_hours : '-' %>
-          <%= d == Time.zone.now.to_date ? "<u>#{day_hours_as_s}</u>" : "#{day_hours_as_s}" -%>
+          <%= calendar_day_formatted( day_hours_as_s, @period.expected_hours_per_day_in_period[d], d == Time.zone.now.to_date ) %>
         </td>
         <% if d.wday == 0 %>
           <td class="leftline" style="color:gray">
@@ -73,22 +73,24 @@
   </div>
 </div>
 
-<br />
-<fieldset class="statistics">
-  <legend>
-    Statistics - <%= @period.balance_workdays ? "First #{@period.balance_workdays} working days" : @period.month_name  %>
-  </legend>
-  <p>
-    <label class="info">Balance</label>
-    <span class="<%=case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
-    <%= "%+.1f" % @period.balance -%> </span> hours
-  </p>
-  <p>
-    <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
-  </p>
-</fieldset>
-<br />
+<% if @period.has_statistics %>
+  <br />
+  <fieldset class="statistics">
+    <legend>
+      Statistics - <%= @period.balance_workdays ? "First #{@period.balance_workdays} working days" : @period.month_name  %>
+    </legend>
+    <p>
+      <label class="info">Balance</label>
+      <span class="<%=case @period.balance when (0..9999) then "ok" when (-9999..0) then "red" end -%>">
+      <%= "%+.1f" % @period.balance -%> </span> hours
+    </p>
+    <p>
+      <label class="info">Billing degree</label> <%= (@period.billing_degree * 100).round %> %
+    </p>
+  </fieldset>
+<% end %>
 
+<br />
 <hr style="clear:both"/>
 <br/>
 

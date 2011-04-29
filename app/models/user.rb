@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   
   acts_as_authentic    
-  
+
+  belongs_to :department
   has_many :time_entries
   has_and_belongs_to_many :projects
   has_many :activities, :through => :projects
@@ -84,7 +85,7 @@ class User < ActiveRecord::Base
   def current_activities(date)
     current = projects.map{ |project| project.activities }.flatten
     current += Activity.active(true).default(true)
-    current.uniq!
+    current = current.select{|activity| activity.active}.uniq
     current.sort! { |a, b| a.customer_project_name <=> b.customer_project_name }
     last_used = time_entries.all(:order => "created_at DESC", :limit => 1).first
     if last_used

@@ -30,6 +30,11 @@ class ReportsControllerTest < ActionController::TestCase
       should_respond_with :success
     end
 
+    context "on GET audit report" do
+      setup { get :audit }
+      should_respond_with :success
+    end
+
     context "GET to :search with search criteria" do
 
       should "find all time_entries in current month if all search criteria are empty" do

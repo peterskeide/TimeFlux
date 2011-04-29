@@ -1,2 +1,2 @@
 Week total <b><%= user.time_entries.between(date, (date + 6)).sum(:hours) %></b>
-Expected <b><%= Holiday.expected_hours_between( date, (date + 4)) %></b>
+Expected <b><%= (date.beginning_of_week..date.end_of_week).sum do |date| Holiday.expected_on_day(date) end %></b>

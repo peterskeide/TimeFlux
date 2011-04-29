@@ -1,0 +1,14 @@
+<% if @time_entries != nil -%>
+<% unless @time_entries.empty? -%>
+<%='"consultant","customer","project","hours"'%>
+<% @time_entries.each do |entry| -%>
+<%= "\"#{entry.user.name}\"," -%>
+<%= "\"#{entry.activity.customer.name}\"," -%>
+<%= "\"#{entry.activity.project.name}\"," -%>
+<%= "\"#{entry.sum_hours}\"" %>
+<% end -%>
+<% else %>
+No hits
+<% end %>
+<% end %>
+

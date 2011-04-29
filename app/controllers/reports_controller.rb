@@ -63,7 +63,7 @@ class ReportsController < ApplicationController
 
     if params[:project]
       project_keys = params[:project].keys
-      @projects = project_keys.map{|key| Project.find(key.to_i)}
+      @projects = project_keys.map{|key| Project.find(key.to_i)}.sort
 
       if params[:report]
         @from_day = @day
@@ -93,8 +93,11 @@ class ReportsController < ApplicationController
   def customer
     setup_calender
     parse_search_params
-    @billable_project_hours = project_hours_for_customers(Customer.billable(true))
-    @internal_project_hours = project_hours_for_customers(Customer.billable(false))
+    @hide_inactive = params[:hide_inactive]
+    billable = project_hours_for_customers(Customer.billable(true))
+    internal = project_hours_for_customers(Customer.billable(false))
+    @billable_project_hours = @hide_inactive ? billable.find_all{|customer,project,hours| hours > 0 } : billable
+    @internal_project_hours = @hide_inactive ? internal.find_all{|customer,project,hours| hours > 0 } : internal
   end
 
   def project
@@ -123,6 +126,7 @@ class ReportsController < ApplicationController
     
     respond_to do |format|
       format.html { }
+      format.csv {}
       format.pdf  do
         @parameters = []
         @parameters << [t('common.period'),"#{@from_day} to #{@to_day}"]
@@ -169,6 +173,34 @@ class ReportsController < ApplicationController
       end
     end
     redirect_to( {:action => 'search'}.merge(params) )
+  end
+
+  def audit
+    setup_calender
+
+    if params[:from_day] && params[:from_day] != ""
+      @from_day = set_date(params[:from_year].to_i, params[:from_month].to_i, params[:from_day].to_i)
+      @to_day = set_date(params[:to_year].to_i, params[:to_month].to_i, params[:to_day].to_i)
+    elsif params[:from_date] && params[:from_date] != ""
+      @from_day = params[:from_date]
+      @to_day = params[:to_date]
+    else
+      @from_day = @day
+      @to_day = @day.at_end_of_month
+    end
+
+    @time_entries = TimeEntry.between(@from_day,@to_day).all(:select => "time_entries.user_id, min(time_entries.activity_id) AS activity_id, SUM(time_entries.hours) AS sum_hours",
+  :joins => :activity, :group => "time_entries.user_id   ,activities.project_id")
+    @time_entries = @time_entries.sort_by { |a| [ a.user.lastname, a.activity.customer.name, a.activity.project.name  ] }
+
+    respond_to do |format|
+      format.html {}
+      format.csv {}
+      format.pdf  do
+        initialize_pdf_download("audit_report.pdf")
+        render :revisor, :layout=>false
+      end
+    end
   end
 
   private

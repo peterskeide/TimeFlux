@@ -8,6 +8,7 @@
 <table class="regular">
   <tr>
     <th>Name</th>
+    <th>Department</th>
     <th>Login</th>
     <th>Status</th>
     <th>Show</th>
@@ -18,6 +19,7 @@
 <% for user in @users %>
   <tr>
     <td><%=h user.fullname %></td>
+    <td><%=h user.department.try(:name) %></td>
     <td><%=h user.login %></td>
     <td><%=h user.operative_status %><%= user.admin ? ", admin" : ''  %></td>
     <td><%= link_to image_tag("magnifier.png", :title => "Show"), user_path(user) %></td>
