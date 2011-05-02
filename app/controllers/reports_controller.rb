@@ -50,7 +50,6 @@ class ReportsController < ApplicationController
     else
       Customer.billable(true).on_letter(params[:letter]).paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
     end
-
   end
 
 

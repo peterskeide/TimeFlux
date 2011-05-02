@@ -65,7 +65,8 @@ class Period
     end
 
     if sum_billable > 0 then
-      sum_billable / find_expected_hours(from, to)
+      expected_hours = find_expected_hours(from, to)
+      expected_hours == 0 ? sum_billable / expected_hours : 0
     else
       0
     end
