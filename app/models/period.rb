@@ -65,8 +65,7 @@ class Period
     end
 
     if sum_billable > 0 then
-      expected_hours = find_expected_hours(from, to)
-      expected_hours == 0 ? sum_billable / expected_hours : 0
+      sum_billable / find_expected_hours(from, to)
     else
       0
     end
@@ -88,7 +87,7 @@ class Period
   def find_expected_hours(from=@start, to=@end)
     sum = 0
     @expected_hours_per_day_in_period.each { |date, value| sum = sum + value if (from..to).include?(date) }
-    sum
+    sum == 0 ? 1 : sum
   end
   
   def find_expected_days(from=@start, to=@end)
