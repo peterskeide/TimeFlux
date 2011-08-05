@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_ssl
-    redirect_to :protocol => "https://" unless (request.ssl? or local_request?)
+    redirect_to :protocol => "https://" unless (request.ssl? or Rails.env.development?)
   end
 
   def current_user_session

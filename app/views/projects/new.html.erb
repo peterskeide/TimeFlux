@@ -7,6 +7,12 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
+
+  <p>
+    <%= f.label :comment %><br />
+    <%= f.text_area :comment %>
+  </p>
+
   <p>
     <%= f.label :customer_id %><br />
     <%=  collection_select(:project, :customer_id, Customer.all, :id, :name) %>

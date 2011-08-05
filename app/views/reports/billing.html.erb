@@ -73,7 +73,9 @@
               </td>
               <td><%= type_name %></td>
               <td><%= hours %> t </td>
+              <td><%= project.comment %></td>
               <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
+              <td><%= link_to "Edit Project", edit_project_path(project) %></td>
             </tr>
           <% end %>
         <% end %>
