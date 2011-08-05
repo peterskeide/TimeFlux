@@ -37,15 +37,15 @@ class User < ActiveRecord::Base
 
     return "red"
   end
-  
-  def self.all_except(user_or_user_id)
+
+  def self.all_active_except(user_or_user_id)
     if user_or_user_id.is_a? User 
       user_id = user_or_user_id.id
     elsif user_or_user_id.is_a? Integer
       user_id = user_or_user_id
     else raise "user_or_user_id must be of type User or Integer"
     end
-    User.all(:conditions => ["id != ?", user_id])
+    User.all(:conditions => ["id != ? and operative_status = 'active'", user_id])
   end
 
   def status_for_month(date, expected_days, expected_hours)

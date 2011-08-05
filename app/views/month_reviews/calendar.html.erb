@@ -96,7 +96,7 @@
 
 <div class="center">
   <% if @period.locked? -%>
-    <input type="submit" value="You have submitted this month" disabled="true">
+    <input type="submit" value="You have submitted this month" disabled="true"/>
   <% elsif @period.ready_for_approval? -%>
     <p>
       <% form_tag lock_user_time_entries_path(@user) do -%>
@@ -107,6 +107,6 @@
       <% end -%>
     </p>
   <% else -%>
-    <input type="submit" value="Not ready for submission" disabled="true">
+    <input type="submit" value="Not ready for submission" disabled="true"/>
   <% end -%>
 </div>
