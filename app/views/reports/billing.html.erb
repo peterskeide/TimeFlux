@@ -56,26 +56,28 @@
       <% projects_data.each do |project, project_total, project_data| %>
         <% if project_total == 0 %>
           <tr>
-            <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
+            <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b> </td>
+            
           </tr>
         <% else %>
           <tr>
-            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
+            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= link_to project.name, edit_project_path(project) %></b> </td>
           </tr>
+          
+          <tr><td colspan="99" width="600" style="padding:5px"><%= project.comment %></td></tr>
 
           <% project_data.each do |user,type_name,hours| %>
             <tr>
-              <td>
+              <td style="width:20em">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <span class="<%= user.status_for_month(@day, expected_days, expected_hours)%>">
                     <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %>
                   </span>
               </td>
-              <td><%= type_name %></td>
-              <td><%= hours %> t </td>
-              <td><%= project.comment %></td>
-              <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
-              <td><%= link_to "Edit Project", edit_project_path(project) %></td>
+              <td style="width:5em"><%= type_name %></td>
+              <td style="width:5em"><%= hours %> t </td>
+              <td style="width:4em"><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
+              <td></td>
             </tr>
           <% end %>
         <% end %>
