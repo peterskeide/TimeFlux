@@ -40,6 +40,9 @@ class ReportsController < ApplicationController
     params[:letter] ||= "A"
 
     billable_customers = Customer.billable(true).to_a
+
+    @hide_empty = params[:hide_empty] != nil
+
     @letters, @other = extract_customers_by_letter( billable_customers, @day )
 
     @customers = case params[:letter]

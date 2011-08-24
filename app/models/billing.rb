@@ -1,17 +1,18 @@
 class Billing
 
-  def initialize(customers, date)
+  def initialize(customers, date, hide_empty)
     @customers = customers
     @from = date.at_beginning_of_month
     @to = date.at_end_of_month
+    @hide_empty = hide_empty
   end
 
   def billing_report_data
     
     data = []
-    customer_total=0
 
     @customers.each do |customer|
+      customer_total=0
       projects_data = []
       customer.projects.sort.each do |project|
         time_entries =  TimeEntry.billed(false).between(@from,@to).for_project(project).include_users.include_hour_types.all
@@ -34,7 +35,9 @@ class Billing
           customer_total += project_total
         end
       end
-      data << [customer.name, customer_total, projects_data]
+      unless customer_total == 0 && @hide_empty
+        data << [customer.name, customer_total, projects_data]
+      end
     end
     data
   end

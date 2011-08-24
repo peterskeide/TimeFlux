@@ -11,8 +11,9 @@
       <tr>
         <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-        <%= hidden_field_tag 'letter',  params[:letter] %>
-      <td><%= submit_tag "View" %></td>
+      </tr>
+      <tr><td><%= check_box_tag(:hide_empty, 'yes', @hide_empty) %>Hide empty</td></tr>
+      <tr><td><%= hidden_field_tag 'letter',  params[:letter] %><%= submit_tag "View" %></td>
       </tr>
     </table>
   </div>
@@ -44,7 +45,7 @@
 
 <%= will_paginate @customers %>
 
-<% billing_data = Billing.new(@customers,@day).billing_report_data %>
+<% billing_data = Billing.new(@customers,@day,@hide_empty).billing_report_data %>
 
 <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
   <table class="regular">
