@@ -40,6 +40,10 @@
 <div id="billing_content">
 <% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
 <% expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month) -%>
+<% status_values = {
+  0 => (image_tag "lock_unlock.png", :title => 'Locked'),
+  1 => (image_tag "lock.png", :title => 'Locked'),
+  2 => (image_tag "txt_icon.png", :title => 'Billed')} -%>
 
 <p class="error"><%= flash[:error] %></p>
 
@@ -57,17 +61,17 @@
       <% projects_data.each do |project, project_total, project_data| %>
         <% if project_total == 0 %>
           <tr>
-            <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b> </td>
-            
+            <td><%= check_box_tag  "", nil, nil, :disabled => true -%> <b class="grayed"><%= project.name %></b></td>
           </tr>
         <% else %>
           <tr>
-            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= link_to project.name, edit_project_path(project) %></b> </td>
+            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= link_to project.name, edit_project_path(project) %></b></td>
+              
           </tr>
           
           <tr><td colspan="99" width="600" style="padding:5px"><%= project.comment %></td></tr>
 
-          <% project_data.each do |user,type_name,hours| %>
+          <% project_data.each do |user,type_name,hours, billed| %>
             <tr>
               <td style="width:20em">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -77,6 +81,7 @@
               </td>
               <td style="width:5em"><%= type_name %></td>
               <td style="width:5em"><%= hours %> t </td>
+              <td style="width:10em">(<%= billed.map{|key,value| "#{status_values[key]} #{value}"}.join(" ") %>)</td>
               <td style="width:4em"><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
               <td></td>
             </tr>

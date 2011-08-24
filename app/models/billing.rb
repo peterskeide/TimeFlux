@@ -15,8 +15,8 @@ class Billing
       customer_total=0
       projects_data = []
       customer.projects.sort.each do |project|
-        time_entries =  TimeEntry.billed(false).between(@from,@to).for_project(project).include_users.include_hour_types.all
-        
+        time_entries =  TimeEntry.between(@from,@to).for_project(project).include_users.include_hour_types.all
+        #removed  .billed(false)
         unless time_entries.empty?
           project_total = 0
           entries = []
@@ -26,7 +26,23 @@ class Billing
 
               sum = 0
               group2.each{|e| sum += e.hours}
-              entries << [user,"#{type.name}",sum]
+
+              status_string = {}
+              
+              group2.group_by(&:status).each do |status,group3|
+                if group3.size > 0
+                  status_string.merge!({status => group3.size})
+                end
+
+              end
+              #locked = group2.select{|e|e.locked}.size
+              #billed = group2.select{|e|e.billed}.size
+
+              #billed = "#{group2.size - (locked)} / #{group2.size - (billed)} / #{billed}"
+
+              billed = status_string
+
+              entries << [user,"#{type.name}",sum, billed]
               project_total += sum
             end
           end
