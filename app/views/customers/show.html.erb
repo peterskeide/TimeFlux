@@ -9,12 +9,13 @@
 
 <table class="regular">
   <tr>
-    <th>Name</th><th>Show</th><th>Edit</th><th>Delete</th>
+    <th>Name</th><th>Department</th><th>Show</th><th>Edit</th><th>Delete</th>
   </tr>
 
 <% @customer.projects.each do |project| %>
   <tr>
     <td><%=h project.name %></td>
+    <td><%=h project.department.to_s %></td>
     <td>
       <%= link_to image_tag("application_add.png", :title => "Manage"), project_path(project) %>
     </td><td>

@@ -17,6 +17,11 @@
     <%= f.label :customer_id %><br />
     <%=  collection_select(:project, :customer_id, Customer.all, :id, :name) %>
   </p>
+
+  <p>
+    <%= f.label :department_id %><br />
+    <%=  collection_select(:project, :department_id, Department.all, :id, :name) %>
+  </p>
   <p>
     <%= f.submit 'Update' %>
   </p>

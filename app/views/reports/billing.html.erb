@@ -27,7 +27,7 @@
       <span class="current"><%= to_display %> </span>
     <% else %>
       <% unless empty %>
-        <%= link_to to_display , {:action => "billing", :letter => letter, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
+        <%= link_to to_display , {:action => "billing", :letter => letter, :hide_empty => @hide_empty, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
       <% else %>
         <span class="disabled"><%= to_display %> </span>
       <% end %>
@@ -53,7 +53,14 @@
 
 <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
   <table class="regular">
-    <% billing_data.each do |customer_name, total_hours, projects_data| %>
+
+    <% department = "" %>
+    <% billing_data.each do |department_name,customer_name, total_hours, projects_data| %>
+      <% if department != department_name %>
+      <tr>
+        <td colspan="99"> <h1><%= department_name %></h1></td>
+      </tr>
+      <% department = department_name end %>
 
       <tr>
         <td colspan="99"> <h3 class="compact"><%= customer_name %></h3></td>
