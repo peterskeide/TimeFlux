@@ -20,22 +20,23 @@
 </table>
 
 <br/>
-    <h3>Assignments</h3>
-    <% if @user.projects.size > 0 %>
+  <h3>Assignments</h3>
+  <% if @user.projects.size > 0 %>
     <ul>
       <%  @user.projects.each do |project| %>
         <li><%= "#{project.name} (#{project.customer.name})" %></li>
       <% end %>
     </ul>
 
-    <% if @user.operative_status == 'retired' -%>
+    <!-- #Unassign from all projects is disabled - Works locally, but creates an error on heroku  -->
+    <% if false  &&  @user.operative_status == 'retired' -%>
       <%= link_to "Unassign from all projects", user_unassign_path(@user) %><p></p>
-      <br/>
     <% end -%>
-      <% else -%>
-      No assignments
-       <br/>
-    <% end -%>
+      
+  <% else -%>
+    No assignments
+    <br/>
+  <% end -%>
 <br/>
 
 
