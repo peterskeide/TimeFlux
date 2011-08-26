@@ -66,4 +66,19 @@ class UsersController < ApplicationController
     end
     redirect_to users_url
   end
+
+  def unassign
+    @user = User.find(params[:id])
+    #TODO unassign from all projects
+
+    @user.projects.each do |project|
+      puts "Removing users from project: #{project.name}"
+      project.users.delete @user
+    end
+
+    puts '****************************User was removed from projects.'
+    redirect_to user_url(@user)
+    
+  end
+
 end

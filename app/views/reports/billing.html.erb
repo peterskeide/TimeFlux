@@ -12,7 +12,7 @@
         <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
         <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
       </tr>
-      <tr><td><%= check_box_tag(:hide_empty, 'yes', @hide_empty) %>Hide empty</td></tr>
+      <tr><td><%= check_box_tag(:show_empty, 'yes', @show_empty) %>Show empty</td></tr>
       <tr><td><%= hidden_field_tag 'letter',  params[:letter] %><%= submit_tag "View" %></td>
       </tr>
     </table>
@@ -27,7 +27,7 @@
       <span class="current"><%= to_display %> </span>
     <% else %>
       <% unless empty %>
-        <%= link_to to_display , {:action => "billing", :letter => letter, :hide_empty => @hide_empty, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
+        <%= link_to to_display , {:action => "billing", :letter => letter, :show_empty => @show_empty, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
       <% else %>
         <span class="disabled"><%= to_display %> </span>
       <% end %>
@@ -49,7 +49,7 @@
 
 <%= will_paginate @customers %>
 
-<% billing_data = Billing.new(@customers,@day,@hide_empty).billing_report_data %>
+<% billing_data = Billing.new(@customers,@day,@show_empty).billing_report_data %>
 
 <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
   <table class="regular">

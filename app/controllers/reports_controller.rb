@@ -41,7 +41,7 @@ class ReportsController < ApplicationController
 
     billable_customers = Customer.billable(true).to_a
 
-    @hide_empty = params[:hide_empty] != nil
+    @show_empty = params[:show_empty] != nil
 
     @letters, @other = extract_customers_by_letter( billable_customers, @day )
 
