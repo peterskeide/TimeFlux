@@ -17,7 +17,7 @@ pdf.bounding_box [0, pdf.bounds.height - 80], :height =>  pdf.bounds.height - 12
 
   @projects.each do |project|
 
-    user_entries = TimeEntry.billed(false).for_project(project).between(@from_day, @to_day).group_by(&:user)
+    user_entries = TimeEntry.for_project(project).between(@from_day, @to_day).group_by(&:user)
 
     pdf.start_new_page unless project == @projects.first
   
