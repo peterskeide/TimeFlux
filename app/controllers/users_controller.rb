@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :check_user, :only => [:show, :edit, :update]
 
   def index
-    @users = User.paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
+    @users = User.all.sort #paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
   end
 
   def show

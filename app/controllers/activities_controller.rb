@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
   before_filter :check_admin, { :except => :show }
   
   def index
-    @activities = Activity.templates.paginate :page => params[:page] || 1, :per_page => 15, :order => 'name'
+    @activities = Activity.templates.all.sort #.paginate :page => params[:page] || 1, :per_page => 15, :order => 'name'
   end
   
   def show

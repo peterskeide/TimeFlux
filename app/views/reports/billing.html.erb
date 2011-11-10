@@ -47,7 +47,7 @@
 
 <p class="error"><%= flash[:error] %></p>
 
-<%= will_paginate @customers %>
+<!--%= will_paginate @customers %-->
 
 <% billing_data = Billing.new(@customers,@day,@show_empty).billing_report_data %>
 
@@ -101,7 +101,7 @@
     <% end %>
   </table>
 
-  <%= will_paginate @customers %>
+  <!--%= will_paginate @customers %-->
 
   <br/>
   <hr/>

@@ -1,8 +1,9 @@
 source :gemcutter
 source "http://gems.github.com"
 
+gem "rake", "0.8.7"
 gem "rails", "~> 2.3.8"
-#gem "sqlite3-ruby", :require => "sqlite3"
+gem "sqlite3-ruby", :require => "sqlite3"
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"

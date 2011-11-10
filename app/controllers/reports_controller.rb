@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
 
   def user
     setup_calender
-    @users = User.active.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
+    @users = User.active.sort #.paginate :page => params[:page] || 1, :per_page => 30, :order => 'lastname'
 
     first_day = @day.at_beginning_of_month
     last_day = @day.at_end_of_month
@@ -47,11 +47,11 @@ class ReportsController < ApplicationController
 
     @customers = case params[:letter]
     when '*' then 
-      Customer.billable(true).paginate :page => params[:page] || 1, :per_page => 100, :order => 'name'
+      Customer.billable(true).sort #.paginate :page => params[:page] || 1, :per_page => 100, :order => 'name'
     when '#' then
-      @other.paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
+      @other.sort #.paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
     else
-      Customer.billable(true).on_letter(params[:letter]).paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
+      Customer.billable(true).on_letter(params[:letter]).sort #.paginate :page => params[:page] || 1, :per_page => 25, :order => 'name'
     end
   end
 
