@@ -9,12 +9,16 @@
   <div>
     <table>
       <tr>
-        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
-        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
+        <td>Month</td><td> <%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %>
+        <%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
       </tr>
-      <tr><td><%= check_box_tag(:show_empty, 'yes', @show_empty) %>Show empty</td></tr>
+      <tr><td>Department</td><td> <%= select_tag "department", '<option value="">All Departments</option>' +
+        options_from_collection_for_select( Department.all, 'id', 'name', @department_id  ) %>
+      </td></tr>
+      <tr><td>Show empty</td><td><%= check_box_tag(:show_empty, 'yes', @show_empty) %></td></tr>
       <tr><td><%= hidden_field_tag 'letter',  params[:letter] %><%= submit_tag "View" %></td>
       </tr>
+
     </table>
   </div>
 <% end -%>
@@ -49,7 +53,7 @@
 
 <!--%= will_paginate @customers %-->
 
-<% billing_data = Billing.new(@customers,@day,@show_empty).billing_report_data %>
+<% billing_data = Billing.new(@customers,@day,@show_empty,@department).billing_report_data %>
 
 <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
   <table class="regular">

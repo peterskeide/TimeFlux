@@ -45,6 +45,9 @@ class ReportsController < ApplicationController
 
     @letters, @other = extract_customers_by_letter( billable_customers, @day )
 
+    @department_id = params[:department] && params[:department] != "" ? params[:department].to_i : nil
+    @department = @department_id ? Department.find(@department_id) : nil
+
     @customers = case params[:letter]
     when '*' then 
       Customer.billable(true).sort #.paginate :page => params[:page] || 1, :per_page => 100, :order => 'name'
