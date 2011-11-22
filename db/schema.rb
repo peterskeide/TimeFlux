@@ -12,68 +12,61 @@
 ActiveRecord::Schema.define(:version => 20110824095218) do
 
   create_table "activities", :force => true do |t|
-    t.string    "name",                                :null => false
-    t.string    "description"
-    t.integer   "project_id"
-    t.boolean   "active",           :default => true
-    t.boolean   "default_activity", :default => false
-    t.boolean   "shared",           :default => false
-    t.boolean   "template",         :default => false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "name",                                :null => false
+    t.string   "description"
+    t.integer  "project_id"
+    t.boolean  "active",           :default => true
+    t.boolean  "default_activity", :default => false
+    t.boolean  "shared",           :default => false
+    t.boolean  "template",         :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "activities_tags", :id => false, :force => true do |t|
-    t.integer   "activity_id"
-    t.integer   "tag_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-  end
-
-  create_table "activities_users", :id => false, :force => true do |t|
-    t.integer   "activity_id"
-    t.integer   "user_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.integer  "activity_id"
+    t.integer  "tag_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "configurations", :force => true do |t|
-    t.string    "time_zone"
-    t.float     "work_hours"
-    t.integer   "activity_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.string    "locale",      :default => "en"
+    t.string   "time_zone"
+    t.float    "work_hours"
+    t.integer  "activity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "locale",      :default => "en"
   end
 
   create_table "customers", :force => true do |t|
-    t.string    "name"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.boolean   "billable",   :default => true
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "billable",   :default => true
   end
 
   create_table "departments", :force => true do |t|
-    t.string    "name"
-    t.integer   "internal_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "name"
+    t.integer  "internal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "holidays", :force => true do |t|
-    t.date      "date"
-    t.string    "note"
-    t.boolean   "repeat"
-    t.float     "working_hours"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.date     "date"
+    t.string   "note"
+    t.boolean  "repeat"
+    t.float    "working_hours"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "hour_types", :force => true do |t|
-    t.string    "name"
-    t.boolean   "default_hour_type", :default => false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "name"
+    t.boolean  "default_hour_type", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "projects", :force => true do |t|
@@ -86,64 +79,63 @@ ActiveRecord::Schema.define(:version => 20110824095218) do
   end
 
   create_table "projects_users", :id => false, :force => true do |t|
-    t.integer   "project_id"
-    t.integer   "user_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tag_types", :force => true do |t|
-    t.string    "name"
-    t.string    "icon"
-    t.boolean   "mutually_exclusive", :default => false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "name"
+    t.string   "icon"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tags", :force => true do |t|
-    t.string    "name"
-    t.string    "description"
-    t.integer   "tag_type_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "tag_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tags_time_entries", :id => false, :force => true do |t|
-    t.integer   "time_entry_id"
-    t.integer   "tag_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.integer  "time_entry_id"
+    t.integer  "tag_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "time_entries", :force => true do |t|
-    t.float     "hours",        :default => 0.0
-    t.boolean   "counterpost",  :default => false
-    t.string    "notes"
-    t.date      "date",                            :null => false
-    t.integer   "activity_id"
-    t.integer   "user_id"
-    t.integer   "hour_type_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "status",       :default => 0
+    t.float    "hours",        :default => 0.0
+    t.boolean  "counterpost",  :default => false
+    t.string   "notes"
+    t.date     "date",                            :null => false
+    t.integer  "activity_id"
+    t.integer  "user_id"
+    t.integer  "hour_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "status",       :default => 0
   end
 
   add_index "time_entries", ["date"], :name => "index_time_entries_on_date"
   add_index "time_entries", ["user_id"], :name => "index_time_entries_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string    "firstname",                            :null => false
-    t.string    "lastname",                             :null => false
-    t.string    "login",                                :null => false
-    t.string    "email",                                :null => false
-    t.string    "crypted_password",                     :null => false
-    t.string    "password_salt",                        :null => false
-    t.string    "persistence_token",                    :null => false
-    t.string    "operative_status"
-    t.boolean   "admin",             :default => false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "department_id"
+    t.string   "firstname",                            :null => false
+    t.string   "lastname",                             :null => false
+    t.string   "login",                                :null => false
+    t.string   "email",                                :null => false
+    t.string   "crypted_password",                     :null => false
+    t.string   "password_salt",                        :null => false
+    t.string   "persistence_token",                    :null => false
+    t.string   "operative_status"
+    t.boolean  "admin",             :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "department_id"
   end
 
 end
