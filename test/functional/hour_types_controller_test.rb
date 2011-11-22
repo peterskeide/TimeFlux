@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class HourTypesControllerTest < ActionController::TestCase
+ setup :activate_authlogic
  
  context "When logged in as Bob (administrator)" do
    

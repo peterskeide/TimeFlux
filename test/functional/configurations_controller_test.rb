@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class ConfigurationsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
   
   context "When logged in as an administrator" do
     

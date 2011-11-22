@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class MonthReviewsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
 
   setup do
     @date = Date.new(2009, 6, 22) # monday in week 26, 2009

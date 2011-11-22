@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class VacationsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
   
   def setup
     Configuration.instance.update_attribute(:activity_id, activities(:vacation).id)

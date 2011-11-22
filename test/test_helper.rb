@@ -38,8 +38,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   def login_as(user)
-    :activate_authlogic
-    Authlogic::Session::Base.controller = Authlogic::ControllerAdapters::RailsAdapter.new(self)
     UserSession.create(users(user)) # logs a user in
   end
   

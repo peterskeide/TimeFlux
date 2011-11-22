@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class TagsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
 
     context 'Logged in as Bob' do
 

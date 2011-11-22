@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class DepartmentsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
 
   context "When logged in as Bob (administrator)" do
 

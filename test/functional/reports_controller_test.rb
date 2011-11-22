@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class ReportsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
 
   context "Logged in as user Bob" do
     

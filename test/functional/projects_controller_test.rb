@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ProjectsControllerTest < ActionController::TestCase
-
+  setup :activate_authlogic
 
   context "User logged in as BOB: " do
 

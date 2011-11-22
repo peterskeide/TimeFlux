@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class UserSessionsControllerTest < ActionController::TestCase
+  setup :activate_authlogic
 
   context "Logged out," do
     

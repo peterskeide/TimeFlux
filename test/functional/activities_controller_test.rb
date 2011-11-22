@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 
 class ActivitiesControllerTest < ActionController::TestCase
+  setup :activate_authlogic
 
   include Authlogic::TestCase
   setup :activate_authlogic
