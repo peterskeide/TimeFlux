@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :check_user, :only => [:show, :edit, :update]
 
   def index
-    @users = User.paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
+    @users = User.all.sort #paginate :page => params[:page] || 1, :per_page => 25, :order => 'lastname'
   end
 
   def show
@@ -66,4 +66,19 @@ class UsersController < ApplicationController
     end
     redirect_to users_url
   end
+
+  def unassign
+    @user = User.find(params[:id])
+    #TODO unassign from all projects
+
+    @user.projects.each do |project|
+      puts "Removing users from project: #{project.name}"
+      project.users.delete @user
+    end
+
+    puts '****************************User was removed from projects.'
+    redirect_to user_url(@user)
+    
+  end
+
 end

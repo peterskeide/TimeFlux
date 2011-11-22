@@ -12,7 +12,7 @@ class VacationsController < ApplicationController
   def edit
     @day = params[:month].blank? ? Date.today.beginning_of_month : Date.new(params[:id].to_i, params[:month].to_i, 1).at_beginning_of_month
     @holidays = Holiday.holidays_between(@day, @day.end_of_month)
-    @others = User.all_except(@user).sort
+    @others = User.all_active_except(@user).sort
   end
 
   def update    

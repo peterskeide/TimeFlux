@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+
 class ActivitiesControllerTest < ActionController::TestCase
+
+  include Authlogic::TestCase
+  setup :activate_authlogic
 
   context "When logged in as Bob" do
 

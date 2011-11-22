@@ -79,6 +79,10 @@ class TimeEntry < ActiveRecord::Base
     project_id ? { :joins => :activity, :conditions => ["activities.project_id = ?", project_id] } : {}
   }
 
+  named_scope :for_projects, lambda { |projects|
+    { :joins => :activity, :conditions => ["activities.project_id IN (#{projects.collect{|p| p.id}.join(',')})"] }
+  }
+
   named_scope :include_users, { :include => :user }
 
   named_scope :include_hour_types, { :include => :hour_type }

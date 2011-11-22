@@ -9,11 +9,16 @@
   <div>
     <table>
       <tr>
-        <td><%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %></td>
-        <td><%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
-        <%= hidden_field_tag 'letter',  params[:letter] %>
-      <td><%= submit_tag "View" %></td>
+        <td>Month</td><td> <%= select_tag "month", options_from_collection_for_select( @months, 'first', 'last', params[:month] ? params[:month].to_i : @day.month  ) %>
+        <%= select_tag "year", options_for_select(@years, params[:year].to_i) %></td>
       </tr>
+      <tr><td>Department</td><td> <%= select_tag "department", '<option value="">All Departments</option>' +
+        options_from_collection_for_select( Department.all, 'id', 'name', @department_id  ) %>
+      </td></tr>
+      <tr><td>Show empty</td><td><%= check_box_tag(:show_empty, 'yes', @show_empty) %></td></tr>
+      <tr><td><%= hidden_field_tag 'letter',  params[:letter] %><%= submit_tag "View" %></td>
+      </tr>
+
     </table>
   </div>
 <% end -%>
@@ -26,7 +31,7 @@
       <span class="current"><%= to_display %> </span>
     <% else %>
       <% unless empty %>
-        <%= link_to to_display , {:action => "billing", :letter => letter, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
+        <%= link_to to_display , {:action => "billing", :letter => letter, :show_empty => @show_empty, :year => @day.year, :month => @day.month}, :class => has_hours ? "has_hours" : "no_hours" %>
       <% else %>
         <span class="disabled"><%= to_display %> </span>
       <% end %>
@@ -39,16 +44,27 @@
 <div id="billing_content">
 <% expected_days = Holiday.expected_days_between(@day,@day.at_end_of_month) -%>
 <% expected_hours = Holiday.expected_hours_between(@day,@day.at_end_of_month) -%>
+<% status_values = {
+  0 => (image_tag "lock_unlock.png", :title => 'Locked'),
+  1 => (image_tag "lock.png", :title => 'Locked'),
+  2 => (image_tag "txt_icon.png", :title => 'Billed')} -%>
 
 <p class="error"><%= flash[:error] %></p>
 
-<%= will_paginate @customers %>
+<!--%= will_paginate @customers %-->
 
-<% billing_data = Billing.new(@customers,@day).billing_report_data %>
+<% billing_data = Billing.new(@customers,@day,@show_empty,@department).billing_report_data %>
 
 <% form_tag 'billing_action', :method => 'get', :id => 'billing_workflow' do %>
   <table class="regular">
-    <% billing_data.each do |customer_name, total_hours, projects_data| %>
+
+    <% department = "" %>
+    <% billing_data.each do |department_name,customer_name, total_hours, projects_data| %>
+      <% if department != department_name %>
+      <tr>
+        <td colspan="99"> <h1><%= department_name %></h1></td>
+      </tr>
+      <% department = department_name end %>
 
       <tr>
         <td colspan="99"> <h3 class="compact"><%= customer_name %></h3></td>
@@ -60,20 +76,25 @@
           </tr>
         <% else %>
           <tr>
-            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= project.name %></b></td>
+            <td colspan=99><%= check_box_tag  "project[#{project.id}]" -%> <b><%= link_to project.name, edit_project_path(project) %></b></td>
+              
           </tr>
+          
+          <tr><td colspan="99" width="600" style="padding:5px"><%= project.comment %></td></tr>
 
-          <% project_data.each do |user,type_name,hours| %>
+          <% project_data.each do |user,type_name,hours, billed| %>
             <tr>
-              <td>
+              <td style="width:20em">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <span class="<%= user.status_for_month(@day, expected_days, expected_hours)%>">
                     <%= link_to h(user.name), user_month_review_path( user, {:id => :calendar}.merge( date_to_url(@day) ) ) %>
                   </span>
               </td>
-              <td><%= type_name %></td>
-              <td><%= hours %> t </td>
-              <td><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
+              <td style="width:5em"><%= type_name %></td>
+              <td style="width:5em"><%= hours %> t </td>
+              <td style="width:10em">(<%= billed.map{|key,value| "#{status_values[key]} #{value}"}.join(" ") %>)</td>
+              <td style="width:4em"><%= link_to "Details", :action => 'details', :user => user, :project => project, :day => @day %></td>
+              <td></td>
             </tr>
           <% end %>
         <% end %>
@@ -84,7 +105,7 @@
     <% end %>
   </table>
 
-  <%= will_paginate @customers %>
+  <!--%= will_paginate @customers %-->
 
   <br/>
   <hr/>

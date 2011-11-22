@@ -65,7 +65,8 @@ class Period
     end
 
     if sum_billable > 0 then
-      sum_billable / find_expected_hours(from, to)
+      billing_degree = sum_billable / find_expected_hours(from, to)
+      billing_degree.infinite? ? 1 : billing_degree
     else
       0
     end

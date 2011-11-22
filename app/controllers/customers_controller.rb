@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
   before_filter :check_admin
 
   def index
-    @customers = Customer.paginate :page => params[:page] || 1 , :per_page => 15, :order => 'name'
+    @customers = Customer.all.sort #.paginate :page => params[:page] || 1 , :per_page => 15, :order => 'name'
   end
 
   def new
