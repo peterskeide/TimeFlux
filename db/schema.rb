@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110824095218) do
+ActiveRecord::Schema.define(:version => 20111206181556) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                                :null => false
@@ -24,10 +24,8 @@ ActiveRecord::Schema.define(:version => 20110824095218) do
   end
 
   create_table "activities_tags", :id => false, :force => true do |t|
-    t.integer  "activity_id"
-    t.integer  "tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "activity_id"
+    t.integer "tag_id"
   end
 
   create_table "configurations", :force => true do |t|
@@ -101,23 +99,21 @@ ActiveRecord::Schema.define(:version => 20110824095218) do
   end
 
   create_table "tags_time_entries", :id => false, :force => true do |t|
-    t.integer  "time_entry_id"
-    t.integer  "tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "time_entry_id"
+    t.integer "tag_id"
   end
 
   create_table "time_entries", :force => true do |t|
-    t.float    "hours",        :default => 0.0
-    t.boolean  "counterpost",  :default => false
-    t.string   "notes"
-    t.date     "date",                            :null => false
+    t.float    "hours",                       :default => 0.0
+    t.boolean  "counterpost",                 :default => false
+    t.string   "notes",        :limit => 500
+    t.date     "date",                                           :null => false
     t.integer  "activity_id"
     t.integer  "user_id"
     t.integer  "hour_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "status",       :default => 0
+    t.integer  "status",                      :default => 0
   end
 
   add_index "time_entries", ["date"], :name => "index_time_entries_on_date"

@@ -35,4 +35,22 @@ class TimeEntryTest < ActiveSupport::TestCase
     assert_equal entries.size, users(:bob).time_entries.size
   end
   
+  context "notes length validation" do
+    setup do
+      params = {:user => users(:bob), :hours => 7.5, :hour_type => hour_types(:normaltid), 
+        :activity => activities(:timeflux_development), :date => Date.today }
+      @time_entry = TimeEntry.new(params)
+    end
+  
+    should "permit saving time entry with notes containing 500 characters" do
+      @time_entry.notes = "abcdefghij" * 50
+      assert(@time_entry.save) 
+    end
+  
+    should "not permit saving time entry where notes has more than 500 characters" do
+      @time_entry.notes = ("abcdefghij" * 50) + "a" # 501 characters
+      assert(!@time_entry.save) 
+    end 
+  end
+  
 end
