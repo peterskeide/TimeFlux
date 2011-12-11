@@ -4,6 +4,6 @@ class IncreaseLengthOfTimeEntriesNotes < ActiveRecord::Migration
   end
 
   def self.down
-    change_column :time_entries, :notes, :string
+    change_column :time_entries, :notes, :string, :limit => 255
   end
 end
